@@ -1,12 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Configuration;
 using System.IO;
 using System.Linq;
-using System.Text;
 using System.Text.RegularExpressions;
-
-
 
 namespace PreProcessor
 {
@@ -23,7 +19,8 @@ namespace PreProcessor
         protected static string ouputFileMask = ConfigurationManager.AppSettings["ouputFileMask"];
         protected static string inputFileMask = ConfigurationManager.AppSettings["inputFileMask"];
         protected static string unifiedMap = ConfigurationManager.AppSettings["unifiedMap"];
-        
+        protected static string inputFieldSeparator = ConfigurationManager.AppSettings["inputFieldSeparator"];
+        protected static string outputFieldSeparator = ConfigurationManager.AppSettings["outputFieldSeparator"];
 
         protected enum Action
         {
@@ -66,7 +63,7 @@ namespace PreProcessor
                 {
                     //Read Regexp patterns
                     string[] patterns = ConfigurationManager.AppSettings.AllKeys.Where(key => key.StartsWith("pattern")).
-                                                                 Select(key => ConfigurationManager.AppSettings[key]).ToArray();
+                                                             Select(key => ConfigurationManager.AppSettings[key]).ToArray();
                     int i = 1;
                     foreach (var file in iFiles)
                     {
@@ -109,7 +106,6 @@ namespace PreProcessor
             }
         }
 
-
         /// <summary>
         /// Open file check if file is match line with all regexp.
         /// If line match then line is formated and write to file PreProcessOK_MMDDYYYYHH24MISS.csv
@@ -123,7 +119,6 @@ namespace PreProcessor
             //Define datetime mask part
             string dateMask = DateTime.Now.ToString("ddMMyyyyHHmmss");
             
-
             //Open output file
             try
             {
@@ -152,12 +147,16 @@ namespace PreProcessor
             }
 
         }
-
+        /// <summary>
+        /// Create new unified line, mapping input to output stage table format
+        /// </summary>
+        /// <param name="line"></param>
+        /// <returns></returns>
         protected static string MakeLine(string line)
         {
-            string separator = ",";
-            string[] mapper = unifiedMap.Split(',');
-            string[] splittedLine = line.Split(',');
+            char separator = ',';
+            string[] mapper = unifiedMap.Split(separator);
+            string[] splittedLine = line.Split(char.Parse(inputFieldSeparator));
             string[] newLineArray = new string[mapper.Count()];
             int i = 0;
             int index = 0;
@@ -172,7 +171,7 @@ namespace PreProcessor
                 }
                 i++;
             }
-            return string.Join(separator, newLineArray);
+            return string.Join(outputFieldSeparator, newLineArray);
         }
 
         /// <summary>
