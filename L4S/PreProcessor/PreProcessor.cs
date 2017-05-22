@@ -3,14 +3,20 @@ using System.Configuration;
 using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
+using System.Security.Principal;
+using SingleInstance;
+
+// Configure log4net using the .config file
+[assembly: log4net.Config.XmlConfigurator(Watch = true)]
+// This will cause log4net to look for a configuration file
 
 namespace PreProcessor
 {
-    
+
     class PreProcessor
     {
         /// <summary>
-        /// Initialization properties
+        /// Initialization variable from App.config
         /// </summary>
         protected static string drive = ConfigurationManager.AppSettings["drive"];
         protected static string inputDir = ConfigurationManager.AppSettings["inputDir"];
@@ -29,20 +35,27 @@ namespace PreProcessor
             Delete
         };
 
+        // Create a logger for use in this class
+        private static readonly log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+
         static void Main(string[] args)
         {
             using (new SingleGlobalInstance(1000)) //1000ms timeout on global lock
             {
-
-                Console.WriteLine(@"input dir: {0}", inputDir);
+                log.InfoFormat("Running as {0}", WindowsIdentity.GetCurrent().Name);
+               
                 //Read files from NetCollector
                 string[] iFiles = Directory.GetFiles(drive + inputDir, inputFileMask);
                 if (iFiles.Any())
                 {
+                    log.Info(@"Get new files from: " + drive + inputDir);
                     //Move file from NetCollector to PreProcessor Work directory
+                    int i = 0;
                     foreach (var file in iFiles)
                     {
                         ManageFile(Action.Move, file, drive + workDir);
+                        log.Info(String.Format("New file {0} - {1}: ", i, file));
+                        i++;
                     }
                 }
 
@@ -50,10 +63,14 @@ namespace PreProcessor
                 iFiles = Directory.GetFiles(drive + workDir, inputFileMask).Where(n => n.Contains("PreProcessOK")).ToArray();
                 if (iFiles.Any())
                 {
+                    log.Info(@"Move old processed files from: " + drive + workDir + " to "+ drive+ outputDir);
                     //Move file from NetCollector to PreProcessor Work directory
+                    int i = 0;
                     foreach (var file in iFiles)
                     {
                         ManageFile(Action.Move, file, drive + outputDir);
+                        log.Info(String.Format("New file {0} - {1}: ", i, file));
+                        i++;
                     }
                 }
                 //Read files from work exept Processed files
@@ -64,20 +81,23 @@ namespace PreProcessor
                     //Read Regexp patterns
                     string[] patterns = ConfigurationManager.AppSettings.AllKeys.Where(key => key.StartsWith("pattern")).
                                                              Select(key => ConfigurationManager.AppSettings[key]).ToArray();
-                    int i = 1;
+                    int i = 0;
+                    log.Info(@"Processing files from: " + drive + workDir);
                     foreach (var file in iFiles)
                     {
                         if (File.Exists(file))
                         {
                             ProcessFile(file, patterns);
+                            log.Info(String.Format("Processed file {0} - {1}: ", i, file));
+                            i++;
                         }
-                        Console.Write(@"File {0}: {1}  ", i++, file);
                     }
                 }
                 else
                 {
-                    Console.WriteLine(@"No files for processing.");
+                    log.Warn("No files for processing.");
                 }
+                //Console.ReadKey();
             }
         }
 
@@ -118,7 +138,7 @@ namespace PreProcessor
             StreamReader sr = File.OpenText(iFile);
             //Define datetime mask part
             string dateMask = DateTime.Now.ToString("ddMMyyyyHHmmss");
-            
+
             //Open output file
             try
             {
@@ -131,7 +151,6 @@ namespace PreProcessor
                 {
                     if (IsValidByReg(regPatterns, line))
                     {
-                        
                         var unifiedLine = MakeLine(line);
                         sw.WriteLine(unifiedLine);
                     }
@@ -143,7 +162,7 @@ namespace PreProcessor
             }
             catch (IOException e)
             {
-                Console.WriteLine(e.Message);
+                log.Fatal(e.Message);
             }
 
         }
@@ -163,10 +182,10 @@ namespace PreProcessor
             foreach (var map in mapper)
             {
                 if (Int32.TryParse(map, out index))
-                { 
-                    if (index <= splittedLine.Count()-1)
-                    { 
-                       newLineArray[i] = splittedLine[index];
+                {
+                    if (index <= splittedLine.Count() - 1)
+                    {
+                        newLineArray[i] = splittedLine[index];
                     }
                 }
                 i++;
