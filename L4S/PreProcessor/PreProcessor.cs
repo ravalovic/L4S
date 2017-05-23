@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Configuration;
 using System.IO;
+using System.IO.Compression;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Security.Principal;
-using SingleInstance;
+
 
 // Configure log4net using the .config file
 [assembly: log4net.Config.XmlConfigurator(Watch = true)]
@@ -32,13 +33,14 @@ namespace PreProcessor
         {
             Copy,
             Move,
-            Delete
+            Delete,
+            Zip
         };
 
         // Create a logger for use in this class
         private static readonly log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
-        static void Main(string[] args)
+        static void Main()
         {
             using (new SingleGlobalInstance(1000)) //1000ms timeout on global lock
             {
@@ -104,10 +106,12 @@ namespace PreProcessor
         /// <summary>
         /// Move, copy file to specified dir or delete file
         /// </summary>
-        /// <param name="iFiles"></param>
+        ///  <param name="action"></param>
+        /// <param name="file"></param>
         /// <param name="destDir"></param>
         protected static void ManageFile(Action action, string file, string destDir)
         {
+            string dateMask = DateTime.Now.ToString("ddMMyyyyHHmmss");
             if ((File.Exists(file) && !File.Exists(destDir + Path.GetFileName(file))) || action == Action.Delete)
             {
                 switch (action)
@@ -121,6 +125,12 @@ namespace PreProcessor
                     case Action.Delete:
                         File.Delete(file);
                         break;
+                    case Action.Zip:
+                        var zipName = destDir + Path.GetFileName(file) +"_"+dateMask+ ".zip";
+                        using (ZipArchive arch = ZipFile.Open(zipName, ZipArchiveMode.Create)) {   
+                        arch.CreateEntryFromFile(file, Path.GetFileName(file), CompressionLevel.Optimal);
+                        }
+                        break;
                 }
 
             }
@@ -130,8 +140,10 @@ namespace PreProcessor
         /// Open file check if file is match line with all regexp.
         /// If line match then line is formated and write to file PreProcessOK_MMDDYYYYHH24MISS.csv
         /// NotMatched lines are ignored 
+        /// /// <param name="iFile"></param>
+        /// /// <param name="regPatterns"></param>
         /// </summary>
-        /// <param name="iFile"></param>
+
         protected static void ProcessFile(string iFile, string[] regPatterns)
         {
             //Open file
@@ -146,7 +158,7 @@ namespace PreProcessor
                 string fname = Path.GetFileName(iFile);
                 FileInfo oFile = new FileInfo(drive + workDir + ouputFileMask + dateMask + "_" + fname);
                 StreamWriter sw = oFile.CreateText();
-                string line = String.Empty;
+                string line;
                 while ((line = sr.ReadLine()) != null)
                 {
                     if (IsValidByReg(regPatterns, line))
@@ -178,9 +190,9 @@ namespace PreProcessor
             string[] splittedLine = line.Split(char.Parse(inputFieldSeparator));
             string[] newLineArray = new string[mapper.Count()];
             int i = 0;
-            int index = 0;
             foreach (var map in mapper)
             {
+                int index;
                 if (Int32.TryParse(map, out index))
                 {
                     if (index <= splittedLine.Count() - 1)
@@ -196,7 +208,7 @@ namespace PreProcessor
         /// <summary>
         /// Check if line is match by pattern
         /// </summary>
-        /// <param name="pattern"></param>
+        /// <param name="patterns"></param>
         /// <param name="line"></param>
         /// <returns></returns>
         protected static bool IsValidByReg(string[] patterns, string line)

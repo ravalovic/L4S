@@ -14,7 +14,7 @@ namespace BusyBulkCopy
         protected string[] theValues;
         protected int rownum;
         protected Field[] theTableFields;
-        protected int theErrorCount = 0;
+        protected int theErrorCount;
 
         public virtual Object GetValue(int i)
         {
@@ -222,7 +222,7 @@ ORDER  BY ORDINAL_POSITION", aTable, aSchema);
                     Name = myReader.GetString(0),
                     DataType = myReader.GetString(1),
                     length = myReader.GetInt32(2),
-                    nullable = myReader.GetString(3) == "YES" ? true : false,
+                    nullable = myReader.GetString(3) == "YES",
                     precision = myReader.GetInt32(4),
                     scale = myReader.GetInt32(5),
                     FileFieldPosition = -1
@@ -375,8 +375,8 @@ ORDER  BY ORDINAL_POSITION", aTable, aSchema);
         }
         void IDisposable.Dispose()
         {
-            this.Dispose(true);
-            System.GC.SuppressFinalize(this);
+            Dispose(true);
+            GC.SuppressFinalize(this);
         }
 
         private void Dispose(bool disposing)
@@ -385,7 +385,7 @@ ORDER  BY ORDINAL_POSITION", aTable, aSchema);
             {
                 try
                 {
-                    this.Close();
+                    Close();
                 }
                 catch (Exception e)
                 {

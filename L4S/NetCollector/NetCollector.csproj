@@ -40,6 +40,8 @@
     <Reference Include="System" />
     <Reference Include="System.configuration" />
     <Reference Include="System.Core" />
+    <Reference Include="System.IO.Compression" />
+    <Reference Include="System.IO.Compression.FileSystem" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -56,9 +58,9 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\SingleInstance\SingleInstance.csproj">
+    <ProjectReference Include="..\SingleInstance\CommonHelper.csproj">
       <Project>{874a4f6a-1fd6-4cc0-ae9d-360b314fa8a1}</Project>
-      <Name>SingleInstance</Name>
+      <Name>CommonHelper</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

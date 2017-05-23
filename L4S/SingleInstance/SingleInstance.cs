@@ -5,21 +5,19 @@ using System.Security.AccessControl;
 using System.Security.Principal;
 using System.Threading;
 
-/// <summary>
-/// Allow only one onstance of application
-/// http://stackoverflow.com/questions/229565/what-is-a-good-pattern-for-using-a-global-mutex-in-c/229567
-/// </summary>
 
-namespace SingleInstance
-{
+// Allow only one onstance of application
+// http://stackoverflow.com/questions/229565/what-is-a-good-pattern-for-using-a-global-mutex-in-c/229567
+
+
     public class SingleGlobalInstance : IDisposable
     {
-        public bool hasHandle = false;
+        public bool hasHandle;
         Mutex mutex;
 
         private void InitMutex()
         {
-            string appGuid = ((GuidAttribute)Assembly.GetExecutingAssembly().GetCustomAttributes(typeof(GuidAttribute), false).GetValue(0)).Value.ToString();
+            string appGuid = ((GuidAttribute)Assembly.GetExecutingAssembly().GetCustomAttributes(typeof(GuidAttribute), false).GetValue(0)).Value;
             string mutexId = string.Format("Global\\{{{0}}}", appGuid);
             mutex = new Mutex(false, mutexId);
 
@@ -59,4 +57,4 @@ namespace SingleInstance
             }
         }
     }
-}
+
