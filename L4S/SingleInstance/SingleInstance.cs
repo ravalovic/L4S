@@ -9,7 +9,7 @@ using System.Threading;
 // Allow only one onstance of application
 // http://stackoverflow.com/questions/229565/what-is-a-good-pattern-for-using-a-global-mutex-in-c/229567
 
-
+namespace CommonHelper { 
     public class SingleGlobalInstance : IDisposable
     {
         public bool hasHandle;
@@ -58,3 +58,4 @@ using System.Threading;
         }
     }
 
+}

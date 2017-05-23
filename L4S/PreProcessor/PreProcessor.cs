@@ -5,6 +5,8 @@ using System.IO.Compression;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Security.Principal;
+using CommonHelper;
+using System.Collections.Generic;
 
 
 // Configure log4net using the .config file
@@ -19,15 +21,15 @@ namespace PreProcessor
         /// <summary>
         /// Initialization variable from App.config
         /// </summary>
-        protected static string drive = ConfigurationManager.AppSettings["drive"];
-        protected static string inputDir = ConfigurationManager.AppSettings["inputDir"];
-        protected static string outputDir = ConfigurationManager.AppSettings["outputDir"];
-        protected static string workDir = ConfigurationManager.AppSettings["workDir"];
-        protected static string ouputFileMask = ConfigurationManager.AppSettings["ouputFileMask"];
-        protected static string inputFileMask = ConfigurationManager.AppSettings["inputFileMask"];
-        protected static string unifiedMap = ConfigurationManager.AppSettings["unifiedMap"];
-        protected static string inputFieldSeparator = ConfigurationManager.AppSettings["inputFieldSeparator"];
-        protected static string outputFieldSeparator = ConfigurationManager.AppSettings["outputFieldSeparator"];
+        //protected static string drive = ConfigurationManager.AppSettings["drive"];
+        //protected static string inputDir = ConfigurationManager.AppSettings["inputDir"];
+        //protected static string outputDir = ConfigurationManager.AppSettings["outputDir"];
+        //protected static string workDir = ConfigurationManager.AppSettings["workDir"];
+        //protected static string ouputFileMask = ConfigurationManager.AppSettings["ouputFileMask"];
+        //protected static string inputFileMask = ConfigurationManager.AppSettings["inputFileMask"];
+        //protected static string unifiedMap = ConfigurationManager.AppSettings["unifiedMap"];
+        //protected static string inputFieldSeparator = ConfigurationManager.AppSettings["inputFieldSeparator"];
+        //protected static string outputFieldSeparator = ConfigurationManager.AppSettings["outputFieldSeparator"];
 
         protected enum Action
         {
@@ -40,43 +42,58 @@ namespace PreProcessor
         // Create a logger for use in this class
         private static readonly log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
+        /// <summary>
+        /// Initialization variable from App.config
+        /// </summary>
+        public static Dictionary<string, string> MySettings()
+        {
+            Dictionary<string, string> AppSettings = new Dictionary<string, string>();
+            foreach (var stringkey in ConfigurationManager.AppSettings.AllKeys)
+            {
+                AppSettings[stringkey] = ConfigurationManager.AppSettings[stringkey];
+            }
+            return AppSettings;
+        }
+
+
         static void Main()
         {
             using (new SingleGlobalInstance(1000)) //1000ms timeout on global lock
             {
+                var appSettings = MySettings();
                 log.InfoFormat("Running as {0}", WindowsIdentity.GetCurrent().Name);
                
                 //Read files from NetCollector
-                string[] iFiles = Directory.GetFiles(drive + inputDir, inputFileMask);
+                string[] iFiles = Directory.GetFiles(appSettings["drive"] + appSettings["inputDir"], appSettings["inputFileMask"]);
                 if (iFiles.Any())
                 {
-                    log.Info(@"Get new files from: " + drive + inputDir);
+                    log.Info(@"Get new files from: " + appSettings["drive"] + appSettings["inputDir"]);
                     //Move file from NetCollector to PreProcessor Work directory
                     int i = 0;
                     foreach (var file in iFiles)
                     {
-                        ManageFile(Action.Move, file, drive + workDir);
+                        ManageFile(Action.Move, file, appSettings["drive"] + appSettings["workDir"]);
                         log.Info(String.Format("New file {0} - {1}: ", i, file));
                         i++;
                     }
                 }
 
                 // Check if some processed file  exist if yes move it to final dir
-                iFiles = Directory.GetFiles(drive + workDir, inputFileMask).Where(n => n.Contains("PreProcessOK")).ToArray();
+                iFiles = Directory.GetFiles(appSettings["drive"] + appSettings["workDir"], appSettings["inputFileMask"]).Where(n => n.Contains("PreProcessOK")).ToArray();
                 if (iFiles.Any())
                 {
-                    log.Info(@"Move old processed files from: " + drive + workDir + " to "+ drive+ outputDir);
+                    log.Info(@"Move old processed files from: " + appSettings["drive"] + appSettings["workDir"] + " to "+ appSettings["drive"] + appSettings["outputDir"]);
                     //Move file from NetCollector to PreProcessor Work directory
                     int i = 0;
                     foreach (var file in iFiles)
                     {
-                        ManageFile(Action.Move, file, drive + outputDir);
+                        ManageFile(Action.Move, file, appSettings["drive"] + appSettings["outputDir"]);
                         log.Info(String.Format("New file {0} - {1}: ", i, file));
                         i++;
                     }
                 }
                 //Read files from work exept Processed files
-                iFiles = Directory.GetFiles(drive + workDir, inputFileMask).Where(n => !n.Contains("PreProcessOK")).ToArray();
+                iFiles = Directory.GetFiles(appSettings["drive"] + appSettings["workDir"], appSettings["inputFileMask"]).Where(n => !n.Contains("PreProcessOK")).ToArray();
 
                 if (iFiles.Any())
                 {
@@ -84,12 +101,13 @@ namespace PreProcessor
                     string[] patterns = ConfigurationManager.AppSettings.AllKeys.Where(key => key.StartsWith("pattern")).
                                                              Select(key => ConfigurationManager.AppSettings[key]).ToArray();
                     int i = 0;
-                    log.Info(@"Processing files from: " + drive + workDir);
+                    log.Info(@"Processing files from: " + appSettings["drive"] + appSettings["workDir"]);
                     foreach (var file in iFiles)
                     {
                         if (File.Exists(file))
                         {
-                            ProcessFile(file, patterns);
+                            ProcessFile(file, patterns,  appSettings["drive"], appSettings["workDir"],  appSettings["outputDir"], appSettings["outputFileMask"],
+                                appSettings["unifiedMap"], appSettings["inputFieldSeparator"], appSettings["outputFieldSeparator"]);
                             log.Info(String.Format("Processed file {0} - {1}: ", i, file));
                             i++;
                         }
@@ -144,7 +162,7 @@ namespace PreProcessor
         /// /// <param name="regPatterns"></param>
         /// </summary>
 
-        protected static void ProcessFile(string iFile, string[] regPatterns)
+        protected static void ProcessFile(string iFile, string[] regPatterns, string drive, string workDir, string outputDir, string outputFileMask, string unifiedMap, string inputFieldSeparator, string outputFieldSeparator)
         {
             //Open file
             StreamReader sr = File.OpenText(iFile);
@@ -156,14 +174,14 @@ namespace PreProcessor
             {
                 //extract file name
                 string fname = Path.GetFileName(iFile);
-                FileInfo oFile = new FileInfo(drive + workDir + ouputFileMask + dateMask + "_" + fname);
+                FileInfo oFile = new FileInfo(drive + workDir + outputFileMask + dateMask + "_" + fname);
                 StreamWriter sw = oFile.CreateText();
                 string line;
                 while ((line = sr.ReadLine()) != null)
                 {
                     if (IsValidByReg(regPatterns, line))
                     {
-                        var unifiedLine = MakeLine(line);
+                        var unifiedLine = MakeLine(line, unifiedMap, inputFieldSeparator, outputFieldSeparator);
                         sw.WriteLine(unifiedLine);
                     }
                 }
@@ -183,7 +201,7 @@ namespace PreProcessor
         /// </summary>
         /// <param name="line"></param>
         /// <returns></returns>
-        protected static string MakeLine(string line)
+        protected static string MakeLine(string line, string unifiedMap, string inputFieldSeparator, string outputFieldSeparator)
         {
             char separator = ',';
             string[] mapper = unifiedMap.Split(separator);

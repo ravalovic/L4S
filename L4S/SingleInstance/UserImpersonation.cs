@@ -5,6 +5,7 @@ using System.Security.Principal;
 /// <summary> 
 /// Object to change the user authticated 
 /// </summary> 
+namespace CommonHelper { 
 public class UserImpersonation : IDisposable 
     { 
         /// <summary> 
@@ -99,5 +100,5 @@ public class UserImpersonation : IDisposable
  
 
      #endregion 
- } 
-
+ }
+}
