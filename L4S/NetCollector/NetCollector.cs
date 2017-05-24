@@ -80,6 +80,7 @@ namespace NetCollector
                 Boolean.TryParse(appSettings[MyAPConfig.AllowRenameRemote], out allowRename);
                 Boolean.TryParse(appSettings[MyAPConfig.IntegratedSecurity], out intSec);
                 log.InfoFormat("Running as {0}", WindowsIdentity.GetCurrent().Name);
+                log.InfoFormat("Transfer method:  {0}", appSettings[MyAPConfig.TransferMethod]);
                 CollectionMethod method;
                 if (Enum.TryParse(appSettings[MyAPConfig.TransferMethod], out method))
                 {
@@ -114,7 +115,7 @@ namespace NetCollector
                             }
                             break;
                         case CollectionMethod.FTP:
-                            if (FTPTransfer(appSettings[MyAPConfig.RemoteServer], appSettings[MyAPConfig.RemoteDir], appSettings[MyAPConfig.RemoteFileMask], appSettings[MyAPConfig.WorkDir]))
+                            if (FTPTransfer(appSettings[MyAPConfig.RemoteServer], appSettings[MyAPConfig.RemoteDir], appSettings[MyAPConfig.Login], appSettings[MyAPConfig.Password], appSettings[MyAPConfig.RemoteFileMask], appSettings[MyAPConfig.Drive], appSettings[MyAPConfig.WorkDir], allowRename, appSettings[MyAPConfig.RenameRemoteExtension]))
                             {
                                 BackupNewFiles(appSettings[MyAPConfig.Drive], appSettings[MyAPConfig.WorkDir], appSettings[MyAPConfig.BackupDir], appSettings[MyAPConfig.RemoteFileMask]);
                             }
@@ -129,6 +130,7 @@ namespace NetCollector
                                                string drive, string workDir, bool allow, string renameRemoteExtension)
         {
             bool result = false;
+            string dateMask = DateTime.Now.ToString("ddMMyyyyHHmmss");
             //Read files from NetCollector
             string sourceDir = string.Format(@"\\" + remoteServer + @"\" + shareName + remoteDir);
             string[] iFiles = Directory.GetFiles(sourceDir, remoteFileMask);
@@ -143,7 +145,7 @@ namespace NetCollector
                     log.Info(String.Format("New file {0} - {1} ", i, file));
                     if (allow)
                     {
-                        ManageFile(Action.Move, file, sourceDir, renameRemoteExtension);
+                        ManageFile(Action.Move, file, sourceDir, @"_" + dateMask+renameRemoteExtension);
                         log.Info(String.Format("Renaming to file {0} - {1} ", i, file + renameRemoteExtension));
                     }
                     i++;
@@ -161,16 +163,26 @@ namespace NetCollector
         }
 
 
-        protected static bool FTPTransfer(string remServer, string remDir, string remFileMask, string wDir)
+        protected static bool FTPTransfer(string remoteServer,  string remoteDir, string user, string password, string remoteFileMask,
+                                           string drive, string workDir, bool allow, string renameRemoteExtension)
         {
-
+            string dateMask = DateTime.Now.ToString("ddMMyyyyHHmmss");
             using (Ftp ftp = new Ftp())
             {
-                ftp.Connect("127.0.0.1");  // or ConnectSSL for SSL 
-                ftp.Login("rasto", "rasto123");
+                ftp.Connect(remoteServer);  // or ConnectSSL for SSL 
+                ftp.Login(user, password);
                 //Directory.CreateDirectory(@"c:\reports");
-                ftp.DownloadFiles(@"L4S\ftpsource\", @"d:\temp\lcdhome\",
-                    new RemoteSearchOptions("*.csv", true));
+                ftp.DownloadFiles(remoteDir, drive+workDir);
+                    new RemoteSearchOptions(remoteFileMask, true);
+                if (allow)
+                {
+                    string[] iFiles = Directory.GetFiles(drive + workDir, remoteFileMask);
+                    foreach (var file in iFiles)
+                    {
+                        ftp.Rename(remoteDir + Path.GetFileName(file), remoteDir + Path.GetFileName(file)+@"_"+ dateMask + renameRemoteExtension);
+                    }
+
+                }
                 ftp.Close();
            }
             return true;
