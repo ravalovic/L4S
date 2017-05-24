@@ -6,6 +6,7 @@ using System.Linq;
 using System.Security.Principal;
 using CommonHelper;
 using System.Collections.Generic;
+using Limilabs.FTP.Client;
 
 
 // Configure log4net using the .config file
@@ -14,94 +15,95 @@ using System.Collections.Generic;
 
 namespace NetCollector
 {
-  class NetCollector
+    //Public class for read parameters from .config file
+    public class MyAPConfig
+    { 
+        public const string TransferMethod = "transferMethod";
+        public const string RemoteServer = "remoteServer";
+        public const string ShareName = "shareName";
+        public const string RemoteDir = "remoteDir";
+        public const string RemoteFileMask = "remoteFileMask";
+        public const string AllowRenameRemote = "allowRenameRemote";
+        public const string RenameRemoteExtension = "renameRemoteExtension";
+        public const string IntegratedSecurity = "integratedSecurity";
+        public const string Login = "login";
+        public const string Password = "password";
+        public const string Domain = "domain";
+        public const string Drive = "drive";
+        public const string OutputDir = "outputDir";
+        public const string WorkDir = "workDir";
+        public const string BackupDir= "backupDir";
+
+        public MyAPConfig()
+        {
+            appParams = new Dictionary<string, string>();
+            foreach (var stringkey in ConfigurationManager.AppSettings.AllKeys)
+            {
+                appParams[stringkey] = ConfigurationManager.AppSettings[stringkey];
+            }
+        }
+        public Dictionary<string, string> appParams { get; set; }
+    }
+    class NetCollector
     {
-       
-        //Parameters in .config
-         //transferMethod
-         //remoteServer 
-         //remoteDir
-         //remoteFileMask
-         //allowRenameRemote 
-         //renameRemoteExtension 
-         //shareName 
-         //integratedSecurity 
-         //login 
-         //password 
-         //domain 
-         //drive 
-         //outputDir 
-         //workDir 
-         //backupDir = ConfigurationManager.AppSettings["backupDir"];
-
-
         protected enum CollectionMethod
         {
             NetShare,
             FTP,
             HTTP,
             SSH
-        };
+        }
         protected enum Action
         {
             Copy,
             Move,
             Delete,
             Zip
-        };
+        }
 
         // Create a logger for use in this class
         private static readonly log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
-       
+
         /// <summary>
         /// Initialization variable from App.config
         /// </summary>
-        public static Dictionary<string, string> MySettings()
-        {
-            Dictionary<string, string> AppSettings = new Dictionary<string, string>();
-            foreach (var stringkey in ConfigurationManager.AppSettings.AllKeys)
-            {
-                AppSettings[stringkey] = ConfigurationManager.AppSettings[stringkey];
-            }
-            return AppSettings;
-        }
 
         static void Main()
         {
-            //MySettings();
+            
             using (new SingleGlobalInstance(1000)) //1000ms timeout on global lock
             {
-                var appSettings = MySettings();
+                var appSettings = new MyAPConfig().appParams;
 
                 bool allowRename;
                 bool intSec;
-                Boolean.TryParse(appSettings["allowRenameRemote"], out allowRename);
-                Boolean.TryParse(appSettings["integratedSecurity"], out intSec);
+                Boolean.TryParse(appSettings[MyAPConfig.AllowRenameRemote], out allowRename);
+                Boolean.TryParse(appSettings[MyAPConfig.IntegratedSecurity], out intSec);
                 log.InfoFormat("Running as {0}", WindowsIdentity.GetCurrent().Name);
                 CollectionMethod method;
-                if (Enum.TryParse(appSettings["transferMethod"], out method))
+                if (Enum.TryParse(appSettings[MyAPConfig.TransferMethod], out method))
                 {
                     switch (method)
                     {
                         case CollectionMethod.NetShare:
                             if (intSec) //if user which execute has integration security with remote server
                             {
-                                if (NetShareTransfer(appSettings["remoteServer"], appSettings["shareName"], appSettings["remoteDir"], appSettings["remoteFileMask"],
-                                    appSettings["drive"], appSettings["workDir"], allowRename, appSettings["renameRemoteExtension"]))
+                                if (NetShareTransfer(appSettings[MyAPConfig.RemoteServer], appSettings[MyAPConfig.ShareName], appSettings[MyAPConfig.RemoteDir], appSettings[MyAPConfig.RemoteFileMask],
+                                    appSettings[MyAPConfig.Drive], appSettings[MyAPConfig.WorkDir], allowRename, appSettings[MyAPConfig.RenameRemoteExtension]))
                                 {
-                                    BackupNewFiles(appSettings["drive"], appSettings["workDir"], appSettings["backupDir"], appSettings["remoteFileMask"]);
+                                    BackupNewFiles(appSettings[MyAPConfig.Drive], appSettings[MyAPConfig.WorkDir], appSettings[MyAPConfig.BackupDir], appSettings[MyAPConfig.RemoteFileMask]);
                                 }
                             }
                             else
                             {
-                                using (UserImpersonation user = new UserImpersonation(appSettings["login"], appSettings["domain"], appSettings["password"]))
+                                using (UserImpersonation user = new UserImpersonation(appSettings[MyAPConfig.Login], appSettings[MyAPConfig.Domain], appSettings[MyAPConfig.Password]))
                                 {
                                     if (user.ImpersonateValidUser())
                                     {
-                                        if (NetShareTransfer(appSettings["remoteServer"], appSettings["shareName"], appSettings["remoteDir"], appSettings["remoteFileMask"],
-                                            appSettings["drive"], appSettings["workDir"], allowRename, appSettings["renameRemoteExtension"]))
+                                        if (NetShareTransfer(appSettings[MyAPConfig.RemoteServer], appSettings[MyAPConfig.ShareName], appSettings[MyAPConfig.RemoteDir], appSettings[MyAPConfig.RemoteFileMask],
+                                            appSettings[MyAPConfig.Drive], appSettings[MyAPConfig.WorkDir], allowRename, appSettings[MyAPConfig.RenameRemoteExtension]))
                                         {
-                                            BackupNewFiles(appSettings["drive"], appSettings["workDir"], appSettings["backupDir"], appSettings["remoteFileMask"]);
+                                            BackupNewFiles(appSettings[MyAPConfig.Drive], appSettings[MyAPConfig.WorkDir], appSettings[MyAPConfig.BackupDir], appSettings[MyAPConfig.RemoteFileMask]);
                                         }
                                     }
                                     else
@@ -112,13 +114,13 @@ namespace NetCollector
                             }
                             break;
                         case CollectionMethod.FTP:
-                            if (FTPTransfer(appSettings["remoteServer"], appSettings["remoteDir"], appSettings["remoteFileMask"], appSettings["workDir"]))
+                            if (FTPTransfer(appSettings[MyAPConfig.RemoteServer], appSettings[MyAPConfig.RemoteDir], appSettings[MyAPConfig.RemoteFileMask], appSettings[MyAPConfig.WorkDir]))
                             {
-                                BackupNewFiles(appSettings["drive"], appSettings["workDir"], appSettings["backupDir"], appSettings["remoteFileMask"]);
+                                BackupNewFiles(appSettings[MyAPConfig.Drive], appSettings[MyAPConfig.WorkDir], appSettings[MyAPConfig.BackupDir], appSettings[MyAPConfig.RemoteFileMask]);
                             }
                             break;
                     }
-                    MoveToFinal(appSettings["drive"], appSettings["workDir"], appSettings["outputDir"], appSettings["remoteFileMask"]);
+                    MoveToFinal(appSettings[MyAPConfig.Drive], appSettings[MyAPConfig.WorkDir], appSettings[MyAPConfig.OutputDir], appSettings[MyAPConfig.RemoteFileMask]);
                 }
             } //using singleinstance
         }
@@ -161,7 +163,18 @@ namespace NetCollector
 
         protected static bool FTPTransfer(string remServer, string remDir, string remFileMask, string wDir)
         {
-            throw new NotImplementedException("Unsupported transfer");
+
+            using (Ftp ftp = new Ftp())
+            {
+                ftp.Connect("127.0.0.1");  // or ConnectSSL for SSL 
+                ftp.Login("rasto", "rasto123");
+                //Directory.CreateDirectory(@"c:\reports");
+                ftp.DownloadFiles(@"L4S\ftpsource\", @"d:\temp\lcdhome\",
+                    new RemoteSearchOptions("*.csv", true));
+                ftp.Close();
+           }
+            return true;
+
         }
 
         protected static void BackupNewFiles(string drive, string workDir, string backupDir, string remoteFileMask)
