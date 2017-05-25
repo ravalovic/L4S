@@ -6,7 +6,6 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using System.Security.Principal;
 using CommonHelper;
-using System.Collections.Generic;
 
 // Configure log4net using the .config file
 [assembly: log4net.Config.XmlConfigurator(Watch = true)]
@@ -16,25 +15,34 @@ namespace PreProcessor
 {
     public class MyAPConfig
     {
-        public const string Drive = "drive";
-        public const string InputDir = "inputDir";
-        public const string OutputDir = "outputDir";
-        public const string WorkDir = "workDir";
-        public const string OutputFileMask = "outputFileMask";
-        public const string InputFileMask = "inputFileMask";
-        public const string UnifiedMap = "unifiedMap";
-        public const string InputFieldSeparator = "inputFieldSeparator";
-        public const string OutputFieldSeparator = "outputFieldSeparator";
+        /// <summary>
+        /// Initialization variable from App.config
+        /// </summary>
+        public string Drive { get; set; }
+        public string InputDir { get; set; }
+        public string OutputDir { get; set; }
+        public string WorkDir { get; set; }
+        public string OutputFileMask { get; set; }
+        public string InputFileMask { get; set; }
+        public string UnifiedMap { get; set; }
+        public string InputFieldSeparator { get; set; }
+        public string OutputFieldSeparator { get; set; }
+        public string[] Patterns { get; set; }
 
         public MyAPConfig()
         {
-            appParams = new Dictionary<string, string>();
-            foreach (var stringkey in ConfigurationManager.AppSettings.AllKeys)
-            {
-                appParams[stringkey] = ConfigurationManager.AppSettings[stringkey];
-            }
+            Drive = ConfigurationManager.AppSettings["drive"];
+            InputDir = ConfigurationManager.AppSettings["inputDir"];
+            OutputDir = ConfigurationManager.AppSettings["outputDir"];
+            WorkDir = ConfigurationManager.AppSettings["workDir"];
+            OutputFileMask = ConfigurationManager.AppSettings["outputFileMask"];
+            InputFileMask = ConfigurationManager.AppSettings["inputFileMask"];
+            UnifiedMap = ConfigurationManager.AppSettings["unifiedMap"];
+            InputFieldSeparator = ConfigurationManager.AppSettings["inputFieldSeparator"];
+            OutputFieldSeparator = ConfigurationManager.AppSettings["outputFieldSeparator"];
+            Patterns = ConfigurationManager.AppSettings.AllKeys.Where(key => key.StartsWith("pattern")).Select(key => ConfigurationManager.AppSettings[key]).ToArray();
         }
-        public Dictionary<string, string> appParams { get; set; }
+
     }
 
     public class PreProcessor
@@ -50,84 +58,84 @@ namespace PreProcessor
         // Create a logger for use in this class
         private static readonly log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
-        /// <summary>
-        /// Initialization variable from App.config
-        /// </summary>
-        //public static Dictionary<string, string> MySettings()
-        //{
-        //    Dictionary<string, string> AppSettings = new Dictionary<string, string>();
-        //    foreach (var stringkey in ConfigurationManager.AppSettings.AllKeys)
-        //    {
-        //        AppSettings[stringkey] = ConfigurationManager.AppSettings[stringkey];
-        //    }
-        //    return AppSettings;
-        //}
-
-
         static void Main()
         {
             using (new SingleGlobalInstance(1000)) //1000ms timeout on global lock
             {
-                var appSettings = new MyAPConfig().appParams;
+                var appSettings = new MyAPConfig();
                 log.InfoFormat("Running as {0}", WindowsIdentity.GetCurrent().Name);
-
-                //Read files from NetCollector
-                string[] iFiles = Directory.GetFiles(appSettings[MyAPConfig.Drive] + appSettings[MyAPConfig.InputDir], appSettings[MyAPConfig.InputFileMask]);
-                if (iFiles.Any())
-                {
-                    log.Info(@"Get new files from: " + appSettings[MyAPConfig.Drive] + appSettings[MyAPConfig.InputDir]);
-                    //Move file from NetCollector to PreProcessor Work directory
-                    int i = 0;
-                    foreach (var file in iFiles)
-                    {
-                        ManageFile(Action.Move, file, appSettings[MyAPConfig.Drive] + appSettings[MyAPConfig.WorkDir]);
-                        log.Info(String.Format("New file {0} - {1}: ", i, file));
-                        i++;
-                    }
-                }
-
-                // Check if some processed file  exist if yes move it to final dir
-                iFiles = Directory.GetFiles(appSettings[MyAPConfig.Drive] + appSettings[MyAPConfig.WorkDir], appSettings[MyAPConfig.InputFileMask]).Where(n => n.Contains("PreProcessOK")).ToArray();
-                if (iFiles.Any())
-                {
-                    log.Info(@"Move old processed files from: " + appSettings[MyAPConfig.Drive] + appSettings[MyAPConfig.WorkDir] + " to " + appSettings[MyAPConfig.Drive] + appSettings[MyAPConfig.OutputDir]);
-                    //Move file from NetCollector to PreProcessor Work directory
-                    int i = 0;
-                    foreach (var file in iFiles)
-                    {
-                        ManageFile(Action.Move, file, appSettings[MyAPConfig.Drive] + appSettings[MyAPConfig.OutputDir]);
-                        log.Info(String.Format("New file {0} - {1}: ", i, file));
-                        i++;
-                    }
-                }
-                //Read files from work exept Processed files
-                iFiles = Directory.GetFiles(appSettings[MyAPConfig.Drive] + appSettings[MyAPConfig.WorkDir], appSettings[MyAPConfig.InputFileMask]).Where(n => !n.Contains("PreProcessOK")).ToArray();
-
-                if (iFiles.Any())
-                {
-                    //Read Regexp patterns
-                    string[] patterns = ConfigurationManager.AppSettings.AllKeys.Where(key => key.StartsWith("pattern")).
-                                                             Select(key => ConfigurationManager.AppSettings[key]).ToArray();
-                    int i = 0;
-                    log.Info(@"Processing files from: " + appSettings[MyAPConfig.Drive] + appSettings[MyAPConfig.WorkDir]);
-                    foreach (var file in iFiles)
-                    {
-                        if (File.Exists(file))
-                        {
-                            ProcessFile(file, patterns, appSettings[MyAPConfig.Drive], appSettings[MyAPConfig.WorkDir], appSettings[MyAPConfig.OutputDir], appSettings[MyAPConfig.OutputFileMask],
-                                appSettings[MyAPConfig.UnifiedMap], appSettings[MyAPConfig.InputFieldSeparator], appSettings[MyAPConfig.OutputFieldSeparator]);
-                            log.Info(String.Format("Processed file {0} - {1}: ", i, file));
-                            i++;
-                        }
-                    }
-                }
-                else
-                {
-                    log.Warn("No files for processing.");
-                }
-                //Console.ReadKey();
+                GetFromNetCollector(appSettings);
+                MoveProcessedFile(appSettings);
+                ProcessAllFiles(appSettings);
             }
         }
+        protected static void ProcessAllFiles(MyAPConfig configSettings)
+        {
+            //Read files from work exept Processed files
+            var iFiles = Directory.GetFiles(configSettings.Drive + configSettings.WorkDir, configSettings.InputFileMask).Where(n => !n.Contains("PreProcessOK")).ToArray();
+
+            if (iFiles.Any())
+            {
+                int i = 0;
+                log.Info(@"Processing files from: " + configSettings.Drive + configSettings.WorkDir);
+                foreach (var file in iFiles)
+                {
+                    if (File.Exists(file))
+                    {
+                        CreateOutputFile(file, configSettings);
+                        log.Info(string.Format("Processed file {0} - {1}: ", i, file));
+                        i++;
+                    }
+                }
+            }
+            else
+            {
+                log.Warn("No files for processing.");
+            }
+        }
+        /// <summary>
+        /// Move old processed file from work - emergency case only
+        /// </summary>
+        /// <param name="configSettings"></param>
+        protected static void MoveProcessedFile(MyAPConfig configSettings)
+        {
+            // Check if some processed file  exist if yes move it to final dir
+            var iFiles = Directory.GetFiles(configSettings.Drive + configSettings.WorkDir, configSettings.InputFileMask).Where(n => n.Contains("PreProcessOK")).ToArray();
+            if (iFiles.Any())
+            {
+                log.Info(@"Move old processed files from: " + configSettings.Drive + configSettings.WorkDir + " to " + configSettings.Drive + configSettings.OutputDir);
+                //Move file from NetCollector to PreProcessor Work directory
+                int i = 0;
+                foreach (var file in iFiles)
+                {
+                    ManageFile(Action.Move, file, configSettings.Drive + configSettings.OutputDir);
+                    log.Info(string.Format("New file {0} - {1}: ", i, file));
+                    i++;
+                }
+            }
+        }
+        /// <summary>
+        /// Get files from NetCollector and prepare for processing
+        /// </summary>
+        /// <param name="configSettings"></param>
+        protected static void GetFromNetCollector(MyAPConfig configSettings)
+        {
+            //Read files from NetCollector
+            string[] iFiles = Directory.GetFiles(configSettings.Drive + configSettings.InputDir, configSettings.InputFileMask);
+            if (iFiles.Any())
+            {
+                log.Info(@"Get new files from: " + configSettings.Drive + configSettings.InputDir);
+                //Move file from NetCollector to PreProcessor Work directory
+                int i = 0;
+                foreach (var file in iFiles)
+                {
+                    ManageFile(Action.Move, file, configSettings.Drive + configSettings.WorkDir);
+                    log.Info(String.Format("New file {0} - {1}: ", i, file));
+                    i++;
+                }
+            }
+        }
+
 
         /// <summary>
         /// Move, copy file to specified dir or delete file
@@ -167,11 +175,10 @@ namespace PreProcessor
         /// Open file check if file is match line with all regexp.
         /// If line match then line is formated and write to file PreProcessOK_MMDDYYYYHH24MISS.csv
         /// NotMatched lines are ignored 
-        /// /// <param name="iFile"></param>
-        /// /// <param name="regPatterns"></param>
+        /// <param name="iFile"></param>
         /// </summary>
 
-        protected static void ProcessFile(string iFile, string[] regPatterns, string drive, string workDir, string outputDir, string outputFileMask, string unifiedMap, string inputFieldSeparator, string outputFieldSeparator)
+        protected static void CreateOutputFile(string iFile, MyAPConfig configSettings)
         {
             //Open file
             StreamReader sr = File.OpenText(iFile);
@@ -183,21 +190,21 @@ namespace PreProcessor
             {
                 //extract file name
                 string fname = Path.GetFileName(iFile);
-                FileInfo oFile = new FileInfo(drive + workDir + outputFileMask + dateMask + "_" + fname);
+                FileInfo oFile = new FileInfo(configSettings.Drive + configSettings.WorkDir + configSettings.OutputFileMask + dateMask + "_" + fname);
                 StreamWriter sw = oFile.CreateText();
                 string line;
                 while ((line = sr.ReadLine()) != null)
                 {
-                    if (IsValidByReg(regPatterns, line))
+                    if (IsValidByReg(configSettings.Patterns, line))
                     {
-                        var unifiedLine = MakeLine(line, unifiedMap, inputFieldSeparator, outputFieldSeparator);
+                        var unifiedLine = MakeLine(line, configSettings.UnifiedMap, configSettings.InputFieldSeparator, configSettings.OutputFieldSeparator);
                         sw.WriteLine(unifiedLine);
                     }
                 }
                 sr.Close();
                 sw.Close();
                 ManageFile(Action.Delete, iFile, "");
-                ManageFile(Action.Move, oFile.FullName, drive + outputDir);
+                ManageFile(Action.Move, oFile.FullName, configSettings.Drive + configSettings.OutputDir);
             }
             catch (IOException e)
             {
