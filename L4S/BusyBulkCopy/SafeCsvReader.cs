@@ -14,7 +14,7 @@ namespace BusyBulkCopy
     {
         protected Microsoft.VisualBasic.FileIO.TextFieldParser theParser;
 
-        public SafeCsvReader(string aFileName, string aTable, string aDatabase, string aServer, string aSchema)
+        public SafeCsvReader(string aFileName, string aDelimiter, string aTable, string aDatabase, string aServer, string aSchema, string aUser, string aPass)
         {
 
             Encoding myEncoding;
@@ -28,11 +28,11 @@ namespace BusyBulkCopy
             theParser = new Microsoft.VisualBasic.FileIO.TextFieldParser(aFileName, myEncoding);
 
             theParser.TextFieldType = Microsoft.VisualBasic.FileIO.FieldType.Delimited;
-            theParser.SetDelimiters(",");
+            theParser.SetDelimiters(aDelimiter);
 
             theFileFields = theParser.ReadFields();
 
-            getTableFields(aTable, aDatabase, aServer, aSchema);
+            getTableFields(aTable, aDatabase, aServer, aSchema, aUser, aPass);
 
 
             foreach (Field f in theTableFields)

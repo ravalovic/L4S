@@ -18,6 +18,8 @@ namespace NetCollector
     //Public class for read parameters from .config file
     public class MyAPConfig
     {
+        // Create a logger for use in this class
+        private static readonly log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
         public string TransferMethod { get; set; }
         public string RemoteServer { get; set; }
         public string ShareName { get; set; }
@@ -36,30 +38,26 @@ namespace NetCollector
 
         public MyAPConfig()
         {
-            //    appParams = new Dictionary<string, string>();
-            //    foreach (var stringkey in ConfigurationManager.AppSettings.AllKeys)
-            //    {
-            //        appParams[stringkey] = ConfigurationManager.AppSettings[stringkey];
-            //    }
-            TransferMethod = ConfigurationManager.AppSettings["transferMethod"];
-            RemoteServer = ConfigurationManager.AppSettings["remoteServer"];
-            ShareName = ConfigurationManager.AppSettings["shareName"];
-            RemoteDir = ConfigurationManager.AppSettings["remoteDir"];
-            RemoteFileMask = ConfigurationManager.AppSettings["remoteFileMask"];
+            var configManager = new AppConfigManager();
+            TransferMethod = configManager.ReadSetting("transferMethod");
+            RemoteServer = configManager.ReadSetting("remoteServer");
+            ShareName = configManager.ReadSetting("shareName");
+            RemoteDir = configManager.ReadSetting("remoteDir");
+            RemoteFileMask = configManager.ReadSetting("remoteFileMask");
             bool allowRename;
-            bool.TryParse(ConfigurationManager.AppSettings["allowRenameRemote"], out allowRename);
+            bool.TryParse(configManager.ReadSetting("allowRenameRemote"), out allowRename);
             AllowRenameRemote = allowRename;
-            RenameRemoteExtension = ConfigurationManager.AppSettings["renameRemoteExtension"];
+            RenameRemoteExtension = configManager.ReadSetting("renameRemoteExtension");
             bool integraSecurity;
-            bool.TryParse(ConfigurationManager.AppSettings["integratedSecurity"], out integraSecurity);
+            bool.TryParse(configManager.ReadSetting("integratedSecurity"), out integraSecurity);
             IntegratedSecurity = integraSecurity;
-            Login = ConfigurationManager.AppSettings["login"];
-            Password = ConfigurationManager.AppSettings["password"];
-            Domain = ConfigurationManager.AppSettings["domain"];
-            Drive = ConfigurationManager.AppSettings["drive"];
-            OutputDir = ConfigurationManager.AppSettings["outputDir"];
-            WorkDir = ConfigurationManager.AppSettings["workDir"];
-            BackupDir = ConfigurationManager.AppSettings["backupDir"];
+            Login = configManager.ReadSetting("login");
+            Password = configManager.ReadSetting("password");
+            Domain = configManager.ReadSetting("domain");
+            Drive = configManager.ReadSetting("drive");
+            OutputDir = configManager.ReadSetting("outputDir");
+            WorkDir = configManager.ReadSetting("workDir");
+            BackupDir = configManager.ReadSetting("backupDir");
 
         }
 

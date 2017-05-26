@@ -30,7 +30,8 @@ namespace BusyBulkCopy
 
             switch (myField.DataType.ToLower())
             {
-                case "varchar":
+                case "varchar": 
+                case "nvarchar":
                 case "char":
                     if (myField.length < 0)
                     { return myValue; }
@@ -195,9 +196,10 @@ namespace BusyBulkCopy
             if (theErrorCount < 800) Console.WriteLine(aString);
         }
 
-        protected void getTableFields(string aTable, string aDatabase, string aServer, string aSchema)
+        protected void getTableFields(string aTable, string aDatabase, string aServer, string aSchema, string aUser, string aPass)
         {
-            SqlConnection myConnection = new SqlConnection(String.Format("Data Source={0};Initial Catalog={1};Integrated Security=True", aServer, aDatabase));
+            //SqlConnection myConnection = new SqlConnection(String.Format("Data Source={0};Initial Catalog={1};Integrated Security=True", aServer, aDatabase));
+            SqlConnection myConnection = new SqlConnection(string.Format("Data Source={0};Initial Catalog={1};User ID={2}; Password={3} ;Packet Size=32000;", aServer, aDatabase, aUser, aPass));
             myConnection.Open();
             SqlCommand myCmd = myConnection.CreateCommand();
             myCmd.CommandText = String.Format(@"

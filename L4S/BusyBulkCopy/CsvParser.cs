@@ -18,7 +18,7 @@ namespace BusyBulkCopy
             if (theReader.Peek() >= 0) { return true; }
             else { return false; }
         }
-        public string[] ReadFields()
+        public string[] ReadFields(string aDelimiter)
         {
             string myLine =
                 theReader.ReadLine();
@@ -59,7 +59,7 @@ namespace BusyBulkCopy
                 else
                 {
                     int start = i;
-                    while (i < l && myLine[i] != ',')
+                    while (i < l && myLine[i] != aDelimiter[0])
                         i++;
                     //add the value
                     myRow.Add(myLine.Substring(start, i - start));

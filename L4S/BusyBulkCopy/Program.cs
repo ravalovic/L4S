@@ -15,16 +15,30 @@ namespace BusyBulkCopy
             string myServer;
             string mySchema;
             string myOption;
+            string myUser;
+            string myPass;
+            string myDelimiter;
+            //aServer = @"bluez.bzde.net,11433";
+            //aDatabase = @"log4service";
+            //string aUser = @"sa";
+            //string aPass = @"MSsql2014.";
 
             if (args.Count() == 2)
             {
                 try
                 {
                     myFile = getConfig(args, 0);
-                    myTable = getConfig(args, 1, 3);
-                    myDatabase = getConfig(args, 1, 1);
-                    myServer = getConfig(args, 1, 0);
-                    mySchema = getConfig(args, 1, 2);
+                    //myTable = getConfig(args, 1, 3);
+                    //myDatabase = getConfig(args, 1, 1);
+                    //myServer = getConfig(args, 1, 0);
+                    //mySchema = getConfig(args, 1, 2);
+                    myServer = @"bluez.bzde.net,11433";
+                    myDatabase = @"log4service";
+                    myTable = @"Stage_TestTable";
+                    myUser = @"sa";
+                    myPass = @"MSsql2014.";
+                    mySchema = @"dbo";
+                    myDelimiter = @"|";
                     myOption = "safe";
                 }
                 catch (Exception ex)
@@ -40,11 +54,19 @@ usage: bcp_rfc4180.exe ""path\to\file.csv"" server.database.schema.table_to_inse
                 try
                 {
                     myFile = getConfig(args, 0);
-                    myTable = getConfig(args, 1, 3);
-                    myDatabase = getConfig(args, 1, 1);
-                    myServer = getConfig(args, 1, 0);
-                    mySchema = getConfig(args, 1, 2);
+                    //myTable = getConfig(args, 1, 3);
+                    //myDatabase = getConfig(args, 1, 1);
+                    //myServer = getConfig(args, 1, 0);
+                    //mySchema = getConfig(args, 1, 2);
                     myOption = getConfig(args, 2);
+                    myServer = @"bluez.bzde.net,11433";
+                    myDatabase = @"log4service";
+                    myTable = @"Stage_TestTable";
+                    myUser = @"sa";
+                    myPass = @"MSsql2014.";
+                    mySchema = @"dbo";
+                    myDelimiter = @"|";
+
                 }
                 catch (Exception ex)
                 {
@@ -67,13 +89,13 @@ usage: bcp_rfc4180.exe ""path\to\file.csv"" server.database.schema.table_to_inse
             {
                 if (myOption.ToLower() == "fast")
                 {
-                    FastCsvReader myReader = new FastCsvReader(myFile, myTable, myDatabase, myServer, mySchema);
-                    bulkCopy(myTable, myServer, myDatabase, mySchema, myReader);
+                    FastCsvReader myReader = new FastCsvReader(myFile, myDelimiter, myTable, myDatabase, myServer, mySchema, myUser, myPass);
+                    bulkCopy(myTable, myServer, myDatabase, mySchema, myReader, myUser, myPass);
                 }
                 else
                 {
-                    SafeCsvReader myReader = new SafeCsvReader(myFile, myTable, myDatabase, myServer, mySchema);
-                    bulkCopy(myTable, myServer, myDatabase, mySchema, myReader);
+                    SafeCsvReader myReader = new SafeCsvReader(myFile, myDelimiter, myTable, myDatabase, myServer, mySchema, myUser, myPass);
+                    bulkCopy(myTable, myServer, myDatabase, mySchema, myReader, myUser, myPass);
                 }
 
 
@@ -98,10 +120,12 @@ usage: bcp_rfc4180.exe ""path\to\file.csv"" server.database.schema.table_to_inse
             return args[anArgument].Split(".".ToCharArray()[0])[aPosition];
         }
 
-        private static void bulkCopy(string aTable, string aServer, string aDatabase, string aSchema, BaseCsvReader acsvReader)
+        private static void bulkCopy(string aTable, string aServer, string aDatabase, string aSchema, BaseCsvReader acsvReader, string aUser, string aPass)
         {
-
-            using (SqlConnection myConnection = new SqlConnection(String.Format("Data Source={0};Initial Catalog={1};Integrated Security=True;Packet Size=32000;", aServer, aDatabase)))
+           
+            using (SqlConnection myConnection =
+                //new SqlConnection(String.Format("Data Source={0};Initial Catalog={1};Integrated Security=True;Packet Size=32000;", aServer, aDatabase)))
+                new SqlConnection(string.Format("Data Source={0};Initial Catalog={1};User ID={2}; Password={3} ;Packet Size=32000;", aServer, aDatabase,aUser,aPass)))
             {
                 myConnection.Open();
                 using (SqlBulkCopy myBulkCopy = new SqlBulkCopy(myConnection))//, SqlBulkCopyOptions.TableLock, null))

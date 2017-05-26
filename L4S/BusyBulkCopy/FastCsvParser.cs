@@ -8,16 +8,16 @@ namespace BusyBulkCopy
     {
         protected CsvParser theParser;
 
-        public FastCsvReader(string aFileName, string aTable, string aDatabase, string aServer, string aSchema)
+        public FastCsvReader(string aFileName, string aDelimiter, string aTable, string aDatabase, string aServer, string aSchema, string aUser, string aPass)
         {
             //theParser = new Microsoft.VisualBasic.FileIO.TextFieldParser(aFileName);
             theParser = new CsvParser(aFileName);
             //theParser.TextFieldType = Microsoft.VisualBasic.FileIO.FieldType.Delimited;
-            //theParser.SetDelimiters(",");
+            //theParser.SetDelimiters(aDelimiter);
 
-            theFileFields = theParser.ReadFields();
+            theFileFields = theParser.ReadFields(aDelimiter);
 
-            getTableFields(aTable, aDatabase, aServer, aSchema);
+            getTableFields(aTable, aDatabase, aServer, aSchema, aUser, aPass);
 
 
             foreach (Field f in theTableFields)
@@ -38,14 +38,14 @@ namespace BusyBulkCopy
 
         }
 
-        public override bool Read()
+        public bool Read(string aDelimiter)
         {
             //while (!theParser.EndOfData)
             while (theParser.Read())
             {
                 try
                 {
-                    theValues = theParser.ReadFields();
+                    theValues = theParser.ReadFields(aDelimiter);
                 }
                 catch (Exception ex)
                 {

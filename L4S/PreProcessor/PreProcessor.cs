@@ -15,10 +15,14 @@ namespace PreProcessor
 {
     public class MyAPConfig
     {
-        /// <summary>
+        // Create a logger for use in this class
+        private static readonly log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+
+        /// <summary>ConfigurationManager.AppSettings
         /// Initialization variable from App.config
         /// </summary>
         public string Drive { get; set; }
+
         public string InputDir { get; set; }
         public string OutputDir { get; set; }
         public string WorkDir { get; set; }
@@ -28,21 +32,31 @@ namespace PreProcessor
         public string InputFieldSeparator { get; set; }
         public string OutputFieldSeparator { get; set; }
         public string[] Patterns { get; set; }
+        public string HeaderLine { get; set; }
+        public long BatchID { get; set; }
 
         public MyAPConfig()
         {
-            Drive = ConfigurationManager.AppSettings["drive"];
-            InputDir = ConfigurationManager.AppSettings["inputDir"];
-            OutputDir = ConfigurationManager.AppSettings["outputDir"];
-            WorkDir = ConfigurationManager.AppSettings["workDir"];
-            OutputFileMask = ConfigurationManager.AppSettings["outputFileMask"];
-            InputFileMask = ConfigurationManager.AppSettings["inputFileMask"];
-            UnifiedMap = ConfigurationManager.AppSettings["unifiedMap"];
-            InputFieldSeparator = ConfigurationManager.AppSettings["inputFieldSeparator"];
-            OutputFieldSeparator = ConfigurationManager.AppSettings["outputFieldSeparator"];
-            Patterns = ConfigurationManager.AppSettings.AllKeys.Where(key => key.StartsWith("pattern")).Select(key => ConfigurationManager.AppSettings[key]).ToArray();
+            var configManager = new AppConfigManager();
+            Drive = configManager.ReadSetting("drive");
+            InputDir = configManager.ReadSetting("inputDir");
+            OutputDir = configManager.ReadSetting("outputDir");
+            WorkDir = configManager.ReadSetting("workDir");
+            OutputFileMask = configManager.ReadSetting("outputFileMask");
+            InputFileMask = configManager.ReadSetting("inputFileMask");
+            UnifiedMap = configManager.ReadSetting("unifiedMap");
+            InputFieldSeparator = configManager.ReadSetting("inputFieldSeparator");
+            OutputFieldSeparator = configManager.ReadSetting("outputFieldSeparator");
+            Patterns = ConfigurationManager.AppSettings.AllKeys.Where(key => key.StartsWith("pattern")).Select(configManager.ReadSetting).ToArray();
+            //Patterns = ConfigurationManager.AppSettings.AllKeys.Where(key => key.StartsWith("pattern")).Select(key => ConfigurationManager.AppSettings[key]).ToArray();
+            HeaderLine = configManager.ReadSetting("headerLine");
+            // Get last value of Batch ID => increase => write back to config
+            long bid;
+            long.TryParse(configManager.ReadSetting("batchID"), out bid);
+            BatchID = bid;
+            bid++;
+            configManager.AddUpdateAppSettings("batchID", bid.ToString());
         }
-
     }
 
     public class PreProcessor
@@ -192,12 +206,14 @@ namespace PreProcessor
                 string fname = Path.GetFileName(iFile);
                 FileInfo oFile = new FileInfo(configSettings.Drive + configSettings.WorkDir + configSettings.OutputFileMask + dateMask + "_" + fname);
                 StreamWriter sw = oFile.CreateText();
+                //Start with header line
+                sw.WriteLine(configSettings.HeaderLine);
                 string line;
                 while ((line = sr.ReadLine()) != null)
                 {
                     if (IsValidByReg(configSettings.Patterns, line))
                     {
-                        var unifiedLine = MakeLine(line, configSettings.UnifiedMap, configSettings.InputFieldSeparator, configSettings.OutputFieldSeparator);
+                        var unifiedLine = MakeLine(configSettings.BatchID, oFile.Name, line, configSettings.UnifiedMap, configSettings.InputFieldSeparator, configSettings.OutputFieldSeparator);
                         sw.WriteLine(unifiedLine);
                     }
                 }
@@ -216,12 +232,14 @@ namespace PreProcessor
         /// <summary>
         /// Create new unified line, mapping input to output stage table format
         /// </summary>
-        /// <param name="line"></param>
+        /// <param name="batchID"></param>
+        /// <param name="fileName"></param>
+       /// <param name="line"></param>
         /// <param name="unifiedMap"></param>
         /// <param name="inputFieldSeparator"></param>
         /// <param name="outputFieldSeparator"></param>
         /// <returns></returns>
-        protected static string MakeLine(string line, string unifiedMap, string inputFieldSeparator, string outputFieldSeparator)
+        protected static string MakeLine(long batchID, string fileName, string line, string unifiedMap, string inputFieldSeparator, string outputFieldSeparator)
         {
             char separator = ',';
             string[] mapper = unifiedMap.Split(separator);
@@ -240,7 +258,7 @@ namespace PreProcessor
                 }
                 i++;
             }
-            return string.Join(outputFieldSeparator, newLineArray);
+            return   batchID + outputFieldSeparator + fileName + outputFieldSeparator + string.Join(outputFieldSeparator, newLineArray);
         }
 
         /// <summary>
