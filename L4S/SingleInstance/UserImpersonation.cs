@@ -2,11 +2,12 @@
 using System.Runtime.InteropServices; 
 using System.Security.Principal; 
 
-/// <summary> 
-/// Object to change the user authticated 
-/// </summary> 
-namespace CommonHelper { 
-public class UserImpersonation : IDisposable 
+
+namespace CommonHelper {
+    /// <summary> 
+    /// Object to change the user authticated 
+    /// </summary> 
+    public class UserImpersonation : IDisposable 
     { 
         /// <summary> 
         /// Logon method (check athetification) from advapi32.dll 
