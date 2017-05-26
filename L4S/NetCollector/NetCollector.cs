@@ -18,8 +18,7 @@ namespace NetCollector
     //Public class for read parameters from .config file
     public class MyAPConfig
     {
-        // Create a logger for use in this class
-        private static readonly log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+       
         public string TransferMethod { get; set; }
         public string RemoteServer { get; set; }
         public string ShareName { get; set; }
