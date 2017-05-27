@@ -2,11 +2,20 @@ using System;
 using System.Data.SqlClient;
 using System.Linq;
 
+// Configure log4net using the .config file
+[assembly: log4net.Config.XmlConfigurator(Watch = true)]
+// This will cause log4net to look for a configuration file
 
-namespace BusyBulkCopy
+// Based on code from https://busybulkcopy.codeplex.com/
+
+namespace SQLBulkCopy
 {
+    
     class Program
     {
+        // Create a logger for use in this class
+        private static readonly log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+
         static int Main(string[] args)
         {
             string myFile;
@@ -43,7 +52,7 @@ namespace BusyBulkCopy
                 }
                 catch (Exception ex)
                 {
-                    Console.WriteLine(@"invalid arguments
+                    log.Error(@"invalid arguments
 usage: bcp_rfc4180.exe ""path\to\file.csv"" server.database.schema.table_to_insert_to fast_or_safe
 " + ex.Message);
                     return -1;
@@ -70,7 +79,7 @@ usage: bcp_rfc4180.exe ""path\to\file.csv"" server.database.schema.table_to_inse
                 }
                 catch (Exception ex)
                 {
-                    Console.WriteLine(@"invalid arguments
+                    log.Error(@"invalid arguments
 usage: bcp_rfc4180.exe ""path\to\file.csv"" server.database.schema.table_to_insert_to fast_or_safe
 " + ex.Message);
                     return -1;
@@ -79,7 +88,7 @@ usage: bcp_rfc4180.exe ""path\to\file.csv"" server.database.schema.table_to_inse
             }
             else
             {
-                Console.WriteLine(@"usage: BusyBulkCopy.exe ""path\to\file.csv"" server.database.schema.table_to_insert_to [fast_or_safe]");
+                log.Info(@"usage: BusyBulkCopy.exe ""path\to\file.csv"" server.database.schema.table_to_insert_to [fast_or_safe]");
                 return -1;
             }
             System.Diagnostics.Stopwatch myStopWatch = System.Diagnostics.Stopwatch.StartNew();
@@ -100,7 +109,7 @@ usage: bcp_rfc4180.exe ""path\to\file.csv"" server.database.schema.table_to_inse
 
 
                 myStopWatch.Stop();
-                Console.WriteLine("imported in " + myStopWatch.ElapsedMilliseconds / 1000);
+                log.Info("imported in " + myStopWatch.ElapsedMilliseconds / 1000);
                 return 0;
             }
 

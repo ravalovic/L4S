@@ -4,18 +4,18 @@ using System.Linq;
 using System.Data;
 using System.Data.SqlClient;
 using System.Globalization;
+using log4net;
 
-namespace BusyBulkCopy
+namespace SQLBulkCopy
 {
     class BaseCsvReader : IDataReader
     {
-
+        private static readonly log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
         protected string[] theFileFields;
         protected string[] theValues;
         protected int rownum;
         protected Field[] theTableFields;
-        protected int theErrorCount;
-
+        
         public virtual Object GetValue(int i)
         {
 
@@ -37,7 +37,7 @@ namespace BusyBulkCopy
                     { return myValue; }
                     else if (myValue.Length > myField.length)
                     {
-                        log(String.Format("WARNING: truncated data row {0}, field {1}, data type {2}({4}), data {3} ", rownum, myField.Name, myField.DataType, myValue, myField.length));
+                        log.Warn(String.Format("Truncated data row {0}, field {1}, data type {2}({4}), data {3} ", rownum, myField.Name, myField.DataType, myValue, myField.length));
                         return myValue.Substring(0, (int)myField.length);
                     }
                     else
@@ -53,7 +53,7 @@ namespace BusyBulkCopy
                     { return double.IsNaN(dddd16) ? myField.GetNull() : Math.Round(dddd16); }
                     else
                     {
-                        log(String.Format("WARNING: skipped invalid data in row {0}, field {1}, data type {2}, data {3} ", rownum, myField.Name, myField.DataType, myValue));
+                        log.Warn(String.Format("Skipped invalid data in row {0}, field {1}, data type {2}, data {3} ", rownum, myField.Name, myField.DataType, myValue));
                         return myField.GetNull();
                     }
                 case "int":
@@ -68,13 +68,13 @@ namespace BusyBulkCopy
                             return myInt;
                         else
                         {
-                            log(String.Format("WARNING: skipped invalid data in row {0}, field {1}, data type {2}, data {3} ", rownum, myField.Name, myField.DataType, myValue));
+                            log.Warn(String.Format("Skipped invalid data in row {0}, field {1}, data type {2}, data {3} ", rownum, myField.Name, myField.DataType, myValue));
                             return myField.GetNull();
                         }
                     }
                     else
                     {
-                        log(String.Format("WARNING: skipped invalid data in row {0}, field {1}, data type {2}, data {3} ", rownum, myField.Name, myField.DataType, myValue));
+                        log.Warn(String.Format("Skipped invalid data in row {0}, field {1}, data type {2}, data {3} ", rownum, myField.Name, myField.DataType, myValue));
                         return myField.GetNull();
                     }
                 case "bigint":
@@ -89,7 +89,7 @@ namespace BusyBulkCopy
                             return myInt64;
                         else
                         {
-                            log(String.Format("WARNING: skipped invalid data in row {0}, field {1}, data type {2}, data {3} ", rownum, myField.Name, myField.DataType, myValue));
+                            log.Warn(String.Format("Skipped invalid data in row {0}, field {1}, data type {2}, data {3} ", rownum, myField.Name, myField.DataType, myValue));
                             return myField.GetNull();
                         }
                     }
@@ -97,7 +97,7 @@ namespace BusyBulkCopy
                     { return double.IsNaN(dddd) ? myField.GetNull() : Math.Round(dddd); }
                     else
                     {
-                        log(String.Format("WARNING: skipped invalid data in row {0}, field {1}, data type {2}, data {3} ", rownum, myField.Name, myField.DataType, myValue));
+                        log.Warn(String.Format("Skipped invalid data in row {0}, field {1}, data type {2}, data {3} ", rownum, myField.Name, myField.DataType, myValue));
                         return myField.GetNull();
                     }
                 case "numeric":
@@ -106,7 +106,7 @@ namespace BusyBulkCopy
                         System.Data.SqlTypes.SqlDecimal d = Convert.ToDecimal(myValue);
                         if (d.Precision - d.Scale > myField.precision - myField.scale) // bigger before the comma
                         {
-                            log(String.Format("WARNING: skipped invalid data in row {0}, field {1}, data type {2}, data {3} ", rownum, myField.Name, myField.DataType, myValue));
+                            log.Warn(String.Format("Skipped invalid data in row {0}, field {1}, data type {2}, data {3} ", rownum, myField.Name, myField.DataType, myValue));
                             return myField.GetNull();
                         }
                         else if (d.Scale > myField.scale) // bigger after the comma
@@ -114,7 +114,7 @@ namespace BusyBulkCopy
                             // round it
                             if (Math.Abs(Math.Round(Convert.ToDecimal(myValue), myField.scale) - (decimal)d) != 0)
                             {
-                                log(String.Format("WARNING: rounded invalid data in row {0}, field {1}, data type {2}, data {3} ", rownum, myField.Name, myField.DataType, myValue));
+                                log.Warn(String.Format("Rounded invalid data in row {0}, field {1}, data type {2}, data {3} ", rownum, myField.Name, myField.DataType, myValue));
                             }
                             return Math.Round(Convert.ToDecimal(myValue), myField.scale);
                         }
@@ -125,14 +125,14 @@ namespace BusyBulkCopy
                             { return dd; }
                             else
                             {
-                                log(String.Format("WARNING: skipped invalid data in row {0}, field {1}, data type {2}, data {3} ", rownum, myField.Name, myField.DataType, myValue));
+                                log.Warn(String.Format("Skipped invalid data in row {0}, field {1}, data type {2}, data {3} ", rownum, myField.Name, myField.DataType, myValue));
                                 return myField.GetNull();
                             }
                         }
                     }
                     catch (Exception)
                     {
-                        log(String.Format("WARNING: skipped invalid data in row {0}, field {1}, data type {2}, data {3} ", rownum, myField.Name, myField.DataType, myValue));
+                        log.Warn(String.Format("Skipped invalid data in row {0}, field {1}, data type {2}, data {3} ", rownum, myField.Name, myField.DataType, myValue));
                         return myField.GetNull();
                     }
                 case "bit":
@@ -150,7 +150,7 @@ namespace BusyBulkCopy
                         case "f":
                             return false;
                         default:
-                            log(String.Format("WARNING: skipped invalid data in row {0}, field {1}, data type {2}, data {3} ", rownum, myField.Name, myField.DataType, myValue));
+                            log.Warn(String.Format("Skipped invalid data in row {0}, field {1}, data type {2}, data {3} ", rownum, myField.Name, myField.DataType, myValue));
                             return myField.GetNull();
                     }
                 case "float":
@@ -163,7 +163,7 @@ namespace BusyBulkCopy
                     }
                     else
                     {
-                        log(String.Format("WARNING: skipped invalid data in row {0}, field {1}, data type {2}, data {3} ", rownum, myField.Name, myField.DataType, myValue));
+                        log.Warn(String.Format("Skipped invalid data in row {0}, field {1}, data type {2}, data {3} ", rownum, myField.Name, myField.DataType, myValue));
                         return myField.GetNull();
                     }
                 case "datetime":
@@ -173,11 +173,11 @@ namespace BusyBulkCopy
                     { return myDt; }
                     else
                     {
-                        log(String.Format("WARNING: skipped invalid data in row {0}, field {1}, data type {2}, data {3} ", rownum, myField.Name, myField.DataType, myValue));
+                        log.Warn(String.Format("Skipped invalid data in row {0}, field {1}, data type {2}, data {3} ", rownum, myField.Name, myField.DataType, myValue));
                         return myField.GetNull();
                     }
                 default:
-                    log(String.Format("WARNING: skipped invalid data in row {0}, field {1}, data type {2}, data {3} ", rownum, myField.Name, myField.DataType, myValue));
+                    log.Warn(String.Format("Skipped invalid data in row {0}, field {1}, data type {2}, data {3} ", rownum, myField.Name, myField.DataType, myValue));
                     return myField.GetNull();
             }
         }
@@ -185,16 +185,7 @@ namespace BusyBulkCopy
         {
             return false;
         }
-        //public BaseCsvReader()
-        //{
-
-        //}
-
-        protected void log(string aString)
-        {
-            theErrorCount += 1;
-            if (theErrorCount < 800) Console.WriteLine(aString);
-        }
+        
 
         protected void getTableFields(string aTable, string aDatabase, string aServer, string aSchema, string aUser, string aPass)
         {
@@ -203,16 +194,16 @@ namespace BusyBulkCopy
             myConnection.Open();
             SqlCommand myCmd = myConnection.CreateCommand();
             myCmd.CommandText = String.Format(@"
-SELECT COLUMN_NAME,
-       DATA_TYPE,
-       isnull(c.CHARACTER_MAXIMUM_LENGTH,0),
-       c.IS_NULLABLE,
-       convert(int,isnull(NUMERIC_PRECISION,0)),
-       isnull(NUMERIC_SCALE,0)
-FROM   INFORMATION_SCHEMA.COLUMNS c
-WHERE  TABLE_NAME = '{0}'
-       AND TABLE_SCHEMA = '{1}'
-ORDER  BY ORDINAL_POSITION", aTable, aSchema);
+                                                SELECT COLUMN_NAME,
+                                                       DATA_TYPE,
+                                                       isnull(c.CHARACTER_MAXIMUM_LENGTH,0),
+                                                       c.IS_NULLABLE,
+                                                       convert(int,isnull(NUMERIC_PRECISION,0)),
+                                                       isnull(NUMERIC_SCALE,0)
+                                                FROM   INFORMATION_SCHEMA.COLUMNS c
+                                                WHERE  TABLE_NAME = '{0}'
+                                                       AND TABLE_SCHEMA = '{1}'
+                                                ORDER  BY ORDINAL_POSITION", aTable, aSchema);
             SqlDataReader myReader = myCmd.ExecuteReader();
 
 

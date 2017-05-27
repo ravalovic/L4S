@@ -34,6 +34,7 @@ namespace NetCollector
         public string OutputDir { get; set; }
         public string WorkDir { get; set; }
         public string BackupDir { get; set; }
+        public string DateMask { get; set; }
 
         public MyAPConfig()
         {
@@ -57,7 +58,10 @@ namespace NetCollector
             OutputDir = configManager.ReadSetting("outputDir");
             WorkDir = configManager.ReadSetting("workDir");
             BackupDir = configManager.ReadSetting("backupDir");
-
+            // set up datetime mask
+            int whichDay;
+            int.TryParse(configManager.ReadSetting("whichDay"), out whichDay);
+            DateMask= DateTime.Now.AddDays(whichDay).ToString(configManager.ReadSetting("dateMask"));
         }
 
     }
@@ -185,7 +189,7 @@ namespace NetCollector
         {
             bool result = false;
             string dateMask = DateTime.Now.ToString("ddMMyyyyHHmmss");
-
+           
             using (Ftp ftp = new Ftp())
             {
                 ftp.Connect(settingsConfig.RemoteServer);  // or ConnectSSL for SSL 
@@ -246,7 +250,7 @@ namespace NetCollector
         /// <param name="settingsConfig"></param>
         protected static void MoveToFinal(MyAPConfig settingsConfig)
         {
-            //throw new NotImplementedException("NotImplemented yet");
+            
             var iFiles = Directory.GetFiles(settingsConfig.Drive + settingsConfig.WorkDir, settingsConfig.RemoteFileMask);
             if (iFiles.Any())
             {

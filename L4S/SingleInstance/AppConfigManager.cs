@@ -14,7 +14,7 @@ namespace CommonHelper
             try
             {
                 var appSettings = ConfigurationManager.AppSettings;
-                result = appSettings[key] ?? "Not Found";
+                result = appSettings[key] ?? string.Empty;
 
             }
             catch (ConfigurationErrorsException)
@@ -54,10 +54,6 @@ namespace CommonHelper
         {
 
             var appParams = new Dictionary<string, string>();
-            //    foreach (var stringkey in ConfigurationManager.AppSettings.AllKeys)
-            //    {
-            //        appParams[stringkey] = ConfigurationManager.AppSettings[stringkey];
-            //    }
             try
             {
                 var appSettings = ConfigurationManager.AppSettings;

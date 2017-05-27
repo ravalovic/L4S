@@ -19,7 +19,6 @@ namespace PreProcessor
         /// Initialization variable from App.config
         /// </summary>
         public string Drive { get; set; }
-
         public string InputDir { get; set; }
         public string OutputDir { get; set; }
         public string WorkDir { get; set; }
@@ -53,6 +52,7 @@ namespace PreProcessor
             BatchID = bid;
             bid++;
             configManager.AddUpdateAppSettings("batchID", bid.ToString());
+            
         }
     }
 

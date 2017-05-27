@@ -1,7 +1,7 @@
 using System;
 
 
-namespace BusyBulkCopy
+namespace SQLBulkCopy
 {
     class Field
     {

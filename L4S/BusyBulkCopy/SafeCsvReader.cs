@@ -5,13 +5,14 @@ using System.Text;
 using System.Data;
 using System.Data.SqlClient;
 using System.IO;
+using log4net;
 
-
-namespace BusyBulkCopy
+namespace SQLBulkCopy
 {
 
     class SafeCsvReader : BaseCsvReader
     {
+        private static readonly log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
         protected Microsoft.VisualBasic.FileIO.TextFieldParser theParser;
 
         public SafeCsvReader(string aFileName, string aDelimiter, string aTable, string aDatabase, string aServer, string aSchema, string aUser, string aPass)
@@ -60,7 +61,7 @@ namespace BusyBulkCopy
                 }
                 catch (Exception ex)
                 {
-                    log("WARNING: skipped line " + ex.Message);
+                   log.Warn("Skipped line " + ex.Message);
                 }
                 rownum++;
 

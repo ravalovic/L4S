@@ -3,7 +3,7 @@ using System.Diagnostics;
 using System.IO;
 
 
-namespace BusyBulkCopy
+namespace SQLBulkCopy
 {
     class CsvParser
     {
@@ -22,7 +22,7 @@ namespace BusyBulkCopy
         {
             string myLine =
                 theReader.ReadLine();
-            Debug.Assert(myLine != null, "myLine != null");
+            //Debug.Assert(myLine != null, "myLine != null");
             int l = myLine.Length;
             List<string> myRow = new List<string>();
             int i = 0;

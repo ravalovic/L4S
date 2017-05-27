@@ -5,7 +5,7 @@ VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PreProcessor", "PreProcessor\PreProcessor.csproj", "{91B033D7-F5BA-4BF0-807F-4E0AF59F5E4B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BusyBulkCopy", "BusyBulkCopy\BusyBulkCopy.csproj", "{47D63BF4-C908-4EA5-9DAE-099D424E56B8}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SQLBulkCopy", "BusyBulkCopy\SQLBulkCopy.csproj", "{47D63BF4-C908-4EA5-9DAE-099D424E56B8}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetCollector", "NetCollector\NetCollector.csproj", "{550F0AA0-46CD-4B15-BC9E-6A3DF71FC550}"
 EndProject
