@@ -21,13 +21,13 @@ namespace SQLBulkCopy
 
             getTableFields(aTable, aDatabase, aServer, aSchema, aUser, aPass);
 
-
+            // check header line with table
             foreach (Field f in theTableFields)
             {
                 int i = 0;
                 foreach (string ff in theFileFields)
                 {
-                    if (ff == f.Name)
+                    if (ff.ToLower() == f.Name.ToLower())
                     {
                         f.FileFieldPosition = i;
                     }

@@ -5,12 +5,14 @@ using System.Data;
 using System.Data.SqlClient;
 using System.Globalization;
 using log4net;
+using System.Text.RegularExpressions;
 
 namespace SQLBulkCopy
 {
     class BaseCsvReader : IDataReader
     {
         private static readonly log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+
         protected string[] theFileFields;
         protected string[] theValues;
         protected int rownum;
@@ -206,7 +208,6 @@ namespace SQLBulkCopy
                                                 ORDER  BY ORDINAL_POSITION", aTable, aSchema);
             SqlDataReader myReader = myCmd.ExecuteReader();
 
-
             List<Field> myTableFields = new List<Field>();
             while (myReader.Read())
             {
@@ -233,17 +234,12 @@ namespace SQLBulkCopy
 
         protected string removeDoubleSpaces(string aStringWithALotOfSpaces)
         {
-            string myNewString = aStringWithALotOfSpaces;
-            while (myNewString.Contains("  "))
-            {
-                myNewString = myNewString.Replace("  ", " ");
-            }
-            return myNewString;
+            return Regex.Replace(aStringWithALotOfSpaces, @"\s+", " ");
         }
 
         private bool theDataReaderOpen = true;
 
-        #region crap
+       #region crap
         // this is crap to make the compiler happy
         public int Depth
         {

@@ -2,6 +2,7 @@ using System;
 using System.Data.SqlClient;
 using System.Linq;
 
+
 // Configure log4net using the .config file
 [assembly: log4net.Config.XmlConfigurator(Watch = true)]
 // This will cause log4net to look for a configuration file
@@ -10,7 +11,52 @@ using System.Linq;
 
 namespace SQLBulkCopy
 {
-    
+    //class Options
+    //{
+    //    [Option('F', "Filename", Required = true,
+    //      HelpText = @"Path\FileName")]
+    //    public string FileName { get; set; }
+
+    //    [Option('S', "Server", Required = true,
+    //      HelpText = "Server name if not default port use: serverName, Port")]
+    //    public string ServerName { get; set; }
+
+    //    [Option('T', "Table name", Required = true,
+    //      HelpText = "Format: database.schema.table")]
+    //    public string TableName { get; set; }
+
+    //    [Option('I', "Integrated security", DefaultValue = true,
+    //     HelpText = "If we use Integrated security for MSSQL")]
+    //    public bool Integrated { get; set; }
+
+    //    [Option('U', "User",
+    //      HelpText = "User for db connect")]
+    //    public string User { get; set; }
+
+    //    [Option('P', "Password",
+    //      HelpText = "Password ")]
+    //    public string Password { get; set; }
+
+    //    [Option('S', "Save parser mode", DefaultValue = true,
+    //      HelpText = "SAVE parser mode (more checkin and setup) if flase then FAST parser mode use ")]
+    //    public bool Mode { get; set; }
+
+    //    [Option('D', "Delimiter", DefaultValue = ",",
+    //      HelpText = "Field delimiter, you can set it only in safe mode ")]
+    //    public string Delimiter { get; set; }
+
+
+    //    [ParserState]
+    //    public IParserState LastParserState { get; set; }
+
+    //    [HelpOption]
+    //    public string GetUsage()
+    //    {
+    //        return HelpText.AutoBuild(this, (HelpText current) => HelpText.DefaultParsingErrorsHandler(this, current));
+    //    }
+
+    //}
+
     class Program
     {
         // Create a logger for use in this class
@@ -18,6 +64,21 @@ namespace SQLBulkCopy
 
         static int Main(string[] args)
         {
+
+
+            //var options = new Options();
+            //if (Parser.Default.ParseArguments(args, options))
+            //{
+            //    while (options != null)
+            //    {
+            //        Console.WriteLine("Filename: {0}", options.InputFile);
+            //    }
+            //    // Values are available here
+            //    //if (options.Verbose) Console.WriteLine("Filename: {0}", options.InputFile);
+            // Microsoft.Test.CommandLineParser
+            //}
+
+
             string myFile;
             string myTable;
             string myDatabase;
@@ -52,9 +113,7 @@ namespace SQLBulkCopy
                 }
                 catch (Exception ex)
                 {
-                    log.Error(@"invalid arguments
-usage: bcp_rfc4180.exe ""path\to\file.csv"" server.database.schema.table_to_insert_to fast_or_safe
-" + ex.Message);
+                    log.Error(@"invalid arguments usage: bcp_rfc4180.exe ""path\to\file.csv"" server.database.schema.table_to_insert_to fast_or_safe" + ex.Message);
                     return -1;
                 }
             }
@@ -79,9 +138,7 @@ usage: bcp_rfc4180.exe ""path\to\file.csv"" server.database.schema.table_to_inse
                 }
                 catch (Exception ex)
                 {
-                    log.Error(@"invalid arguments
-usage: bcp_rfc4180.exe ""path\to\file.csv"" server.database.schema.table_to_insert_to fast_or_safe
-" + ex.Message);
+                    log.Error(@"invalid arguments usage: bcp_rfc4180.exe ""path\to\file.csv"" server.database.schema.table_to_insert_to fast_or_safe" + ex.Message);
                     return -1;
 
                 }
@@ -91,6 +148,7 @@ usage: bcp_rfc4180.exe ""path\to\file.csv"" server.database.schema.table_to_inse
                 log.Info(@"usage: BusyBulkCopy.exe ""path\to\file.csv"" server.database.schema.table_to_insert_to [fast_or_safe]");
                 return -1;
             }
+
             System.Diagnostics.Stopwatch myStopWatch = System.Diagnostics.Stopwatch.StartNew();
             myStopWatch.Start();
 
@@ -115,10 +173,10 @@ usage: bcp_rfc4180.exe ""path\to\file.csv"" server.database.schema.table_to_inse
 
             catch (Exception ex)
             {
-                Console.WriteLine(ex.Message);
+                log.Error(ex.Message);
                 return -1;
             }
-        }
+        } //main
 
         private static string getConfig(string[] args, int anArgument)
         {

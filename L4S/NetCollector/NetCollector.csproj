@@ -63,7 +63,7 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\SingleInstance\CommonHelper.csproj">
+    <ProjectReference Include="..\CommonHelper\CommonHelper.csproj">
       <Project>{874a4f6a-1fd6-4cc0-ae9d-360b314fa8a1}</Project>
       <Name>CommonHelper</Name>
     </ProjectReference>
