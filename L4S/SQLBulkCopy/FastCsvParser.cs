@@ -1,7 +1,4 @@
 using System;
-using log4net;
-
-
 
 namespace SQLBulkCopy
 {
@@ -10,16 +7,16 @@ namespace SQLBulkCopy
         private static readonly log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
         protected CsvParser theParser;
 
-        public FastCsvReader(string aFileName, string aDelimiter, string aTable, string aDatabase, string aServer, string aSchema, string aUser, string aPass)
+        public FastCsvReader(string aFileName, MyAPConfig configSettings)
         {
             //theParser = new Microsoft.VisualBasic.FileIO.TextFieldParser(aFileName);
             theParser = new CsvParser(aFileName);
             //theParser.TextFieldType = Microsoft.VisualBasic.FileIO.FieldType.Delimited;
             //theParser.SetDelimiters(aDelimiter);
 
-            theFileFields = theParser.ReadFields(aDelimiter);
+            theFileFields = theParser.ReadFields(configSettings.InputFieldSepartor);
 
-            getTableFields(aTable, aDatabase, aServer, aSchema, aUser, aPass);
+            getTableFields(configSettings);
 
             // check header line with table
             foreach (Field f in theTableFields)

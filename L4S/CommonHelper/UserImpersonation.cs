@@ -34,7 +34,7 @@ namespace CommonHelper {
      /// <param name="handle"></param> 
      /// <returns></returns> 
      [DllImport("kernel32.dll", CharSet = CharSet.Auto)] 
-     public static extern bool CloseHandle(IntPtr handle); 
+     protected static extern bool CloseHandle(IntPtr handle); 
  
 
      private WindowsImpersonationContext _windowsImpersonationContext; 

@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Configuration;
 using System.IO;
 using System.IO.Compression;
 using System.Linq;
@@ -23,14 +22,13 @@ namespace NetCollector
         public string RemoteServer { get; set; }
         public string ShareName { get; set; }
         public string RemoteDir { get; set; }
-        public string RemoteFileMask { get; set; }
+        public string RemoteFileName { get; set; }
         public bool AllowRenameRemote { get; set; }
         public string RenameRemoteExtension { get; set; }
         public bool IntegratedSecurity { get; set; }
         public string Login { get; set; }
         public string Password { get; set; }
         public string Domain { get; set; }
-        public string Drive { get; set; }
         public string OutputDir { get; set; }
         public string WorkDir { get; set; }
         public string BackupDir { get; set; }
@@ -39,29 +37,53 @@ namespace NetCollector
         public MyAPConfig()
         {
             var configManager = new AppConfigManager();
+            //remote params
             TransferMethod = configManager.ReadSetting("transferMethod");
             RemoteServer = configManager.ReadSetting("remoteServer");
             ShareName = configManager.ReadSetting("shareName");
             RemoteDir = configManager.ReadSetting("remoteDir");
-            RemoteFileMask = configManager.ReadSetting("remoteFileMask");
-            bool allowRename;
-            bool.TryParse(configManager.ReadSetting("allowRenameRemote"), out allowRename);
-            AllowRenameRemote = allowRename;
+            RemoteFileName = configManager.ReadSetting("remoteFileName");
+            bool allowRenameRemote;
+            bool.TryParse(configManager.ReadSetting("allowRenameRemote"), out allowRenameRemote);
+            AllowRenameRemote = allowRenameRemote;
             RenameRemoteExtension = configManager.ReadSetting("renameRemoteExtension");
-            bool integraSecurity;
-            bool.TryParse(configManager.ReadSetting("integratedSecurity"), out integraSecurity);
-            IntegratedSecurity = integraSecurity;
+            // local autorization params
+            bool integratedSecurity;
+            bool.TryParse(configManager.ReadSetting("integratedSecurity"), out integratedSecurity);
+            IntegratedSecurity = integratedSecurity;
             Login = configManager.ReadSetting("login");
             Password = configManager.ReadSetting("password");
             Domain = configManager.ReadSetting("domain");
-            Drive = configManager.ReadSetting("drive");
+
+            // local file system params
             OutputDir = configManager.ReadSetting("outputDir");
             WorkDir = configManager.ReadSetting("workDir");
             BackupDir = configManager.ReadSetting("backupDir");
+            
             // set up datetime mask
             int whichDay;
             int.TryParse(configManager.ReadSetting("whichDay"), out whichDay);
             DateMask= DateTime.Now.AddDays(whichDay).ToString(configManager.ReadSetting("dateMask"));
+         }
+        public bool CheckParams(object MyConfig, out string missingParams)
+        {
+            bool isInComplete = false;
+            missingParams = string.Empty;
+            string mp = string.Empty;
+            foreach (var propertyInfo in MyConfig.GetType().GetProperties())
+            {
+                string value = (string)propertyInfo.GetValue(MyConfig).ToString();
+                if (String.IsNullOrEmpty(value))
+                {
+                    mp = mp + " " + propertyInfo.GetValue(MyConfig).ToString();
+                    isInComplete = true;
+                }
+            }
+            if (isInComplete)
+            {
+                missingParams = @"Missing paremeters in config file: " + mp;
+            }
+            return isInComplete;
         }
 
     }
@@ -88,13 +110,25 @@ namespace NetCollector
         /// <summary>
         /// Initialization variable from App.config
         /// </summary>
-
+        private static void CreateIfMissing(MyAPConfig appApConfig)
+        {
+           Directory.CreateDirectory(appApConfig.BackupDir);
+           Directory.CreateDirectory(appApConfig.WorkDir);
+           Directory.CreateDirectory(appApConfig.OutputDir);
+        }
         static void Main()
         {
 
             using (new SingleGlobalInstance(1000)) //1000ms timeout on global lock
             {
+                string missing;
                 MyAPConfig appSettings = new MyAPConfig();
+                if (appSettings.CheckParams(appSettings, out missing))
+                {
+                    log.Error(missing);
+                    Environment.Exit(0);
+                }
+                CreateIfMissing(appSettings);
 
                 log.InfoFormat("Running as {0}", WindowsIdentity.GetCurrent().Name);
                 log.InfoFormat("Transfer method:  {0}", appSettings.TransferMethod);
@@ -154,7 +188,7 @@ namespace NetCollector
             string dateMask = DateTime.Now.ToString("ddMMyyyyHHmmss");
             //Read files from NetCollector
             string sourceDir = string.Format(@"\\" + settingsConfig.RemoteServer + @"\" + settingsConfig.ShareName + settingsConfig.RemoteDir);
-            string[] iFiles = Directory.GetFiles(sourceDir, settingsConfig.RemoteFileMask);
+            string[] iFiles = Directory.GetFiles(sourceDir, settingsConfig.RemoteFileName);
             if (iFiles.Any())
             {
                 log.Info(@"Get new files from: " + sourceDir);
@@ -162,7 +196,7 @@ namespace NetCollector
                 int i = 0;
                 foreach (var file in iFiles)
                 {
-                    ManageFile(Action.Copy, file, settingsConfig.Drive + settingsConfig.WorkDir, string.Empty);
+                    ManageFile(Action.Copy, file, settingsConfig.WorkDir, string.Empty);
                     log.Info(String.Format("New file {0} - {1} ", i, file));
                     if (settingsConfig.AllowRenameRemote)
                     {
@@ -175,7 +209,7 @@ namespace NetCollector
             }
             else
             {
-                log.Warn("No files for collection from source: " + sourceDir + settingsConfig.RemoteFileMask);
+                log.Warn("No files for collection from source: " + sourceDir + settingsConfig.RemoteFileName);
             }
             return result;
         }
@@ -196,13 +230,13 @@ namespace NetCollector
                 ftp.Login(settingsConfig.Login, settingsConfig.Password);
                 var options = new RemoteSearchOptions();
                 ftp.ChangeFolder(settingsConfig.RemoteDir);
-                options.UseWildcardMatch(settingsConfig.RemoteDir, settingsConfig.RemoteFileMask, true);
+                options.UseWildcardMatch(settingsConfig.RemoteDir, settingsConfig.RemoteFileName, true);
                 var iFilesRemote = ftp.Search(options);
                 if (iFilesRemote.Any())
                 {
                     foreach (var file in iFilesRemote)
                     {
-                        ftp.Download(settingsConfig.RemoteDir + file.FtpItem.Name, settingsConfig.Drive + settingsConfig.WorkDir + file.FtpItem.Name);
+                        ftp.Download(settingsConfig.RemoteDir + file.FtpItem.Name, settingsConfig.WorkDir + file.FtpItem.Name);
                         if (settingsConfig.AllowRenameRemote)
                         {
                             ftp.Rename(settingsConfig.RemoteDir + file.FtpItem.Name, settingsConfig.RemoteDir + Path.GetFileName(file.FtpItem.Name) + @"_" + dateMask + settingsConfig.RenameRemoteExtension);
@@ -212,10 +246,9 @@ namespace NetCollector
                 }
                 else
                 {
-                    log.Warn("No files for collection from source: " + settingsConfig.RemoteServer + settingsConfig.RemoteDir + settingsConfig.RemoteFileMask);
+                    log.Warn("No files for collection from source: " + settingsConfig.RemoteServer + settingsConfig.RemoteDir + settingsConfig.RemoteFileName);
                 }
                 ftp.Close();
-
             }
             return result;
 
@@ -227,21 +260,21 @@ namespace NetCollector
         protected static void BackupNewFiles(MyAPConfig settingsConfig)
         {
             //throw new NotImplementedException("NotImplemented yet");
-            var iFiles = Directory.GetFiles(settingsConfig.Drive + settingsConfig.WorkDir, settingsConfig.RemoteFileMask);
+            var iFiles = Directory.GetFiles(settingsConfig.WorkDir, settingsConfig.RemoteFileName);
             if (iFiles.Any())
             {
                 int i = 0;
                 foreach (var file in iFiles)
                 {
                     //Backup file from workDir to backup directory
-                    ManageFile(Action.Zip, file, settingsConfig.Drive + settingsConfig.BackupDir, string.Empty);
+                    ManageFile(Action.Zip, file, settingsConfig.BackupDir, string.Empty);
                     log.Info(String.Format("Backup file {0} - {1} ", i, file));
                     i++;
                 }
             }
             else
             {
-                log.Warn("No files for backup from: " + settingsConfig.Drive + settingsConfig.BackupDir);
+                log.Warn("No files for backup from: " + settingsConfig.BackupDir);
             }
         }
         /// <summary>
@@ -251,21 +284,21 @@ namespace NetCollector
         protected static void MoveToFinal(MyAPConfig settingsConfig)
         {
             
-            var iFiles = Directory.GetFiles(settingsConfig.Drive + settingsConfig.WorkDir, settingsConfig.RemoteFileMask);
+            var iFiles = Directory.GetFiles(settingsConfig.WorkDir, settingsConfig.RemoteFileName);
             if (iFiles.Any())
             {
                 int i = 0;
                 foreach (var file in iFiles)
                 {
                     //Backup file from workDir to backup directory
-                    ManageFile(Action.Move, file, settingsConfig.Drive + settingsConfig.OutputDir, string.Empty);
+                    ManageFile(Action.Move, file, settingsConfig.OutputDir, string.Empty);
                     log.Info(String.Format("Move file {0}: {1} to {2}", i, file, settingsConfig.OutputDir));
                     i++;
                 }
             }
             else
             {
-                log.Warn("No files for finallly move  from: " + settingsConfig.Drive + settingsConfig.WorkDir);
+                log.Warn("No files for finallly move  from: " + settingsConfig.WorkDir);
             }
         }
 

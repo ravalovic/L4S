@@ -4,7 +4,6 @@ using System.Linq;
 using System.Data;
 using System.Data.SqlClient;
 using System.Globalization;
-using log4net;
 using System.Text.RegularExpressions;
 
 namespace SQLBulkCopy
@@ -189,13 +188,18 @@ namespace SQLBulkCopy
         }
         
 
-        protected void getTableFields(string aTable, string aDatabase, string aServer, string aSchema, string aUser, string aPass)
+        protected void getTableFields(MyAPConfig configSettings)
         {
-            //SqlConnection myConnection = new SqlConnection(String.Format("Data Source={0};Initial Catalog={1};Integrated Security=True", aServer, aDatabase));
-            SqlConnection myConnection = new SqlConnection(string.Format("Data Source={0};Initial Catalog={1};User ID={2}; Password={3} ;Packet Size=32000;", aServer, aDatabase, aUser, aPass));
-            myConnection.Open();
-            SqlCommand myCmd = myConnection.CreateCommand();
-            myCmd.CommandText = String.Format(@"
+            using (SqlConnection myConnection =
+                configSettings.IntegratedSecurity
+                    ? new SqlConnection(String.Format("Data Source={0};Initial Catalog={1};Integrated Security=True;Packet Size=32000;", configSettings.Server,
+                        configSettings.Database))
+                    : new SqlConnection(string.Format("Data Source={0};Initial Catalog={1};User ID={2}; Password={3} ;Packet Size=32000;", configSettings.Server,
+                        configSettings.Database, configSettings.DBUser, configSettings.DBPassword)))
+            {
+                myConnection.Open();
+                SqlCommand myCmd = myConnection.CreateCommand();
+                myCmd.CommandText = string.Format(@"
                                                 SELECT COLUMN_NAME,
                                                        DATA_TYPE,
                                                        isnull(c.CHARACTER_MAXIMUM_LENGTH,0),
@@ -205,27 +209,27 @@ namespace SQLBulkCopy
                                                 FROM   INFORMATION_SCHEMA.COLUMNS c
                                                 WHERE  TABLE_NAME = '{0}'
                                                        AND TABLE_SCHEMA = '{1}'
-                                                ORDER  BY ORDINAL_POSITION", aTable, aSchema);
-            SqlDataReader myReader = myCmd.ExecuteReader();
+                                                ORDER  BY ORDINAL_POSITION", configSettings.Table, configSettings.Schema);
+                SqlDataReader myReader = myCmd.ExecuteReader();
 
-            List<Field> myTableFields = new List<Field>();
-            while (myReader.Read())
-            {
-                myTableFields.Add(new Field()
+                List<Field> myTableFields = new List<Field>();
+                while (myReader.Read())
                 {
-                    Name = myReader.GetString(0),
-                    DataType = myReader.GetString(1),
-                    length = myReader.GetInt32(2),
-                    nullable = myReader.GetString(3) == "YES",
-                    precision = myReader.GetInt32(4),
-                    scale = myReader.GetInt32(5),
-                    FileFieldPosition = -1
-                });
+                    myTableFields.Add(new Field()
+                    {
+                        Name = myReader.GetString(0),
+                        DataType = myReader.GetString(1),
+                        length = myReader.GetInt32(2),
+                        nullable = myReader.GetString(3) == "YES",
+                        precision = myReader.GetInt32(4),
+                        scale = myReader.GetInt32(5),
+                        FileFieldPosition = -1
+                    });
+                }
+                myReader.Close();
+            
+             theTableFields = myTableFields.ToArray();
             }
-            myReader.Close();
-
-            theTableFields = myTableFields.ToArray();
-
         }
 
 

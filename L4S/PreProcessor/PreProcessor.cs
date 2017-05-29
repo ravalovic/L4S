@@ -18,41 +18,60 @@ namespace PreProcessor
         /// <summary>ConfigurationManager.AppSettings
         /// Initialization variable from App.config
         /// </summary>
-        public string Drive { get; set; }
         public string InputDir { get; set; }
         public string OutputDir { get; set; }
         public string WorkDir { get; set; }
         public string OutputFileMask { get; set; }
-        public string InputFileMask { get; set; }
+        public string InputFileName { get; set; }
         public string UnifiedMap { get; set; }
         public string InputFieldSeparator { get; set; }
         public string OutputFieldSeparator { get; set; }
         public string[] Patterns { get; set; }
         public string HeaderLine { get; set; }
         public long BatchID { get; set; }
-
+        
         public MyAPConfig()
         {
             var configManager = new AppConfigManager();
-            Drive = configManager.ReadSetting("drive");
             InputDir = configManager.ReadSetting("inputDir");
             OutputDir = configManager.ReadSetting("outputDir");
             WorkDir = configManager.ReadSetting("workDir");
             OutputFileMask = configManager.ReadSetting("outputFileMask");
-            InputFileMask = configManager.ReadSetting("inputFileMask");
+            InputFileName = configManager.ReadSetting("inputFileName");
             UnifiedMap = configManager.ReadSetting("unifiedMap");
             InputFieldSeparator = configManager.ReadSetting("inputFieldSeparator");
             OutputFieldSeparator = configManager.ReadSetting("outputFieldSeparator");
             Patterns = ConfigurationManager.AppSettings.AllKeys.Where(key => key.StartsWith("pattern")).Select(configManager.ReadSetting).ToArray();
             //Patterns = ConfigurationManager.AppSettings.AllKeys.Where(key => key.StartsWith("pattern")).Select(key => ConfigurationManager.AppSettings[key]).ToArray();
             HeaderLine = configManager.ReadSetting("headerLine");
-            // Get last value of Batch ID => increase => write back to config
-            long bid;
-            long.TryParse(configManager.ReadSetting("batchID"), out bid);
-            BatchID = bid;
-            bid++;
-            configManager.AddUpdateAppSettings("batchID", bid.ToString());
             
+            // Get last value of Batch ID => increase => write back to config
+            long batchID;
+            long.TryParse(configManager.ReadSetting("batchID"), out batchID);
+            BatchID = batchID;
+            batchID++;
+            configManager.AddUpdateAppSettings("batchID", batchID.ToString());
+           }
+
+        public bool CheckParams(object MyConfig, out string missingParams)
+        {
+            bool isInComplete = false;
+            missingParams = string.Empty;
+            string mp = string.Empty;
+            foreach (var propertyInfo in MyConfig.GetType().GetProperties())
+            {
+                string value = (string)propertyInfo.GetValue(MyConfig).ToString();
+                if (String.IsNullOrEmpty(value))
+                {
+                    mp = mp + " " + propertyInfo.GetValue(MyConfig).ToString();
+                    isInComplete = true;
+                }
+            }
+            if (isInComplete)
+            {
+                missingParams = @"Missing paremeters in config file: " + mp;
+            }
+            return isInComplete;
         }
     }
 
@@ -68,12 +87,24 @@ namespace PreProcessor
 
         // Create a logger for use in this class
         private static readonly log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
-
+        private static void CreateIfMissing(MyAPConfig appApConfig)
+        {
+            Directory.CreateDirectory(appApConfig.InputDir);
+            Directory.CreateDirectory(appApConfig.WorkDir);
+            Directory.CreateDirectory(appApConfig.OutputDir);
+        }
         static void Main()
         {
             using (new SingleGlobalInstance(1000)) //1000ms timeout on global lock
             {
+                string missing;
                 var appSettings = new MyAPConfig();
+                if (appSettings.CheckParams(appSettings, out missing))
+                {
+                    log.Error(missing);
+                    Environment.Exit(0);
+                }
+                CreateIfMissing(appSettings);
                 log.InfoFormat("Running as {0}", WindowsIdentity.GetCurrent().Name);
                 GetFromNetCollector(appSettings);
                 MoveProcessedFile(appSettings);
@@ -83,12 +114,12 @@ namespace PreProcessor
         protected static void ProcessAllFiles(MyAPConfig configSettings)
         {
             //Read files from work exept Processed files
-            var iFiles = Directory.GetFiles(configSettings.Drive + configSettings.WorkDir, configSettings.InputFileMask).Where(n => !n.Contains("PreProcessOK")).ToArray();
+            var iFiles = Directory.GetFiles(configSettings.WorkDir, configSettings.InputFileName).Where(n => !n.Contains("PreProcessOK")).ToArray();
 
             if (iFiles.Any())
             {
                 int i = 0;
-                log.Info(@"Processing files from: " + configSettings.Drive + configSettings.WorkDir);
+                log.Info(@"Processing files from: " + configSettings.WorkDir);
                 foreach (var file in iFiles)
                 {
                     if (File.Exists(file))
@@ -111,15 +142,15 @@ namespace PreProcessor
         protected static void MoveProcessedFile(MyAPConfig configSettings)
         {
             // Check if some processed file  exist if yes move it to final dir
-            var iFiles = Directory.GetFiles(configSettings.Drive + configSettings.WorkDir, configSettings.InputFileMask).Where(n => n.Contains("PreProcessOK")).ToArray();
+            var iFiles = Directory.GetFiles(configSettings.WorkDir, configSettings.InputFileName).Where(n => n.Contains("PreProcessOK")).ToArray();
             if (iFiles.Any())
             {
-                log.Info(@"Move old processed files from: " + configSettings.Drive + configSettings.WorkDir + " to " + configSettings.Drive + configSettings.OutputDir);
+                log.Info(@"Move old processed files from: " + configSettings.WorkDir + " to " + configSettings.OutputDir);
                 //Move file from NetCollector to PreProcessor Work directory
                 int i = 0;
                 foreach (var file in iFiles)
                 {
-                    ManageFile(Action.Move, file, configSettings.Drive + configSettings.OutputDir);
+                    ManageFile(Action.Move, file, configSettings.OutputDir);
                     log.Info(string.Format("New file {0} - {1}: ", i, file));
                     i++;
                 }
@@ -132,15 +163,15 @@ namespace PreProcessor
         protected static void GetFromNetCollector(MyAPConfig configSettings)
         {
             //Read files from NetCollector
-            string[] iFiles = Directory.GetFiles(configSettings.Drive + configSettings.InputDir, configSettings.InputFileMask);
+            string[] iFiles = Directory.GetFiles(configSettings.InputDir, configSettings.InputFileName);
             if (iFiles.Any())
             {
-                log.Info(@"Get new files from: " + configSettings.Drive + configSettings.InputDir);
+                log.Info(@"Get new files from: " + configSettings.InputDir);
                 //Move file from NetCollector to PreProcessor Work directory
                 int i = 0;
                 foreach (var file in iFiles)
                 {
-                    ManageFile(Action.Move, file, configSettings.Drive + configSettings.WorkDir);
+                    ManageFile(Action.Move, file, configSettings.WorkDir);
                     log.Info(String.Format("New file {0} - {1}: ", i, file));
                     i++;
                 }
@@ -201,7 +232,7 @@ namespace PreProcessor
             {
                 //extract file name
                 string fname = Path.GetFileName(iFile);
-                FileInfo oFile = new FileInfo(configSettings.Drive + configSettings.WorkDir + configSettings.OutputFileMask + dateMask + "_" + fname);
+                FileInfo oFile = new FileInfo(configSettings.WorkDir + configSettings.OutputFileMask + dateMask + "_" + fname);
                 StreamWriter sw = oFile.CreateText();
                 //Start with header line
                 sw.WriteLine(configSettings.HeaderLine);
@@ -217,7 +248,7 @@ namespace PreProcessor
                 sr.Close();
                 sw.Close();
                 ManageFile(Action.Delete, iFile, "");
-                ManageFile(Action.Move, oFile.FullName, configSettings.Drive + configSettings.OutputDir);
+                ManageFile(Action.Move, oFile.FullName, configSettings.OutputDir);
             }
             catch (IOException e)
             {
