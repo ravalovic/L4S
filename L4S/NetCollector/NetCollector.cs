@@ -1,6 +1,5 @@
 ﻿using System;
 using System.IO;
-using System.IO.Compression;
 using System.Linq;
 using System.Security.Principal;
 using CommonHelper;
@@ -72,10 +71,10 @@ namespace NetCollector
             string mp = string.Empty;
             foreach (var propertyInfo in MyConfig.GetType().GetProperties())
             {
-                string value = (string)propertyInfo.GetValue(MyConfig).ToString();
+                string value = propertyInfo.GetValue(MyConfig).ToString();
                 if (String.IsNullOrEmpty(value))
                 {
-                    mp = mp + " " + propertyInfo.GetValue(MyConfig).ToString();
+                    mp = mp + " " + propertyInfo.Name;
                     isInComplete = true;
                 }
             }
@@ -96,14 +95,7 @@ namespace NetCollector
             HTTP,
             SSH
         }
-        protected enum Action
-        {
-            Copy,
-            Move,
-            Delete,
-            Zip
-        }
-
+       
         // Create a logger for use in this class
         private static readonly log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
@@ -196,11 +188,11 @@ namespace NetCollector
                 int i = 0;
                 foreach (var file in iFiles)
                 {
-                    ManageFile(Action.Copy, file, settingsConfig.WorkDir, string.Empty);
+                    Helper.ManageFile(Helper.Action.Copy, file, settingsConfig.WorkDir);
                     log.Info(String.Format("New file {0} - {1} ", i, file));
                     if (settingsConfig.AllowRenameRemote)
                     {
-                        ManageFile(Action.Move, file, sourceDir, @"_" + dateMask + settingsConfig.RenameRemoteExtension);
+                        Helper.ManageFile(Helper.Action.Move, file, sourceDir, @"_" + dateMask + settingsConfig.RenameRemoteExtension);
                         log.Info(String.Format("Renaming to file {0} - {1} ", i, file + settingsConfig.RenameRemoteExtension));
                     }
                     i++;
@@ -267,7 +259,7 @@ namespace NetCollector
                 foreach (var file in iFiles)
                 {
                     //Backup file from workDir to backup directory
-                    ManageFile(Action.Zip, file, settingsConfig.BackupDir, string.Empty);
+                    Helper.ManageFile(Helper.Action.Zip, file, settingsConfig.BackupDir);
                     log.Info(String.Format("Backup file {0} - {1} ", i, file));
                     i++;
                 }
@@ -291,7 +283,7 @@ namespace NetCollector
                 foreach (var file in iFiles)
                 {
                     //Backup file from workDir to backup directory
-                    ManageFile(Action.Move, file, settingsConfig.OutputDir, string.Empty);
+                    Helper.ManageFile(Helper.Action.Move, file, settingsConfig.OutputDir);
                     log.Info(String.Format("Move file {0}: {1} to {2}", i, file, settingsConfig.OutputDir));
                     i++;
                 }
@@ -301,40 +293,6 @@ namespace NetCollector
                 log.Warn("No files for finallly move  from: " + settingsConfig.WorkDir);
             }
         }
-
-        /// <summary>
-        /// Move, copy, delete, zip  file to specified dir
-        /// </summary>
-        /// <param name="action"></param>
-        /// <param name="file"></param>
-        /// <param name="destDir"></param>
-        /// /// <param name="destExt"></param>
-        protected static void ManageFile(Action action, string file, string destDir, string destExt)
-        {
-            string dateMask = DateTime.Now.ToString("ddMMyyyyHHmmss");
-            // if destination exist no action performed
-            if ((File.Exists(file) && !File.Exists(destDir + Path.GetFileName(file) + destExt)) || action == Action.Delete)
-            {
-                switch (action)
-                {
-                    case Action.Move:
-                        File.Move(file, destDir + Path.GetFileName(file) + destExt);
-                        break;
-                    case Action.Copy:
-                        File.Copy(file, destDir + Path.GetFileName(file), true);
-                        break;
-                    case Action.Delete:
-                        File.Delete(file);
-                        break;
-                    case Action.Zip:
-                        var zipName = destDir + Path.GetFileName(file) + "_" + dateMask + ".zip";
-                        using (ZipArchive arch = ZipFile.Open(zipName, ZipArchiveMode.Create))
-                        {
-                            arch.CreateEntryFromFile(file, Path.GetFileName(file), CompressionLevel.Optimal);
-                        }
-                        break;
-                }
-            }
-        }
+     
     }
 }

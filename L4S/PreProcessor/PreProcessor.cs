@@ -1,9 +1,7 @@
 ﻿using System;
 using System.Configuration;
 using System.IO;
-using System.IO.Compression;
 using System.Linq;
-using System.Text.RegularExpressions;
 using System.Security.Principal;
 using CommonHelper;
 
@@ -48,10 +46,13 @@ namespace PreProcessor
             // Get last value of Batch ID => increase => write back to config
             long batchID;
             long.TryParse(configManager.ReadSetting("batchID"), out batchID);
-            BatchID = batchID;
-            batchID++;
+            }
+
+        public void UpdateBatchID(long batchID)
+        {
+            var configManager = new AppConfigManager();
             configManager.AddUpdateAppSettings("batchID", batchID.ToString());
-           }
+        }
 
         public bool CheckParams(object MyConfig, out string missingParams)
         {
@@ -60,10 +61,10 @@ namespace PreProcessor
             string mp = string.Empty;
             foreach (var propertyInfo in MyConfig.GetType().GetProperties())
             {
-                string value = (string)propertyInfo.GetValue(MyConfig).ToString();
+                string value = propertyInfo.GetValue(MyConfig).ToString();
                 if (String.IsNullOrEmpty(value))
                 {
-                    mp = mp + " " + propertyInfo.GetValue(MyConfig).ToString();
+                    mp = mp + " " + propertyInfo.Name;
                     isInComplete = true;
                 }
             }
@@ -77,15 +78,7 @@ namespace PreProcessor
 
     public class PreProcessor
     {
-        protected enum Action
-        {
-            Copy,
-            Move,
-            Delete,
-            Zip
-        };
-
-        // Create a logger for use in this class
+       // Create a logger for use in this class
         private static readonly log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
         private static void CreateIfMissing(MyAPConfig appApConfig)
         {
@@ -150,7 +143,7 @@ namespace PreProcessor
                 int i = 0;
                 foreach (var file in iFiles)
                 {
-                    ManageFile(Action.Move, file, configSettings.OutputDir);
+                    Helper.ManageFile(Helper.Action.Move, file, configSettings.OutputDir);
                     log.Info(string.Format("New file {0} - {1}: ", i, file));
                     i++;
                 }
@@ -171,48 +164,14 @@ namespace PreProcessor
                 int i = 0;
                 foreach (var file in iFiles)
                 {
-                    ManageFile(Action.Move, file, configSettings.WorkDir);
+                    Helper.ManageFile(Helper.Action.Move, file, configSettings.WorkDir);
                     log.Info(String.Format("New file {0} - {1}: ", i, file));
                     i++;
                 }
             }
         }
 
-
-        /// <summary>
-        /// Move, copy file to specified dir or delete file
-        /// </summary>
-        ///  <param name="action"></param>
-        /// <param name="file"></param>
-        /// <param name="destDir"></param>
-        protected static void ManageFile(Action action, string file, string destDir)
-        {
-            string dateMask = DateTime.Now.ToString("ddMMyyyyHHmmss");
-            if ((File.Exists(file) && !File.Exists(destDir + Path.GetFileName(file))) || action == Action.Delete)
-            {
-                switch (action)
-                {
-                    case Action.Move:
-                        File.Move(file, destDir + Path.GetFileName(file));
-                        break;
-                    case Action.Copy:
-                        File.Copy(file, destDir + Path.GetFileName(file));
-                        break;
-                    case Action.Delete:
-                        File.Delete(file);
-                        break;
-                    case Action.Zip:
-                        var zipName = destDir + Path.GetFileName(file) + "_" + dateMask + ".zip";
-                        using (ZipArchive arch = ZipFile.Open(zipName, ZipArchiveMode.Create))
-                        {
-                            arch.CreateEntryFromFile(file, Path.GetFileName(file), CompressionLevel.Optimal);
-                        }
-                        break;
-                }
-
-            }
-        }
-
+        
         /// <summary>
         /// Open file check if file is match line with all regexp.
         /// If line match then line is formated and write to file PreProcessOK_MMDDYYYYHH24MISS.csv
@@ -232,6 +191,7 @@ namespace PreProcessor
             {
                 //extract file name
                 string fname = Path.GetFileName(iFile);
+                string oriCheckSum = Helper.CalculateCheckSum(iFile);
                 FileInfo oFile = new FileInfo(configSettings.WorkDir + configSettings.OutputFileMask + dateMask + "_" + fname);
                 StreamWriter sw = oFile.CreateText();
                 //Start with header line
@@ -239,16 +199,17 @@ namespace PreProcessor
                 string line;
                 while ((line = sr.ReadLine()) != null)
                 {
-                    if (IsValidByReg(configSettings.Patterns, line))
+                    if (Helper.IsValidByReg(configSettings.Patterns, line))
                     {
-                        var unifiedLine = MakeLine(configSettings.BatchID, oFile.Name, line, configSettings.UnifiedMap, configSettings.InputFieldSeparator, configSettings.OutputFieldSeparator);
+                        var unifiedLine = MakeLine(configSettings.BatchID, iFile, oriCheckSum, oFile.Name, line, configSettings.UnifiedMap, configSettings.InputFieldSeparator, configSettings.OutputFieldSeparator);
                         sw.WriteLine(unifiedLine);
                     }
                 }
                 sr.Close();
                 sw.Close();
-                ManageFile(Action.Delete, iFile, "");
-                ManageFile(Action.Move, oFile.FullName, configSettings.OutputDir);
+                Helper.ManageFile(Helper.Action.Delete, iFile);
+                Helper.ManageFile(Helper.Action.Move, oFile.FullName, configSettings.OutputDir);
+                configSettings.UpdateBatchID(configSettings.BatchID++);
             }
             catch (IOException e)
             {
@@ -261,13 +222,15 @@ namespace PreProcessor
         /// Create new unified line, mapping input to output stage table format
         /// </summary>
         /// <param name="batchID"></param>
+        /// <param name="checkSum"></param>
         /// <param name="fileName"></param>
-       /// <param name="line"></param>
+        /// <param name="line"></param>
         /// <param name="unifiedMap"></param>
         /// <param name="inputFieldSeparator"></param>
         /// <param name="outputFieldSeparator"></param>
+        /// <param name="origFileName"></param>
         /// <returns></returns>
-        protected static string MakeLine(long batchID, string fileName, string line, string unifiedMap, string inputFieldSeparator, string outputFieldSeparator)
+        protected static string MakeLine(long batchID, string origFileName, string checkSum, string fileName, string line, string unifiedMap, string inputFieldSeparator, string outputFieldSeparator)
         {
             char separator = ',';
             string[] mapper = unifiedMap.Split(separator);
@@ -286,25 +249,11 @@ namespace PreProcessor
                 }
                 i++;
             }
-            return   batchID + outputFieldSeparator + fileName + outputFieldSeparator + string.Join(outputFieldSeparator, newLineArray);
-        }
-
-        /// <summary>
-        /// Check if line is match by pattern
-        /// </summary>
-        /// <param name="patterns"></param>
-        /// <param name="line"></param>
-        /// <returns></returns>
-        protected static bool IsValidByReg(string[] patterns, string line)
-        {
-            bool result = false;
-            foreach (var p in patterns)
-            {
-                var regex = new Regex(p);
-                result = regex.IsMatch(line);
-                if (result) break;
-            }
-            return result;
+            return   batchID + outputFieldSeparator + 
+                     origFileName + outputFieldSeparator + 
+                     checkSum + outputFieldSeparator +
+                     fileName + outputFieldSeparator +
+                     string.Join(outputFieldSeparator, newLineArray);
         }
     }
 }

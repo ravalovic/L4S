@@ -1,31 +1,35 @@
 USE [log4service]
 GO
 
-/****** Object:  Table [dbo].[Stage_TestTable]    Script Date: 27.05.2017 20:06:53 ******/
+/****** Object:  Table [dbo].[Stage_LogImport]    Script Date: 30. 5. 2017 12:03:21 ******/
+DROP TABLE [dbo].[Stage_LogImport]
+GO
+
+/****** Object:  Table [dbo].[Stage_LogImport]    Script Date: 30. 5. 2017 12:03:21 ******/
 SET ANSI_NULLS ON
 GO
 
 SET QUOTED_IDENTIFIER ON
 GO
-if OBJECT_ID('log4service..Stage_LogImport') is not null
-begin 
- drop table log4service..Stage_LogImport
-end;
 
 CREATE TABLE [dbo].[Stage_LogImport](
-	batchID bigint Not null,
-	[fileName] [nvarchar](50) not null ,
-	[col1] [nvarchar](50) NULL,
-	[col2] [nvarchar](50) NULL,
-	[col3] [nvarchar](50) NULL,
-	[col4] [nvarchar](50) NULL,
-	[col5] [nvarchar](50) NULL,
-	[col6] [nvarchar](50) NULL,
-	[col7] [nvarchar](50) NULL,
-	[col8] [nvarchar](50) NULL,
-	[col9] [nvarchar](50) NULL,
-	[insertDateTime] DateTime not null default GETDATE(),
+	[batchID] [bigint] NOT NULL,
+	[originalFileName] [varchar](100) NOT NULL,
+	[originalCheckSum] [varchar](100) NOT NULL,
+	[preProcessFileName] [varchar](100) NOT NULL,
+	[col1] [varchar](10) NULL,
+	[col2] [varchar](50) NULL,
+	[col3] [varchar](50) NULL,
+	[col4] [varchar](50) NULL,
+	[col5] [varchar](50) NULL,
+	[col6] [varchar](50) NULL,
+	[col7] [varchar](50) NULL,
+	[col8] [varchar](50) NULL,
+	[col9] [varchar](50) NULL,
 ) ON [PRIMARY]
 GO
 
-
+grant select, insert on Stage_LogImport to loader
+go
+grant execute on sp_stage_fileInfo to loader
+go

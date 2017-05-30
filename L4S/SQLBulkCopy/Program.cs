@@ -3,7 +3,8 @@ using System.Data.SqlClient;
 using System.Linq;
 using CommonHelper;
 using System.IO;
-using System.Security.Cryptography;
+using System.Security.Principal;
+using System.Data;
 
 
 // Configure log4net using the .config file
@@ -21,6 +22,7 @@ namespace SQLBulkCopy
         /// </summary>
         public string InputDir { get; set; }
         public string OutputDir { get; set; }
+        public string WorkDir { get; set; }
         public string InputFileName { get; set; }
         public string InputFieldSepartor { get; set; }
         public string Server { get; set; }
@@ -41,6 +43,7 @@ namespace SQLBulkCopy
             var configManager = new AppConfigManager();
             InputDir = configManager.ReadSetting("inputDir");
             OutputDir = configManager.ReadSetting("outputDir");
+            WorkDir = configManager.ReadSetting("workDir");
             InputFileName = configManager.ReadSetting("inputFileName");
             InputFieldSepartor = configManager.ReadSetting("inputFieldSeparator");
             Server = configManager.ReadSetting("server");
@@ -48,7 +51,7 @@ namespace SQLBulkCopy
             int serverPort;
             int.TryParse(configManager.ReadSetting("serverPort"), out serverPort);
             if (serverPort != 0 && serverPort != 1433) { Server = Server + "," + serverPort; }
-  
+
             Database = configManager.ReadSetting("database");
             Schema = configManager.ReadSetting("schema");
             Table = configManager.ReadSetting("table");
@@ -79,7 +82,7 @@ namespace SQLBulkCopy
                 string value = propertyInfo.GetValue(MyConfig).ToString();
                 if (String.IsNullOrEmpty(value))
                 {
-                    mp = mp + " " + propertyInfo.GetValue(MyConfig).ToString();
+                    mp = mp + " " + propertyInfo.Name;
                     isInComplete = true;
                 }
             }
@@ -111,78 +114,102 @@ namespace SQLBulkCopy
                     Environment.Exit(0);
                 }
                 CreateIfMissing(appSettings);
+                log.InfoFormat("Running as {0}", WindowsIdentity.GetCurrent().Name);
+                MoveProcessedFile(appSettings);
                 System.Diagnostics.Stopwatch myStopWatch = System.Diagnostics.Stopwatch.StartNew();
 
-                var iFiles = Directory.GetFiles(appSettings.InputDir, appSettings.InputFileName);
-                if (iFiles.Any()) {
+                var iFiles = Directory.GetFiles(appSettings.WorkDir, appSettings.InputFileName);
+                if (iFiles.Any())
+                {
                     foreach (var iFile in iFiles)
                     {
-                try
-                {
-                    myStopWatch.Start();
-                    if (appSettings.LoaderMode.ToLower() == "fast")
-                    {
-                        FastCsvReader myReader = new FastCsvReader(iFile, appSettings);
-                        bulkCopy(myReader, appSettings);
-                        WritFileInfo(iFile, appSettings);
-                    }
-                    else
-                    {
-                        SafeCsvReader myReader = new SafeCsvReader(iFile, appSettings);
-                        bulkCopy(myReader, appSettings);
-                        WritFileInfo(iFile, appSettings);
+                        try
+                        {
+                            string checkSum = Helper.CalculateCheckSum(iFile);
+                            int linesInFile = Helper.CountFileLines(iFile) - 1; //because header
+                            myStopWatch.Start();
+                            if (appSettings.LoaderMode.ToLower() == "fast")
+                            {
+                                log.Info("Loading file: " + iFile + " Loader mode: " + "fast");
+                                if (WritFileInfo(iFile, checkSum, appSettings))
+                                {
+                                    FastCsvReader myReader = new FastCsvReader(iFile, appSettings);
+                                    bulkCopy(myReader, appSettings);
+                                    log.Info("New file " + iFile + " loaded with " + linesInFile + " lines. File Checksum " + checkSum);
+                                }
+                                else
+                                {
+                                    log.Info("Duplicate file " + iFile + " not loaded.File Checksum " + checkSum);
+                                }
+
                             }
-                    myStopWatch.Stop();
-                    log.Info("imported in " + myStopWatch.ElapsedMilliseconds / 1000);
-                }
-                catch (Exception ex)
-                {
-                    log.Error(ex.Message);
-                }
+                            else
+                            {
+                                log.Info("Loading file: " + iFile + " Loader mode: " + "safe");
+                                if (WritFileInfo(iFile, checkSum, appSettings))
+                                {
+                                    SafeCsvReader myReader = new SafeCsvReader(iFile, appSettings);
+                                    bulkCopy(myReader, appSettings);
+                                    log.Info("New file " + iFile + " loaded with " + linesInFile + " lines. File Checksum " + checkSum);
+                                }
+                                else
+                                {
+                                    log.Info("Duplicate file " + iFile + " not loaded.File Checksum " + checkSum);
+                                }
+                            }
+                            Helper.ManageFile(Helper.Action.Zip, iFile, appSettings.OutputDir);
+                            Helper.ManageFile(Helper.Action.Delete, iFile);
+                            myStopWatch.Stop();
+                            log.Info("imported in " + myStopWatch.ElapsedMilliseconds / 1000);
+                        }
+                        catch (Exception ex)
+                        {
+                            log.Error(ex.Message);
+                        }
                     }
                 }
             }
         } //main
 
-        private static void WritFileInfo(string myFile, MyAPConfig configSettings)
+        private static bool WritFileInfo(string myFile, string checksum, MyAPConfig configSettings)
         {
+            bool retval = false;
             using (SqlConnection myConnection =
                 configSettings.IntegratedSecurity ?
                     new SqlConnection(String.Format("Data Source={0};Initial Catalog={1};Integrated Security=True;Packet Size=32000;", configSettings.Server, configSettings.Database))
                     :
                     new SqlConnection(string.Format("Data Source={0};Initial Catalog={1};User ID={2}; Password={3} ;Packet Size=32000;", configSettings.Server, configSettings.Database, configSettings.DBUser, configSettings.DBPassword)))
             {
-                
-                //using (SqlCommand myCMD = new SqlCommand(configSettings.Schema+"."+configSettings.FileInfoInsert, myConnection))
-                //{
-                //    myCMD.CommandType = CommandType.StoredProcedure;
-                //    myCMD.Parameters.Add("@FileName",SqlDbType.VarChar).Value = myFile;
-                //    myCMD.Parameters.Add("@FileCheckSum", SqlDbType.VarChar).Value = CalculateCheckSum(myFile);
-                //    myConnection.Open();
-                //    myCMD.ExecuteNonQuery();
-                //}
+
+                using (SqlCommand myCMD = new SqlCommand(configSettings.Schema + "." + configSettings.FileInfoInsert, myConnection))
+                {
+                    myCMD.CommandType = CommandType.StoredProcedure;
+                    myCMD.Parameters.Add("@FileName", SqlDbType.VarChar).Value = myFile;
+                    myCMD.Parameters.Add("@FileCheckSum", SqlDbType.VarChar).Value = checksum;
+                    myCMD.Parameters.Add("@RETURN_VALUE", SqlDbType.Int).Direction = ParameterDirection.Output;
+                    myConnection.Open();
+                    myCMD.ExecuteNonQuery();
+                    int retCode = (int)myCMD.Parameters["@RETURN_VALUE"].Value;
+                    if (retCode == 0)
+                    {
+                        
+                        retval = true;
+                    }
+                    
+                }
                 myConnection.Close();
             }
+            return retval;
         }
 
-        private static string CalculateCheckSum(string myFile)
-        {
-            using (var md5 = MD5.Create())
-            {
-                using (var stream = File.OpenRead(myFile))
-                {
-                    return BitConverter.ToString(md5.ComputeHash(stream)).Replace("-", string.Empty);
-                }
-            }
-        }
 
         private static void bulkCopy(BaseCsvReader acsvReader, MyAPConfig configSettings)
         {
-           
-            using (SqlConnection myConnection = 
-                configSettings.IntegratedSecurity ? 
+
+            using (SqlConnection myConnection =
+                configSettings.IntegratedSecurity ?
                 new SqlConnection(String.Format("Data Source={0};Initial Catalog={1};Integrated Security=True;Packet Size=32000;", configSettings.Server, configSettings.Database))
-                : 
+                :
                 new SqlConnection(string.Format("Data Source={0};Initial Catalog={1};User ID={2}; Password={3} ;Packet Size=32000;", configSettings.Server, configSettings.Database, configSettings.DBUser, configSettings.DBPassword)))
             {
                 myConnection.Open();
@@ -192,9 +219,31 @@ namespace SQLBulkCopy
                     myBulkCopy.BatchSize = configSettings.BatchSize;
                     myBulkCopy.DestinationTableName = configSettings.Schema + "." + configSettings.Table;
                     myBulkCopy.WriteToServer(acsvReader);
-                    
+
                 }
                 myConnection.Close();
+            }
+        }
+
+        /// <summary>
+        /// Move old processed file from work - emergency case only
+        /// </summary>
+        /// <param name="configSettings"></param>
+        protected static void MoveProcessedFile(MyAPConfig configSettings)
+        {
+            // Check if some processed file  exist if yes move it to final dir
+            var iFiles = Directory.GetFiles(configSettings.InputDir, configSettings.InputFileName).Where(n => n.Contains("PreProcessOK")).ToArray();
+            if (iFiles.Any())
+            {
+                log.Info(@"Move old processed files from: " + configSettings.WorkDir + " to " + configSettings.OutputDir);
+                //Move file from NetCollector to PreProcessor Work directory
+                int i = 0;
+                foreach (var file in iFiles)
+                {
+                    Helper.ManageFile(Helper.Action.Move, file, configSettings.OutputDir);
+                    log.Info(string.Format("New file {0} - {1}: ", i, file));
+                    i++;
+                }
             }
         }
     }

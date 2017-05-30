@@ -209,7 +209,7 @@ namespace SQLBulkCopy
                                                 FROM   INFORMATION_SCHEMA.COLUMNS c
                                                 WHERE  TABLE_NAME = '{0}'
                                                        AND TABLE_SCHEMA = '{1}'
-                                                ORDER  BY ORDINAL_POSITION", configSettings.Table, configSettings.Schema);
+                                                ORDER  BY ORDINAL_POSITION",  configSettings.Table, configSettings.Schema);
                 SqlDataReader myReader = myCmd.ExecuteReader();
 
                 List<Field> myTableFields = new List<Field>();

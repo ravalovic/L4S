@@ -34,10 +34,13 @@
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
+    <Reference Include="System.IO.Compression" />
+    <Reference Include="System.IO.Compression.FileSystem" />
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AppConfigManager.cs" />
+    <Compile Include="Helper.cs" />
     <Compile Include="UserImpersonation.cs" />
     <Compile Include="SingleInstance.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
