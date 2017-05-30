@@ -199,7 +199,7 @@ namespace PreProcessor
                 string line;
                 while ((line = sr.ReadLine()) != null)
                 {
-                    if (Helper.IsValidByReg(configSettings.Patterns, line))
+                    if (Helper.IsValidByReg(configSettings.Patterns, line) && !string.IsNullOrWhiteSpace(line))
                     {
                         var unifiedLine = MakeLine(configSettings.BatchID, iFile, oriCheckSum, oFile.Name, line, configSettings.UnifiedMap, configSettings.InputFieldSeparator, configSettings.OutputFieldSeparator);
                         sw.WriteLine(unifiedLine);

@@ -7,6 +7,7 @@ using System.Security.Principal;
 using System.Data;
 
 
+
 // Configure log4net using the .config file
 [assembly: log4net.Config.XmlConfigurator(Watch = true)]
 // This will cause log4net to look for a configuration file
@@ -101,7 +102,9 @@ namespace SQLBulkCopy
         {
             Directory.CreateDirectory(appApConfig.InputDir);
             Directory.CreateDirectory(appApConfig.OutputDir);
+            Directory.CreateDirectory(appApConfig.WorkDir);
         }
+
         static void Main()
         {
             using (new SingleGlobalInstance(1000)) //1000ms timeout on global lock
@@ -113,9 +116,10 @@ namespace SQLBulkCopy
                     log.Error(missing);
                     Environment.Exit(0);
                 }
+
                 CreateIfMissing(appSettings);
                 log.InfoFormat("Running as {0}", WindowsIdentity.GetCurrent().Name);
-                MoveProcessedFile(appSettings);
+                MoveProcessedFile(appSettings); // from PreProcessor Output to Work
                 System.Diagnostics.Stopwatch myStopWatch = System.Diagnostics.Stopwatch.StartNew();
 
                 var iFiles = Directory.GetFiles(appSettings.WorkDir, appSettings.InputFileName);
@@ -139,9 +143,8 @@ namespace SQLBulkCopy
                                 }
                                 else
                                 {
-                                    log.Info("Duplicate file " + iFile + " not loaded.File Checksum " + checkSum);
+                                    log.Info("Duplicate file " + iFile + " . Skipping... File Checksum " + checkSum);
                                 }
-
                             }
                             else
                             {
@@ -154,11 +157,15 @@ namespace SQLBulkCopy
                                 }
                                 else
                                 {
-                                    log.Info("Duplicate file " + iFile + " not loaded.File Checksum " + checkSum);
+                                    log.Info("Duplicate file " + iFile + ". Skipping... File Checksum " + checkSum);
                                 }
                             }
+                            log.Info("Create backup of file:" + iFile);
                             Helper.ManageFile(Helper.Action.Zip, iFile, appSettings.OutputDir);
+
+                            log.Info("Delete processed file:" + iFile);
                             Helper.ManageFile(Helper.Action.Delete, iFile);
+
                             myStopWatch.Stop();
                             log.Info("imported in " + myStopWatch.ElapsedMilliseconds / 1000);
                         }
@@ -181,21 +188,24 @@ namespace SQLBulkCopy
                     new SqlConnection(string.Format("Data Source={0};Initial Catalog={1};User ID={2}; Password={3} ;Packet Size=32000;", configSettings.Server, configSettings.Database, configSettings.DBUser, configSettings.DBPassword)))
             {
 
-                using (SqlCommand myCMD = new SqlCommand(configSettings.Schema + "." + configSettings.FileInfoInsert, myConnection))
+                using (SqlCommand myCMD = new SqlCommand())
                 {
+                    myCMD.Connection = myConnection;
                     myCMD.CommandType = CommandType.StoredProcedure;
+                    myCMD.CommandText = configSettings.Schema + "." + configSettings.FileInfoInsert;
                     myCMD.Parameters.Add("@FileName", SqlDbType.VarChar).Value = myFile;
                     myCMD.Parameters.Add("@FileCheckSum", SqlDbType.VarChar).Value = checksum;
-                    myCMD.Parameters.Add("@RETURN_VALUE", SqlDbType.Int).Direction = ParameterDirection.Output;
+                    myCMD.Parameters.Add("@RetVal", SqlDbType.Int).Direction = ParameterDirection.Output;
+                    
                     myConnection.Open();
                     myCMD.ExecuteNonQuery();
-                    int retCode = (int)myCMD.Parameters["@RETURN_VALUE"].Value;
+                    int retCode = (int)myCMD.Parameters["@RetVal"].Value;
                     if (retCode == 0)
                     {
-                        
+
                         retval = true;
                     }
-                    
+
                 }
                 myConnection.Close();
             }
@@ -235,12 +245,12 @@ namespace SQLBulkCopy
             var iFiles = Directory.GetFiles(configSettings.InputDir, configSettings.InputFileName).Where(n => n.Contains("PreProcessOK")).ToArray();
             if (iFiles.Any())
             {
-                log.Info(@"Move old processed files from: " + configSettings.WorkDir + " to " + configSettings.OutputDir);
+                log.Info(@"Move PreProcessed files from: " + configSettings.InputDir + " to " + configSettings.WorkDir);
                 //Move file from NetCollector to PreProcessor Work directory
                 int i = 0;
                 foreach (var file in iFiles)
                 {
-                    Helper.ManageFile(Helper.Action.Move, file, configSettings.OutputDir);
+                    Helper.ManageFile(Helper.Action.Move, file, configSettings.WorkDir);
                     log.Info(string.Format("New file {0} - {1}: ", i, file));
                     i++;
                 }

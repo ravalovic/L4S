@@ -240,8 +240,9 @@ namespace NetCollector
                 {
                     log.Warn("No files for collection from source: " + settingsConfig.RemoteServer + settingsConfig.RemoteDir + settingsConfig.RemoteFileName);
                 }
-                ftp.Close();
+               ftp.Close(); 
             }
+            
             return result;
 
         }

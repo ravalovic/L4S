@@ -2,7 +2,6 @@
 using System.Runtime.InteropServices; 
 using System.Security.Principal; 
 
-
 namespace CommonHelper {
     /// <summary> 
     /// Object to change the user authticated 
@@ -20,9 +19,9 @@ namespace CommonHelper {
         /// <param name="phToken"></param> 
         /// <returns></returns> 
         [DllImport("advapi32.dll")] 
-     private static extern bool LogonUser(String lpszUserName,
-         String lpszDomain,
-         String lpszPassword,
+     private static extern bool LogonUser(string lpszUserName,
+         string lpszDomain,
+         string lpszPassword,
          int dwLogonType,
          int dwLogonProvider,
          ref IntPtr phToken); 
