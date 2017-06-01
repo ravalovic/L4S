@@ -175,6 +175,10 @@ namespace SQLBulkCopy
                         }
                     }
                 }
+                else
+                {
+                    log.Info("No new files for processing");
+                }
             }
         } //main
 

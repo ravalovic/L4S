@@ -169,6 +169,10 @@ namespace PreProcessor
                     i++;
                 }
             }
+            else
+            {
+                log.Info("No new files for processing");
+            }
         }
 
         
