@@ -1,0 +1,327 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="log4serviceModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'log4service.dbo.Catalog_LogService' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="Catalog_LogService">
+          <Key>
+            <PropertyRef Name="batchID" />
+            <PropertyRef Name="fileID" />
+            <PropertyRef Name="insertDateTime" />
+          </Key>
+          <Property Name="batchID" Type="bigint" Nullable="false" />
+          <Property Name="fileID" Type="bigint" Nullable="false" />
+          <Property Name="insertDateTime" Type="datetime" Nullable="false" />
+          <Property Name="customerID" Type="nvarchar" MaxLength="50" />
+          <Property Name="serviceID" Type="int" />
+          <Property Name="col1" Type="nvarchar" MaxLength="50" />
+          <Property Name="col2" Type="nvarchar" MaxLength="50" />
+          <Property Name="col3" Type="nvarchar" MaxLength="50" />
+          <Property Name="col4" Type="nvarchar" MaxLength="50" />
+          <Property Name="col5" Type="nvarchar" MaxLength="50" />
+          <Property Name="col6" Type="nvarchar" MaxLength="50" />
+          <Property Name="col7" Type="nvarchar" MaxLength="50" />
+          <Property Name="col8" Type="nvarchar" MaxLength="50" />
+          <Property Name="col9" Type="nvarchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="Catalog_Service">
+          <Key>
+            <PropertyRef Name="serviceID" />
+          </Key>
+          <Property Name="serviceID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Identifier" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Description" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="userID" Type="int" />
+          <Property Name="insertDateTime" Type="datetime" Nullable="false" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'log4service.dbo.Stage_InputFileDuplicity' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="Stage_InputFileDuplicity">
+          <Key>
+            <PropertyRef Name="id" />
+            <PropertyRef Name="fileName" />
+            <PropertyRef Name="checksum" />
+            <PropertyRef Name="loadDateTime" />
+            <PropertyRef Name="insertDateTime" />
+          </Key>
+          <Property Name="id" Type="int" Nullable="false" />
+          <Property Name="fileName" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="checksum" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="loadDateTime" Type="datetime" Nullable="false" />
+          <Property Name="insertDateTime" Type="datetime" Nullable="false" />
+          <Property Name="oriFileName" Type="varchar" MaxLength="100" />
+        </EntityType>
+        <EntityType Name="Stage_InputFileInfo">
+          <Key>
+            <PropertyRef Name="checksum" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="fileName" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="checksum" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="insertDateTime" Type="datetime" Nullable="false" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'log4service.dbo.Stage_LogImport' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="Stage_LogImport">
+          <Key>
+            <PropertyRef Name="batchID" />
+            <PropertyRef Name="originalFileName" />
+            <PropertyRef Name="originalCheckSum" />
+            <PropertyRef Name="preProcessFileName" />
+          </Key>
+          <Property Name="batchID" Type="bigint" Nullable="false" />
+          <Property Name="originalFileName" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="originalCheckSum" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="preProcessFileName" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="col1" Type="varchar" MaxLength="10" />
+          <Property Name="col2" Type="varchar" MaxLength="50" />
+          <Property Name="col3" Type="varchar" MaxLength="50" />
+          <Property Name="col4" Type="varchar" MaxLength="50" />
+          <Property Name="col5" Type="varchar" MaxLength="50" />
+          <Property Name="col6" Type="varchar" MaxLength="50" />
+          <Property Name="col7" Type="varchar" MaxLength="50" />
+          <Property Name="col8" Type="varchar" MaxLength="50" />
+          <Property Name="col9" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <EntityContainer Name="log4serviceModelStoreContainer">
+          <EntitySet Name="Catalog_Service" EntityType="Self.Catalog_Service" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Stage_InputFileInfo" EntityType="Self.Stage_InputFileInfo" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Catalog_LogService" EntityType="Self.Catalog_LogService" store:Type="Tables" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [Catalog_LogService].[batchID] AS [batchID], 
+    [Catalog_LogService].[fileID] AS [fileID], 
+    [Catalog_LogService].[insertDateTime] AS [insertDateTime], 
+    [Catalog_LogService].[customerID] AS [customerID], 
+    [Catalog_LogService].[serviceID] AS [serviceID], 
+    [Catalog_LogService].[col1] AS [col1], 
+    [Catalog_LogService].[col2] AS [col2], 
+    [Catalog_LogService].[col3] AS [col3], 
+    [Catalog_LogService].[col4] AS [col4], 
+    [Catalog_LogService].[col5] AS [col5], 
+    [Catalog_LogService].[col6] AS [col6], 
+    [Catalog_LogService].[col7] AS [col7], 
+    [Catalog_LogService].[col8] AS [col8], 
+    [Catalog_LogService].[col9] AS [col9]
+    FROM [dbo].[Catalog_LogService] AS [Catalog_LogService]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="Stage_InputFileDuplicity" EntityType="Self.Stage_InputFileDuplicity" store:Type="Tables" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [Stage_InputFileDuplicity].[id] AS [id], 
+    [Stage_InputFileDuplicity].[fileName] AS [fileName], 
+    [Stage_InputFileDuplicity].[checksum] AS [checksum], 
+    [Stage_InputFileDuplicity].[loadDateTime] AS [loadDateTime], 
+    [Stage_InputFileDuplicity].[insertDateTime] AS [insertDateTime], 
+    [Stage_InputFileDuplicity].[oriFileName] AS [oriFileName]
+    FROM [dbo].[Stage_InputFileDuplicity] AS [Stage_InputFileDuplicity]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="Stage_LogImport" EntityType="Self.Stage_LogImport" store:Type="Tables" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [Stage_LogImport].[batchID] AS [batchID], 
+    [Stage_LogImport].[originalFileName] AS [originalFileName], 
+    [Stage_LogImport].[originalCheckSum] AS [originalCheckSum], 
+    [Stage_LogImport].[preProcessFileName] AS [preProcessFileName], 
+    [Stage_LogImport].[col1] AS [col1], 
+    [Stage_LogImport].[col2] AS [col2], 
+    [Stage_LogImport].[col3] AS [col3], 
+    [Stage_LogImport].[col4] AS [col4], 
+    [Stage_LogImport].[col5] AS [col5], 
+    [Stage_LogImport].[col6] AS [col6], 
+    [Stage_LogImport].[col7] AS [col7], 
+    [Stage_LogImport].[col8] AS [col8], 
+    [Stage_LogImport].[col9] AS [col9]
+    FROM [dbo].[Stage_LogImport] AS [Stage_LogImport]</DefiningQuery>
+          </EntitySet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="log4serviceModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityContainer Name="log4serviceEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Catalog_Service" EntityType="log4serviceModel.Catalog_Service" />
+          <EntitySet Name="Stage_InputFileInfo" EntityType="log4serviceModel.Stage_InputFileInfo" />
+          <EntitySet Name="Catalog_LogService" EntityType="log4serviceModel.Catalog_LogService" />
+          <EntitySet Name="Stage_InputFileDuplicity" EntityType="log4serviceModel.Stage_InputFileDuplicity" />
+          <EntitySet Name="Stage_LogImport" EntityType="log4serviceModel.Stage_LogImport" />
+        </EntityContainer>
+        <EntityType Name="Catalog_Service">
+          <Key>
+            <PropertyRef Name="serviceID" />
+          </Key>
+          <Property Name="serviceID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Identifier" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Description" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="userID" Type="Int32" />
+          <Property Name="insertDateTime" Type="DateTime" Nullable="false" Precision="3" />
+        </EntityType>
+        <EntityType Name="Stage_InputFileInfo">
+          <Key>
+            <PropertyRef Name="checksum" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="fileName" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="checksum" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="insertDateTime" Type="DateTime" Nullable="false" Precision="3" />
+        </EntityType>
+        <EntityType Name="Catalog_LogService">
+          <Key>
+            <PropertyRef Name="batchID" />
+            <PropertyRef Name="fileID" />
+            <PropertyRef Name="insertDateTime" />
+          </Key>
+          <Property Name="batchID" Type="Int64" Nullable="false" />
+          <Property Name="fileID" Type="Int64" Nullable="false" />
+          <Property Name="insertDateTime" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="customerID" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="serviceID" Type="Int32" />
+          <Property Name="col1" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="col2" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="col3" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="col4" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="col5" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="col6" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="col7" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="col8" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="col9" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="Stage_InputFileDuplicity">
+          <Key>
+            <PropertyRef Name="id" />
+            <PropertyRef Name="fileName" />
+            <PropertyRef Name="checksum" />
+            <PropertyRef Name="loadDateTime" />
+            <PropertyRef Name="insertDateTime" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" />
+          <Property Name="fileName" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="checksum" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="loadDateTime" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="insertDateTime" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="oriFileName" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="Stage_LogImport">
+          <Key>
+            <PropertyRef Name="batchID" />
+            <PropertyRef Name="originalFileName" />
+            <PropertyRef Name="originalCheckSum" />
+            <PropertyRef Name="preProcessFileName" />
+          </Key>
+          <Property Name="batchID" Type="Int64" Nullable="false" />
+          <Property Name="originalFileName" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="originalCheckSum" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="preProcessFileName" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="col1" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="col2" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="col3" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="col4" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="col5" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="col6" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="col7" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="col8" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="col9" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+        </EntityType>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="log4serviceModelStoreContainer" CdmEntityContainer="log4serviceEntities">
+          <EntitySetMapping Name="Catalog_Service">
+            <EntityTypeMapping TypeName="log4serviceModel.Catalog_Service">
+              <MappingFragment StoreEntitySet="Catalog_Service">
+                <ScalarProperty Name="insertDateTime" ColumnName="insertDateTime" />
+                <ScalarProperty Name="userID" ColumnName="userID" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="Identifier" ColumnName="Identifier" />
+                <ScalarProperty Name="serviceID" ColumnName="serviceID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Stage_InputFileInfo">
+            <EntityTypeMapping TypeName="log4serviceModel.Stage_InputFileInfo">
+              <MappingFragment StoreEntitySet="Stage_InputFileInfo">
+                <ScalarProperty Name="insertDateTime" ColumnName="insertDateTime" />
+                <ScalarProperty Name="checksum" ColumnName="checksum" />
+                <ScalarProperty Name="fileName" ColumnName="fileName" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Catalog_LogService">
+            <EntityTypeMapping TypeName="log4serviceModel.Catalog_LogService">
+              <MappingFragment StoreEntitySet="Catalog_LogService">
+                <ScalarProperty Name="col9" ColumnName="col9" />
+                <ScalarProperty Name="col8" ColumnName="col8" />
+                <ScalarProperty Name="col7" ColumnName="col7" />
+                <ScalarProperty Name="col6" ColumnName="col6" />
+                <ScalarProperty Name="col5" ColumnName="col5" />
+                <ScalarProperty Name="col4" ColumnName="col4" />
+                <ScalarProperty Name="col3" ColumnName="col3" />
+                <ScalarProperty Name="col2" ColumnName="col2" />
+                <ScalarProperty Name="col1" ColumnName="col1" />
+                <ScalarProperty Name="serviceID" ColumnName="serviceID" />
+                <ScalarProperty Name="customerID" ColumnName="customerID" />
+                <ScalarProperty Name="insertDateTime" ColumnName="insertDateTime" />
+                <ScalarProperty Name="fileID" ColumnName="fileID" />
+                <ScalarProperty Name="batchID" ColumnName="batchID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Stage_InputFileDuplicity">
+            <EntityTypeMapping TypeName="log4serviceModel.Stage_InputFileDuplicity">
+              <MappingFragment StoreEntitySet="Stage_InputFileDuplicity">
+                <ScalarProperty Name="oriFileName" ColumnName="oriFileName" />
+                <ScalarProperty Name="insertDateTime" ColumnName="insertDateTime" />
+                <ScalarProperty Name="loadDateTime" ColumnName="loadDateTime" />
+                <ScalarProperty Name="checksum" ColumnName="checksum" />
+                <ScalarProperty Name="fileName" ColumnName="fileName" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Stage_LogImport">
+            <EntityTypeMapping TypeName="log4serviceModel.Stage_LogImport">
+              <MappingFragment StoreEntitySet="Stage_LogImport">
+                <ScalarProperty Name="col9" ColumnName="col9" />
+                <ScalarProperty Name="col8" ColumnName="col8" />
+                <ScalarProperty Name="col7" ColumnName="col7" />
+                <ScalarProperty Name="col6" ColumnName="col6" />
+                <ScalarProperty Name="col5" ColumnName="col5" />
+                <ScalarProperty Name="col4" ColumnName="col4" />
+                <ScalarProperty Name="col3" ColumnName="col3" />
+                <ScalarProperty Name="col2" ColumnName="col2" />
+                <ScalarProperty Name="col1" ColumnName="col1" />
+                <ScalarProperty Name="preProcessFileName" ColumnName="preProcessFileName" />
+                <ScalarProperty Name="originalCheckSum" ColumnName="originalCheckSum" />
+                <ScalarProperty Name="originalFileName" ColumnName="originalFileName" />
+                <ScalarProperty Name="batchID" ColumnName="batchID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

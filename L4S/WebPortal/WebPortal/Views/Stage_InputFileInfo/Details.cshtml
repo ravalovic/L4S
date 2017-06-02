@@ -1,0 +1,42 @@
+﻿@model WebPortal.Stage_InputFileInfo
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Stage_InputFileInfo</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.id)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.id)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.fileName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.fileName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.insertDateTime)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.insertDateTime)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.checksum }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>
