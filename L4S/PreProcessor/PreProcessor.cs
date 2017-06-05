@@ -43,10 +43,11 @@ namespace PreProcessor
             //Patterns = ConfigurationManager.AppSettings.AllKeys.Where(key => key.StartsWith("pattern")).Select(key => ConfigurationManager.AppSettings[key]).ToArray();
             HeaderLine = configManager.ReadSetting("headerLine");
             
-            // Get last value of Batch ID => increase => write back to config
+            // Get last value of Batch ID 
             long batchID;
             long.TryParse(configManager.ReadSetting("batchID"), out batchID);
-            }
+            BatchID = batchID ;
+        }
 
         public void UpdateBatchID(long batchID)
         {
@@ -111,17 +112,18 @@ namespace PreProcessor
 
             if (iFiles.Any())
             {
-                int i = 0;
                 log.Info(@"Processing files from: " + configSettings.WorkDir);
                 foreach (var file in iFiles)
                 {
                     if (File.Exists(file))
                     {
                         CreateOutputFile(file, configSettings);
-                        log.Info(string.Format("Processed file {0} - {1}: ", i, file));
-                        i++;
+                        configSettings.UpdateBatchID(configSettings.BatchID++);
+                        log.Info(string.Format("Processed file {0} ", file));
+                       
                     }
                 }
+                configSettings.UpdateBatchID(configSettings.BatchID++);
             }
             else
             {
@@ -140,13 +142,12 @@ namespace PreProcessor
             {
                 log.Info(@"Move old processed files from: " + configSettings.WorkDir + " to " + configSettings.OutputDir);
                 //Move file from NetCollector to PreProcessor Work directory
-                int i = 0;
+                
                 foreach (var file in iFiles)
                 {
                     Helper.ManageFile(Helper.Action.Move, file, configSettings.OutputDir);
-                    log.Info(string.Format("New file {0} - {1}: ", i, file));
-                    i++;
-                }
+                    log.Info(string.Format("New file {0}",file));
+              }
             }
         }
         /// <summary>
@@ -161,13 +162,11 @@ namespace PreProcessor
             {
                 log.Info(@"Get new files from: " + configSettings.InputDir);
                 //Move file from NetCollector to PreProcessor Work directory
-                int i = 0;
                 foreach (var file in iFiles)
                 {
                     Helper.ManageFile(Helper.Action.Move, file, configSettings.WorkDir);
-                    log.Info(String.Format("New file {0} - {1}: ", i, file));
-                    i++;
-                }
+                    log.Info(String.Format("New file {0} ", file));
+                 }
             }
             else
             {
@@ -196,7 +195,7 @@ namespace PreProcessor
                 //extract file name
                 string fname = Path.GetFileName(iFile);
                 string oriCheckSum = Helper.CalculateCheckSum(iFile);
-                FileInfo oFile = new FileInfo(configSettings.WorkDir + configSettings.OutputFileMask + dateMask + "_" + fname);
+                FileInfo oFile = new FileInfo(configSettings.WorkDir + configSettings.OutputFileMask+"_"+ configSettings.BatchID + "_" + dateMask + "_" + fname);
                 StreamWriter sw = oFile.CreateText();
                 //Start with header line
                 sw.WriteLine(configSettings.HeaderLine);
@@ -213,7 +212,7 @@ namespace PreProcessor
                 sw.Close();
                 Helper.ManageFile(Helper.Action.Delete, iFile);
                 Helper.ManageFile(Helper.Action.Move, oFile.FullName, configSettings.OutputDir);
-                configSettings.UpdateBatchID(configSettings.BatchID++);
+                
             }
             catch (IOException e)
             {

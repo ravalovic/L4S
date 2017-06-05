@@ -7,9 +7,9 @@
       <Diagram DiagramId="25f534c872df4928bc8af443e6f072ff" Name="Diagram1">
         <EntityTypeShape EntityType="log4serviceModel.Catalog_Service" Width="1.5" PointX="0.75" PointY="0.75" />
         <EntityTypeShape EntityType="log4serviceModel.Stage_InputFileInfo" Width="1.875" PointX="2.75" PointY="0.75" />
-        <EntityTypeShape EntityType="log4serviceModel.Catalog_LogService" Width="1.5" PointX="0.75" PointY="3.75" />
+        <EntityTypeShape EntityType="log4serviceModel.Catalog_LogService" Width="1.5" PointX="0.75" PointY="3.125" />
         <EntityTypeShape EntityType="log4serviceModel.Stage_InputFileDuplicity" Width="1.875" PointX="2.75" PointY="3.75" />
-        <EntityTypeShape EntityType="log4serviceModel.Stage_LogImport" Width="1.5" PointX="4.75" PointY="0.75" />
+        <EntityTypeShape EntityType="log4serviceModel.Stage_LogImport" Width="1.5" PointX="5.5" PointY="0.75" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

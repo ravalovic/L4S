@@ -1,7 +1,9 @@
 ﻿using System;
+using System.CodeDom;
 using System.IO;
 using System.IO.Compression;
 using System.Linq;
+using System.Runtime.Remoting.Messaging;
 using System.Security.Cryptography;
 using System.Text.RegularExpressions;
 
@@ -80,10 +82,28 @@ namespace CommonHelper
                         using (ZipArchive arch = ZipFile.Open(zipName, ZipArchiveMode.Create))
                         {
                             arch.CreateEntryFromFile(file, Path.GetFileName(file), CompressionLevel.Optimal);
+                            arch.Dispose();
                         }
+                        
                         break;
                 }
             }
         }
+
+        public static int GetBatchIdFromName(string myFile)
+        {
+            var fileName = Path.GetFileName(myFile);
+           
+            if (fileName != null)
+            {
+                var batchId = fileName.Split('_');
+                int bID;
+                if (Int32.TryParse(batchId[1], out bID))
+                { 
+                return bID;
+                }
+            }
+            return 0;
+        } 
     }
 }

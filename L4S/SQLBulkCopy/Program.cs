@@ -5,7 +5,7 @@ using CommonHelper;
 using System.IO;
 using System.Security.Principal;
 using System.Data;
-
+using System.Threading;
 
 
 // Configure log4net using the .config file
@@ -131,14 +131,16 @@ namespace SQLBulkCopy
                         {
                             string checkSum = Helper.CalculateCheckSum(iFile);
                             int linesInFile = Helper.CountFileLines(iFile) - 1; //because header
+                            int batchID = Helper.GetBatchIdFromName(iFile);
                             myStopWatch.Start();
                             if (appSettings.LoaderMode.ToLower() == "fast")
                             {
                                 log.Info("Loading file: " + iFile + " Loader mode: " + "fast");
-                                if (WritFileInfo(iFile, checkSum, appSettings))
+                                if (WritFileInfo(iFile, checkSum, batchID, appSettings))
                                 {
                                     FastCsvReader myReader = new FastCsvReader(iFile, appSettings);
                                     bulkCopy(myReader, appSettings);
+                                    myReader.Close();
                                     log.Info("New file " + iFile + " loaded with " + linesInFile + " lines. File Checksum " + checkSum);
                                 }
                                 else
@@ -149,10 +151,11 @@ namespace SQLBulkCopy
                             else
                             {
                                 log.Info("Loading file: " + iFile + " Loader mode: " + "safe");
-                                if (WritFileInfo(iFile, checkSum, appSettings))
+                                if (WritFileInfo(iFile, checkSum, batchID, appSettings))
                                 {
                                     SafeCsvReader myReader = new SafeCsvReader(iFile, appSettings);
                                     bulkCopy(myReader, appSettings);
+                                    myReader.Close();
                                     log.Info("New file " + iFile + " loaded with " + linesInFile + " lines. File Checksum " + checkSum);
                                 }
                                 else
@@ -160,12 +163,7 @@ namespace SQLBulkCopy
                                     log.Info("Duplicate file " + iFile + ". Skipping... File Checksum " + checkSum);
                                 }
                             }
-                            log.Info("Create backup of file:" + iFile);
-                            Helper.ManageFile(Helper.Action.Zip, iFile, appSettings.OutputDir);
-
-                            log.Info("Delete processed file:" + iFile);
-                            Helper.ManageFile(Helper.Action.Delete, iFile);
-
+                            
                             myStopWatch.Stop();
                             log.Info("imported in " + myStopWatch.ElapsedMilliseconds / 1000);
                         }
@@ -173,6 +171,21 @@ namespace SQLBulkCopy
                         {
                             log.Error(ex.Message);
                         }
+                    }
+                    try { 
+                    foreach (var iFile in iFiles)
+                    {
+                        log.Info("Create backup of file:" + iFile);
+                        Helper.ManageFile(Helper.Action.Zip, iFile, appSettings.OutputDir);
+                        log.Info("Delete processed file:" + iFile);
+                        //Thread.Sleep(1000);
+                        //Helper.ManageFile(Helper.Action.Delete, iFile);
+                        DeleteFile(iFile);
+                    }
+                    }
+                    catch (Exception ex)
+                    {
+                        log.Error(ex.Message);
                     }
                 }
                 else
@@ -182,7 +195,23 @@ namespace SQLBulkCopy
             }
         } //main
 
-        private static bool WritFileInfo(string myFile, string checksum, MyAPConfig configSettings)
+        protected static void DeleteFile(String FileToDelete)
+        {
+            var fi = new System.IO.FileInfo(FileToDelete);
+          
+            if (fi.Exists)
+            {
+                fi.Delete();
+                fi.Refresh();
+                while (fi.Exists)
+                {
+                    System.Threading.Thread.Sleep(100);
+                    fi.Refresh();
+                }
+            }
+        }
+
+        private static bool WritFileInfo(string myFile, string checksum, int myBatchID, MyAPConfig configSettings)
         {
             bool retval = false;
             using (SqlConnection myConnection =
@@ -199,6 +228,7 @@ namespace SQLBulkCopy
                     myCMD.CommandText = configSettings.Schema + "." + configSettings.FileInfoInsert;
                     myCMD.Parameters.Add("@FileName", SqlDbType.VarChar).Value = myFile;
                     myCMD.Parameters.Add("@FileCheckSum", SqlDbType.VarChar).Value = checksum;
+                    myCMD.Parameters.Add("@BatchID", SqlDbType.Int).Value = myBatchID;
                     myCMD.Parameters.Add("@RetVal", SqlDbType.Int).Direction = ParameterDirection.Output;
                     
                     myConnection.Open();

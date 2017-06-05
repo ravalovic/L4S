@@ -185,17 +185,17 @@ namespace NetCollector
             {
                 log.Info(@"Get new files from: " + sourceDir);
                 //Copy file from remote server to NetCollector Work directory
-                int i = 0;
+               
                 foreach (var file in iFiles)
                 {
                     Helper.ManageFile(Helper.Action.Copy, file, settingsConfig.WorkDir);
-                    log.Info(String.Format("New file {0} - {1} ", i, file));
+                    log.Info(String.Format("New file {0}", file));
                     if (settingsConfig.AllowRenameRemote)
                     {
                         Helper.ManageFile(Helper.Action.Move, file, sourceDir, @"_" + dateMask + settingsConfig.RenameRemoteExtension);
-                        log.Info(String.Format("Renaming to file {0} - {1} ", i, file + settingsConfig.RenameRemoteExtension));
+                        log.Info(String.Format("Renaming to file {0} ", file + settingsConfig.RenameRemoteExtension));
                     }
-                    i++;
+                  
                 }
                 result = true;
             }
@@ -256,13 +256,13 @@ namespace NetCollector
             var iFiles = Directory.GetFiles(settingsConfig.WorkDir, settingsConfig.RemoteFileName);
             if (iFiles.Any())
             {
-                int i = 0;
+                
                 foreach (var file in iFiles)
                 {
                     //Backup file from workDir to backup directory
                     Helper.ManageFile(Helper.Action.Zip, file, settingsConfig.BackupDir);
-                    log.Info(String.Format("Backup file {0} - {1} ", i, file));
-                    i++;
+                    log.Info(String.Format("Backup file {0}", file));
+                   
                 }
             }
             else
@@ -280,13 +280,13 @@ namespace NetCollector
             var iFiles = Directory.GetFiles(settingsConfig.WorkDir, settingsConfig.RemoteFileName);
             if (iFiles.Any())
             {
-                int i = 0;
+               
                 foreach (var file in iFiles)
                 {
                     //Backup file from workDir to backup directory
                     Helper.ManageFile(Helper.Action.Move, file, settingsConfig.OutputDir);
-                    log.Info(String.Format("Move file {0}: {1} to {2}", i, file, settingsConfig.OutputDir));
-                    i++;
+                    log.Info(String.Format("Move file {0} to {1}", file, settingsConfig.OutputDir));
+                    
                 }
             }
             else
