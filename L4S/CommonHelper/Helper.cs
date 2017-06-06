@@ -1,9 +1,7 @@
 ﻿using System;
-using System.CodeDom;
 using System.IO;
 using System.IO.Compression;
 using System.Linq;
-using System.Runtime.Remoting.Messaging;
 using System.Security.Cryptography;
 using System.Text.RegularExpressions;
 
@@ -30,16 +28,16 @@ namespace CommonHelper
         /// <summary>
         /// Check if line is match by pattern
         /// </summary>
-        /// <param name="patterns"></param>
-        /// <param name="line"></param>
+        /// <param name="myPatterns"></param>
+        /// <param name="myLine"></param>
         /// <returns></returns>
-        public static bool IsValidByReg(string[] patterns, string line)
+        public static bool IsValidByReg(string[] myPatterns, string myLine)
         {
             bool result = false;
-            foreach (var p in patterns)
+            foreach (var p in myPatterns)
             {
                 var regex = new Regex(p);
-                result = regex.IsMatch(line);
+                result = regex.IsMatch(myLine);
                 if (result) break;
             }
             return result;
@@ -57,31 +55,31 @@ namespace CommonHelper
         /// Move, copy file to specified dir or delete file
         /// </summary>
         ///  <param name="action"></param>
-        /// <param name="file"></param>
-        /// <param name="destDir"></param>
-        /// <param name="destExt"></param>
-        public static void ManageFile(Action action, string file, string destDir = "", string destExt = "")
+        /// <param name="myFile"></param>
+        /// <param name="myDestDir"></param>
+        /// <param name="myDestExt"></param>
+        public static void ManageFile(Action action, string myFile, string myDestDir = "", string myDestExt = "")
         {
             string dateMask = DateTime.Now.ToString("ddMMyyyyHHmmss");
             // if destination exist no action performed
-            if ((File.Exists(file) && !File.Exists(destDir + Path.GetFileName(file) + destExt)) || action == Action.Delete)
+            if ((File.Exists(myFile) && !File.Exists(myDestDir + Path.GetFileName(myFile) + myDestExt)) || action == Action.Delete)
             {
                 switch (action)
                 {
                     case Action.Move:
-                        File.Move(file, destDir + Path.GetFileName(file) + destExt);
+                        File.Move(myFile, myDestDir + Path.GetFileName(myFile) + myDestExt);
                         break;
                     case Action.Copy:
-                        File.Copy(file, destDir + Path.GetFileName(file), true);
+                        File.Copy(myFile, myDestDir + Path.GetFileName(myFile), true);
                         break;
                     case Action.Delete:
-                        File.Delete(file);
+                        File.Delete(myFile);
                         break;
                     case Action.Zip:
-                        var zipName = destDir + Path.GetFileName(file) + "_" + dateMask + ".zip";
+                        var zipName = myDestDir + Path.GetFileName(myFile) + "_" + dateMask + ".zip";
                         using (ZipArchive arch = ZipFile.Open(zipName, ZipArchiveMode.Create))
                         {
-                            arch.CreateEntryFromFile(file, Path.GetFileName(file), CompressionLevel.Optimal);
+                            arch.CreateEntryFromFile(myFile, Path.GetFileName(myFile), CompressionLevel.Optimal);
                             arch.Dispose();
                         }
                         

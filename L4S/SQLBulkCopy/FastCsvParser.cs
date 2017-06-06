@@ -7,13 +7,14 @@ namespace SQLBulkCopy
         private static readonly log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
         protected CsvParser theParser;
 
+        public void CloseParser()
+        {
+            theParser.CloseParser();
+        }
         public FastCsvReader(string aFileName, MyAPConfig configSettings)
         {
-            //theParser = new Microsoft.VisualBasic.FileIO.TextFieldParser(aFileName);
             theParser = new CsvParser(aFileName);
-            //theParser.TextFieldType = Microsoft.VisualBasic.FileIO.FieldType.Delimited;
-            //theParser.SetDelimiters(aDelimiter);
-
+            
             theFileFields = theParser.ReadFields(configSettings.InputFieldSepartor);
 
             getTableFields(configSettings);
@@ -32,9 +33,7 @@ namespace SQLBulkCopy
                 }
             }
             rownum = 0;
-
-
-
+            
         }
 
         public bool Read(string aDelimiter)
@@ -57,7 +56,5 @@ namespace SQLBulkCopy
             return false;
 
         }
-
-
     }
 }

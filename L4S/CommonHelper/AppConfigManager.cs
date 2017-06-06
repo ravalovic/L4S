@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.Configuration;
-using System.Configuration.Internal;
 
 namespace CommonHelper
 {

@@ -8,9 +8,13 @@ namespace SQLBulkCopy
 
     class SafeCsvReader : BaseCsvReader
     {
-        private static readonly log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
         protected Microsoft.VisualBasic.FileIO.TextFieldParser theParser;
+        private static readonly log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
+        public void CloseParser()
+        {
+            theParser.Close();
+        }
         public SafeCsvReader(string aFileName, MyAPConfig configSettings)
         {
 
@@ -46,7 +50,6 @@ namespace SQLBulkCopy
             }
             rownum = 0;
         }
-
         public override bool Read()
         {
             while (!theParser.EndOfData)
@@ -57,7 +60,7 @@ namespace SQLBulkCopy
                 }
                 catch (Exception ex)
                 {
-                   log.Warn("Skipped line " + ex.Message);
+                    log.Warn("WARNING: skipped line " + ex.Message);
                 }
                 rownum++;
 
@@ -66,7 +69,6 @@ namespace SQLBulkCopy
             return false;
 
         }
-
-
     }
+
 }
