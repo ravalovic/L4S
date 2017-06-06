@@ -8,14 +8,14 @@ namespace SQLBulkCopy
 
     class SafeCsvReader : BaseCsvReader
     {
-        protected Microsoft.VisualBasic.FileIO.TextFieldParser theParser;
-        private static readonly log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+        protected Microsoft.VisualBasic.FileIO.TextFieldParser TheParser;
+        private static readonly log4net.ILog Log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
         public void CloseParser()
         {
-            theParser.Close();
+            TheParser.Close();
         }
-        public SafeCsvReader(string aFileName, MyAPConfig configSettings)
+        public SafeCsvReader(string aFileName, MyApConfig configSettings)
         {
 
             Encoding myEncoding;
@@ -26,20 +26,20 @@ namespace SQLBulkCopy
             }
 
 
-            theParser = new Microsoft.VisualBasic.FileIO.TextFieldParser(aFileName, myEncoding);
+            TheParser = new Microsoft.VisualBasic.FileIO.TextFieldParser(aFileName, myEncoding);
 
-            theParser.TextFieldType = Microsoft.VisualBasic.FileIO.FieldType.Delimited;
-            theParser.SetDelimiters(configSettings.InputFieldSepartor);
+            TheParser.TextFieldType = Microsoft.VisualBasic.FileIO.FieldType.Delimited;
+            TheParser.SetDelimiters(configSettings.InputFieldSepartor);
 
-            theFileFields = theParser.ReadFields();
+            TheFileFields = TheParser.ReadFields();
 
-            getTableFields(configSettings);
+            GetTableFields(configSettings);
 
             // check header line with table
-            foreach (Field f in theTableFields)
+            foreach (Field f in TheTableFields)
             {
                 int i = 0;
-                foreach (string ff in theFileFields)
+                foreach (string ff in TheFileFields)
                 {
                     if (ff.ToLower() == f.Name.ToLower())
                     {
@@ -48,21 +48,21 @@ namespace SQLBulkCopy
                     i++;
                 }
             }
-            rownum = 0;
+            Rownum = 0;
         }
         public override bool Read()
         {
-            while (!theParser.EndOfData)
+            while (!TheParser.EndOfData)
             {
                 try
                 {
-                    theValues = theParser.ReadFields();
+                    TheValues = TheParser.ReadFields();
                 }
                 catch (Exception ex)
                 {
-                    log.Warn("WARNING: skipped line " + ex.Message);
+                    Log.Warn("WARNING: skipped line " + ex.Message);
                 }
-                rownum++;
+                Rownum++;
 
                 return true;
             }

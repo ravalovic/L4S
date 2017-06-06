@@ -8,25 +8,26 @@ namespace SQLBulkCopy
     class CsvParser
     {
         //string theData;
-        readonly StreamReader theReader;
+        StreamReader _theReader;
         public CsvParser(string aFileName)
         {
-            theReader = new StreamReader(aFileName, detectEncodingFromByteOrderMarks: true);
+            _theReader = new StreamReader(aFileName, detectEncodingFromByteOrderMarks: true);
         }
 
         public void CloseParser()
         {
-           theReader.Close(); 
+           _theReader.Close(); 
         }
         public bool Read()
         {
-            if (theReader.Peek() >= 0) { return true; }
+            if (_theReader.Peek() >= 0) { return true; }
             else { return false; }
         }
-        public string[] ReadFields(string aDelimiter)
+
+      public string[] ReadFields(string aDelimiter = ",")
         {
             string myLine =
-                theReader.ReadLine();
+                _theReader.ReadLine();
             Debug.Assert(myLine != null, "myLine != null");
             int l = myLine.Length;
             List<string> myRow = new List<string>();

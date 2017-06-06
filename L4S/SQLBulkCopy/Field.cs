@@ -9,14 +9,14 @@ namespace SQLBulkCopy
         public string Name;
         public string DataType;
         public int FileFieldPosition;
-        public Int64 length;
-        public int precision;
-        public bool nullable;
-        public int scale;
+        public Int64 Length;
+        public int Precision;
+        public bool Nullable;
+        public int Scale;
 
         public bool IsNullable()
         {
-            return nullable;
+            return Nullable;
         }
         public object GetNull()
         {

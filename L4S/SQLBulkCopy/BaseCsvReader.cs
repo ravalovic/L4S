@@ -10,20 +10,20 @@ namespace SQLBulkCopy
 {
     class BaseCsvReader : IDataReader
     {
-        private static readonly log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+        private static readonly log4net.ILog Log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
-        protected string[] theFileFields;
-        protected string[] theValues;
-        protected int rownum;
-        protected Field[] theTableFields;
+        protected string[] TheFileFields;
+        protected string[] TheValues;
+        protected int Rownum;
+        protected Field[] TheTableFields;
         
         public virtual Object GetValue(int i)
         {
 
-            Field myField = theTableFields[i];
+            Field myField = TheTableFields[i];
             if (myField.FileFieldPosition < 0)
             { return myField.GetNull(); }
-            string myValue = (theValues[myField.FileFieldPosition]).Trim();
+            string myValue = (TheValues[myField.FileFieldPosition]).Trim();
 
             if (myValue == "")
             { return myField.GetNull(); }
@@ -34,12 +34,12 @@ namespace SQLBulkCopy
                 case "varchar": 
                 case "nvarchar":
                 case "char":
-                    if (myField.length < 0)
+                    if (myField.Length < 0)
                     { return myValue; }
-                    else if (myValue.Length > myField.length)
+                    else if (myValue.Length > myField.Length)
                     {
-                        log.Warn(String.Format("Truncated data row {0}, field {1}, data type {2}({4}), data {3} ", rownum, myField.Name, myField.DataType, myValue, myField.length));
-                        return myValue.Substring(0, (int)myField.length);
+                        Log.Warn(String.Format("Truncated data row {0}, field {1}, data type {2}({4}), data {3} ", Rownum, myField.Name, myField.DataType, myValue, myField.Length));
+                        return myValue.Substring(0, (int)myField.Length);
                     }
                     else
                     {
@@ -54,7 +54,7 @@ namespace SQLBulkCopy
                     { return double.IsNaN(dddd16) ? myField.GetNull() : Math.Round(dddd16); }
                     else
                     {
-                        log.Warn(String.Format("Skipped invalid data in row {0}, field {1}, data type {2}, data {3} ", rownum, myField.Name, myField.DataType, myValue));
+                        Log.Warn(String.Format("Skipped invalid data in row {0}, field {1}, data type {2}, data {3} ", Rownum, myField.Name, myField.DataType, myValue));
                         return myField.GetNull();
                     }
                 case "int":
@@ -69,13 +69,13 @@ namespace SQLBulkCopy
                             return myInt;
                         else
                         {
-                            log.Warn(String.Format("Skipped invalid data in row {0}, field {1}, data type {2}, data {3} ", rownum, myField.Name, myField.DataType, myValue));
+                            Log.Warn(String.Format("Skipped invalid data in row {0}, field {1}, data type {2}, data {3} ", Rownum, myField.Name, myField.DataType, myValue));
                             return myField.GetNull();
                         }
                     }
                     else
                     {
-                        log.Warn(String.Format("Skipped invalid data in row {0}, field {1}, data type {2}, data {3} ", rownum, myField.Name, myField.DataType, myValue));
+                        Log.Warn(String.Format("Skipped invalid data in row {0}, field {1}, data type {2}, data {3} ", Rownum, myField.Name, myField.DataType, myValue));
                         return myField.GetNull();
                     }
                 case "bigint":
@@ -90,7 +90,7 @@ namespace SQLBulkCopy
                             return myInt64;
                         else
                         {
-                            log.Warn(String.Format("Skipped invalid data in row {0}, field {1}, data type {2}, data {3} ", rownum, myField.Name, myField.DataType, myValue));
+                            Log.Warn(String.Format("Skipped invalid data in row {0}, field {1}, data type {2}, data {3} ", Rownum, myField.Name, myField.DataType, myValue));
                             return myField.GetNull();
                         }
                     }
@@ -98,26 +98,26 @@ namespace SQLBulkCopy
                     { return double.IsNaN(dddd) ? myField.GetNull() : Math.Round(dddd); }
                     else
                     {
-                        log.Warn(String.Format("Skipped invalid data in row {0}, field {1}, data type {2}, data {3} ", rownum, myField.Name, myField.DataType, myValue));
+                        Log.Warn(String.Format("Skipped invalid data in row {0}, field {1}, data type {2}, data {3} ", Rownum, myField.Name, myField.DataType, myValue));
                         return myField.GetNull();
                     }
                 case "numeric":
                     try
                     {
                         System.Data.SqlTypes.SqlDecimal d = Convert.ToDecimal(myValue);
-                        if (d.Precision - d.Scale > myField.precision - myField.scale) // bigger before the comma
+                        if (d.Precision - d.Scale > myField.Precision - myField.Scale) // bigger before the comma
                         {
-                            log.Warn(String.Format("Skipped invalid data in row {0}, field {1}, data type {2}, data {3} ", rownum, myField.Name, myField.DataType, myValue));
+                            Log.Warn(String.Format("Skipped invalid data in row {0}, field {1}, data type {2}, data {3} ", Rownum, myField.Name, myField.DataType, myValue));
                             return myField.GetNull();
                         }
-                        else if (d.Scale > myField.scale) // bigger after the comma
+                        else if (d.Scale > myField.Scale) // bigger after the comma
                         {
                             // round it
-                            if (Math.Abs(Math.Round(Convert.ToDecimal(myValue), myField.scale) - (decimal)d) != 0)
+                            if (Math.Abs(Math.Round(Convert.ToDecimal(myValue), myField.Scale) - (decimal)d) != 0)
                             {
-                                log.Warn(String.Format("Rounded invalid data in row {0}, field {1}, data type {2}, data {3} ", rownum, myField.Name, myField.DataType, myValue));
+                                Log.Warn(String.Format("Rounded invalid data in row {0}, field {1}, data type {2}, data {3} ", Rownum, myField.Name, myField.DataType, myValue));
                             }
-                            return Math.Round(Convert.ToDecimal(myValue), myField.scale);
+                            return Math.Round(Convert.ToDecimal(myValue), myField.Scale);
                         }
                         else
                         {
@@ -126,14 +126,14 @@ namespace SQLBulkCopy
                             { return dd; }
                             else
                             {
-                                log.Warn(String.Format("Skipped invalid data in row {0}, field {1}, data type {2}, data {3} ", rownum, myField.Name, myField.DataType, myValue));
+                                Log.Warn(String.Format("Skipped invalid data in row {0}, field {1}, data type {2}, data {3} ", Rownum, myField.Name, myField.DataType, myValue));
                                 return myField.GetNull();
                             }
                         }
                     }
                     catch (Exception)
                     {
-                        log.Warn(String.Format("Skipped invalid data in row {0}, field {1}, data type {2}, data {3} ", rownum, myField.Name, myField.DataType, myValue));
+                        Log.Warn(String.Format("Skipped invalid data in row {0}, field {1}, data type {2}, data {3} ", Rownum, myField.Name, myField.DataType, myValue));
                         return myField.GetNull();
                     }
                 case "bit":
@@ -151,7 +151,7 @@ namespace SQLBulkCopy
                         case "f":
                             return false;
                         default:
-                            log.Warn(String.Format("Skipped invalid data in row {0}, field {1}, data type {2}, data {3} ", rownum, myField.Name, myField.DataType, myValue));
+                            Log.Warn(String.Format("Skipped invalid data in row {0}, field {1}, data type {2}, data {3} ", Rownum, myField.Name, myField.DataType, myValue));
                             return myField.GetNull();
                     }
                 case "float":
@@ -164,7 +164,7 @@ namespace SQLBulkCopy
                     }
                     else
                     {
-                        log.Warn(String.Format("Skipped invalid data in row {0}, field {1}, data type {2}, data {3} ", rownum, myField.Name, myField.DataType, myValue));
+                        Log.Warn(String.Format("Skipped invalid data in row {0}, field {1}, data type {2}, data {3} ", Rownum, myField.Name, myField.DataType, myValue));
                         return myField.GetNull();
                     }
                 case "datetime":
@@ -174,11 +174,11 @@ namespace SQLBulkCopy
                     { return myDt; }
                     else
                     {
-                        log.Warn(String.Format("Skipped invalid data in row {0}, field {1}, data type {2}, data {3} ", rownum, myField.Name, myField.DataType, myValue));
+                        Log.Warn(String.Format("Skipped invalid data in row {0}, field {1}, data type {2}, data {3} ", Rownum, myField.Name, myField.DataType, myValue));
                         return myField.GetNull();
                     }
                 default:
-                    log.Warn(String.Format("Skipped invalid data in row {0}, field {1}, data type {2}, data {3} ", rownum, myField.Name, myField.DataType, myValue));
+                    Log.Warn(String.Format("Skipped invalid data in row {0}, field {1}, data type {2}, data {3} ", Rownum, myField.Name, myField.DataType, myValue));
                     return myField.GetNull();
             }
         }
@@ -188,14 +188,14 @@ namespace SQLBulkCopy
         }
         
 
-        protected void getTableFields(MyAPConfig configSettings)
+        protected void GetTableFields(MyApConfig configSettings)
         {
             using (SqlConnection myConnection =
                 configSettings.IntegratedSecurity
                     ? new SqlConnection(String.Format("Data Source={0};Initial Catalog={1};Integrated Security=True;Packet Size=32000;", configSettings.Server,
                         configSettings.Database))
                     : new SqlConnection(string.Format("Data Source={0};Initial Catalog={1};User ID={2}; Password={3} ;Packet Size=32000;", configSettings.Server,
-                        configSettings.Database, configSettings.DBUser, configSettings.DBPassword)))
+                        configSettings.Database, configSettings.DbUser, configSettings.DbPassword)))
             {
                 myConnection.Open();
                 SqlCommand myCmd = myConnection.CreateCommand();
@@ -219,29 +219,29 @@ namespace SQLBulkCopy
                     {
                         Name = myReader.GetString(0),
                         DataType = myReader.GetString(1),
-                        length = myReader.GetInt32(2),
-                        nullable = myReader.GetString(3) == "YES",
-                        precision = myReader.GetInt32(4),
-                        scale = myReader.GetInt32(5),
+                        Length = myReader.GetInt32(2),
+                        Nullable = myReader.GetString(3) == "YES",
+                        Precision = myReader.GetInt32(4),
+                        Scale = myReader.GetInt32(5),
                         FileFieldPosition = -1
                     });
                 }
                 myReader.Close();
             
-             theTableFields = myTableFields.ToArray();
+             TheTableFields = myTableFields.ToArray();
             }
         }
 
 
-        public virtual int FieldCount { get { return theTableFields.Count(); } }
+        public virtual int FieldCount { get { return TheTableFields.Count(); } }
 
 
-        protected string removeDoubleSpaces(string aStringWithALotOfSpaces)
+        protected string RemoveDoubleSpaces(string aStringWithALotOfSpaces)
         {
             return Regex.Replace(aStringWithALotOfSpaces, @"\s+", " ");
         }
 
-        private bool theDataReaderOpen = true;
+        private bool _theDataReaderOpen = true;
 
        #region crap
         // this is crap to make the compiler happy
@@ -251,7 +251,7 @@ namespace SQLBulkCopy
         }
         public bool IsClosed
         {
-            get { return !theDataReaderOpen; }
+            get { return !_theDataReaderOpen; }
         }
         public int RecordsAffected
         {
@@ -259,7 +259,7 @@ namespace SQLBulkCopy
         }
         public void Close()
         {
-            theDataReaderOpen = false;
+            _theDataReaderOpen = false;
         }
         public bool NextResult()
         {

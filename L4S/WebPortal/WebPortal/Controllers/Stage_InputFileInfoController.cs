@@ -10,14 +10,14 @@ using WebPortal;
 
 namespace WebPortal.Controllers
 {
-    public class Stage_InputFileInfoController : Controller
+    public class StageInputFileInfoController : Controller
     {
-        private log4serviceEntities db = new log4serviceEntities();
+        private log4serviceEntities _db = new log4serviceEntities();
 
         // GET: Stage_InputFileInfo
         public ActionResult Index()
         {
-            return View(db.Stage_InputFileInfo.ToList());
+            return View(_db.Stage_InputFileInfo.ToList());
         }
 
         // GET: Stage_InputFileInfo/Details/5
@@ -27,12 +27,12 @@ namespace WebPortal.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Stage_InputFileInfo stage_InputFileInfo = db.Stage_InputFileInfo.Find(id);
-            if (stage_InputFileInfo == null)
+            Stage_InputFileInfo stageInputFileInfo = _db.Stage_InputFileInfo.Find(id);
+            if (stageInputFileInfo == null)
             {
                 return HttpNotFound();
             }
-            return View(stage_InputFileInfo);
+            return View(stageInputFileInfo);
         }
 
         // GET: Stage_InputFileInfo/Create
@@ -46,16 +46,16 @@ namespace WebPortal.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "id,fileName,checksum,insertDateTime")] Stage_InputFileInfo stage_InputFileInfo)
+        public ActionResult Create([Bind(Include = "id,fileName,checksum,insertDateTime")] Stage_InputFileInfo stageInputFileInfo)
         {
             if (ModelState.IsValid)
             {
-                db.Stage_InputFileInfo.Add(stage_InputFileInfo);
-                db.SaveChanges();
+                _db.Stage_InputFileInfo.Add(stageInputFileInfo);
+                _db.SaveChanges();
                 return RedirectToAction("Index");
             }
 
-            return View(stage_InputFileInfo);
+            return View(stageInputFileInfo);
         }
 
         // GET: Stage_InputFileInfo/Edit/5
@@ -65,12 +65,12 @@ namespace WebPortal.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Stage_InputFileInfo stage_InputFileInfo = db.Stage_InputFileInfo.Find(id);
-            if (stage_InputFileInfo == null)
+            Stage_InputFileInfo stageInputFileInfo = _db.Stage_InputFileInfo.Find(id);
+            if (stageInputFileInfo == null)
             {
                 return HttpNotFound();
             }
-            return View(stage_InputFileInfo);
+            return View(stageInputFileInfo);
         }
 
         // POST: Stage_InputFileInfo/Edit/5
@@ -78,15 +78,15 @@ namespace WebPortal.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "id,fileName,checksum,insertDateTime")] Stage_InputFileInfo stage_InputFileInfo)
+        public ActionResult Edit([Bind(Include = "id,fileName,checksum,insertDateTime")] Stage_InputFileInfo stageInputFileInfo)
         {
             if (ModelState.IsValid)
             {
-                db.Entry(stage_InputFileInfo).State = EntityState.Modified;
-                db.SaveChanges();
+                _db.Entry(stageInputFileInfo).State = EntityState.Modified;
+                _db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            return View(stage_InputFileInfo);
+            return View(stageInputFileInfo);
         }
 
         // GET: Stage_InputFileInfo/Delete/5
@@ -96,12 +96,12 @@ namespace WebPortal.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Stage_InputFileInfo stage_InputFileInfo = db.Stage_InputFileInfo.Find(id);
-            if (stage_InputFileInfo == null)
+            Stage_InputFileInfo stageInputFileInfo = _db.Stage_InputFileInfo.Find(id);
+            if (stageInputFileInfo == null)
             {
                 return HttpNotFound();
             }
-            return View(stage_InputFileInfo);
+            return View(stageInputFileInfo);
         }
 
         // POST: Stage_InputFileInfo/Delete/5
@@ -109,9 +109,9 @@ namespace WebPortal.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(string id)
         {
-            Stage_InputFileInfo stage_InputFileInfo = db.Stage_InputFileInfo.Find(id);
-            db.Stage_InputFileInfo.Remove(stage_InputFileInfo);
-            db.SaveChanges();
+            Stage_InputFileInfo stageInputFileInfo = _db.Stage_InputFileInfo.Find(id);
+            _db.Stage_InputFileInfo.Remove(stageInputFileInfo);
+            _db.SaveChanges();
             return RedirectToAction("Index");
         }
 
@@ -119,7 +119,7 @@ namespace WebPortal.Controllers
         {
             if (disposing)
             {
-                db.Dispose();
+                _db.Dispose();
             }
             base.Dispose(disposing);
         }

@@ -4,26 +4,26 @@ namespace SQLBulkCopy
 {
     class FastCsvReader : BaseCsvReader
     {
-        private static readonly log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
-        protected CsvParser theParser;
+        private static readonly log4net.ILog Log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+        protected CsvParser TheParser;
 
         public void CloseParser()
         {
-            theParser.CloseParser();
+            TheParser.CloseParser();
         }
-        public FastCsvReader(string aFileName, MyAPConfig configSettings)
+        public FastCsvReader(string aFileName, MyApConfig configSettings)
         {
-            theParser = new CsvParser(aFileName);
+            TheParser = new CsvParser(aFileName);
             
-            theFileFields = theParser.ReadFields(configSettings.InputFieldSepartor);
+            TheFileFields = TheParser.ReadFields(configSettings.InputFieldSepartor);
 
-            getTableFields(configSettings);
+            GetTableFields(configSettings);
 
             // check header line with table
-            foreach (Field f in theTableFields)
+            foreach (Field f in TheTableFields)
             {
                 int i = 0;
-                foreach (string ff in theFileFields)
+                foreach (string ff in TheFileFields)
                 {
                     if (ff.ToLower() == f.Name.ToLower())
                     {
@@ -32,24 +32,24 @@ namespace SQLBulkCopy
                     i++;
                 }
             }
-            rownum = 0;
+            Rownum = 0;
             
         }
 
-        public bool Read(string aDelimiter)
+         public bool Read(string aDelimiter)
         {
-            //while (!theParser.EndOfData)
-            while (theParser.Read())
+            //while (!TheParser.EndOfData)
+            while (TheParser.Read())
             {
                 try
                 {
-                    theValues = theParser.ReadFields(aDelimiter);
+                    TheValues = TheParser.ReadFields(aDelimiter);
                 }
                 catch (Exception ex)
                 {
-                    log.Warn("Skipped line " + ex.Message);
+                    Log.Warn("Skipped line " + ex.Message);
                 }
-                rownum++;
+                Rownum++;
 
                 return true;
             }

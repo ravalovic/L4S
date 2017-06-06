@@ -95,10 +95,10 @@ namespace CommonHelper
             if (fileName != null)
             {
                 var batchId = fileName.Split('_');
-                int bID;
-                if (Int32.TryParse(batchId[1], out bID))
+                int bId;
+                if (Int32.TryParse(batchId[1], out bId))
                 { 
-                return bID;
+                return bId;
                 }
             }
             return 0;

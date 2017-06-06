@@ -1,17 +1,7 @@
 USE [log4service]
 GO
 
-ALTER TABLE [dbo].[Stage_InputFileDuplicity] DROP CONSTRAINT [DF_Stage_InputFileDuplicity_insertDateTime_1]
-GO
-
-ALTER TABLE [dbo].[Stage_InputFileDuplicity] DROP CONSTRAINT [DF_Stage_InputFileDuplicity_insertDateTime]
-GO
-
-/****** Object:  Table [dbo].[Stage_InputFileDuplicity]    Script Date: 30. 5. 2017 10:32:10 ******/
-DROP TABLE [dbo].[Stage_InputFileDuplicity]
-GO
-
-/****** Object:  Table [dbo].[Stage_InputFileDuplicity]    Script Date: 30. 5. 2017 10:32:10 ******/
+/****** Object:  Table [dbo].[Stage_InputFileDuplicity]    Script Date: 06.06.2017 23:27:51 ******/
 SET ANSI_NULLS ON
 GO
 
@@ -24,7 +14,8 @@ CREATE TABLE [dbo].[Stage_InputFileDuplicity](
 	[checksum] [varchar](50) NOT NULL,
 	[loadDateTime] [datetime] NOT NULL,
 	[insertDateTime] [datetime] NOT NULL,
-	[oriFileName] [varchar](100) NULL
+	[oriFileName] [varchar](100) NULL,
+	[loaderBatchID] [int] NOT NULL
 ) ON [PRIMARY]
 GO
 
@@ -33,4 +24,8 @@ GO
 
 ALTER TABLE [dbo].[Stage_InputFileDuplicity] ADD  CONSTRAINT [DF_Stage_InputFileDuplicity_insertDateTime_1]  DEFAULT (getdate()) FOR [insertDateTime]
 GO
+
+ALTER TABLE [dbo].[Stage_InputFileDuplicity] ADD  CONSTRAINT [DF_Stage_InputFileDuplicity_loaderBatchID]  DEFAULT ((-1)) FOR [loaderBatchID]
+GO
+
 

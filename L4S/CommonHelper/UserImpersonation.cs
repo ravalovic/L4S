@@ -43,8 +43,8 @@ namespace CommonHelper {
      private string _passWord; 
  
 
-     const int LOGON32_PROVIDER_DEFAULT = 0; 
-     const int LOGON32_LOGON_INTERACTIVE = 2; 
+     const int Logon32ProviderDefault = 0; 
+     const int Logon32LogonInteractive = 2; 
  
 
      /// <summary> 
@@ -68,7 +68,7 @@ namespace CommonHelper {
      public bool ImpersonateValidUser()
      { 
          bool returnValue = LogonUser(_userName, _domain, _passWord,
-                 LOGON32_LOGON_INTERACTIVE, LOGON32_PROVIDER_DEFAULT,
+                 Logon32LogonInteractive, Logon32ProviderDefault,
                  ref _tokenHandle); 
  
 

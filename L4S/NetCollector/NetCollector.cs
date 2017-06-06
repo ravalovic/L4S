@@ -14,7 +14,7 @@ using Limilabs.FTP.Client;
 namespace NetCollector
 {
     //Public class for read parameters from .config file
-    public class MyAPConfig
+    public class MyApConfig
     {
        
         public string TransferMethod { get; set; }
@@ -33,7 +33,7 @@ namespace NetCollector
         public string BackupDir { get; set; }
         public string DateMask { get; set; }
 
-        public MyAPConfig()
+        public MyApConfig()
         {
             var configManager = new AppConfigManager();
             //remote params
@@ -64,14 +64,14 @@ namespace NetCollector
             int.TryParse(configManager.ReadSetting("whichDay"), out whichDay);
             DateMask= DateTime.Now.AddDays(whichDay).ToString(configManager.ReadSetting("dateMask"));
          }
-        public bool CheckParams(object MyConfig, out string missingParams)
+        public bool CheckParams(object myConfig, out string missingParams)
         {
             bool isInComplete = false;
             missingParams = string.Empty;
             string mp = string.Empty;
-            foreach (var propertyInfo in MyConfig.GetType().GetProperties())
+            foreach (var propertyInfo in myConfig.GetType().GetProperties())
             {
-                string value = propertyInfo.GetValue(MyConfig).ToString();
+                string value = propertyInfo.GetValue(myConfig).ToString();
                 if (String.IsNullOrEmpty(value))
                 {
                     mp = mp + " " + propertyInfo.Name;
@@ -91,18 +91,18 @@ namespace NetCollector
         protected enum CollectionMethod
         {
             NetShare,
-            FTP,
-            HTTP,
-            SSH
+            Ftp,
+            Http,
+            Ssh
         }
        
         // Create a logger for use in this class
-        private static readonly log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+        private static readonly log4net.ILog Log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
         /// <summary>
         /// Initialization variable from App.config
         /// </summary>
-        private static void CreateIfMissing(MyAPConfig appApConfig)
+        private static void CreateIfMissing(MyApConfig appApConfig)
         {
            Directory.CreateDirectory(appApConfig.BackupDir);
            Directory.CreateDirectory(appApConfig.WorkDir);
@@ -114,16 +114,16 @@ namespace NetCollector
             using (new SingleGlobalInstance(1000)) //1000ms timeout on global lock
             {
                 string missing;
-                MyAPConfig appSettings = new MyAPConfig();
+                MyApConfig appSettings = new MyApConfig();
                 if (appSettings.CheckParams(appSettings, out missing))
                 {
-                    log.Error(missing);
+                    Log.Error(missing);
                     Environment.Exit(0);
                 }
                 CreateIfMissing(appSettings);
 
-                log.InfoFormat("Running as {0}", WindowsIdentity.GetCurrent().Name);
-                log.InfoFormat("Transfer method:  {0}", appSettings.TransferMethod);
+                Log.InfoFormat("Running as {0}", WindowsIdentity.GetCurrent().Name);
+                Log.InfoFormat("Transfer method:  {0}", appSettings.TransferMethod);
                 CollectionMethod method;
                 if (Enum.TryParse(appSettings.TransferMethod, out method))
                 {
@@ -152,13 +152,13 @@ namespace NetCollector
                                     }
                                     else
                                     {
-                                        log.Error("User is not connected check credential");
+                                        Log.Error("User is not connected check credential");
                                     }
                                 }
                             }
                             break;
-                        case CollectionMethod.FTP:
-                            if (FTPTransfer(appSettings))
+                        case CollectionMethod.Ftp:
+                            if (FtpTransfer(appSettings))
                             {
                                 BackupNewFiles(appSettings);
                                 MoveToFinal(appSettings);
@@ -174,7 +174,7 @@ namespace NetCollector
         /// </summary>
         /// <param name="settingsConfig"></param>
         /// <returns></returns>
-        protected static bool NetShareTransfer(MyAPConfig settingsConfig)
+        protected static bool NetShareTransfer(MyApConfig settingsConfig)
         {
             bool result = false;
             string dateMask = DateTime.Now.ToString("ddMMyyyyHHmmss");
@@ -183,17 +183,17 @@ namespace NetCollector
             string[] iFiles = Directory.GetFiles(sourceDir, settingsConfig.RemoteFileName);
             if (iFiles.Any())
             {
-                log.Info(@"Get new files from: " + sourceDir);
+                Log.Info(@"Get new files from: " + sourceDir);
                 //Copy file from remote server to NetCollector Work directory
                
                 foreach (var file in iFiles)
                 {
                     Helper.ManageFile(Helper.Action.Copy, file, settingsConfig.WorkDir);
-                    log.Info(String.Format("New file {0}", file));
+                    Log.Info(String.Format("New file {0}", file));
                     if (settingsConfig.AllowRenameRemote)
                     {
                         Helper.ManageFile(Helper.Action.Move, file, sourceDir, @"_" + dateMask + settingsConfig.RenameRemoteExtension);
-                        log.Info(String.Format("Renaming to file {0} ", file + settingsConfig.RenameRemoteExtension));
+                        Log.Info(String.Format("Renaming to file {0} ", file + settingsConfig.RenameRemoteExtension));
                     }
                   
                 }
@@ -201,7 +201,7 @@ namespace NetCollector
             }
             else
             {
-                log.Warn("No files for collection from source: " + sourceDir + settingsConfig.RemoteFileName);
+                Log.Warn("No files for collection from source: " + sourceDir + settingsConfig.RemoteFileName);
             }
             return result;
         }
@@ -211,7 +211,7 @@ namespace NetCollector
         /// </summary>
         /// <param name="settingsConfig"></param>
         /// <returns></returns>
-        protected static bool FTPTransfer(MyAPConfig settingsConfig)
+        protected static bool FtpTransfer(MyApConfig settingsConfig)
         {
             bool result = false;
             string dateMask = DateTime.Now.ToString("ddMMyyyyHHmmss");
@@ -238,7 +238,7 @@ namespace NetCollector
                 }
                 else
                 {
-                    log.Warn("No files for collection from source: " + settingsConfig.RemoteServer + settingsConfig.RemoteDir + settingsConfig.RemoteFileName);
+                    Log.Warn("No files for collection from source: " + settingsConfig.RemoteServer + settingsConfig.RemoteDir + settingsConfig.RemoteFileName);
                 }
                ftp.Close(); 
             }
@@ -250,7 +250,7 @@ namespace NetCollector
         /// Backup new file to Backup directory in zip format
         /// </summary>
         /// <param name="settingsConfig"></param>
-        protected static void BackupNewFiles(MyAPConfig settingsConfig)
+        protected static void BackupNewFiles(MyApConfig settingsConfig)
         {
             //throw new NotImplementedException("NotImplemented yet");
             var iFiles = Directory.GetFiles(settingsConfig.WorkDir, settingsConfig.RemoteFileName);
@@ -261,20 +261,20 @@ namespace NetCollector
                 {
                     //Backup file from workDir to backup directory
                     Helper.ManageFile(Helper.Action.Zip, file, settingsConfig.BackupDir);
-                    log.Info(String.Format("Backup file {0}", file));
+                    Log.Info(String.Format("Backup file {0}", file));
                    
                 }
             }
             else
             {
-                log.Warn("No files for backup from: " + settingsConfig.BackupDir);
+                Log.Warn("No files for backup from: " + settingsConfig.BackupDir);
             }
         }
         /// <summary>
         /// Moving transferred file from work to final directory
         /// </summary>
         /// <param name="settingsConfig"></param>
-        protected static void MoveToFinal(MyAPConfig settingsConfig)
+        protected static void MoveToFinal(MyApConfig settingsConfig)
         {
             
             var iFiles = Directory.GetFiles(settingsConfig.WorkDir, settingsConfig.RemoteFileName);
@@ -285,13 +285,13 @@ namespace NetCollector
                 {
                     //Backup file from workDir to backup directory
                     Helper.ManageFile(Helper.Action.Move, file, settingsConfig.OutputDir);
-                    log.Info(String.Format("Move file {0} to {1}", file, settingsConfig.OutputDir));
+                    Log.Info(String.Format("Move file {0} to {1}", file, settingsConfig.OutputDir));
                     
                 }
             }
             else
             {
-                log.Warn("No files for finallly move  from: " + settingsConfig.WorkDir);
+                Log.Warn("No files for finallly move  from: " + settingsConfig.WorkDir);
             }
         }
      
