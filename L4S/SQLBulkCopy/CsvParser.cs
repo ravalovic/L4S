@@ -23,11 +23,13 @@ namespace SQLBulkCopy
             if (_theReader.Peek() >= 0) { return true; }
             else { return false; }
         }
+        public char Delimiter { get; set; } = ',';
 
-      public string[] ReadFields(string aDelimiter = ",")
+        public string[] ReadFields()
         {
             string myLine =
                 _theReader.ReadLine();
+            
             Debug.Assert(myLine != null, "myLine != null");
             int l = myLine.Length;
             List<string> myRow = new List<string>();
@@ -65,7 +67,7 @@ namespace SQLBulkCopy
                 else
                 {
                     int start = i;
-                    while (i < l && myLine[i] != aDelimiter[0])
+                    while (i < l && myLine[i] != Delimiter)
                         i++;
                     //add the value
                     myRow.Add(myLine.Substring(start, i - start));

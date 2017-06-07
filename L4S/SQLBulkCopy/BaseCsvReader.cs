@@ -16,7 +16,9 @@ namespace SQLBulkCopy
         protected string[] TheValues;
         protected int Rownum;
         protected Field[] TheTableFields;
+
         
+
         public virtual Object GetValue(int i)
         {
 
@@ -233,7 +235,7 @@ namespace SQLBulkCopy
         }
 
 
-        public virtual int FieldCount { get { return TheTableFields.Count(); } }
+        public virtual int FieldCount => TheTableFields.Count();
 
 
         protected string RemoveDoubleSpaces(string aStringWithALotOfSpaces)
@@ -243,20 +245,13 @@ namespace SQLBulkCopy
 
         private bool _theDataReaderOpen = true;
 
-       #region crap
+        #region crap
         // this is crap to make the compiler happy
-        public int Depth
-        {
-            get { return 0; }
-        }
-        public bool IsClosed
-        {
-            get { return !_theDataReaderOpen; }
-        }
-        public int RecordsAffected
-        {
-            get { return -1; }
-        }
+        public int Depth => 0;
+
+        public bool IsClosed => !_theDataReaderOpen;
+        public int RecordsAffected => -1;
+
         public void Close()
         {
             _theDataReaderOpen = false;
@@ -292,16 +287,9 @@ namespace SQLBulkCopy
         {
             throw new NotSupportedException("not supported.");
         }
-        public object this[int i]
-        {
-            get { throw new NotSupportedException("not supported."); }
-        }
-        public object this[String name]
-        {
-            // Look up the ordinal and return 
-            // the value at that position.
-            get { return this[GetOrdinal(name)]; }
-        }
+        public object this[int i] => throw new NotSupportedException("not supported.");
+        public object this[String name] => this[GetOrdinal(name)];
+
         public bool GetBoolean(int i)
         {
             throw new NotSupportedException("not supported.");

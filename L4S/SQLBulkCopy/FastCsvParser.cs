@@ -14,8 +14,9 @@ namespace SQLBulkCopy
         public FastCsvReader(string aFileName, MyApConfig configSettings)
         {
             TheParser = new CsvParser(aFileName);
+            TheParser.Delimiter = configSettings.InputFieldSepartor[0]; //char 
             
-            TheFileFields = TheParser.ReadFields(configSettings.InputFieldSepartor);
+            TheFileFields = TheParser.ReadFields();
 
             GetTableFields(configSettings);
 
@@ -36,14 +37,14 @@ namespace SQLBulkCopy
             
         }
 
-         public bool Read(string aDelimiter)
+         public override bool Read()
         {
             //while (!TheParser.EndOfData)
             while (TheParser.Read())
             {
                 try
                 {
-                    TheValues = TheParser.ReadFields(aDelimiter);
+                    TheValues = TheParser.ReadFields();
                 }
                 catch (Exception ex)
                 {

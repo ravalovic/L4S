@@ -172,7 +172,7 @@ namespace SQLBulkCopy
                             Helper.ManageFile(Helper.Action.Delete, iFile);
 
                             myStopWatch.Stop();
-                            Log.Info("imported in " + myStopWatch.ElapsedMilliseconds / 1000);
+                            Log.Info("imported in " + myStopWatch.ElapsedMilliseconds + " ms");
                         }
                         catch (Exception ex)
                         {
