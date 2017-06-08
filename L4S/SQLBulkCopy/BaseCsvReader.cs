@@ -287,7 +287,11 @@ namespace SQLBulkCopy
         {
             throw new NotSupportedException("not supported.");
         }
-        public object this[int i] => throw new NotSupportedException("not supported.");
+
+        public object this[int i]
+        {
+            get { throw new NotSupportedException("not supported."); }
+        }
         public object this[String name] => this[GetOrdinal(name)];
 
         public bool GetBoolean(int i)

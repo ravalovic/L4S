@@ -91,6 +91,7 @@ namespace PreProcessor
         {
             using (new SingleGlobalInstance(1000)) //1000ms timeout on global lock
             {
+                System.Diagnostics.Stopwatch myStopWatch = System.Diagnostics.Stopwatch.StartNew();
                 string missing;
                 var appSettings = new MyApConfig();
                 if (appSettings.CheckParams(appSettings, out missing))
@@ -103,6 +104,8 @@ namespace PreProcessor
                 GetFromNetCollector(appSettings);
                 MoveProcessedFile(appSettings);
                 ProcessAllFiles(appSettings);
+                myStopWatch.Stop();
+                Log.Info("imported in " + myStopWatch.ElapsedMilliseconds + " ms");
             }
         }
         protected static void ProcessAllFiles(MyApConfig configSettings)

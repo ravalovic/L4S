@@ -113,6 +113,7 @@ namespace NetCollector
 
             using (new SingleGlobalInstance(1000)) //1000ms timeout on global lock
             {
+                System.Diagnostics.Stopwatch myStopWatch = System.Diagnostics.Stopwatch.StartNew();
                 string missing;
                 MyApConfig appSettings = new MyApConfig();
                 if (appSettings.CheckParams(appSettings, out missing))
@@ -167,6 +168,8 @@ namespace NetCollector
                     }
 
                 }
+                myStopWatch.Stop();
+                Log.Info("imported in " + myStopWatch.ElapsedMilliseconds + " ms");
             } //using singleinstance
         }
         /// <summary>
