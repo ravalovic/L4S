@@ -18,14 +18,15 @@ namespace WebPortal
         public string originalFileName { get; set; }
         public string originalCheckSum { get; set; }
         public string preProcessFileName { get; set; }
-        public string col1 { get; set; }
-        public string col2 { get; set; }
-        public string col3 { get; set; }
-        public string col4 { get; set; }
-        public string col5 { get; set; }
-        public string col6 { get; set; }
-        public string col7 { get; set; }
-        public string col8 { get; set; }
-        public string col9 { get; set; }
+        public string Node_IP_Address { get; set; }
+        public string UserID { get; set; }
+        public string Date_Of_Request { get; set; }
+        public string Requested_URL { get; set; }
+        public string Request_Status { get; set; }
+        public string Bytes_Sent { get; set; }
+        public string Request_Time { get; set; }
+        public string Unknown { get; set; }
+        public string User_Agent { get; set; }
+        public string User_IP_Address { get; set; }
     }
 }

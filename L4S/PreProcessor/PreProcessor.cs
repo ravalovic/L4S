@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Configuration;
 using System.IO;
 using System.Linq;
@@ -21,7 +22,7 @@ namespace PreProcessor
         public string WorkDir { get; set; }
         public string OutputFileMask { get; set; }
         public string InputFileName { get; set; }
-        public string UnifiedMap { get; set; }
+        public string OutputMapping { get; set; }
         public string InputFieldSeparator { get; set; }
         public string OutputFieldSeparator { get; set; }
         public string[] Patterns { get; set; }
@@ -36,12 +37,12 @@ namespace PreProcessor
             WorkDir = configManager.ReadSetting("workDir");
             OutputFileMask = configManager.ReadSetting("outputFileMask");
             InputFileName = configManager.ReadSetting("inputFileName");
-            UnifiedMap = configManager.ReadSetting("unifiedMap");
+            OutputMapping = configManager.ReadSetting("OutputMapping");
             InputFieldSeparator = configManager.ReadSetting("inputFieldSeparator");
             OutputFieldSeparator = configManager.ReadSetting("outputFieldSeparator");
             Patterns = ConfigurationManager.AppSettings.AllKeys.Where(key => key.StartsWith("pattern")).Select(configManager.ReadSetting).ToArray();
             //Patterns = ConfigurationManager.AppSettings.AllKeys.Where(key => key.StartsWith("pattern")).Select(key => ConfigurationManager.AppSettings[key]).ToArray();
-            HeaderLine = configManager.ReadSetting("headerLine");
+            HeaderLine = configManager.ReadSetting("fixField") +OutputFieldSeparator+ configManager.ReadSetting("inputDataField");
             
             // Get last value of Batch ID 
             long batchId;
@@ -77,9 +78,22 @@ namespace PreProcessor
         }
     }
 
+    public static class StopWatchExtension
+    {
+        public static string RunTime(this Stopwatch sw)
+        {
+            if (sw.ElapsedMilliseconds > 1000)
+               return sw.ElapsedMilliseconds / 1000 + " s";
+            else
+            {
+                return  sw.ElapsedMilliseconds + "ms";
+            }
+        }
+
+    }
     public class PreProcessor
     {
-       // Create a logger for use in this class
+        // Create a logger for use in this class
         private static readonly log4net.ILog Log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
         private static void CreateIfMissing(MyApConfig appApConfig)
         {
@@ -91,7 +105,7 @@ namespace PreProcessor
         {
             using (new SingleGlobalInstance(1000)) //1000ms timeout on global lock
             {
-                System.Diagnostics.Stopwatch myStopWatch = System.Diagnostics.Stopwatch.StartNew();
+                var myStopWatch = Stopwatch.StartNew();
                 string missing;
                 var appSettings = new MyApConfig();
                 if (appSettings.CheckParams(appSettings, out missing))
@@ -105,7 +119,7 @@ namespace PreProcessor
                 MoveProcessedFile(appSettings);
                 ProcessAllFiles(appSettings);
                 myStopWatch.Stop();
-                Log.Info("imported in " + myStopWatch.ElapsedMilliseconds + " ms");
+                Log.Info("Processed in " + myStopWatch.RunTime());
             }
         }
         protected static void ProcessAllFiles(MyApConfig configSettings)
@@ -207,7 +221,7 @@ namespace PreProcessor
                 {
                     if (Helper.IsValidByReg(configSettings.Patterns, line) && !string.IsNullOrWhiteSpace(line))
                     {
-                        var unifiedLine = MakeLine(configSettings.BatchId, iFile, oriCheckSum, oFile.Name, line, configSettings.UnifiedMap, configSettings.InputFieldSeparator, configSettings.OutputFieldSeparator);
+                        var unifiedLine = MakeLine(configSettings, iFile, oriCheckSum, oFile.Name, line);
                         sw.WriteLine(unifiedLine);
                     }
                 }
@@ -227,20 +241,17 @@ namespace PreProcessor
         /// <summary>
         /// Create new unified line, mapping input to output stage table format
         /// </summary>
-        /// <param name="batchId"></param>
+        /// <param name="myConfig"></param>
+        /// <param name="origFileName"></param>
         /// <param name="checkSum"></param>
         /// <param name="fileName"></param>
         /// <param name="line"></param>
-        /// <param name="unifiedMap"></param>
-        /// <param name="inputFieldSeparator"></param>
-        /// <param name="outputFieldSeparator"></param>
-        /// <param name="origFileName"></param>
         /// <returns></returns>
-        protected static string MakeLine(long batchId, string origFileName, string checkSum, string fileName, string line, string unifiedMap, string inputFieldSeparator, string outputFieldSeparator)
+        protected static string MakeLine(MyApConfig myConfig, string origFileName, string checkSum, string fileName, string line)
         {
             char separator = ',';
-            string[] mapper = unifiedMap.Split(separator);
-            string[] splittedLine = line.Split(char.Parse(inputFieldSeparator));
+            string[] mapper = myConfig.OutputMapping.Split(separator);
+            string[] splittedLine = line.Split(char.Parse(myConfig.InputFieldSeparator));
             string[] newLineArray = new string[mapper.Count()];
             int i = 0;
             foreach (var map in mapper)
@@ -255,11 +266,11 @@ namespace PreProcessor
                 }
                 i++;
             }
-            return   batchId + outputFieldSeparator + 
-                     origFileName + outputFieldSeparator + 
-                     checkSum + outputFieldSeparator +
-                     fileName + outputFieldSeparator +
-                     string.Join(outputFieldSeparator, newLineArray);
+            return myConfig.BatchId + myConfig.OutputFieldSeparator + 
+                     origFileName + myConfig.OutputFieldSeparator + 
+                     checkSum + myConfig.OutputFieldSeparator +
+                     fileName + myConfig.OutputFieldSeparator +
+                     string.Join(myConfig.OutputFieldSeparator, newLineArray);
         }
     }
 }

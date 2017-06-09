@@ -20,5 +20,6 @@ namespace WebPortal
         public System.DateTime loadDateTime { get; set; }
         public System.DateTime insertDateTime { get; set; }
         public string oriFileName { get; set; }
+        public int loaderBatchID { get; set; }
     }
 }

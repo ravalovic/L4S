@@ -5,6 +5,7 @@ using CommonHelper;
 using System.IO;
 using System.Security.Principal;
 using System.Data;
+using System.Diagnostics;
 
 // Configure log4net using the .config file
 [assembly: log4net.Config.XmlConfigurator(Watch = true)]
@@ -92,6 +93,20 @@ namespace SQLBulkCopy
             return isInComplete;
         }
     }
+
+    public static class StopWatchExtension
+    {
+        public static string RunTime(this Stopwatch sw)
+        {
+            if (sw.ElapsedMilliseconds > 1000)
+                return sw.ElapsedMilliseconds / 1000 + " s";
+            else
+            {
+                return sw.ElapsedMilliseconds + "ms";
+            }
+        }
+    }
+
     class Program
     {
         // Create a logger for use in this class
@@ -120,7 +135,7 @@ namespace SQLBulkCopy
                 CreateIfMissing(appSettings);
                 Log.InfoFormat("Running as {0}", WindowsIdentity.GetCurrent().Name);
                 MoveProcessedFile(appSettings); // from PreProcessor Output to Work
-                System.Diagnostics.Stopwatch myStopWatch = System.Diagnostics.Stopwatch.StartNew();
+                var myStopWatch = Stopwatch.StartNew();
 
                 var iFiles = Directory.GetFiles(appSettings.WorkDir, appSettings.InputFileName);
                 if (iFiles.Any())
@@ -172,7 +187,7 @@ namespace SQLBulkCopy
                             Helper.ManageFile(Helper.Action.Delete, iFile);
 
                             myStopWatch.Stop();
-                            Log.Info("imported in " + myStopWatch.ElapsedMilliseconds + " ms");
+                            Log.Info("imported in " + myStopWatch.RunTime());
                         }
                         catch (Exception ex)
                         {

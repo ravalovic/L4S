@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Security.Principal;
@@ -86,6 +87,20 @@ namespace NetCollector
         }
 
     }
+
+    public static class StopWatchExtension
+    {
+        public static string RunTime(this Stopwatch sw)
+        {
+            if (sw.ElapsedMilliseconds > 1000)
+                return sw.ElapsedMilliseconds / 1000 + " s";
+            else
+            {
+                return sw.ElapsedMilliseconds + "ms";
+            }
+        }
+    }
+
     class NetCollector
     {
         protected enum CollectionMethod
@@ -113,7 +128,7 @@ namespace NetCollector
 
             using (new SingleGlobalInstance(1000)) //1000ms timeout on global lock
             {
-                System.Diagnostics.Stopwatch myStopWatch = System.Diagnostics.Stopwatch.StartNew();
+                var myStopWatch = Stopwatch.StartNew();
                 string missing;
                 MyApConfig appSettings = new MyApConfig();
                 if (appSettings.CheckParams(appSettings, out missing))
@@ -169,7 +184,7 @@ namespace NetCollector
 
                 }
                 myStopWatch.Stop();
-                Log.Info("imported in " + myStopWatch.ElapsedMilliseconds + " ms");
+                Log.Info("Transferred in " + myStopWatch.RunTime());
             } //using singleinstance
         }
         /// <summary>

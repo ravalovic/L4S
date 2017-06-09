@@ -18,5 +18,6 @@ namespace WebPortal
         public string fileName { get; set; }
         public string checksum { get; set; }
         public System.DateTime insertDateTime { get; set; }
+        public int loaderBatchID { get; set; }
     }
 }
