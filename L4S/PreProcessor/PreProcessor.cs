@@ -20,7 +20,10 @@ namespace PreProcessor
         public string InputDir { get; set; }
         public string OutputDir { get; set; }
         public string WorkDir { get; set; }
+        public string WrongDir { get; set; }
         public string OutputFileMask { get; set; }
+        public string WrongFileMask { get; set; }
+        public bool CreateWrongFile { get; set; }
         public string InputFileName { get; set; }
         public string OutputMapping { get; set; }
         public string InputFieldSeparator { get; set; }
@@ -35,7 +38,14 @@ namespace PreProcessor
             InputDir = configManager.ReadSetting("inputDir");
             OutputDir = configManager.ReadSetting("outputDir");
             WorkDir = configManager.ReadSetting("workDir");
+            WrongDir = configManager.ReadSetting("wrongDir");
             OutputFileMask = configManager.ReadSetting("outputFileMask");
+            WrongFileMask = configManager.ReadSetting("wrongFileMask");
+
+            bool createWrong;
+            bool.TryParse(configManager.ReadSetting("createWrongFile"), out createWrong);
+            CreateWrongFile = createWrong;
+
             InputFileName = configManager.ReadSetting("inputFileName");
             OutputMapping = configManager.ReadSetting("OutputMapping");
             InputFieldSeparator = configManager.ReadSetting("inputFieldSeparator");
@@ -100,6 +110,7 @@ namespace PreProcessor
             Directory.CreateDirectory(appApConfig.InputDir);
             Directory.CreateDirectory(appApConfig.WorkDir);
             Directory.CreateDirectory(appApConfig.OutputDir);
+            Directory.CreateDirectory(appApConfig.WrongDir);
         }
         static void Main()
         {
@@ -125,7 +136,7 @@ namespace PreProcessor
         protected static void ProcessAllFiles(MyApConfig configSettings)
         {
             //Read files from work exept Processed files
-            var iFiles = Directory.GetFiles(configSettings.WorkDir, configSettings.InputFileName).Where(n => !n.Contains("PreProcessOK")).ToArray();
+            var iFiles = Directory.GetFiles(configSettings.WorkDir, configSettings.InputFileName).Where(n => !n.Contains(configSettings.OutputFileMask) && !n.Contains(configSettings.WrongFileMask)).ToArray();
 
             if (iFiles.Any())
             {
@@ -154,7 +165,7 @@ namespace PreProcessor
         protected static void MoveProcessedFile(MyApConfig configSettings)
         {
             // Check if some processed file  exist if yes move it to final dir
-            var iFiles = Directory.GetFiles(configSettings.WorkDir, configSettings.InputFileName).Where(n => n.Contains("PreProcessOK")).ToArray();
+            var iFiles = Directory.GetFiles(configSettings.WorkDir, configSettings.InputFileName).Where(n => n.Contains(configSettings.OutputFileMask)).ToArray();
             if (iFiles.Any())
             {
                 Log.Info(@"Move old processed files from: " + configSettings.WorkDir + " to " + configSettings.OutputDir);
@@ -163,8 +174,21 @@ namespace PreProcessor
                 foreach (var file in iFiles)
                 {
                     Helper.ManageFile(Helper.Action.Move, file, configSettings.OutputDir);
-                    Log.Info(string.Format("New file {0}",file));
+                    Log.Info(string.Format("Good file {0}",file));
               }
+            }
+            iFiles = Directory.GetFiles(configSettings.WorkDir, configSettings.InputFileName).Where(n => n.Contains(configSettings.WrongFileMask)).ToArray();
+            if (iFiles.Any())
+            {
+                Log.Info(@"Move old processed files from: " + configSettings.WorkDir + " to " + configSettings.WrongDir);
+                //Move file from NetCollector to PreProcessor Wrong directory
+                foreach (var file in iFiles)
+                {
+                    Log.Info("Backup wrong file:" + file);
+                    Helper.ManageFile(Helper.Action.Zip, file, configSettings.WrongDir);
+                    Log.Info("Delete wrong file:" + file);
+                    Helper.ManageFile(Helper.Action.Delete, file);
+                }
             }
         }
         /// <summary>
@@ -213,23 +237,43 @@ namespace PreProcessor
                 string fname = Path.GetFileName(iFile);
                 string oriCheckSum = Helper.CalculateCheckSum(iFile);
                 FileInfo oFile = new FileInfo(configSettings.WorkDir + configSettings.OutputFileMask+"_"+ configSettings.BatchId + "_" + dateMask + "_" + fname);
-                StreamWriter sw = oFile.CreateText();
+                FileInfo wrongFile = new FileInfo(configSettings.WorkDir + configSettings.WrongFileMask + "_" + configSettings.BatchId + "_" + dateMask + "_" + fname);
+                StreamWriter swWrong = null;
+                if (configSettings.CreateWrongFile)
+                {
+                     swWrong = wrongFile.CreateText();
+                     swWrong.WriteLine(configSettings.HeaderLine);
+                }
+                
+                    StreamWriter swOk = oFile.CreateText();
                 //Start with header line
-                sw.WriteLine(configSettings.HeaderLine);
+                swOk.WriteLine(configSettings.HeaderLine);
                 string line;
                 while ((line = sr.ReadLine()) != null)
                 {
                     if (Helper.IsValidByReg(configSettings.Patterns, line) && !string.IsNullOrWhiteSpace(line))
                     {
                         var unifiedLine = MakeLine(configSettings, iFile, oriCheckSum, oFile.Name, line);
-                        sw.WriteLine(unifiedLine);
+                        swOk.WriteLine(unifiedLine);
+                    }
+                    else if (configSettings.CreateWrongFile)
+                    {
+                        var unifiedLine = MakeLine(configSettings, iFile, oriCheckSum, oFile.Name, line);
+                        swWrong?.WriteLine(unifiedLine);
                     }
                 }
                 sr.Close();
-                sw.Close();
+                swOk.Close();
+                if (configSettings.CreateWrongFile)
+                {
+                    swWrong?.Close();
+                }
+
                 Helper.ManageFile(Helper.Action.Delete, iFile);
                 Helper.ManageFile(Helper.Action.Move, oFile.FullName, configSettings.OutputDir);
-                
+                Helper.ManageFile(Helper.Action.Zip, wrongFile.FullName, configSettings.WrongDir);
+                Helper.ManageFile(Helper.Action.Delete, wrongFile.FullName);
+
             }
             catch (IOException e)
             {

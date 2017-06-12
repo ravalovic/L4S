@@ -24,6 +24,7 @@ namespace SQLBulkCopy
         public string OutputDir { get; set; }
         public string WorkDir { get; set; }
         public string InputFileName { get; set; }
+        public string InputFileMask { get; set; }
         public string InputFieldSepartor { get; set; }
         public string Server { get; set; }
         public string Database { get; set; }
@@ -45,6 +46,7 @@ namespace SQLBulkCopy
             OutputDir = configManager.ReadSetting("outputDir");
             WorkDir = configManager.ReadSetting("workDir");
             InputFileName = configManager.ReadSetting("inputFileName");
+            InputFileMask = configManager.ReadSetting("inputFileMask");
             InputFieldSepartor = configManager.ReadSetting("inputFieldSeparator");
             Server = configManager.ReadSetting("server");
 
@@ -270,7 +272,7 @@ namespace SQLBulkCopy
         protected static void MoveProcessedFile(MyApConfig configSettings)
         {
             // Check if some processed file  exist if yes move it to final dir
-            var iFiles = Directory.GetFiles(configSettings.InputDir, configSettings.InputFileName).Where(n => n.Contains("PreProcessOK")).ToArray();
+            var iFiles = Directory.GetFiles(configSettings.InputDir, configSettings.InputFileName).Where(n => n.Contains(configSettings.InputFileMask)).ToArray();
             if (iFiles.Any())
             {
                 Log.Info(@"Move PreProcessed files from: " + configSettings.InputDir + " to " + configSettings.WorkDir);
