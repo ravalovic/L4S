@@ -14,17 +14,17 @@ namespace L4S.Entities
     {
 
         [Key, Column(Order = 0)]
-        public long batchID { get; set; }
+        public long BatchID { get; set; }
 
         [Required]
-        public long fileID { get; set; }
+        public long FileID { get; set; }
 
         [Required]
-        public DateTime insertDateTime { get; set; }
+        public DateTime InsertDateTime { get; set; }
 
-        public string customerID { get; set; }
+        public string CustomerID { get; set; }
 
-        public Nullable<int> serviceID { get; set; }
+        public Nullable<int> ServiceID { get; set; }
 
         //[StringLength(100)]
         //public string col1 { get; set; }

@@ -3,7 +3,7 @@ namespace WebPortal.Migrations
     using System;
     using System.Data.Entity.Migrations;
     
-    public partial class _20170906_init : DbMigration
+    public partial class CreateTables_13062017 : DbMigration
     {
         public override void Up()
         {
@@ -11,25 +11,25 @@ namespace WebPortal.Migrations
                 "dbo.Catalog_LogService",
                 c => new
                     {
-                        batchID = c.Long(nullable: false, identity: true),
-                        fileID = c.Long(nullable: false),
-                        insertDateTime = c.DateTime(nullable: false),
-                        customerID = c.String(),
-                        serviceID = c.Int(),
+                        BatchID = c.Long(nullable: false, identity: true),
+                        FileID = c.Long(nullable: false),
+                        InsertDateTime = c.DateTime(nullable: false),
+                        CustomerID = c.String(),
+                        ServiceID = c.Int(),
                     })
-                .PrimaryKey(t => t.batchID);
+                .PrimaryKey(t => t.BatchID);
             
             CreateTable(
                 "dbo.Catalog_Service",
                 c => new
                     {
-                        serviceID = c.Int(nullable: false, identity: true),
-                        Identifier = c.String(maxLength: 50),
+                        ServiceID = c.Int(nullable: false, identity: true),
+                        Identifier = c.String(maxLength: 500),
                         Description = c.String(maxLength: 250),
-                        userID = c.Int(),
-                        insertDateTime = c.DateTime(nullable: false),
+                        UserID = c.Int(),
+                        InsertDateTime = c.DateTime(nullable: false),
                     })
-                .PrimaryKey(t => t.serviceID);
+                .PrimaryKey(t => t.ServiceID);
             
             CreateTable(
                 "dbo.AspNetRoles",
@@ -58,48 +58,49 @@ namespace WebPortal.Migrations
                 "dbo.Stage_InputFileDuplicity",
                 c => new
                     {
-                        id = c.Int(nullable: false, identity: true),
-                        fileName = c.String(maxLength: 100),
-                        checksum = c.String(maxLength: 100),
-                        loadDateTime = c.DateTime(nullable: false),
-                        insertDateTime = c.DateTime(nullable: false),
-                        oriFileName = c.String(maxLength: 100),
-                        loaderBatchID = c.Int(nullable: false),
+                        Id = c.Int(nullable: false, identity: true),
+                        FileName = c.String(maxLength: 100),
+                        Checksum = c.String(maxLength: 100),
+                        LoadDateTime = c.DateTime(nullable: false),
+                        InsertDateTime = c.DateTime(nullable: false),
+                        OriFileName = c.String(maxLength: 100),
+                        LoaderBatchID = c.Int(nullable: false),
                     })
-                .PrimaryKey(t => t.id);
+                .PrimaryKey(t => t.Id);
             
             CreateTable(
                 "dbo.Stage_InputFileInfo",
                 c => new
                     {
-                        id = c.Int(nullable: false, identity: true),
-                        fileName = c.String(maxLength: 100),
-                        checksum = c.String(maxLength: 100),
-                        insertDateTime = c.DateTime(nullable: false),
-                        loaderBatchID = c.Int(nullable: false),
+                        Id = c.Int(nullable: false, identity: true),
+                        FileName = c.String(maxLength: 100),
+                        Checksum = c.String(maxLength: 100),
+                        InsertDateTime = c.DateTime(nullable: false),
+                        LoaderBatchID = c.Int(nullable: false),
+                        LoadedRecord = c.Int(nullable: false),
                     })
-                .PrimaryKey(t => t.id);
+                .PrimaryKey(t => t.Id);
             
             CreateTable(
                 "dbo.Stage_LogImport",
                 c => new
                     {
-                        batchID = c.Long(nullable: false, identity: true),
-                        originalFileName = c.String(maxLength: 100),
-                        originalCheckSum = c.String(maxLength: 100),
-                        preProcessFileName = c.String(maxLength: 100),
-                        Node_IP_Address = c.String(maxLength: 100),
+                        BatchID = c.Long(nullable: false, identity: true),
+                        OriginalFileName = c.String(maxLength: 100),
+                        OriginalCheckSum = c.String(maxLength: 100),
+                        PreProcessFileName = c.String(maxLength: 100),
+                        NodeIPAddress = c.String(maxLength: 100),
                         UserID = c.String(maxLength: 100),
-                        Date_Of_Request = c.String(maxLength: 100),
-                        Requested_URL = c.String(maxLength: 100),
-                        Request_Status = c.String(maxLength: 100),
-                        Bytes_Sent = c.String(maxLength: 100),
-                        Request_Time = c.String(maxLength: 100),
-                        Unknown = c.String(maxLength: 100),
-                        User_Agent = c.String(maxLength: 100),
-                        User_IP_Address = c.String(maxLength: 100),
+                        DateOfRequest = c.String(maxLength: 50),
+                        RequestedURL = c.String(maxLength: 4000),
+                        RequestStatus = c.String(maxLength: 5),
+                        BytesSent = c.String(maxLength: 20),
+                        RequestTime = c.String(maxLength: 20),
+                        HttpReferer = c.String(maxLength: 100),
+                        UserAgent = c.String(maxLength: 4000),
+                        UserIPAddress = c.String(maxLength: 50),
                     })
-                .PrimaryKey(t => t.batchID);
+                .PrimaryKey(t => t.BatchID);
             
             CreateTable(
                 "dbo.AspNetUsers",

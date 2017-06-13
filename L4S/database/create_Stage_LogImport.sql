@@ -24,7 +24,7 @@ CREATE TABLE [dbo].[Stage_LogImport](
 	[Request_Status] [varchar](5) NULL,
 	[Bytes_Sent] [varchar](15) NULL,
 	[Request_Time] [varchar](15) NULL,
-	[http_referer] [varchar](Max) NULL,
+	[Http_Referer] [varchar](Max) NULL,
 	[User_Agent] [varchar](500) NULL,
 	[User_IP_Address] [varchar](50) NULL,
 ) ON [PRIMARY]

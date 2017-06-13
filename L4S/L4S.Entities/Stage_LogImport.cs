@@ -11,45 +11,45 @@ namespace L4S.Entities
     public class Stage_LogImport
     {
         [Key, Column(Order = 0)]
-        public Int64  batchID { get; set; }
+        public Int64  BatchID { get; set; }
 
         [StringLength(100)]
-        public string originalFileName { get; set; }
+        public string OriginalFileName { get; set; }
 
         [StringLength(100)]
-        public string originalCheckSum { get; set; }
+        public string OriginalCheckSum { get; set; }
 
         [StringLength(100)]
-        public string preProcessFileName { get; set; }
+        public string PreProcessFileName { get; set; }
 
         [StringLength(100)]
-        public string Node_IP_Address { get; set; }
+        public string NodeIPAddress { get; set; }
 
         [StringLength(100)]
         public string UserID { get; set; }
 
-        [StringLength(100)]
-        public string Date_Of_Request { get; set; }
+        [StringLength(50)]
+        public string DateOfRequest { get; set; }
+
+        [StringLength(4000)]
+        public string RequestedURL { get; set; }
+
+        [StringLength(5)]
+        public string RequestStatus { get; set; }
+
+        [StringLength(20)]
+        public string BytesSent { get; set; }
+
+        [StringLength(20)]
+        public string RequestTime { get; set; }
 
         [StringLength(100)]
-        public string Requested_URL { get; set; }
+        public string HttpReferer { get; set; }
 
-        [StringLength(100)]
-        public string Request_Status { get; set; }
+        [StringLength(4000)]
+        public string UserAgent { get; set; }
 
-        [StringLength(100)]
-        public string Bytes_Sent { get; set; }
-
-        [StringLength(100)]
-        public string Request_Time { get; set; }
-
-        [StringLength(100)]
-        public string Unknown { get; set; }
-
-        [StringLength(100)]
-        public string User_Agent { get; set; }
-
-        [StringLength(100)]
-        public string User_IP_Address { get; set; }
+        [StringLength(50)]
+        public string UserIPAddress { get; set; }
     }
 }

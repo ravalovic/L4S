@@ -12,16 +12,16 @@ namespace L4S.Entities
     public class Catalog_Service
     {
         [Key, Column(Order = 0)]
-        public int serviceID { get; set; }
+        public int ServiceID { get; set; }
 
-        [StringLength(50)]
+        [StringLength(500)]
         public string Identifier { get; set; }
 
         [StringLength(250)]
         public string Description { get; set; }
 
-        public int? userID { get; set; }  //if nullable int? else int
+        public int? UserID { get; set; }  //if nullable int? else int
 
-        public DateTime insertDateTime { get; set; }
+        public DateTime InsertDateTime { get; set; }
     }
 }

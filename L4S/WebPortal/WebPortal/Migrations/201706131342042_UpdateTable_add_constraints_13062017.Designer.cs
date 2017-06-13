@@ -7,13 +7,13 @@ namespace WebPortal.Migrations
     using System.Resources;
     
     [GeneratedCode("EntityFramework.Migrations", "6.1.3-40302")]
-    public sealed partial class _20170906_init : IMigrationMetadata
+    public sealed partial class UpdateTable_add_constraints_13062017 : IMigrationMetadata
     {
-        private readonly ResourceManager Resources = new ResourceManager(typeof(_20170906_init));
+        private readonly ResourceManager Resources = new ResourceManager(typeof(UpdateTable_add_constraints_13062017));
         
         string IMigrationMetadata.Id
         {
-            get { return "201706092019436_2017-09-06_init"; }
+            get { return "201706131342042_UpdateTable_add_constraints_13062017"; }
         }
         
         string IMigrationMetadata.Source
