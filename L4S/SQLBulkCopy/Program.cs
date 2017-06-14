@@ -31,6 +31,7 @@ namespace SQLBulkCopy
         public string Schema { get; set; }
         public string Table { get; set; }
         public string FileInfoInsert { get; set; }
+        public string CheckFileDuplicity { get; set; }
         public bool IntegratedSecurity { get; set; }
         public string DbUser { get; set; }
         public string DbPassword { get; set; }
@@ -58,6 +59,7 @@ namespace SQLBulkCopy
             Schema = configManager.ReadSetting("schema");
             Table = configManager.ReadSetting("table");
             FileInfoInsert = configManager.ReadSetting("fileInfoInsert");
+            CheckFileDuplicity = configManager.ReadSetting("checkFileDuplicity");
             bool integratedSecurity;
             bool.TryParse(configManager.ReadSetting("integratedSecurity"), out integratedSecurity);
             IntegratedSecurity = integratedSecurity;
@@ -138,22 +140,25 @@ namespace SQLBulkCopy
                 Log.InfoFormat("Running as {0}", WindowsIdentity.GetCurrent().Name);
                 MoveProcessedFile(appSettings); // from PreProcessor Output to Work
                 var myStopWatch = Stopwatch.StartNew();
-
+                
                 var iFiles = Directory.GetFiles(appSettings.WorkDir, appSettings.InputFileName);
                 if (iFiles.Any())
                 {
                     foreach (var iFile in iFiles)
                     {
+                        int action = 0; // 0 - new file, 1 - duplicity file 
                         try
                         {
                             string checkSum = Helper.CalculateCheckSum(iFile);
                             int linesInFile = Helper.CountFileLines(iFile) - 1; //because header
                             int batchId = Helper.GetBatchIdFromName(iFile);
+                            string originalFileChecksum = Helper.GetCheckSumFromName(iFile);
                             myStopWatch.Start();
                             if (appSettings.LoaderMode.ToLower() == "fast")
                             {
                                 Log.Info("Loading file: " + iFile + " Loader mode: " + "fast");
-                                if (WritFileInfo(iFile, checkSum, batchId, appSettings))
+
+                                if (CheckFileDuplicity(checkSum, originalFileChecksum, appSettings))
                                 {
                                     FastCsvReader myReader = new FastCsvReader(iFile, appSettings);
                                     BulkCopy(myReader, appSettings);
@@ -164,12 +169,15 @@ namespace SQLBulkCopy
                                 else
                                 {
                                     Log.Info("Duplicate file " + iFile + " . Skipping... File Checksum " + checkSum);
+                                    action = 1;
                                 }
+
                             }
                             else
                             {
                                 Log.Info("Loading file: " + iFile + " Loader mode: " + "safe");
-                                if (WritFileInfo(iFile, checkSum, batchId, appSettings))
+
+                                if (CheckFileDuplicity(checkSum, originalFileChecksum, appSettings))
                                 {
                                     SafeCsvReader myReader = new SafeCsvReader(iFile, appSettings);
                                     BulkCopy(myReader, appSettings);
@@ -180,9 +188,11 @@ namespace SQLBulkCopy
                                 else
                                 {
                                     Log.Info("Duplicate file " + iFile + ". Skipping... File Checksum " + checkSum);
+                                    action = 1;
                                 }
-                            }
 
+                            }
+                            WritFileInfo(iFile, checkSum, originalFileChecksum, batchId, linesInFile, action, appSettings);
                             Log.Info("Create backup of file:" + iFile);
                             Helper.ManageFile(Helper.Action.Zip, iFile, appSettings.OutputDir);
                             Log.Info("Delete processed file:" + iFile);
@@ -190,6 +200,7 @@ namespace SQLBulkCopy
 
                             myStopWatch.Stop();
                             Log.Info("imported in " + myStopWatch.RunTime());
+
                         }
                         catch (Exception ex)
                         {
@@ -205,9 +216,8 @@ namespace SQLBulkCopy
 
         } //main
 
-        private static bool WritFileInfo(string myFile, string checksum, int myBatchId, MyApConfig configSettings)
+        private static void WritFileInfo(string myFile, string myChecksum, string myOriginalFileChecksum, int myBatchId, int myLinesInFile, int myAction, MyApConfig configSettings)
         {
-            bool retval = false;
             using (SqlConnection myConnection =
                 configSettings.IntegratedSecurity ?
                     new SqlConnection(String.Format("Data Source={0};Initial Catalog={1};Integrated Security=True;Packet Size=32000;", configSettings.Server, configSettings.Database))
@@ -221,26 +231,52 @@ namespace SQLBulkCopy
                     myCmd.CommandType = CommandType.StoredProcedure;
                     myCmd.CommandText = configSettings.Schema + "." + configSettings.FileInfoInsert;
                     myCmd.Parameters.Add("@FileName", SqlDbType.VarChar).Value = myFile;
-                    myCmd.Parameters.Add("@FileCheckSum", SqlDbType.VarChar).Value = checksum;
+                    myCmd.Parameters.Add("@FileCheckSum", SqlDbType.VarChar).Value = myChecksum;
+                    myCmd.Parameters.Add("@OriginalFileCheckSum", SqlDbType.VarChar).Value = myOriginalFileChecksum;
                     myCmd.Parameters.Add("@BatchID", SqlDbType.Int).Value = myBatchId;
-                    myCmd.Parameters.Add("@RetVal", SqlDbType.Int).Direction = ParameterDirection.Output;
+                    myCmd.Parameters.Add("@LinesInFile", SqlDbType.Int).Value = myLinesInFile;
+                    myCmd.Parameters.Add("@Action", SqlDbType.Int).Value = myAction;
 
                     myConnection.Open();
                     myCmd.ExecuteNonQuery();
-                    int retCode = (int)myCmd.Parameters["@RetVal"].Value;
-                    if (retCode == 0)
-                    {
-
-                        retval = true;
-                    }
                     myCmd.Dispose();
 
                 }
                 myConnection.Close();
             }
+       }
+
+        private static bool CheckFileDuplicity(string myChecksum, string myOriginalChecksum, MyApConfig configSettings)
+        {
+            bool retval = false;
+            using (SqlConnection myConnection =
+                configSettings.IntegratedSecurity ?
+                    new SqlConnection(String.Format("Data Source={0};Initial Catalog={1};Integrated Security=True;Packet Size=32000;", configSettings.Server, configSettings.Database))
+                    :
+                    new SqlConnection(string.Format("Data Source={0};Initial Catalog={1};User ID={2}; Password={3} ;Packet Size=32000;", configSettings.Server, configSettings.Database, configSettings.DbUser, configSettings.DbPassword)))
+            {
+
+                using (SqlCommand myCmd = new SqlCommand())
+                {
+                    myCmd.Connection = myConnection;
+                    myCmd.CommandType = CommandType.StoredProcedure;
+                    myCmd.CommandText = configSettings.Schema + "." + configSettings.CheckFileDuplicity;
+                    myCmd.Parameters.Add("@FileCheckSum", SqlDbType.VarChar).Value = myChecksum;
+                    myCmd.Parameters.Add("@OriFileCheckSum", SqlDbType.VarChar).Value = myOriginalChecksum;
+                    myCmd.Parameters.Add("@RetVal", SqlDbType.Int).Direction = ParameterDirection.Output;
+                    myConnection.Open();
+                    myCmd.ExecuteNonQuery();
+                    int retCode = (int)myCmd.Parameters["@RetVal"].Value;
+                    if (retCode == 0)
+                    {
+                        retval = true;
+                    }
+                    myCmd.Dispose();
+                }
+                myConnection.Close();
+            }
             return retval;
         }
-
 
         private static void BulkCopy(BaseCsvReader acsvReader, MyApConfig configSettings)
         {

@@ -236,8 +236,8 @@ namespace PreProcessor
                 //extract file name
                 string fname = Path.GetFileName(iFile);
                 string oriCheckSum = Helper.CalculateCheckSum(iFile);
-                FileInfo oFile = new FileInfo(configSettings.WorkDir + configSettings.OutputFileMask+"_"+ configSettings.BatchId + "_" + dateMask + "_" + fname);
-                FileInfo wrongFile = new FileInfo(configSettings.WorkDir + configSettings.WrongFileMask + "_" + configSettings.BatchId + "_" + dateMask + "_" + fname);
+                FileInfo oFile = new FileInfo(configSettings.WorkDir + configSettings.OutputFileMask+"_"+ configSettings.BatchId + "_" + dateMask + "_" + oriCheckSum+ "_" + fname);
+                FileInfo wrongFile = new FileInfo(configSettings.WorkDir + configSettings.WrongFileMask + "_" + configSettings.BatchId + "_" + dateMask + "_" + oriCheckSum + "_" + fname);
                 StreamWriter swWrong = null;
                 if (configSettings.CreateWrongFile)
                 {
@@ -268,10 +268,13 @@ namespace PreProcessor
                 {
                     swWrong?.Close();
                 }
-
+                Log.Info("Delete original file:" + iFile);
                 Helper.ManageFile(Helper.Action.Delete, iFile);
+                Log.Info("Move good file for SQLBulkCopy process:" + iFile);
                 Helper.ManageFile(Helper.Action.Move, oFile.FullName, configSettings.OutputDir);
+                Log.Info("Backup wrong file:" + wrongFile.FullName);
                 Helper.ManageFile(Helper.Action.Zip, wrongFile.FullName, configSettings.WrongDir);
+                Log.Info("Delete wrong file:" + wrongFile.FullName);
                 Helper.ManageFile(Helper.Action.Delete, wrongFile.FullName);
 
             }
@@ -313,7 +316,6 @@ namespace PreProcessor
             return myConfig.BatchId + myConfig.OutputFieldSeparator + 
                      origFileName + myConfig.OutputFieldSeparator + 
                      checkSum + myConfig.OutputFieldSeparator +
-                     fileName + myConfig.OutputFieldSeparator +
                      string.Join(myConfig.OutputFieldSeparator, newLineArray);
         }
     }

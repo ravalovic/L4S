@@ -20,6 +20,7 @@ namespace CommonHelper
                 }
             }
         }
+
         public static int CountFileLines(string myFile)
         {
             return File.ReadLines(myFile).Count();
@@ -82,7 +83,7 @@ namespace CommonHelper
                             arch.CreateEntryFromFile(myFile, Path.GetFileName(myFile), CompressionLevel.Optimal);
                             arch.Dispose();
                         }
-                        
+
                         break;
                 }
             }
@@ -91,17 +92,29 @@ namespace CommonHelper
         public static int GetBatchIdFromName(string myFile)
         {
             var fileName = Path.GetFileName(myFile);
-           
+
             if (fileName != null)
             {
                 var batchId = fileName.Split('_');
                 int bId;
                 if (Int32.TryParse(batchId[1], out bId))
-                { 
-                return bId;
+                {
+                    return bId;
                 }
             }
             return 0;
-        } 
+        }
+
+        public static string GetCheckSumFromName(string myFile)
+        {
+            var fileName = Path.GetFileName(myFile);
+
+            if (fileName != null)
+            {
+                var checksum = fileName.Split('_');
+                return checksum[3];
+            }
+            return string.Empty;
+        }
     }
 }
