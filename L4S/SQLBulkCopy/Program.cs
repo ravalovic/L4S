@@ -151,8 +151,10 @@ namespace SQLBulkCopy
                         {
                             string checkSum = Helper.CalculateCheckSum(iFile);
                             int linesInFile = Helper.CountFileLines(iFile) - 1; //because header
-                            int batchId = Helper.GetBatchIdFromName(iFile);
-                            string originalFileChecksum = Helper.GetCheckSumFromName(iFile);
+                            int batchId;
+                            Int32.TryParse(Helper.GetFromName(iFile, Helper.ParameterFromName.BatchId), out  batchId);
+                            string originalFileChecksum = Helper.GetFromName(iFile,Helper.ParameterFromName.OriginalFileChecksum);
+                            string originalFileName = Helper.GetFromName(iFile, Helper.ParameterFromName.OriginalFileName);
                             myStopWatch.Start();
                             if (appSettings.LoaderMode.ToLower() == "fast")
                             {
@@ -192,7 +194,7 @@ namespace SQLBulkCopy
                                 }
 
                             }
-                            WritFileInfo(iFile, checkSum, originalFileChecksum, batchId, linesInFile, action, appSettings);
+                            WritFileInfo(iFile, checkSum, originalFileName, originalFileChecksum, batchId, linesInFile, action, appSettings);
                             Log.Info("Create backup of file:" + iFile);
                             Helper.ManageFile(Helper.Action.Zip, iFile, appSettings.OutputDir);
                             Log.Info("Delete processed file:" + iFile);
@@ -216,7 +218,7 @@ namespace SQLBulkCopy
 
         } //main
 
-        private static void WritFileInfo(string myFile, string myChecksum, string myOriginalFileChecksum, int myBatchId, int myLinesInFile, int myAction, MyApConfig configSettings)
+        private static void WritFileInfo(string myFile, string myChecksum, string myOriginalFileName, string myOriginalFileChecksum, int myBatchId, int myLinesInFile, int myAction, MyApConfig configSettings)
         {
             using (SqlConnection myConnection =
                 configSettings.IntegratedSecurity ?
@@ -232,11 +234,11 @@ namespace SQLBulkCopy
                     myCmd.CommandText = configSettings.Schema + "." + configSettings.FileInfoInsert;
                     myCmd.Parameters.Add("@FileName", SqlDbType.VarChar).Value = myFile;
                     myCmd.Parameters.Add("@FileCheckSum", SqlDbType.VarChar).Value = myChecksum;
+                    myCmd.Parameters.Add("@OriginalFilename", SqlDbType.VarChar).Value = myOriginalFileName;
                     myCmd.Parameters.Add("@OriginalFileCheckSum", SqlDbType.VarChar).Value = myOriginalFileChecksum;
                     myCmd.Parameters.Add("@BatchID", SqlDbType.Int).Value = myBatchId;
                     myCmd.Parameters.Add("@LinesInFile", SqlDbType.Int).Value = myLinesInFile;
                     myCmd.Parameters.Add("@Action", SqlDbType.Int).Value = myAction;
-
                     myConnection.Open();
                     myCmd.ExecuteNonQuery();
                     myCmd.Dispose();

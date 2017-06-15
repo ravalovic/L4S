@@ -1,17 +1,19 @@
 USE [log4service]
 GO
 
-DROP TABLE [dbo].[Stage_LogImport]
+IF OBJECT_ID('dbo.STLogImport', 'U') IS NOT NULL 
+  DROP TABLE dbo.STLogImport; 
+
 GO
 
-/****** Object:  Table [dbo].[Stage_LogImport]    Script Date: 14. 6. 2017 9:09:44 ******/
+/****** Object:  Table [dbo].[STLogImport]    Script Date: 14. 6. 2017 9:09:44 ******/
 SET ANSI_NULLS ON
 GO
 
 SET QUOTED_IDENTIFIER ON
 GO
 
-CREATE TABLE [dbo].[Stage_LogImport](
+CREATE TABLE [dbo].[STLogImport](
 	[BatchID] [int] NOT NULL,
 	[OriginalFileName] [varchar](200) NOT NULL,
 	[OriginalCheckSum] [varchar](100) NOT NULL,
@@ -28,11 +30,11 @@ CREATE TABLE [dbo].[Stage_LogImport](
 ) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
 GO
 
-ALTER TABLE [dbo].[Stage_LogImport] ADD  CONSTRAINT [DF_Stage_LogImport_BatchID]  DEFAULT ((0)) FOR [BatchID]
+ALTER TABLE [dbo].[STLogImport] ADD  CONSTRAINT [DF_STLogImport_BatchID]  DEFAULT ((0)) FOR [BatchID]
 GO
 
-ALTER TABLE [dbo].[Stage_LogImport] ADD  CONSTRAINT [DF_Stage_LogImport_OriginalFileName]  DEFAULT ('n/a') FOR [OriginalFileName]
+ALTER TABLE [dbo].[STLogImport] ADD  CONSTRAINT [DF_STLogImport_OriginalFileName]  DEFAULT ('n/a') FOR [OriginalFileName]
 GO
 
-ALTER TABLE [dbo].[Stage_LogImport] ADD  CONSTRAINT [DF_Stage_LogImport_OriginalCheckSum]  DEFAULT ('n/a') FOR [OriginalCheckSum]
+ALTER TABLE [dbo].[STLogImport] ADD  CONSTRAINT [DF_STLogImport_OriginalCheckSum]  DEFAULT ('n/a') FOR [OriginalCheckSum]
 GO

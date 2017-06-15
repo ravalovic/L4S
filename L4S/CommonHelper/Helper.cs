@@ -2,6 +2,7 @@
 using System.IO;
 using System.IO.Compression;
 using System.Linq;
+using System.Runtime.InteropServices.WindowsRuntime;
 using System.Security.Cryptography;
 using System.Text.RegularExpressions;
 
@@ -52,6 +53,13 @@ namespace CommonHelper
             Zip
         };
 
+        public enum ParameterFromName
+        {
+            BatchId,
+            OriginalFileChecksum,
+            OriginalFileName
+        };
+
         /// <summary>
         /// Move, copy file to specified dir or delete file
         /// </summary>
@@ -89,30 +97,45 @@ namespace CommonHelper
             }
         }
 
-        public static int GetBatchIdFromName(string myFile)
+        public static string GetFromName(string myFile, ParameterFromName myParamEnum)
         {
+            //new FileInfo(configSettings.WorkDir + configSettings.OutputFileMask+"_"+ configSettings.BatchId + "_" + dateMask + "_" + oriCheckSum+ "_" + fname);
             var fileName = Path.GetFileName(myFile);
 
             if (fileName != null)
             {
-                var batchId = fileName.Split('_');
-                int bId;
-                if (Int32.TryParse(batchId[1], out bId))
+                var retVal = string.Empty;
+                var array = fileName.Split('_');
+                switch (myParamEnum)
                 {
-                    return bId;
+                    case ParameterFromName.BatchId:
+                        retVal = array[1];
+                        break;
+                    case ParameterFromName.OriginalFileChecksum:
+                        retVal = array[3];
+                        break;
+                    case ParameterFromName.OriginalFileName:
+                        if (array.Length > 4)
+                        {
+                            for (int i = 4; i < array.Length; i++)
+                            {
+                                if (i == 4)
+                                {
+                                    retVal = array[i];
+                                }
+                                else
+                                {
+                                    retVal = retVal + "_" + array[i];
+                                }
+                            }
+                        }
+                        else
+                        {
+                            retVal = array[4];
+                        }
+                        break;
                 }
-            }
-            return 0;
-        }
-
-        public static string GetCheckSumFromName(string myFile)
-        {
-            var fileName = Path.GetFileName(myFile);
-
-            if (fileName != null)
-            {
-                var checksum = fileName.Split('_');
-                return checksum[3];
+                return retVal;
             }
             return string.Empty;
         }

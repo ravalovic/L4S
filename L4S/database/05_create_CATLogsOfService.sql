@@ -1,14 +1,18 @@
 USE [log4service]
 GO
 
-/****** Object:  Table [dbo].[Catalog_LogService]    Script Date: 14.06.2017 22:39:40 ******/
+
+IF OBJECT_ID('dbo.CATLogsOfService', 'U') IS NOT NULL 
+  DROP TABLE dbo.CATLogsOfService; 
+  
+/****** Object:  Table [dbo].[CATLogsOfService]    Script Date: 14.06.2017 22:39:40 ******/
 SET ANSI_NULLS ON
 GO
 
 SET QUOTED_IDENTIFIER ON
 GO
 
-CREATE TABLE [dbo].[Catalog_LogsOfService](
+CREATE TABLE [dbo].[CATLogsOfService](
 	[BatchID] [int] NOT NULL,
 	[CustomerID] int,
 	[ServiceName] [varchar](50),
