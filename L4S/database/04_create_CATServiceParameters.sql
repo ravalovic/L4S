@@ -16,9 +16,9 @@ GO
 CREATE TABLE [dbo].[CATServiceParameters](
 	[PKServiceID] [int] IDENTITY(1,1) NOT NULL,
 	[ServiceCode] [varchar](50) NOT NULL,
-	[ServiceDescription] [varchar](50) NOT NULL,
+	[ServiceDescription] [varchar](150) NOT NULL,
 	[ServiceBasicPrice] [decimal](8, 4) NOT NULL,
-	[TCInsertTime] [datetime] NULL,
+	[TCInsertTime] [datetime] ,
 	[TCLastUpdate] [datetime] NULL,
 	[TCActive] [int] NULL,
  CONSTRAINT [PK_CATServiceParameters] PRIMARY KEY CLUSTERED 
@@ -28,3 +28,12 @@ CREATE TABLE [dbo].[CATServiceParameters](
 ) ON [PRIMARY]
 GO
 
+
+ALTER TABLE [dbo].[CATServiceParameters]  ADD  CONSTRAINT [DF_CATServiceParameters_TCInsertTime]  DEFAULT (getdate()) FOR [TCInsertTime]
+GO
+
+ALTER TABLE [dbo].[CATServiceParameters] ADD  CONSTRAINT [DF_CATServiceParameters_TCLastUpdate]  DEFAULT (getdate()) FOR [TCLastUpdate]
+GO
+
+ALTER TABLE [dbo].[CATServiceParameters] ADD  CONSTRAINT [DF_CATServiceParameters_TCActive]  DEFAULT ((0)) FOR [TCActive]
+GO

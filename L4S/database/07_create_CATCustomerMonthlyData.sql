@@ -28,7 +28,10 @@ CREATE TABLE [dbo].[CATCustomerMonthlyData](
 	[ServiceID] [int] NOT NULL,
 	[NumberOfRequest] [int] NULL,
 	[ReceivedBytes] [int] NULL,
-	[RequestedTime] [int] NULL
+	[RequestedTime] [int] NULL,
+	[TCInsertTime] [datetime] ,
+	[TCLastUpdate] [datetime] NULL,
+	[TCActive] [int] NULL
 ) ON [PRIMARY]
 GO
 
@@ -41,3 +44,11 @@ GO
 ALTER TABLE [dbo].[CATCustomerMonthlyData] ADD  CONSTRAINT [DF_CATCustomerMonthlyData_RequestedTime]  DEFAULT ((0)) FOR [RequestedTime]
 GO
 
+ALTER TABLE [dbo].[CATCustomerMonthlyData]  ADD  CONSTRAINT [DF_CATCustomerMonthlyData_TCInsertTime]  DEFAULT (getdate()) FOR [TCInsertTime]
+GO
+
+ALTER TABLE [dbo].[CATCustomerMonthlyData] ADD  CONSTRAINT [DF_CATCustomerMonthlyData_TCLastUpdate]  DEFAULT (getdate()) FOR [TCLastUpdate]
+GO
+
+ALTER TABLE [dbo].[CATCustomerMonthlyData] ADD  CONSTRAINT [DF_CATCustomerMonthlyData_TCActive]  DEFAULT ((0)) FOR [TCActive]
+GO

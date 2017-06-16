@@ -15,9 +15,9 @@ GO
 CREATE TABLE [dbo].[CATLogsOfService](
 	[BatchID] [int] NOT NULL,
 	[CustomerID] int,
-	[ServiceName] [varchar](50),
+	[ServiceID] [int],
 	[UserID] [varchar](50) NULL,
-	[DateOfRequest] [varchar](30) NULL,
+	[DateOfRequest] [datetime] NULL,
 	[RequestedURL] [varchar](max) NULL,
 	[RequestStatus] [varchar](5) NULL,
 	[BytesSent] [varchar](15) NULL,

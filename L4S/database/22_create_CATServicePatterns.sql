@@ -21,6 +21,9 @@ CREATE TABLE [dbo].[CATServicePatterns](
 	[PatternCode] [varchar](2000) NOT NULL,
 	[PatternDescription] [varchar](50) NULL,
 	[FKServiceID] [int] NOT NULL,
+	[TCInsertTime] [datetime] ,
+	[TCLastUpdate] [datetime] NULL,
+	[TCActive] [int] NULL,
  CONSTRAINT [PK_CATServicePatterns] PRIMARY KEY CLUSTERED 
 (
 	[PKServicePatternID] ASC
@@ -28,7 +31,15 @@ CREATE TABLE [dbo].[CATServicePatterns](
 ) ON [PRIMARY]
 GO
 
-ALTER TABLE [dbo].[CATServicePatterns]  WITH CHECK ADD  CONSTRAINT [FK_CATServicePatterns_FKServiceID] FOREIGN KEY([PKServicePatternID])
+ALTER TABLE [dbo].[CATServicePatterns]  WITH CHECK ADD  CONSTRAINT [FK_CATServicePatterns_FKServiceID] FOREIGN KEY([FKServiceID])
 REFERENCES [dbo].[CATServiceParameters] ([PKServiceID])
 GO
 
+ALTER TABLE [dbo].[CATServicePatterns]  ADD  CONSTRAINT [DF_CATServicePatterns_TCInsertTime]  DEFAULT (getdate()) FOR [TCInsertTime]
+GO
+
+ALTER TABLE [dbo].[CATServicePatterns] ADD  CONSTRAINT [DF_CATServicePatterns_TCLastUpdate]  DEFAULT (getdate()) FOR [TCLastUpdate]
+GO
+
+ALTER TABLE [dbo].[CATServicePatterns] ADD  CONSTRAINT [DF_CATServicePatterns_TCActive]  DEFAULT ((0)) FOR [TCActive]
+GO
