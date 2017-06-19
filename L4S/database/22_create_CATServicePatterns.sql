@@ -18,9 +18,13 @@ GO
 
 CREATE TABLE [dbo].[CATServicePatterns](
 	[PKServicePatternID] [int] IDENTITY(1,1) NOT NULL,
-	[PatternCode] [varchar](2000) NOT NULL,
+	[PatternLike] [varchar](2000) NOT NULL,
+	[PatternRegExp] [varchar](2000),
 	[PatternDescription] [varchar](50) NULL,
 	[FKServiceID] [int] NOT NULL,
+	[Entity] varchar(150),
+	[Explanation] varchar(150),
+	[DatSelectMethod] varchar(150),
 	[TCInsertTime] [datetime] ,
 	[TCLastUpdate] [datetime] NULL,
 	[TCActive] [int] NULL,
