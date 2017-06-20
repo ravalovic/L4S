@@ -19,7 +19,12 @@ GO
 CREATE TABLE [dbo].[CATServicePatterns](
 	[PKServicePatternID] [int] IDENTITY(1,1) NOT NULL,
 	[PatternLike] [varchar](2000) NOT NULL,
-	[PatternRegExp] [varchar](2000),
+	[PatternRegExp1] [varchar](2000),
+	[RegExp1Output] [varchar](50),
+	[PatternRegExp2] [varchar](2000),
+	[RegExp2Output] [varchar](50),
+	[PatternRegExp3] [varchar](2000),
+	[RegExp3Output] [varchar](50),
 	[PatternDescription] [varchar](50) NULL,
 	[FKServiceID] [int] NOT NULL,
 	[Entity] varchar(150),
