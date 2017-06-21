@@ -10,3 +10,4 @@ select count(*) from  STLogImport;
 --delete from  STInputFileDuplicity;
 --delete from STLogImport;
 
+select count(*), batchid from stlogimport group by batchid;

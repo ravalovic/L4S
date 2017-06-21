@@ -4,6 +4,7 @@ using System.Configuration;
 using System.IO;
 using System.Linq;
 using System.Security.Principal;
+using System.Web;
 using CommonHelper;
 
 // Configure log4net using the .config file
@@ -26,6 +27,7 @@ namespace PreProcessor
         public bool CreateWrongFile { get; set; }
         public string InputFileName { get; set; }
         public string OutputMapping { get; set; }
+        public int URLEncodeFieldIndex { get; set; }
         public string InputFieldSeparator { get; set; }
         public string OutputFieldSeparator { get; set; }
         public string[] Patterns { get; set; }
@@ -47,7 +49,16 @@ namespace PreProcessor
             CreateWrongFile = createWrong;
 
             InputFileName = configManager.ReadSetting("inputFileName");
-            OutputMapping = configManager.ReadSetting("OutputMapping");
+            OutputMapping = configManager.ReadSetting("outputMapping");
+            int index;
+            if (int.TryParse(configManager.ReadSetting("urlDecodeFieldIndex"), out index))
+            {
+                URLEncodeFieldIndex = index;
+            }
+            else
+            {
+                URLEncodeFieldIndex = -1;
+            }
             InputFieldSeparator = configManager.ReadSetting("inputFieldSeparator");
             OutputFieldSeparator = configManager.ReadSetting("outputFieldSeparator");
             Patterns = ConfigurationManager.AppSettings.AllKeys.Where(key => key.StartsWith("pattern")).Select(configManager.ReadSetting).ToArray();
@@ -308,7 +319,14 @@ namespace PreProcessor
                 {
                     if (index <= splittedLine.Count() - 1)
                     {
-                        newLineArray[i] = splittedLine[index];
+                        if (index == myConfig.URLEncodeFieldIndex)
+                        {
+                            newLineArray[i] = HttpUtility.UrlDecode(splittedLine[index]);
+                        }
+                        else
+                        {
+                            newLineArray[i] = splittedLine[index];
+                        }
                     }
                 }
                 i++;
