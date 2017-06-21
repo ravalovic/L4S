@@ -226,10 +226,10 @@ namespace SQLBulkCopy
                     :
                     new SqlConnection(string.Format("Data Source={0};Initial Catalog={1};User ID={2}; Password={3} ;Packet Size=32000;", configSettings.Server, configSettings.Database, configSettings.DbUser, configSettings.DbPassword)))
             {
-
                 using (SqlCommand myCmd = new SqlCommand())
                 {
                     myCmd.Connection = myConnection;
+                    myCmd.CommandTimeout = 600;
                     myCmd.CommandType = CommandType.StoredProcedure;
                     myCmd.CommandText = configSettings.Schema + "." + configSettings.FileInfoInsert;
                     myCmd.Parameters.Add("@FileName", SqlDbType.VarChar).Value = myFile;

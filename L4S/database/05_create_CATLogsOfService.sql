@@ -14,6 +14,7 @@ GO
 
 CREATE TABLE [dbo].[CATLogsOfService](
 	[BatchID] [int] NOT NULL,
+	[RecordID] [int] NOT NULL,
 	[CustomerID] int,
 	[ServiceID] [int],
 	[UserID] [varchar](50) NULL,
@@ -27,7 +28,8 @@ CREATE TABLE [dbo].[CATLogsOfService](
 	[TCInsertTime] [datetime] default (getdate()),
 	[TCLastUpdate] [datetime] default (getdate()),
 	[TCActive] [int] default((0))
-) ON [PRIMARY]
+	CONSTRAINT PK_BatchIDRecordId PRIMARY KEY (BatchID,RecordID))
+ ON [PRIMARY]
 GO
 
 

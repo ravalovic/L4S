@@ -260,17 +260,21 @@ namespace PreProcessor
                 //Start with header line
                 swOk.WriteLine(configSettings.HeaderLine);
                 string line;
+                int recordOKID = 1;
+                int recordERRID = 1;
                 while ((line = sr.ReadLine()) != null)
                 {
                     if (Helper.IsValidByReg(configSettings.Patterns, line) && !string.IsNullOrWhiteSpace(line))
                     {
-                        var unifiedLine = MakeLine(configSettings, iFile, oriCheckSum, oFile.Name, line);
+                        var unifiedLine = MakeLine(configSettings, recordOKID, oriCheckSum, oFile.Name, line);
                         swOk.WriteLine(unifiedLine);
+                        recordOKID++;
                     }
                     else if (configSettings.CreateWrongFile)
                     {
-                        var unifiedLine = MakeLine(configSettings, iFile, oriCheckSum, oFile.Name, line);
+                        var unifiedLine = MakeLine(configSettings, recordERRID, oriCheckSum, oFile.Name, line);
                         swWrong?.WriteLine(unifiedLine);
+                        recordERRID++;
                     }
                 }
                 sr.Close();
@@ -300,12 +304,12 @@ namespace PreProcessor
         /// Create new unified line, mapping input to output stage table format
         /// </summary>
         /// <param name="myConfig"></param>
-        /// <param name="origFileName"></param>
+        /// <param name="myRecorID"></param>
         /// <param name="checkSum"></param>
         /// <param name="fileName"></param>
         /// <param name="line"></param>
         /// <returns></returns>
-        protected static string MakeLine(MyApConfig myConfig, string origFileName, string checkSum, string fileName, string line)
+        protected static string MakeLine(MyApConfig myConfig, int myRecorID, string checkSum, string fileName, string line)
         {
             char separator = ',';
             string[] mapper = myConfig.OutputMapping.Split(separator);
@@ -331,8 +335,8 @@ namespace PreProcessor
                 }
                 i++;
             }
-            return myConfig.BatchId + myConfig.OutputFieldSeparator + 
-                     origFileName + myConfig.OutputFieldSeparator + 
+            return myConfig.BatchId + myConfig.OutputFieldSeparator +
+                     myRecorID + myConfig.OutputFieldSeparator + 
                      checkSum + myConfig.OutputFieldSeparator +
                      string.Join(myConfig.OutputFieldSeparator, newLineArray);
         }

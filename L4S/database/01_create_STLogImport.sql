@@ -14,8 +14,8 @@ SET QUOTED_IDENTIFIER ON
 GO
 
 CREATE TABLE [dbo].[STLogImport](
-	[BatchID] [int] NOT NULL,
-	[OriginalFileName] [varchar](200) NOT NULL,
+    [BatchID] [int] NOT NULL,
+	[RecordID] [int] NOT NULL,
 	[OriginalCheckSum] [varchar](100) NOT NULL,
 	[NodeIPAddress] [varchar](50) NULL,
 	[UserID] [varchar](50) NULL,
@@ -31,9 +31,6 @@ CREATE TABLE [dbo].[STLogImport](
 GO
 
 ALTER TABLE [dbo].[STLogImport] ADD  CONSTRAINT [DF_STLogImport_BatchID]  DEFAULT ((0)) FOR [BatchID]
-GO
-
-ALTER TABLE [dbo].[STLogImport] ADD  CONSTRAINT [DF_STLogImport_OriginalFileName]  DEFAULT ('n/a') FOR [OriginalFileName]
 GO
 
 ALTER TABLE [dbo].[STLogImport] ADD  CONSTRAINT [DF_STLogImport_OriginalCheckSum]  DEFAULT ('n/a') FOR [OriginalCheckSum]
