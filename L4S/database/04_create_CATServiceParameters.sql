@@ -14,7 +14,7 @@ SET QUOTED_IDENTIFIER ON
 GO
 
 CREATE TABLE [dbo].[CATServiceParameters](
-	[PKServiceID] [int] IDENTITY(1,1) NOT NULL,
+	[PKServiceID] [int] NOT NULL,
 	[ServiceCode] [varchar](50) NOT NULL,
 	[ServiceDescription] [varchar](150) NOT NULL,
 	[ServiceBasicPrice] [decimal](8, 4) NOT NULL,
