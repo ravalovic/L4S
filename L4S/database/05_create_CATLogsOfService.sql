@@ -24,11 +24,11 @@ CREATE TABLE [dbo].[CATLogsOfService](
 	[BytesSent] [varchar](15) NULL,
 	[RequestTime] [varchar](15) NULL,
 	[UserAgent] [varchar](500) NULL,
-	[UserIPAddress] [varchar](50) NULL,
+	[UserIPAddress] [varchar](1000) NULL,
 	[TCInsertTime] [datetime] default (getdate()),
 	[TCLastUpdate] [datetime] default (getdate()),
 	[TCActive] [int] default((0))
-	CONSTRAINT PK_BatchIDRecordId PRIMARY KEY (BatchID,RecordID))
+	)
  ON [PRIMARY]
 GO
 

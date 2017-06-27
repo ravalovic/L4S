@@ -14,14 +14,15 @@ SET QUOTED_IDENTIFIER ON
 GO
 
 CREATE TABLE [dbo].CATProcessStatus(
-    [BatchID] [int] not null,
-	[BatchRecordNum] [int] not null,
-	[ActualStepName] varchar(20),
-	[ActualStepID] [int] not null,
-	[ActualStepStatus] [int] not null,
-	[TCInsertTime] [datetime] NULL,
-	[TCLastUpdate] [datetime] NULL,
-	[TCActive] [int] NULL,
+    [StepName] varchar(20),
+    [BatchID] varchar(100) ,
+	[BatchRecordNum] [int],
+	[NumberOfService] [int] ,
+	[NumberOfCustomer] [int],
+	[NumberOfUnknownService] [int],
+	[NumberOfPreprocessDelete] [int],
+	[TCInsertTime] [datetime] 
+	
 
 ) ON [PRIMARY] 
 GO
@@ -29,9 +30,5 @@ GO
 ALTER TABLE [dbo].CATProcessStatus  ADD  CONSTRAINT [DF_CATProcessStatus_TCInsertTime] DEFAULT (getdate()) FOR [TCInsertTime]
 GO
 
-ALTER TABLE [dbo].CATProcessStatus ADD  CONSTRAINT [DF_CATProcessStatus_TCLastUpdate] DEFAULT (getdate()) FOR [TCLastUpdate]
-GO
-
-ALTER TABLE [dbo].CATProcessStatus ADD  CONSTRAINT [DF_CATProcessStatus_TCActive]  DEFAULT ((0)) FOR [TCActive]
-GO
-
+--insert into [dbo].CATProcessStatus ([StepName], [BatchID], [BatchRecordNum], [NumberOfService] ,[NumberOfCustomer],[NumberOfUnknownService], [NumberOfPreprocessDelete])
+--values ('Name', 'batchlist', 'batchrecord', 'NumberOfService', 'NumberOfCustomer', 'NumberOfUnknownService', 'NumberOfPreprocessDelete');

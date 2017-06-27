@@ -25,4 +25,30 @@ INSERT INTO [dbo].[CATCustomerData]
         )
 GO
 
-
+INSERT INTO [dbo].[CATCustomerData]
+           ([CustomerType]
+           ,[IndividualTitle]
+           ,[IndividualFirstName]
+           ,[IndividualLastName]
+           ,[IndividualID]
+           ,[AddressStreet]
+           ,[AddressBuildingNumber]
+           ,[AddressCity]
+           ,[AddressZipCode]
+           ,[AddressCountry]
+           ,[ContactEmail]
+           )
+     VALUES
+           ('FO'
+           ,'Ing.'
+           ,'Beda'
+           ,'Travnicek'
+           ,'735698123'
+           ,'Vedlajsia'
+           ,'48/236' 
+           ,'Piestany'
+           ,'92101',
+		   'Slovensko',
+		   'beda@travnicek.com'
+        )
+GO

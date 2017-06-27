@@ -14,19 +14,21 @@ SET QUOTED_IDENTIFIER ON
 GO
 
 CREATE TABLE [dbo].[CATUnknownService](
-    [BatchID] [int] ,
-	[RecordID] [int],
-	[OriginalCheckSum] [varchar](100) ,
-	[NodeIPAddress] [varchar](50) ,
-	[UserID] [varchar](50) ,
-	[DateOfRequest] [varchar](30) ,
-	[RequestedURL] [varchar](max) ,
-	[RequestStatus] [varchar](5) ,
-	[BytesSent] [varchar](15) ,
-	[RequestTime] [varchar](15) ,
-	[HttpRefferer] [varchar](max) ,
-	[UserAgent] [varchar](500) ,
-	[UserIPAddress] [varchar](50) 
+    [BatchID] [int] NOT NULL,
+    [RecordID] [int] NOT NULL,
+	[CustomerID] int,
+	[ServiceID] [int],
+	[UserID] [varchar](50) NULL,
+	[DateOfRequest] [datetime] NULL,
+	[RequestedURL] [varchar](max) NULL,
+	[RequestStatus] [varchar](5) NULL,
+	[BytesSent] [varchar](15) NULL,
+	[RequestTime] [varchar](15) NULL,
+	[UserAgent] [varchar](500) NULL,
+	[UserIPAddress] [varchar](1000) NULL,
+	[TCInsertTime] [datetime] default (getdate()),
+	[TCLastUpdate] [datetime] default (getdate()),
+	[TCActive] [int] default((0))
 ) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
 GO
 
