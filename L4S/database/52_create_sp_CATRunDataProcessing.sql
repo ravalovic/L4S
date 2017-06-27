@@ -26,8 +26,7 @@ CREATE PROCEDURE [dbo].[sp_CATRunDataProcessing]
 AS
 
 DECLARE
-       @countNewData int = 0,
-       	   
+       @countNewData int = 0,  
 	   @batchList varchar(max),
 	   @return_value int,
 	   @CustomerID int,
@@ -49,7 +48,8 @@ BEGIN
 	IF (@countNewData>0) 
 	BEGIN
 	    EXEC	@return_value = [dbo].[sp_CATPreProcess]
-		SELECT @rowcountPreprocess = @@ROWCOUNT;
+		        @deleted = @rowcountPreprocess OUTPUT;
+		
 		if (@mydebug = 1 ) print 'Preprocess: '+ cast(@rowcountPreprocess as varchar) +' affected lines';
 		EXEC	@return_value = [dbo].[sp_CATGetBatchID]
 			    @myBatchList = @batchList OUTPUT;
@@ -99,8 +99,8 @@ BEGIN
 		--Unknown services services
 				
   	   SET @myInsert = '
-					INSERT INTO [dbo].[CATUnknownService]([BatchID],[RecordID],[ServiceID],[UserID],[DateOfRequest],[RequestedURL],[RequestStatus],[BytesSent],[RequestTime],[UserIPAddress])
-				    SELECT [BatchID], [RecordID], 0, [UserID]
+					INSERT INTO [dbo].[CATUnknownService]([BatchID],[RecordID],[CustomerID],[ServiceID],[UserID],[DateOfRequest],[RequestedURL],[RequestStatus],[BytesSent],[RequestTime],[UserIPAddress])
+				    SELECT [BatchID], [RecordID],[CustomerID], 0, [UserID]
 					       ,dateadd(hour,convert(int,substring([DateOfRequest],len([DateOfRequest])-5,4)) ,convert(datetime, substring([DateOfRequest],0,12)+'' ''+ substring([DateOfRequest],13,8),104))
 						   ,[RequestedURL],[RequestStatus],[BytesSent],[RequestTime],[UserIPAddress]
 				    FROM [dbo].[STLogImport] WHERE BatchID IN ' + @batchList +'

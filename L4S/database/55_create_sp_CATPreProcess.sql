@@ -21,8 +21,8 @@ SET QUOTED_IDENTIFIER ON
 GO
 
 CREATE PROCEDURE [dbo].[sp_CATPreProcess] 
+ @deleted int  out
 AS
-
 BEGIN
      DELETE FROM STLogImport
 	  WHERE  
@@ -31,5 +31,10 @@ BEGIN
 	   or RequestedURL like '%content%' 
 	   or RequestedURL like '%/scripts/%' 
 	   or RequestedURL like 'GET /Portal HTTP%' 
-	   or RequestedURL like 'GET /GisPortal HTTP%'
+	   or RequestedURL like 'GET /GisPortal HTTP%';
+	   SET @deleted = @@ROWCOUNT;
+	 UPDATE STLogImport 
+	  SET  BytesSent = replace(replace(BytesSent,'.',''),',','')
+	      ,RequestTime = replace(replace(RequestTime,'.',''),',','')
+		  ,DatDate = dateadd(hour,convert(int,substring([DateOfRequest],len([DateOfRequest])-5,4)) ,convert(datetime, substring([DateOfRequest],0,12)+' '+ substring([DateOfRequest],13,8),104));
 END

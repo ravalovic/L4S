@@ -37,8 +37,8 @@ BEGIN
     SET NOCOUNT ON;
 	--Get service parameters
 		   SET @myServiceQuery = '
-				INSERT INTO [dbo].[CATLogsOfService]([BatchID], [RecordID], [ServiceID], [UserID], [DateOfRequest], [RequestedURL], [RequestStatus], [BytesSent], [RequestTime], [UserIPAddress])
-			    SELECT [BatchID], [RecordID], ' + cast(@myServiceID as varchar) + ', [UserID], dateadd(hour,convert(int,substring([DateOfRequest],len([DateOfRequest])-5,4)) ,convert(datetime, substring([DateOfRequest],0,12)+'' ''+ substring([DateOfRequest],13,8),104))
+				INSERT INTO [dbo].[CATLogsOfService]([BatchID], [RecordID],[CustomerID], [ServiceID], [UserID], [DateOfRequest], [RequestedURL], [RequestStatus], [BytesSent], [RequestTime], [UserIPAddress])
+			    SELECT [BatchID], [RecordID],[CustomerID], ' + cast(@myServiceID as varchar) + ', [UserID], [DatDate]
 					   ,[RequestedURL], [RequestStatus], [BytesSent], [RequestTime], [UserIPAddress] FROM [dbo].[STLogImport] WHERE BatchID IN '+@myBatchList+' AND (';
 			DECLARE myCursor CURSOR FOR SELECT PatternLike FROM [dbo].[CATServicePatterns] WHERE FKServiceID = @myServiceID;
 		    OPEN myCursor

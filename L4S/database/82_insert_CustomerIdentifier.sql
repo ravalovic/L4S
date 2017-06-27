@@ -1,5 +1,7 @@
 USE [log4service]
 GO
+DELETE FROM [CATCustomerIdentifiers]
+GO
 
 INSERT INTO [dbo].[CATCustomerIdentifiers]
            ([CustomerIdentifier]
@@ -87,7 +89,59 @@ INSERT INTO [dbo].[CATCustomerIdentifiers]
            ,2)
 GO 
 
+INSERT INTO [dbo].[CATCustomerIdentifiers]
+           ([CustomerIdentifier]
+           ,[CustomerIdentifierDescription]
+           ,[FKCustomerID])
+     VALUES
+           ('46.150.193.174'
+           ,'5 IP'
+           ,2)
+GO 
 
+INSERT INTO [dbo].[CATCustomerIdentifiers]
+           ([CustomerIdentifier]
+           ,[CustomerIdentifierDescription]
+           ,[FKCustomerID])
+     VALUES
+           ('81.171.75.157'
+           ,'6 IP'
+           ,2)
+GO 
+INSERT INTO [dbo].[CATCustomerIdentifiers]
+           ([CustomerIdentifier]
+           ,[CustomerIdentifierDescription]
+           ,[FKCustomerID])
+     VALUES
+           ('195.28.70.59'
+           ,'7 IP'
+           ,2)
+GO 
+INSERT INTO [dbo].[CATCustomerIdentifiers]
+           ([CustomerIdentifier]
+           ,[CustomerIdentifierDescription]
+           ,[FKCustomerID])
+     VALUES
+           ('81.171.75.157'
+           ,'8 IP'
+           ,2)
+GO 
 
-
-
+INSERT INTO [dbo].[CATCustomerIdentifiers]
+           ([CustomerIdentifier]
+           ,[CustomerIdentifierDescription]
+           ,[FKCustomerID])
+     VALUES
+           ('178.18.75.51'
+           ,'9 IP'
+           ,2)
+GO 
+INSERT INTO [dbo].[CATCustomerIdentifiers]
+           ([CustomerIdentifier]
+           ,[CustomerIdentifierDescription]
+           ,[FKCustomerID])
+     VALUES
+           ('178.40.76.7'
+           ,'10 IP'
+           ,2)
+GO 

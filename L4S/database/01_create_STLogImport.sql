@@ -27,7 +27,8 @@ CREATE TABLE [dbo].[STLogImport](
 	[HttpRefferer] [varchar](max) NULL,
 	[UserAgent] [varchar](500) NULL,
 	[UserIPAddress] [varchar](1000) NULL,
-	[CustomerID] [int]
+	[CustomerID] [int],
+    [DatDate] [datetime],
 ) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
 GO
 
