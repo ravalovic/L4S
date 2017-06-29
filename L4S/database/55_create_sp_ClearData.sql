@@ -1,26 +1,26 @@
 USE [log4service]
 GO
 
-/****** Object:  StoredProcedure [dbo].[sp_CATPreProcess]   Script Date: 14. 6. 2017 12:40:24 ******/
+/****** Object:  StoredProcedure [dbo].[sp_ClearData]   Script Date: 14. 6. 2017 12:40:24 ******/
 IF EXISTS ( SELECT * 
             FROM   sysobjects 
-            WHERE  id = object_id(N'[dbo].[sp_CATPreProcess]') 
+            WHERE  id = object_id(N'[dbo].[sp_ClearData]') 
                    and OBJECTPROPERTY(id, N'IsProcedure') = 1 )
 BEGIN
-    DROP PROCEDURE [dbo].[sp_CATPreProcess]
+    DROP PROCEDURE [dbo].[sp_ClearData]
 END
 
 GO
 
 USE [log4service]
 GO
-/****** Object:  StoredProcedure [dbo].[sp_CATPreProcess]  Script Date: 24.06.2017 20:29:52 ******/
+/****** Object:  StoredProcedure [dbo].[sp_ClearData]  Script Date: 24.06.2017 20:29:52 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
 GO
 
-CREATE PROCEDURE [dbo].[sp_CATPreProcess] 
+CREATE PROCEDURE [dbo].[sp_ClearData] 
  @deleted int  out
 AS
 BEGIN

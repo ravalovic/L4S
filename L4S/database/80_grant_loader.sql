@@ -16,3 +16,9 @@ grant execute on sp_CATPreProcess to loader;
 go
 grant execute on sp_STUpdateCustomerID to loader;
 go
+grant execute on sp_ARCHdataToArchive to loader;
+go
+grant execute on sp_CATLoadToDaily to loader;
+go
+grant execute on  sp_CATLoadToMonthly to loader;
+go

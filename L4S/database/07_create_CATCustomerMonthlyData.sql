@@ -26,9 +26,9 @@ CREATE TABLE [dbo].[CATCustomerMonthlyData](
 	[RequestDate] [datetime] NOT NULL,
 	[CustomerID] [int] NOT NULL,
 	[ServiceID] [int] NOT NULL,
-	[NumberOfRequest] [int] NULL,
-	[ReceivedBytes] [int] NULL,
-	[RequestedTime] [int] NULL,
+	[NumberOfRequest] [bigint] NULL,
+	[ReceivedBytes] [bigint] NULL,
+	[RequestedTime] [bigint] NULL,
 	[TCInsertTime] [datetime] ,
 	[TCLastUpdate] [datetime] NULL,
 	[TCActive] [int] NULL

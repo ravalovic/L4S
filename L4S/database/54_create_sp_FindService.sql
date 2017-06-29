@@ -1,28 +1,29 @@
 USE [log4service]
 GO
 
-/****** Object:  StoredProcedure [dbo].[sp_STCheckFileDuplicity]    Script Date: 14. 6. 2017 12:40:24 ******/
+/****** Object:  StoredProcedure [dbo].[sp_FindService]    Script Date: 14. 6. 2017 12:40:24 ******/
 IF EXISTS ( SELECT * 
             FROM   sysobjects 
-            WHERE  id = object_id(N'[dbo].[sp_CATGetServiceQuery]') 
+            WHERE  id = object_id(N'[dbo].[sp_FindService]') 
                    and OBJECTPROPERTY(id, N'IsProcedure') = 1 )
 BEGIN
-    DROP PROCEDURE [dbo].sp_CATGetServiceQuery
+    DROP PROCEDURE [dbo].sp_FindService
 END
 
 GO
 
 USE [log4service]
 GO
-/****** Object:  StoredProcedure [dbo].[sp_CATRunDataProcessing]  Script Date: 24.06.2017 20:29:52 ******/
+/****** Object:  StoredProcedure [dbo].[sp_FindService]  Script Date: 24.06.2017 20:29:52 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
 GO
 
-CREATE PROCEDURE [dbo].sp_CATGetServiceQuery
+CREATE PROCEDURE [dbo].sp_FindService
 	-- Add the parameters for the stored procedure here
 	@myServiceID int = 0,
+	@myInput int = 0,
 	@myBatchList varchar(max),
 	@myServiceQuery varchar(max) ='' out
 AS
@@ -31,15 +32,27 @@ DECLARE
 	   @first int = 0,
 	   @myWhere varchar(max) = ' RequestedURL like ''',
        @myOR varchar(max) = ' or RequestedURL like ''',
-       @myENDLike varchar(max) = ''''
+       @myENDLike varchar(max) = '''',
+	   @myTable varchar(100),
+	   @myDate varchar(100)
 BEGIN
-     
+     IF (@myInput = 0) 
+		BEGIN
+			SET @myTable = '[dbo].[STLogImport]';
+			SET @myDate = '[DatDate]';
+		END
+	 IF (@myInput = 1) 
+		BEGIN
+			SET @myTable = '[dbo].[CATUnknownService]';
+			SET @myDate = '[DateOfRequest]';
+		END
+
     SET NOCOUNT ON;
 	--Get service parameters
 		   SET @myServiceQuery = '
 				INSERT INTO [dbo].[CATLogsOfService]([BatchID], [RecordID],[CustomerID], [ServiceID], [UserID], [DateOfRequest], [RequestedURL], [RequestStatus], [BytesSent], [RequestTime], [UserIPAddress])
-			    SELECT [BatchID], [RecordID],[CustomerID], ' + cast(@myServiceID as varchar) + ', [UserID], [DatDate]
-					   ,[RequestedURL], [RequestStatus], [BytesSent], [RequestTime], [UserIPAddress] FROM [dbo].[STLogImport] WHERE BatchID IN '+@myBatchList+' AND (';
+			    SELECT [BatchID], [RecordID],[CustomerID], ' + cast(@myServiceID as varchar) + ', [UserID], '+@myDate+'
+					   ,[RequestedURL], [RequestStatus], [BytesSent], [RequestTime], [UserIPAddress] FROM '+@myTable+' WHERE BatchID IN '+@myBatchList+' AND (';
 			DECLARE myCursor CURSOR FOR SELECT PatternLike FROM [dbo].[CATServicePatterns] WHERE FKServiceID = @myServiceID;
 		    OPEN myCursor
 		    FETCH NEXT FROM myCursor INTO @myLike

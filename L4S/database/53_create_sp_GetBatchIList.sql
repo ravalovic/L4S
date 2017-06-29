@@ -1,27 +1,28 @@
 USE [log4service]
 GO
 
-/****** Object:  StoredProcedure [dbo].[sp_STCheckFileDuplicity]    Script Date: 14. 6. 2017 12:40:24 ******/
+/****** Object:  StoredProcedure [dbo].[sp_GetBatchList]    Script Date: 14. 6. 2017 12:40:24 ******/
 IF EXISTS ( SELECT * 
             FROM   sysobjects 
-            WHERE  id = object_id(N'[dbo].[sp_CATGetBatchID]') 
+            WHERE  id = object_id(N'[dbo].[sp_GetBatchList]') 
                    and OBJECTPROPERTY(id, N'IsProcedure') = 1 )
 BEGIN
-    DROP PROCEDURE [dbo].sp_CATGetBatchID
+    DROP PROCEDURE [dbo].sp_GetBatchList
 END
 
 GO
 
 USE [log4service]
 GO
-/****** Object:  StoredProcedure [dbo].[sp_CATRunDataProcessing]  Script Date: 24.06.2017 20:29:52 ******/
+/****** Object:  StoredProcedure [dbo].[sp_GetBatchList]  Script Date: 24.06.2017 20:29:52 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
 GO
 
-CREATE PROCEDURE [dbo].sp_CATGetBatchID 
+CREATE PROCEDURE [dbo].sp_GetBatchList 
 	-- Add the parameters for the stored procedure here
+	@myInput int = 0,
 	@myBatchList varchar(max) ='' out
 AS
 DECLARE
@@ -30,10 +31,12 @@ DECLARE
 BEGIN
      
     SET NOCOUNT ON;
+
 	--Read batch from STLogImport
 	        SET @myBatchList ='( ';
 	        --list of batch from STLogImport
-		    DECLARE myCursor CURSOR FOR SELECT DISTINCT BatchID FROM [dbo].STLogImport;
+		    IF (@myInput = 0) DECLARE myCursor CURSOR FOR SELECT DISTINCT BatchID FROM [dbo].[STLogImport];
+			IF (@myInput = 1) DECLARE myCursor CURSOR FOR SELECT DISTINCT BatchID FROM [dbo].[CATUnknownService];
 		    OPEN myCursor
 		    FETCH NEXT FROM myCursor INTO @myBatch
 		    WHILE @@FETCH_STATUS = 0   
