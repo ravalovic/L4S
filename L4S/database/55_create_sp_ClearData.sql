@@ -35,6 +35,5 @@ BEGIN
 	   SET @deleted = @@ROWCOUNT;
 	 UPDATE STLogImport 
 	  SET  BytesSent = replace(replace(BytesSent,'.',''),',','')
-	      ,RequestTime = replace(replace(RequestTime,'.',''),',','')
-		  ,DatDate = dateadd(hour,convert(int,substring([DateOfRequest],len([DateOfRequest])-5,4)) ,convert(datetime, substring([DateOfRequest],0,12)+' '+ substring([DateOfRequest],13,8),104));
+	      ,DatDate = dateadd(hour,convert(int,substring([DateOfRequest],len([DateOfRequest])-5,4)) ,convert(datetime, substring([DateOfRequest],0,12)+' '+ substring([DateOfRequest],13,8),104));
 END

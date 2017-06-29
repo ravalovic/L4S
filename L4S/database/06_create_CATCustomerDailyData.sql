@@ -28,7 +28,7 @@ CREATE TABLE [dbo].[CATCustomerDailyData](
 	[ServiceID] [int] NOT NULL,
 	[NumberOfRequest] [bigint] NULL,
 	[ReceivedBytes] [bigint] NULL,
-	[RequestedTime] [bigint] NULL,
+	[RequestedTime] [decimal](18, 3) NULL,
 	[TCInsertTime] [datetime] ,
 	[TCLastUpdate] [datetime] NULL,
 	[TCActive] [int] NULL

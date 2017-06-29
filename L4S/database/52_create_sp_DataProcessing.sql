@@ -23,12 +23,12 @@ GO
 
 CREATE PROCEDURE [dbo].[sp_DataProcessing] 
 @mydebug int = 0,
-@tableInput int = 0
+@tableInput int = 0,
+@batchList varchar(max) OUTPUT
 AS
 
 DECLARE
        @countNewData int = 0,  
-	   @batchList varchar(max),
 	   @return_value int,
 	   @CustomerID int,
 	   @ServiceID int,
@@ -44,7 +44,6 @@ DECLARE
 	   @rowcountAll int = 0
 BEGIN
      
-   print GETDATE();
     IF (@tableInput = 0) SELECT  @countNewData = count(*) from [dbo].STLogImport;
 	ELSE SET @countNewData =1;
 	IF (@countNewData>0) 
@@ -131,6 +130,5 @@ BEGIN
 		ELSE 
   	        insert into [dbo].CATProcessStatus ([StepName], [BatchID], [BatchRecordNum], [NumberOfService] ,[NumberOfCustomer],[NumberOfUnknownService], [NumberOfPreprocessDelete])
 			values ('DataReprocessing', @batchList, @rowcountAll,  @rowcountService, @rowcountCustomer, @rowcountUnknown, @rowcountPreprocess);
-		print GETDATE();
 	END
 END

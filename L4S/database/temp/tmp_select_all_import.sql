@@ -12,9 +12,11 @@ select count(*) logservice from CATLogsOfService;
 --select  count(*), batchid from CATLogsOfService group by batchid order by batchid;
 select count(*)unknown  from CATUnknownService;
 --select  count(*), batchid from CATUnknownService group by batchid order by batchid;
+select * from CATCustomerDailyData;
+select * from CATCustomerMonthlyData;
 
 /*
-delete  FROM [dbo].[STInputFileInfo];
+delete  FROM [dbo].[STInputFileInfo];  
 delete from  STInputFileDuplicity;
 truncate table STLogImport;
 delete from STLogImport;
@@ -23,4 +25,7 @@ delete from CATUnknownService;
 truncate table CATLogsOfService;
 delete from CATLogsOfService;
 delete from CATProcessStatus;
+delete from CATCustomerMonthlyData;
+delete from CATCustomerDailyData;
+delete from CATChangeDetect;
 */

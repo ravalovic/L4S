@@ -35,7 +35,7 @@ SET @myQuery = 'SELECT  TCActive from [CATCustomerMonthlyData] a
 				 and a.RequestDate = DATEADD(month, DATEDIFF(month, 0,convert(date,DateofRequest)), 0)
 				 and a.[CustomerID] = b.[CustomerID] 
 				 and a.[ServiceID] = b.[ServiceID])';
-EXEC sp_executesql @myQuery;
+EXEC (@myQuery);
 SELECT @myTestRowcount =  @@ROWCOUNT;
 
 if (@myTestRowcount = 0)
@@ -43,12 +43,12 @@ if (@myTestRowcount = 0)
 	     SET @myQuery = 'INSERT INTO [dbo].[CATCustomerMonthlyData]
 							([RequestDate], [CustomerID], [ServiceID], [NumberOfRequest], [ReceivedBytes], [RequestedTime])   
 						 SELECT DATEADD(month, DATEDIFF(month, 0,convert(date,DateofRequest)), 0), [CustomerID], [ServiceID], count(*)
-						      , sum(convert (bigint,[BytesSent])), sum(convert (bigint,[RequestTime]))/1000 
+						      , sum(convert (bigint,[BytesSent])), sum(convert (decimal,[RequestTime]))
 						 FROM [dbo].[CATLogsOfService] WHERE CustomerID IS NOT NULL 
 						 and  BATCHID IN'+@myBatchList+' 
 						 and  TCActive = 1
 						 GROUP BY DATEADD(month, DATEDIFF(month, 0,convert(date,DateofRequest)), 0), [CustomerID], [ServiceID]'
-			EXEC sp_executesql @myQuery;
+			EXEC(@myQuery);
             SELECT @rowCount =  @@ROWCOUNT;
 			insert into [dbo].CATProcessStatus ([StepName], [BatchID], [BatchRecordNum])
 			values ('MonthlyData Insert', @myBatchList, @rowCount);
@@ -58,7 +58,7 @@ if (@myTestRowcount = 0)
 				SET @myQuery = 'UPDATE [dbo].[CATLogsOfService]
 									SET TCActive = 2
 								WHERE   BatchID IN'+@myBatchList+' AND CustomerID is not null AND TCActive = 1'
-				EXEC sp_executesql @myQuery;
+				EXEC(@myQuery);
 			END
 		END
 		ELSE
@@ -76,7 +76,7 @@ if (@myTestRowcount = 0)
 								,[ServiceID]
 								,count(*) [NumberOfRequest]
 								,sum(convert (bigint,[BytesSent])) [ReceivedBytes]
-								,sum(convert (bigint,[RequestTime]))/1000 [RequestedTime]
+								,sum(convert (decimal,[RequestTime])) [RequestedTime]
 							  FROM [dbo].[CATLogsOfService] 
 									WHERE CustomerID is not null AND  batchid in'+@myBatchList+' AND TCActive = 1
 									GROUP BY DATEADD(month, DATEDIFF(month, 0,convert(date,DateofRequest)), 0)
@@ -86,7 +86,7 @@ if (@myTestRowcount = 0)
 						     i.RequestDate = CATCustomerMonthlyData.RequestDate
 						 and i.[CustomerID] = CATCustomerMonthlyData.CustomerID
 						 and i.[ServiceID] = CATCustomerMonthlyData.ServiceID'
-		EXEC sp_executesql @myQuery;
+		EXEC(@myQuery);
         SELECT @rowCount =  @@ROWCOUNT;
 		insert into [dbo].CATProcessStatus ([StepName], [BatchID], [BatchRecordNum])
 			values ('MonthlyData Update', @myBatchList, @rowCount);
@@ -97,7 +97,7 @@ if (@myTestRowcount = 0)
 			SET @myQuery = 'UPDATE [dbo].[CATLogsOfService]
 								SET TCActive = 2
 							WHERE   BatchID IN'+@myBatchList+' AND CustomerID is not null AND TCActive = 1'
-			EXEC sp_executesql @myQuery;
+			EXEC(@myQuery);
 		END
 	END
 END

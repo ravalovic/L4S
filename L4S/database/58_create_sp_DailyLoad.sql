@@ -23,11 +23,11 @@ GO
 CREATE PROCEDURE [dbo].[sp_DailyLoad] 
 	@myBatchList varchar(max)
 AS
-declare
+DECLARE
 @myQuery nvarchar(max),
 @myTestRowcount int = 0,
 @rowCount int = 0
-begin
+BEGIN
 --SELECT DATEADD(month, DATEDIFF(month, 0, getdate()), 0) AS StartOfMonth
 
 SET @myQuery = 'SELECT TCActive from [CATCustomerDailyData] a 
@@ -36,20 +36,22 @@ SET @myQuery = 'SELECT TCActive from [CATCustomerDailyData] a
 				 and a.RequestDate = convert(date,b.DateofRequest) 
 				 and a.[CustomerID] = b.[CustomerID] 
 				 and a.[ServiceID] = b.[ServiceID])';
-print @myQuery;
-EXEC sp_executesql @myQuery;
+--print @myQuery;
+EXEC (@myQuery);
 SELECT @myTestRowcount =  @@ROWCOUNT;
+
 if (@myTestRowcount = 0)
 	BEGIN		
 	     SET @myQuery = 'INSERT INTO [dbo].[CATCustomerDailyData]
 							([RequestDate], [CustomerID], [ServiceID], [NumberOfRequest], [ReceivedBytes], [RequestedTime])   
 						 SELECT convert(date,DateofRequest), [CustomerID], [ServiceID], count(*)
-						      , sum(convert (bigint,[BytesSent])), sum(convert (bigint,[RequestTime]))/1000 
+						      , sum(convert (bigint,[BytesSent])), sum(convert (decimal,[RequestTime]))
 						 FROM [dbo].[CATLogsOfService] WHERE CustomerID IS NOT NULL 
 						 and  BATCHID IN'+@myBatchList+' 
 						 and TCActive = 0
 						 GROUP BY convert(date,DateofRequest), [CustomerID], [ServiceID]'
-			EXEC sp_executesql @myQuery;
+		    --print @myQuery;
+			EXEC (@myQuery);
             SELECT @rowCount =  @@ROWCOUNT;	
 			insert into [dbo].CATProcessStatus ([StepName], [BatchID], [BatchRecordNum])
 			values ('DailyData Insert', @myBatchList, @rowCount);
@@ -59,7 +61,7 @@ if (@myTestRowcount = 0)
 				SET @myQuery = 'UPDATE [dbo].[CATLogsOfService]
 									SET TCActive = 1
 								WHERE   BatchID IN'+@myBatchList+' AND CustomerID is not null AND TCActive = 0'
-				EXEC sp_executesql @myQuery;
+				EXEC(@myQuery);
 			END
 		END
 		ELSE
@@ -77,7 +79,7 @@ if (@myTestRowcount = 0)
 								,[ServiceID]
 								,count(*) [NumberOfRequest]
 								,sum(convert (bigint,[BytesSent])) [ReceivedBytes]
-								,sum(convert (bigint,[RequestTime]))/1000 [RequestedTime]
+								,sum(convert (decimal,[RequestTime])) [RequestedTime]
 							  FROM [dbo].[CATLogsOfService] 
 									WHERE CustomerID is not null AND  batchid in'+@myBatchList+' AND TCActive = 0
 									GROUP BY convert(date,DateofRequest) 
@@ -87,7 +89,7 @@ if (@myTestRowcount = 0)
 						     i.RequestDate = CATCustomerDailyData.RequestDate
 						 and i.[CustomerID] = CATCustomerDailyData.CustomerID
 						 and i.[ServiceID] = CATCustomerDailyData.ServiceID'
-		EXEC sp_executesql @myQuery;
+		EXEC(@myQuery);
         SELECT @rowCount =  @@ROWCOUNT;
 		insert into [dbo].CATProcessStatus ([StepName], [BatchID], [BatchRecordNum])
 			values ('DailyData Update', @myBatchList, @rowCount);
@@ -97,9 +99,10 @@ if (@myTestRowcount = 0)
 			SET @myQuery = 'UPDATE [dbo].[CATLogsOfService]
 								SET TCActive = 1
 							WHERE   BatchID IN'+@myBatchList+' AND CustomerID is not null AND TCActive = 0'
-			EXEC sp_executesql @myQuery;
+			EXEC(@myQuery);
          
 		END
 	END
 END
+
 

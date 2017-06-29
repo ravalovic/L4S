@@ -1,24 +1,22 @@
-use log4service
-go
-grant select, insert on STLogImport to loader;
-go
-grant execute on sp_STInputFileInfo to loader;
-go
-grant execute on sp_STCheckFileDuplicity to loader;
-go
-grant execute on sp_CATRunDataProcessing to loader;
-go
-grant execute on sp_CATGetBatchID to loader;
-go
-grant execute on sp_CATGetServiceQuery to loader;
-go
-grant execute on sp_CATPreProcess to loader;
-go
-grant execute on sp_STUpdateCustomerID to loader;
-go
-grant execute on sp_ARCHdataToArchive to loader;
-go
-grant execute on sp_CATLoadToDaily to loader;
-go
-grant execute on  sp_CATLoadToMonthly to loader;
-go
+USE log4service
+GO
+DECLARE
+ @roleName varchar(100) = 'loader' ,
+ @myQuery varchar(100)
+BEGIN
+DECLARE myCursor CURSOR FOR SELECT 'GRANT EXEC ON [' + ROUTINE_SCHEMA + '].[' + ROUTINE_NAME + '] TO [' + @roleName + '];'
+FROM INFORMATION_SCHEMA.Routines
+WHERE ROUTINE_TYPE = 'Procedure'
+AND ROUTINE_NAME NOT LIKE '%diagram%'
+OPEN myCursor
+FETCH NEXT FROM myCursor INTO @myQuery
+		    WHILE @@FETCH_STATUS = 0   
+		    BEGIN         
+				   exec(@myquery);
+				   FETCH NEXT FROM myCursor INTO @myQuery
+		    END   
+		    CLOSE myCursor   
+		    DEALLOCATE myCursor
+END
+
+GO

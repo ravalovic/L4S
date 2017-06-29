@@ -19,7 +19,7 @@ CREATE TABLE [dbo].[ARCHCustomerMonthlyData](
 	[ServiceID] [int],
 	[NumberOfRequest] [bigint] ,
 	[ReceivedBytes] [bigint] ,
-	[RequestedTime] [bigint] ,
+	[RequestedTime] [decimal](18, 3) ,
 	[TCInsertTime] [datetime] ,
 	[TCLastUpdate] [datetime] ,
 	[TCActive] [int] 
