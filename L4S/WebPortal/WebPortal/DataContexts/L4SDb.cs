@@ -1,5 +1,4 @@
-﻿using L4S.Entities;
-using Microsoft.AspNet.Identity.EntityFramework;
+﻿using Microsoft.AspNet.Identity.EntityFramework;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
@@ -29,11 +28,7 @@ namespace WebPortal.DataContexts
         }
 
         //Access to tables
-        public DbSet<Catalog_LogService> Catalog_LogServices { get; set; }
-        public DbSet<Catalog_Service> Catalog_Services { get; set; }
-        public DbSet<Stage_InputFileDuplicity> Stage_InputFileDuplicities { get; set; }
-        public DbSet<Stage_InputFileInfo> Stage_InputFileInfos { get; set; }
-        public DbSet<Stage_LogImport> Stage_LogImports { get; set; }
+     
 
     }
    

@@ -340,12 +340,6 @@
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\L4S.Entities\L4S.Entities.csproj">
-      <Project>{b522eec6-641e-40a8-9418-f18c21b281d9}</Project>
-      <Name>L4S.Entities</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
     <EmbeddedResource Include="Migrations\201706130957209_CreateTables_13062017.resx">
       <DependentUpon>201706130957209_CreateTables_13062017.cs</DependentUpon>
     </EmbeddedResource>
@@ -361,6 +355,12 @@
     <EmbeddedResource Include="Migrations\201706131415463_UpdateTable_add_constraints_13062017_03.resx">
       <DependentUpon>201706131415463_UpdateTable_add_constraints_13062017_03.cs</DependentUpon>
     </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Entities\Entities.csproj">
+      <Project>{06f593c4-5139-4d7b-956f-330870d0604b}</Project>
+      <Name>Entities</Name>
+    </ProjectReference>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
