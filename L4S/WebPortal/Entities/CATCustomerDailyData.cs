@@ -27,7 +27,7 @@ namespace Entities
 
         public long? ReceivedBytes { get; set; }
 
-        public long? RequestedTime { get; set; }
+        public decimal? RequestedTime { get; set; }
 
         public DateTime? TCInsertTime { get; set; }
 
