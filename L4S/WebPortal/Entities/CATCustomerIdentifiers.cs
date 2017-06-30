@@ -1,6 +1,6 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
-
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Entities
 {
@@ -8,6 +8,7 @@ namespace Entities
     public partial class CATCustomerIdentifiers
     {
         [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int PKCustomerIdentifiersID { get; set; }
 
         [Required]

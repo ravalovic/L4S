@@ -8,6 +8,7 @@ namespace Entities
     public partial class CATServicePatterns
     {
         [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int PKServicePatternID { get; set; }
 
         [Required]

@@ -1,6 +1,6 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
-
+using System.ComponentModel.DataAnnotations.Schema;
 
 
 namespace Entities
@@ -8,6 +8,8 @@ namespace Entities
     public partial class CATCustomerServices
     {
         [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+
         public int PKServiceCustomerIdentifiersID { get; set; }
 
         public int ServiceID { get; set; }

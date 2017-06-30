@@ -14,8 +14,8 @@ namespace Entities
             CATCustomerServices = new HashSet<CATCustomerServices>();
             CATCustomerIdentifiers = new HashSet<CATCustomerIdentifiers>();
         }
-
         [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int PKCustomerDataID { get; set; }
 
         [StringLength(6)]
