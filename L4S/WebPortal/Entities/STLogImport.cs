@@ -9,21 +9,17 @@ namespace Entities
     public partial class STLogImport
     {
         [Key]
-        [Column(Order = 0)]
-        [DatabaseGenerated(DatabaseGeneratedOption.None)]
-        [System.ComponentModel.DefaultValue(0)]
-        public int BatchID { get; set; } 
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        public int ID { get; set; }
+        [Required]
+        public int BatchID { get; set; }
 
-        [Key]
-        [Column(Order = 1)]
-        [DatabaseGenerated(DatabaseGeneratedOption.None)]
+        [Required]
         public int RecordID { get; set; }
-               
-        [Key]
-        [Column(Order = 2)]
-        [StringLength(100)]
-        [System.ComponentModel.DefaultValue("n/a")]
-        public string OriginalCheckSum { get; set; }
+
+        [Required]
+        [StringLength(50)]
+       public string OriginalCheckSum { get; set; }
 
         [StringLength(50)]
         public string NodeIPAddress { get; set; }
@@ -33,7 +29,7 @@ namespace Entities
 
         [StringLength(30)]
         public string DateOfRequest { get; set; }
-
+        [StringLength(8000)]
         public string RequestedURL { get; set; }
 
         [StringLength(5)]
@@ -44,7 +40,7 @@ namespace Entities
 
         [StringLength(15)]
         public string RequestTime { get; set; }
-
+        [StringLength(8000)]
         public string HttpRefferer { get; set; }
 
         [StringLength(500)]

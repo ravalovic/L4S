@@ -10,44 +10,37 @@ namespace Entities
     {
         [Key]
         [Column(Order = 0)]
-        [DatabaseGenerated(DatabaseGeneratedOption.None)]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        public int ID { get; set; }
+        [Required]
         [System.ComponentModel.DefaultValue(-1)]
         public int OriginalId { get; set; }
 
-        [Key]
-        [Column(Order = 1)]
         [StringLength(200)]
         public string FileName { get; set; }
 
-        [Key]
-        [Column(Order = 2)]
-        [DatabaseGenerated(DatabaseGeneratedOption.None)]
-        [System.ComponentModel.DefaultValue(-1)]
+
+        [Required]
         public int LinesInFile { get; set; }
 
-        [Key]
-        [Column(Order = 3)]
+        [Required]
         [StringLength(50)]
         public string Checksum { get; set; }
 
-        [Key]
-        [Column(Order = 4)]
+        [Required]
         public DateTime LoadDateTime { get; set; }
 
-        [Key]
-        [Column(Order = 5)]
+        [Required]
         public DateTime InsertDateTime { get; set; }
 
         [StringLength(200)]
         public string OriFileName { get; set; }
 
-        [Key]
-        [Column(Order = 6)]
+        [Required]
         [StringLength(50)]
         public string OriginalFileChecksum { get; set; }
 
-        [Key]
-        [Column(Order = 7)]
+        [Required]
         [DatabaseGenerated(DatabaseGeneratedOption.None)]
         [System.ComponentModel.DefaultValue(-1)]
         public int LoaderBatchID { get; set; }

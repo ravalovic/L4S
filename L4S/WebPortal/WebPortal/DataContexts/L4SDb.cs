@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNet.Identity.EntityFramework;
+﻿using Entities;
+using Microsoft.AspNet.Identity.EntityFramework;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
@@ -20,6 +21,7 @@ namespace WebPortal.DataContexts
         public L4SDb()
             : base("DefaultConnection") //used connection string
         {
+
         }
 
         public static L4SDb Create()
@@ -28,8 +30,27 @@ namespace WebPortal.DataContexts
         }
 
         //Access to tables
-     
+        public DbSet<CATCustomerData> CATCustomerData { get; set; }
+        public DbSet<CATCustomerIdentifiers> CATCustomerIdentifiers { get; set; }
+        public DbSet<CATCustomerServices> CATCustomerServices { get; set; }
+        public DbSet<CATServiceParameters> CATServiceParameters { get; set; }
+        public DbSet<CATServicePatterns> CATServicePatterns { get; set; }
 
+        public DbSet<STLogImport> STLogImport { get; set; }
+        public DbSet<CATLogsOfService > CATLogsOfService { get; set; }
+        public DbSet<CATUnknownService> CATUnknownService { get; set; }
+        public DbSet<CATCustomerDailyData> CATCustomerDailyData { get; set; }
+        public DbSet<CATCustomerMonthlyData> CATCustomerMonthlyData { get; set; }
+
+        public DbSet<STInputFileInfo> STInputFileInfo { get; set; }
+        public DbSet<STInputFileDuplicity> STInputFileDuplicity { get; set; }
+
+        public DbSet<CATProcessStatus> CATProcessStatus { get; set; }
+        public DbSet<CATChangeDetect> CATChangeDetect { get; set; }
+
+        public DbSet<ARCHCustomerDailyData> ARCHCustomerDailyData { get; set; }
+        public DbSet<ARCHCustomerMonthlyData> ARCHCustomerMonthlyData { get; set; }
+        public DbSet<ARCHLogsOfService> ARCHLogsOfService { get; set; }
     }
    
     

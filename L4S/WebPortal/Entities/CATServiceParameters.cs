@@ -6,7 +6,6 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Entities
 {
-    
     public partial class CATServiceParameters
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]

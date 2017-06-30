@@ -11,28 +11,16 @@ namespace Entities
     {
         [Key]
         [Column(Order = 0)]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        public int ID { get; set; }
         public DateTime RequestDate { get; set; }
-
-        [Key]
-        [Column(Order = 1)]
-        [DatabaseGenerated(DatabaseGeneratedOption.None)]
         public int CustomerID { get; set; }
-
-        [Key]
-        [Column(Order = 2)]
-        [DatabaseGenerated(DatabaseGeneratedOption.None)]
         public int ServiceID { get; set; }
-
         public long? NumberOfRequest { get; set; }
-
         public long? ReceivedBytes { get; set; }
-
         public decimal? RequestedTime { get; set; }
-
         public DateTime? TCInsertTime { get; set; }
-
         public DateTime? TCLastUpdate { get; set; }
-
         public int? TCActive { get; set; }
     }
 }

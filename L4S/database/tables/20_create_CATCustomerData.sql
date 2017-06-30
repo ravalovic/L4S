@@ -32,6 +32,8 @@ CREATE TABLE [dbo].[CATCustomerData](
 	[CompanyName] [varchar](100) ,
 	[CompanyType] [varchar](100) ,
 	[CompanyID] [varchar](20)  ,
+	[CompanyVATID] [varchar](20)  ,
+	[CompanyTAXID] [varchar](20)  ,
 	[IndividualTitle] [varchar](10) ,
 	[IndividualFirstName] [varchar](50)  ,
 	[IndividualLastName] [varchar](50)  ,

@@ -1,6 +1,5 @@
 namespace WebPortal.Migrations
 {
-    using Microsoft.AspNet.Identity;
     using System;
     using System.Data.Entity;
     using System.Data.Entity.Migrations;
@@ -20,13 +19,13 @@ namespace WebPortal.Migrations
             //  You can use the DbSet<T>.AddOrUpdate() helper extension method 
             //  to avoid creating duplicate seed data. E.g.
             //
-            var hasher = new PasswordHasher();
-            context.Users.AddOrUpdate(
-              p => p.UserName,
-              new Models.ApplicationUser {Email="admin@admin.sk", UserName = "admin", PasswordHash = hasher.HashPassword("admin") }
-            );
-
-            context.SaveChanges();
+            //    context.People.AddOrUpdate(
+            //      p => p.FullName,
+            //      new Person { FullName = "Andrew Peters" },
+            //      new Person { FullName = "Brice Lambson" },
+            //      new Person { FullName = "Rowan Miller" }
+            //    );
+            //
         }
     }
 }

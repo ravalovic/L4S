@@ -1,6 +1,12 @@
 USE [log4service]
 GO
 
+DELETE FROM [CATCustomerIdentifiers]
+GO
+
+DELETE FROM [CATCustomerData]
+GO
+
 INSERT INTO [dbo].[CATCustomerData]
            ([CustomerType]
            ,[CompanyName]

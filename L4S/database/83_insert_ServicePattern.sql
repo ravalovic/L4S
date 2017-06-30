@@ -1,6 +1,9 @@
-delete from [CATServicePatterns]; --Foreign key
+USE log4service
+GO
+
+DELETE FROM [CATServicePatterns]; --Foreign key
 DBCC CHECKIDENT ('CATServicePatterns', RESEED, 0);
-delete from [CATServiceParameters];
+DELETE FROM [CATServiceParameters];
 
 -- Insert service A 2.1.2
 INSERT INTO [dbo].[CATServiceParameters]([PKServiceID],[ServiceCode],[ServiceDescription],[ServiceBasicPrice]) VALUES(2,'2.1.2',N'A.2.1.2 - Poskytnutie priestorovej informácie zo súboru geodetických informácií z KN',0.001)
@@ -212,23 +215,6 @@ INSERT INTO [dbo].[CATServiceParameters]([PKServiceID],[ServiceCode],[ServiceDes
 -- Insert pattern
 INSERT INTO [dbo].[CATServicePatterns]([PatternLike],[PatternRegExp],[PatternDescription],[FKServiceID],[Entity],[Explanation],[DatSelectMethod]) VALUES('%/soap%',null,'IOM',30,null  ,N'SOAP endpoint web service',N'soap');
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-select * from CATServiceParameters;
-select p.ServiceDescription, t.* from CATServicePatterns t, CATServiceParameters p
-where p.PKServiceID = t.FKServiceID;
+--select * from CATServiceParameters;
+--select p.ServiceDescription, t.* from CATServicePatterns t, CATServiceParameters p
+--where p.PKServiceID = t.F KServiceID;

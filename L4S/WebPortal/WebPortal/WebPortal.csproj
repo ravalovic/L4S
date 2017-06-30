@@ -220,25 +220,9 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201706130957209_CreateTables_13062017.cs" />
-    <Compile Include="Migrations\201706130957209_CreateTables_13062017.Designer.cs">
-      <DependentUpon>201706130957209_CreateTables_13062017.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201706131031427_UpdateTables_13062017_01.cs" />
-    <Compile Include="Migrations\201706131031427_UpdateTables_13062017_01.Designer.cs">
-      <DependentUpon>201706131031427_UpdateTables_13062017_01.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201706131342042_UpdateTable_add_constraints_13062017.cs" />
-    <Compile Include="Migrations\201706131342042_UpdateTable_add_constraints_13062017.Designer.cs">
-      <DependentUpon>201706131342042_UpdateTable_add_constraints_13062017.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201706131406126_UpdateTable_add_constraints_130620171.cs" />
-    <Compile Include="Migrations\201706131406126_UpdateTable_add_constraints_130620171.Designer.cs">
-      <DependentUpon>201706131406126_UpdateTable_add_constraints_130620171.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201706131415463_UpdateTable_add_constraints_13062017_03.cs" />
-    <Compile Include="Migrations\201706131415463_UpdateTable_add_constraints_13062017_03.Designer.cs">
-      <DependentUpon>201706131415463_UpdateTable_add_constraints_13062017_03.cs</DependentUpon>
+    <Compile Include="Migrations\201706301308265_Version_01.cs" />
+    <Compile Include="Migrations\201706301308265_Version_01.Designer.cs">
+      <DependentUpon>201706301308265_Version_01.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
@@ -340,27 +324,15 @@
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201706130957209_CreateTables_13062017.resx">
-      <DependentUpon>201706130957209_CreateTables_13062017.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201706131031427_UpdateTables_13062017_01.resx">
-      <DependentUpon>201706131031427_UpdateTables_13062017_01.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201706131342042_UpdateTable_add_constraints_13062017.resx">
-      <DependentUpon>201706131342042_UpdateTable_add_constraints_13062017.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201706131406126_UpdateTable_add_constraints_130620171.resx">
-      <DependentUpon>201706131406126_UpdateTable_add_constraints_130620171.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201706131415463_UpdateTable_add_constraints_13062017_03.resx">
-      <DependentUpon>201706131415463_UpdateTable_add_constraints_13062017_03.cs</DependentUpon>
-    </EmbeddedResource>
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="..\Entities\Entities.csproj">
       <Project>{06f593c4-5139-4d7b-956f-330870d0604b}</Project>
       <Name>Entities</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Migrations\201706301308265_Version_01.resx">
+      <DependentUpon>201706301308265_Version_01.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

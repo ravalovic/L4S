@@ -24,11 +24,18 @@ namespace Entities
         [StringLength(100)]
         public string CompanyName { get; set; }
 
-        [StringLength(100)]
+        [StringLength(50)]
         public string CompanyType { get; set; }
 
         [StringLength(20)]
         public string CompanyID { get; set; }
+
+        [StringLength(20)]
+        public string CompanyTAXID { get; set; }
+
+        [StringLength(20)]
+        public string CompanyVATID { get; set; }
+
 
         [StringLength(10)]
         public string IndividualTitle { get; set; }
@@ -41,6 +48,12 @@ namespace Entities
 
         [StringLength(20)]
         public string IndividualID { get; set; }
+
+        [StringLength(20)]
+        public string IndividualTAXID { get; set; }
+
+        [StringLength(20)]
+        public string IndividualVATID { get; set; }
 
         [StringLength(50)]
         public string AddressStreet { get; set; }

@@ -9,13 +9,12 @@ namespace Entities
     public partial class CATLogsOfService
     {
         [Key]
-        [Column(Order = 0)]
-        [DatabaseGenerated(DatabaseGeneratedOption.None)]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        public int ID { get; set; }
+       [Required]
         public int BatchID { get; set; }
 
-        [Key]
-        [Column(Order = 1)]
-        [DatabaseGenerated(DatabaseGeneratedOption.None)]
+        [Required]
         public int RecordID { get; set; }
 
         public int? CustomerID { get; set; }
@@ -26,7 +25,7 @@ namespace Entities
         public string UserID { get; set; }
 
         public DateTime? DateOfRequest { get; set; }
-
+        [StringLength(8000)]
         public string RequestedURL { get; set; }
 
         [StringLength(5)]

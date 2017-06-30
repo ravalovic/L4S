@@ -9,7 +9,6 @@ namespace Entities
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-
         public int PKServiceCustomerIdentifiersID { get; set; }
 
         public int ServiceID { get; set; }

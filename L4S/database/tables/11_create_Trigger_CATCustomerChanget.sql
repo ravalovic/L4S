@@ -1,11 +1,16 @@
-use log4service
+USE [log4service]
+GO
+
+IF OBJECT_ID('[dbo].[CATCustomerDataChange]', 'TR') IS NOT NULL 
+  DROP TRIGGER [dbo].[CATCustomerDataChange]; 
+  
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
 GO
 
-CREATE OR ALTER TRIGGER[dbo].CATServicePAtternsChange
-   ON  [dbo].[CATServicePAtterns]
+CREATE TRIGGER[dbo].[CATCustomerDataChange]
+   ON  [dbo].[CATCustomerData]
    AFTER INSERT,UPDATE
 AS 
 DECLARE @action as char(1);
@@ -25,7 +30,7 @@ BEGIN
     END
     ELSE 
         IF NOT EXISTS(SELECT * FROM INSERTED) RETURN; -- Nothing updated or inserted.
-        
+    
 
 INSERT INTO [dbo].[CATChangeDetect]
            ([TableName]
@@ -33,7 +38,7 @@ INSERT INTO [dbo].[CATChangeDetect]
 		   ,[StatusName]
            )
      VALUES
-           ('CATServicePAtternsChange'
+           ('CATCustomerData'
            ,0
 		   ,@action
            )

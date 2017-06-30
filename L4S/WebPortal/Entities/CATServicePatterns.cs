@@ -27,7 +27,7 @@ namespace Entities
         public string Entity { get; set; }
 
         [StringLength(150)]
-        public string Explanation { get; set; }
+        public string Explanation { get; set; } 
 
         [StringLength(150)]
         public string DatSelectMethod { get; set; }
@@ -39,5 +39,6 @@ namespace Entities
         public int? TCActive { get; set; }
 
         public virtual CATServiceParameters CATServiceParameters { get; set; }
+
     }
 }

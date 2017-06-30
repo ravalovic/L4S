@@ -8,6 +8,7 @@ namespace Entities
     [Table("STInputFileInfo")]
     public partial class STInputFileInfo
     {
+        [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
 
@@ -15,19 +16,19 @@ namespace Entities
         [StringLength(200)]
         public string FileName { get; set; }
 
-        [Key]
+        [Required]
         [StringLength(50)]
         public string Checksum { get; set; }
 
-        [System.ComponentModel.DefaultValue(-1)]
+        [Required]
         public int LinesInFile { get; set; }
-
+        [Required]
         public DateTime InsertDateTime { get; set; }
 
-        [System.ComponentModel.DefaultValue(-1)]
+        [Required]
         public int LoaderBatchID { get; set; }
 
-        [System.ComponentModel.DefaultValue(-1)]
+        [Required]
         public int LoadedRecord { get; set; }
 
         [StringLength(200)]
@@ -38,9 +39,3 @@ namespace Entities
         public string OriginalFileChecksum { get; set; }
     }
 }
-//CreateTable(
-//    "dbo.STInputFileInfo",
-//    c => new
-//        {
-//            InsertDateTime = c.DateTime(defaultValueSql: "GETDATE()")
-//        });

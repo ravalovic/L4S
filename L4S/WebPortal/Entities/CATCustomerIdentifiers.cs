@@ -20,6 +20,6 @@ namespace Entities
 
         public int FKCustomerID { get; set; }
 
-        public virtual CATCustomerData CATCustomerData { get; set; }
+        public virtual CATCustomerData CATCustomerData { get; set; } 
     }
 }
