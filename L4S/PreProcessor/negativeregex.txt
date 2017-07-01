@@ -1,0 +1,5 @@
+<add key="pattern1" value="^.*\|-$" />
+    <add key="pattern2" value="^.*/([Tt]hemes|[Ss]cripts|[Cc]ontent|[Hh]elp|[Vv]gi|[Ss]earch|[Rr]eports|[Rr]egisters|[Aa]ccount|[Ss]uggest)/.*$" />
+    <add key="pattern3" value="^.*/\w{0,3}[Pp]ortal\sHTTP/1.1.*$" />
+    <add key="pattern4" value="^.*/SuggestSimple.*$" />
+    <add key="pattern5" value="^.*.(\|404\||\|0\|).*$" />

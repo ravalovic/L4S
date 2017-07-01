@@ -27,7 +27,7 @@ namespace PreProcessor
         public bool CreateWrongFile { get; set; }
         public string InputFileName { get; set; }
         public string OutputMapping { get; set; }
-        public int URLEncodeFieldIndex { get; set; }
+        public int UrlEncodeFieldIndex { get; set; }
         public string InputFieldSeparator { get; set; }
         public string OutputFieldSeparator { get; set; }
         public string[] Patterns { get; set; }
@@ -53,11 +53,11 @@ namespace PreProcessor
             int index;
             if (int.TryParse(configManager.ReadSetting("urlDecodeFieldIndex"), out index))
             {
-                URLEncodeFieldIndex = index;
+                UrlEncodeFieldIndex = index;
             }
             else
             {
-                URLEncodeFieldIndex = -1;
+                UrlEncodeFieldIndex = -1;
             }
             InputFieldSeparator = configManager.ReadSetting("inputFieldSeparator");
             OutputFieldSeparator = configManager.ReadSetting("outputFieldSeparator");
@@ -127,7 +127,7 @@ namespace PreProcessor
         {
             using (new SingleGlobalInstance(1000)) //1000ms timeout on global lock
             {
-                var myStopWatch = Stopwatch.StartNew();
+                
                 string missing;
                 var appSettings = new MyApConfig();
                 if (appSettings.CheckParams(appSettings, out missing))
@@ -140,12 +140,12 @@ namespace PreProcessor
                 GetFromNetCollector(appSettings);
                 MoveProcessedFile(appSettings);
                 ProcessAllFiles(appSettings);
-                myStopWatch.Stop();
-                Log.Info("Processed in " + myStopWatch.RunTime());
+                
             }
         }
         protected static void ProcessAllFiles(MyApConfig configSettings)
         {
+            var myStopWatch = Stopwatch.StartNew();
             //Read files from work exept Processed files
             var iFiles = Directory.GetFiles(configSettings.WorkDir, configSettings.InputFileName).Where(n => !n.Contains(configSettings.OutputFileMask) && !n.Contains(configSettings.WrongFileMask)).ToArray();
 
@@ -156,10 +156,12 @@ namespace PreProcessor
                 {
                     if (File.Exists(file))
                     {
+                        myStopWatch.Restart();
                         CreateOutputFile(file, configSettings);
                         configSettings.UpdateBatchId(configSettings.BatchId++);
                         Log.Info(string.Format("Processed file {0} ", file));
-                       
+                        myStopWatch.Stop();
+                        Log.Info("Processed in " + myStopWatch.RunTime());
                     }
                 }
                 configSettings.UpdateBatchId(configSettings.BatchId++);
@@ -260,21 +262,24 @@ namespace PreProcessor
                 //Start with header line
                 swOk.WriteLine(configSettings.HeaderLine);
                 string line;
-                int recordOKID = 1;
-                int recordERRID = 1;
+                int recordOkid = 1;
+                int recordErrid = 1;
                 while ((line = sr.ReadLine()) != null)
                 {
-                    if (Helper.IsValidByReg(configSettings.Patterns, line) && !string.IsNullOrWhiteSpace(line))
+                    if (Helper.IsValidByReg(configSettings.Patterns, line) || string.IsNullOrWhiteSpace(line)) //GOOD RECORD
                     {
-                        var unifiedLine = MakeLine(configSettings, recordOKID, oriCheckSum, oFile.Name, line);
+                        var unifiedLine = MakeLine(configSettings, recordOkid, oriCheckSum, oFile.Name, line);
                         swOk.WriteLine(unifiedLine);
-                        recordOKID++;
+                        recordOkid++;
                     }
-                    else if (configSettings.CreateWrongFile)
+                    else  //WRONG RECORD
                     {
-                        var unifiedLine = MakeLine(configSettings, recordERRID, oriCheckSum, oFile.Name, line);
-                        swWrong?.WriteLine(unifiedLine);
-                        recordERRID++;
+                        if (configSettings.CreateWrongFile)
+                        {
+                            var unifiedLine = MakeLine(configSettings, recordErrid, oriCheckSum, oFile.Name, line);
+                            swWrong?.WriteLine(unifiedLine);
+                            recordErrid++;
+                        }
                     }
                 }
                 sr.Close();
@@ -304,12 +309,12 @@ namespace PreProcessor
         /// Create new unified line, mapping input to output stage table format
         /// </summary>
         /// <param name="myConfig"></param>
-        /// <param name="myRecorID"></param>
+        /// <param name="myRecorId"></param>
         /// <param name="checkSum"></param>
         /// <param name="fileName"></param>
         /// <param name="line"></param>
         /// <returns></returns>
-        protected static string MakeLine(MyApConfig myConfig, int myRecorID, string checkSum, string fileName, string line)
+        protected static string MakeLine(MyApConfig myConfig, int myRecorId, string checkSum, string fileName, string line)
         {
             char separator = ',';
             string[] mapper = myConfig.OutputMapping.Split(separator);
@@ -323,7 +328,7 @@ namespace PreProcessor
                 {
                     if (index <= splittedLine.Count() - 1)
                     {
-                        if (index == myConfig.URLEncodeFieldIndex)
+                        if (index == myConfig.UrlEncodeFieldIndex)
                         {
                             newLineArray[i] = HttpUtility.UrlDecode(splittedLine[index]);
                         }
@@ -336,7 +341,7 @@ namespace PreProcessor
                 i++;
             }
             return myConfig.BatchId + myConfig.OutputFieldSeparator +
-                     myRecorID + myConfig.OutputFieldSeparator + 
+                     myRecorId + myConfig.OutputFieldSeparator + 
                      checkSum + myConfig.OutputFieldSeparator +
                      string.Join(myConfig.OutputFieldSeparator, newLineArray);
         }

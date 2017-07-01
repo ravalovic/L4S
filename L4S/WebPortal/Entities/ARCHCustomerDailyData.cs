@@ -23,7 +23,7 @@ namespace Entities
         public long? NumberOfRequest { get; set; }
 
         public long? ReceivedBytes { get; set; }
-
+        
         public decimal? RequestedTime { get; set; }
 
         public DateTime? TCInsertTime { get; set; }

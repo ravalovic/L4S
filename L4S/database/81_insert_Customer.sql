@@ -7,6 +7,9 @@ GO
 DELETE FROM [CATCustomerData]
 GO
 
+DBCC CHECKIDENT ('CATCustomerData', RESEED, 0);
+
+
 INSERT INTO [dbo].[CATCustomerData]
            ([CustomerType]
            ,[CompanyName]

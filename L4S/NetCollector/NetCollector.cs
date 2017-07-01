@@ -128,7 +128,7 @@ namespace NetCollector
 
             using (new SingleGlobalInstance(1000)) //1000ms timeout on global lock
             {
-                var myStopWatch = Stopwatch.StartNew();
+                
                 string missing;
                 MyApConfig appSettings = new MyApConfig();
                 if (appSettings.CheckParams(appSettings, out missing))
@@ -183,8 +183,7 @@ namespace NetCollector
                     }
 
                 }
-                myStopWatch.Stop();
-                Log.Info("Transferred in " + myStopWatch.RunTime());
+               
             } //using singleinstance
         }
         /// <summary>
@@ -194,6 +193,7 @@ namespace NetCollector
         /// <returns></returns>
         protected static bool NetShareTransfer(MyApConfig settingsConfig)
         {
+            var myStopWatch = Stopwatch.StartNew();
             bool result = false;
             string dateMask = DateTime.Now.ToString("ddMMyyyyHHmmss");
             //Read files from NetCollector
@@ -206,6 +206,7 @@ namespace NetCollector
                
                 foreach (var file in iFiles)
                 {
+                    myStopWatch.Restart();
                     Helper.ManageFile(Helper.Action.Copy, file, settingsConfig.WorkDir);
                     Log.Info(String.Format("New file {0}", file));
                     if (settingsConfig.AllowRenameRemote)
@@ -213,7 +214,8 @@ namespace NetCollector
                         Helper.ManageFile(Helper.Action.Move, file, sourceDir, @"_" + dateMask + settingsConfig.RenameRemoteExtension);
                         Log.Info(String.Format("Renaming to file {0} ", file + settingsConfig.RenameRemoteExtension));
                     }
-                  
+                    myStopWatch.Stop();
+                    Log.Info("Transferred in " + myStopWatch.RunTime());
                 }
                 result = true;
             }
@@ -236,6 +238,7 @@ namespace NetCollector
            
             using (Ftp ftp = new Ftp())
             {
+                var myStopWatch = Stopwatch.StartNew();
                 ftp.Connect(settingsConfig.RemoteServer);  // or ConnectSSL for SSL 
                 ftp.Login(settingsConfig.Login, settingsConfig.Password);
                 var options = new RemoteSearchOptions();
@@ -246,11 +249,14 @@ namespace NetCollector
                 {
                     foreach (var file in iFilesRemote)
                     {
+                        myStopWatch.Restart();
                         ftp.Download(settingsConfig.RemoteDir + file.FtpItem.Name, settingsConfig.WorkDir + file.FtpItem.Name);
                         if (settingsConfig.AllowRenameRemote)
                         {
                             ftp.Rename(settingsConfig.RemoteDir + file.FtpItem.Name, settingsConfig.RemoteDir + Path.GetFileName(file.FtpItem.Name) + @"_" + dateMask + settingsConfig.RenameRemoteExtension);
                         }
+                        myStopWatch.Stop();
+                        Log.Info("Transferred in " + myStopWatch.RunTime());
                     }
                     result = true;
                 }

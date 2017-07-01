@@ -48,14 +48,7 @@ BEGIN
 	ELSE SET @countNewData =1;
 	IF (@countNewData>0) 
 	BEGIN
-	    IF (@tableInput = 0)
-		BEGIN
-			EXEC	@return_value = [dbo].[sp_ClearData]
-					@deleted = @rowcountPreprocess OUTPUT;
-			if (@mydebug = 1 ) print 'Preprocess: '+ cast(@rowcountPreprocess as varchar) +' affected lines';
-		END
-		
-		EXEC	@return_value = [dbo].[sp_GetBatchList]
+	    EXEC	@return_value = [dbo].[sp_GetBatchList]
 		        @myInput = @tableInput,
 			    @myBatchList = @batchList OUTPUT;
 		if (@return_value = 0) 
@@ -71,8 +64,8 @@ BEGIN
 							@myBatchList = @batchList,
 							@myCustomerQuery = @CustomerQuery OUTPUT;
                       if (@mydebug = 1 ) print @CustomerQuery;
-				      EXEC sp_executesql @CustomerQuery;
-					  SELECT @rowcountCustomer = @rowcountCustomer + @@ROWCOUNT;
+				      EXEC(@CustomerQuery);
+					  SELECT @rowcountCustomer =@rowcountCustomer+ @@ROWCOUNT;
 		              if (@mydebug = 1 ) print 'CustomerID: ' + cast(@CustomerID as varchar) +' find in '+ cast(@rowcountCustomer as varchar) +' lines';
 					  FETCH NEXT FROM runCursor INTO @CustomerID
 		        END
@@ -93,7 +86,7 @@ BEGIN
 							@myBatchList = @batchList,
 							@myserviceQuery = @serviceQuery OUTPUT;
 					if (@mydebug = 1 ) print @serviceQuery;
-					EXEC sp_executesql @serviceQuery;
+					EXEC(@serviceQuery);
 					SELECT @rowcountService =  @rowcountService + @@ROWCOUNT;
 		            if (@mydebug = 1 ) print 'ServiceID: ' + cast(@ServiceID as varchar) +' find in '+ cast(@rowcountService as varchar) +' lines';
 					FETCH NEXT FROM runCursor INTO @ServiceID
@@ -114,13 +107,13 @@ BEGIN
 							FROM [dbo].[STLogImport] WHERE BatchID IN ' + @batchList +'
 							and not exists (select s.batchid, s.recordid  from CATLogsOfService s where s.batchid=STLogImport.batchid and s.recordid = STLogImport.recordid)';
 			if (@mydebug = 1 ) print @myInsert;
-			EXEC sp_executesql @myInsert;
+			EXEC(@myInsert);
 			SELECT @rowcountUnknown = @@ROWCOUNT;
 			if (@mydebug = 1 ) print 'Unknown Service find in '+ cast(@rowcountUnknown as varchar) +' lines';
 		
 			SET @myDelete = 'DELETE FROM [dbo].[STLogImport] WHERE BatchID IN' + @batchList;
 			if (@mydebug = 1 ) print @myDelete;
-			EXEC sp_executesql @myDelete;
+			EXEC(@myDelete);
 			SELECT @rowcountAll = @@ROWCOUNT;
 			if (@mydebug = 1 ) print 'Deleted rows from STLogImport '+ cast(@rowcountAll as varchar) +' lines';
 			

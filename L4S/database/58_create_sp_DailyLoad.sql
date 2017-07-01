@@ -21,11 +21,11 @@ SET QUOTED_IDENTIFIER ON
 GO
 
 CREATE PROCEDURE [dbo].[sp_DailyLoad] 
+    @mydebug int = 0,
 	@myBatchList varchar(max)
 AS
 DECLARE
 @myQuery nvarchar(max),
-@myTestRowcount int = 0,
 @rowCount int = 0
 BEGIN
 --SELECT DATEADD(month, DATEDIFF(month, 0, getdate()), 0) AS StartOfMonth
@@ -38,9 +38,10 @@ SET @myQuery = 'SELECT TCActive from [CATCustomerDailyData] a
 				 and a.[ServiceID] = b.[ServiceID])';
 --print @myQuery;
 EXEC (@myQuery);
-SELECT @myTestRowcount =  @@ROWCOUNT;
+SELECT @rowCount =  @@ROWCOUNT;
+if (@mydebug = 1 ) print 'Records for Daily load: '+cast(@rowCount as varchar);
 
-if (@myTestRowcount = 0)
+if (@rowCount = 0)
 	BEGIN		
 	     SET @myQuery = 'INSERT INTO [dbo].[CATCustomerDailyData]
 							([RequestDate], [CustomerID], [ServiceID], [NumberOfRequest], [ReceivedBytes], [RequestedTime])   
@@ -52,7 +53,8 @@ if (@myTestRowcount = 0)
 						 GROUP BY convert(date,DateofRequest), [CustomerID], [ServiceID]'
 		    --print @myQuery;
 			EXEC (@myQuery);
-            SELECT @rowCount =  @@ROWCOUNT;	
+            SELECT @rowCount =  @@ROWCOUNT;
+			if (@mydebug = 1 ) print 'Insert Daily table record: '+cast(@rowCount as varchar);
 			insert into [dbo].CATProcessStatus ([StepName], [BatchID], [BatchRecordNum])
 			values ('DailyData Insert', @myBatchList, @rowCount);
 			--mark  that was processed
@@ -91,6 +93,7 @@ if (@myTestRowcount = 0)
 						 and i.[ServiceID] = CATCustomerDailyData.ServiceID'
 		EXEC(@myQuery);
         SELECT @rowCount =  @@ROWCOUNT;
+			if (@mydebug = 1 ) print 'Update Daily table record: '+cast(@rowCount as varchar);
 		insert into [dbo].CATProcessStatus ([StepName], [BatchID], [BatchRecordNum])
 			values ('DailyData Update', @myBatchList, @rowCount);
 		IF ( @rowCount > 0 )

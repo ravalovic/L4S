@@ -20,3 +20,5 @@ FETCH NEXT FROM myCursor INTO @myQuery
 END
 
 GO
+grant select, insert on STLogImport to loader;
+go

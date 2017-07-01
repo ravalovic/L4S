@@ -21,11 +21,11 @@ SET QUOTED_IDENTIFIER ON
 GO
 
 CREATE PROCEDURE [dbo].[sp_MonthlyLoad] 
+	@mydebug int = 0,
 	@myBatchList varchar(max)
 AS
 declare
 @myQuery nvarchar(max),
-@myTestRowcount int = 0,
 @rowCount int = 0
 begin
 
@@ -36,9 +36,9 @@ SET @myQuery = 'SELECT  TCActive from [CATCustomerMonthlyData] a
 				 and a.[CustomerID] = b.[CustomerID] 
 				 and a.[ServiceID] = b.[ServiceID])';
 EXEC (@myQuery);
-SELECT @myTestRowcount =  @@ROWCOUNT;
-
-if (@myTestRowcount = 0)
+SELECT @rowCount =  @@ROWCOUNT;
+if (@mydebug = 1 ) print 'Records for Monthly load: '+cast(@rowCount as varchar);
+if (@rowCount = 0)
 	BEGIN		
 	     SET @myQuery = 'INSERT INTO [dbo].[CATCustomerMonthlyData]
 							([RequestDate], [CustomerID], [ServiceID], [NumberOfRequest], [ReceivedBytes], [RequestedTime])   
@@ -50,6 +50,7 @@ if (@myTestRowcount = 0)
 						 GROUP BY DATEADD(month, DATEDIFF(month, 0,convert(date,DateofRequest)), 0), [CustomerID], [ServiceID]'
 			EXEC(@myQuery);
             SELECT @rowCount =  @@ROWCOUNT;
+			if (@mydebug = 1 ) print 'Insert Monthly table record: '+cast(@rowCount as varchar);
 			insert into [dbo].CATProcessStatus ([StepName], [BatchID], [BatchRecordNum])
 			values ('MonthlyData Insert', @myBatchList, @rowCount);
 			IF ( @rowCount > 0 )
@@ -88,6 +89,7 @@ if (@myTestRowcount = 0)
 						 and i.[ServiceID] = CATCustomerMonthlyData.ServiceID'
 		EXEC(@myQuery);
         SELECT @rowCount =  @@ROWCOUNT;
+			    if (@mydebug = 1 ) print 'Update Monthly table record: '+cast(@rowCount as varchar);
 		insert into [dbo].CATProcessStatus ([StepName], [BatchID], [BatchRecordNum])
 			values ('MonthlyData Update', @myBatchList, @rowCount);
 

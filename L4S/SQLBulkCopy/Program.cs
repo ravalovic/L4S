@@ -149,6 +149,7 @@ namespace SQLBulkCopy
                         int action = 0; // 0 - new file, 1 - duplicity file 
                         try
                         {
+                            myStopWatch.Restart();
                             string checkSum = Helper.CalculateCheckSum(iFile);
                             int linesInFile = Helper.CountFileLines(iFile) - 1; //because header
                             int batchId;
@@ -202,6 +203,7 @@ namespace SQLBulkCopy
 
                             myStopWatch.Stop();
                             Log.Info("imported in " + myStopWatch.RunTime());
+                            
 
                         }
                         catch (Exception ex)

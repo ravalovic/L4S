@@ -20,6 +20,7 @@ delete  FROM [dbo].[STInputFileInfo];
 delete from  STInputFileDuplicity;
 truncate table STLogImport;
 delete from STLogImport;
+--
 truncate table CATUnknownService;
 delete from CATUnknownService;
 truncate table CATLogsOfService;
