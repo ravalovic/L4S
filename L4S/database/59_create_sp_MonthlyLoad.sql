@@ -24,83 +24,85 @@ CREATE PROCEDURE [dbo].[sp_MonthlyLoad]
 	@mydebug int = 0,
 	@myBatchList varchar(max)
 AS
-declare
+DECLARE
 @myQuery nvarchar(max),
 @rowCount int = 0
-begin
-
-SET @myQuery = 'SELECT  TCActive from [CATCustomerMonthlyData] a 
-                 where exists (select CustomerID from [CATLogsOfService] b  where batchid in'+@myBatchList+'
-				 and TCActive = 1
-				 and a.RequestDate = DATEADD(month, DATEDIFF(month, 0,convert(date,DateofRequest)), 0)
-				 and a.[CustomerID] = b.[CustomerID] 
-				 and a.[ServiceID] = b.[ServiceID])';
-EXEC (@myQuery);
-SELECT @rowCount =  @@ROWCOUNT;
-if (@mydebug = 1 ) print 'Records for Monthly load: '+cast(@rowCount as varchar);
-if (@rowCount = 0)
-	BEGIN		
-	     SET @myQuery = 'INSERT INTO [dbo].[CATCustomerMonthlyData]
-							([RequestDate], [CustomerID], [ServiceID], [NumberOfRequest], [ReceivedBytes], [RequestedTime])   
-						 SELECT DATEADD(month, DATEDIFF(month, 0,convert(date,DateofRequest)), 0), [CustomerID], [ServiceID], count(*)
-						      , sum(convert (bigint,[BytesSent])), sum(convert (decimal,[RequestTime]))
-						 FROM [dbo].[CATLogsOfService] WHERE CustomerID IS NOT NULL 
-						 and  BATCHID IN'+@myBatchList+' 
-						 and  TCActive = 1
-						 GROUP BY DATEADD(month, DATEDIFF(month, 0,convert(date,DateofRequest)), 0), [CustomerID], [ServiceID]'
-			EXEC(@myQuery);
-            SELECT @rowCount =  @@ROWCOUNT;
-			if (@mydebug = 1 ) print 'Insert Monthly table record: '+cast(@rowCount as varchar);
+BEGIN
+-- Insert new 
+		SET @myQuery = 'INSERT INTO [dbo].[CATCustomerMonthlyData]
+		(DateOfRequest, [CustomerID], [ServiceID], [NumberOfRequest], [ReceivedBytes], [RequestedTime])   
+		select DATEADD(month, DATEDIFF(month, 0,convert(date,i.DateofRequest)), 0), i.CustomerID, i.ServiceID, 
+		       count(*), sum(convert(bigint,i.BytesSent)), sum(convert(decimal,i.RequestTime))  from CATLogsOfService i
+		where  not exists (select e.CustomerID from CATCustomerMonthlyData e
+		                 where e.CustomerID = i.CustomerID
+						 and e.ServiceID = i.ServiceID
+						 and e.DateOfRequest = CONVERT(date, i.DateOfRequest))
+		and i.BatchID IN'+@myBatchList+'
+		and i.CustomerID is not null
+		and i.TCActive = 1
+		group by DATEADD(month, DATEDIFF(month, 0,convert(date,i.DateofRequest)), 0), i.CustomerID, i.ServiceID';
+		EXEC(@myQuery);
+		SELECT @rowCount =  @@ROWCOUNT;
+		if (@mydebug = 1 ) print 'Insert Monthly table record: '+cast(@rowCount as varchar);
 			insert into [dbo].CATProcessStatus ([StepName], [BatchID], [BatchRecordNum])
 			values ('MonthlyData Insert', @myBatchList, @rowCount);
-			IF ( @rowCount > 0 )
-			BEGIN			 
-		    --mark  that was processed for month
-				SET @myQuery = 'UPDATE [dbo].[CATLogsOfService]
-									SET TCActive = 2
-								WHERE   BatchID IN'+@myBatchList+' AND CustomerID is not null AND TCActive = 1'
-				EXEC(@myQuery);
-			END
-		END
-		ELSE
+		IF (@rowCount >0)
 		BEGIN
-		SET @myQuery = 'UPDATE  [dbo].[CATCustomerMonthlyData]
-						 SET [RequestDate] = i.[RequestDate]
-						    ,[CustomerID] = i.[CustomerID]
-						    ,[ServiceID] = i.[ServiceID]
-						    ,[NumberOfRequest] = CATCustomerMonthlyData.NumberOfRequest + i.[NumberOfRequest]
-						    ,[ReceivedBytes] = CATCustomerMonthlyData.ReceivedBytes + i.[ReceivedBytes]
-						    ,[RequestedTime] = CATCustomerMonthlyData.RequestedTime + i.[RequestedTime]
-							,TCLastUpdate = getdate()
-						FROM (SELECT DATEADD(month, DATEDIFF(month, 0,convert(date,DateofRequest)), 0) RequestDate
-								,[CustomerID]
-								,[ServiceID]
-								,count(*) [NumberOfRequest]
-								,sum(convert (bigint,[BytesSent])) [ReceivedBytes]
-								,sum(convert (decimal,[RequestTime])) [RequestedTime]
-							  FROM [dbo].[CATLogsOfService] 
-									WHERE CustomerID is not null AND  batchid in'+@myBatchList+' AND TCActive = 1
-									GROUP BY DATEADD(month, DATEDIFF(month, 0,convert(date,DateofRequest)), 0)
-									      ,[CustomerID]
-									      ,[ServiceID]) i 
-						WHERE 
-						     i.RequestDate = CATCustomerMonthlyData.RequestDate
-						 and i.[CustomerID] = CATCustomerMonthlyData.CustomerID
-						 and i.[ServiceID] = CATCustomerMonthlyData.ServiceID'
-		EXEC(@myQuery);
-        SELECT @rowCount =  @@ROWCOUNT;
-			    if (@mydebug = 1 ) print 'Update Monthly table record: '+cast(@rowCount as varchar);
-		insert into [dbo].CATProcessStatus ([StepName], [BatchID], [BatchRecordNum])
-			values ('MonthlyData Update', @myBatchList, @rowCount);
-
-  		--mark  that was processed for month
-		IF ( @rowCount > 0 )
-		BEGIN
-			SET @myQuery = 'UPDATE [dbo].[CATLogsOfService]
+			SET @myQuery = 'UPDATE [dbo].[CATLogsOfService] 
 								SET TCActive = 2
-							WHERE   BatchID IN'+@myBatchList+' AND CustomerID is not null AND TCActive = 1'
+							WHERE  EXISTS (select e.CustomerID FROM CATCustomerMonthlyData e
+								   WHERE e.CustomerID = [CATLogsOfService].CustomerID
+									AND e.ServiceID = [CATLogsOfService].ServiceID
+									AND e.DateOfRequest = DATEADD(month, DATEDIFF(month, 0,convert(date,[CATLogsOfService].DateOfRequest)), 0)) 
+							AND	BatchID IN'+@myBatchList+'
+							AND CustomerID is not null AND TCActive = 1'
 			EXEC(@myQuery);
-		END
-	END
+			SELECT @rowCount =  @@ROWCOUNT;
+		    if (@mydebug = 1 ) print 'After Insert SET TCActive = 2 in CATLogsOfService .Number of  record: '+cast(@rowCount as varchar);
+		END;
+--Update if exist
+SET @myQuery = 'UPDATE  [dbo].[CATCustomerMonthlyData]
+						 SET DateOfRequest = u.DateOfRequest
+						    ,[CustomerID] = u.[CustomerID]
+						    ,[ServiceID] = u.[ServiceID]
+						    ,[NumberOfRequest] = CATCustomerMonthlyData.NumberOfRequest + u.[NumberOfRequest]
+						    ,[ReceivedBytes] = CATCustomerMonthlyData.ReceivedBytes + u.[ReceivedBytes]
+						    ,[RequestedTime] = CATCustomerMonthlyData.RequestedTime + u.[RequestedTime]
+							,TCLastUpdate = getdate()
+						FROM (select DATEADD(month, DATEDIFF(month, 0,convert(date,i.DateofRequest)), 0) DateOfRequest, i.CustomerID, i.ServiceID, 
+							 count(*) [NumberOfRequest] , sum(convert(bigint,i.BytesSent)) [ReceivedBytes], sum(convert(decimal,i.RequestTime)) [RequestedTime]  from CATLogsOfService i
+							 where   exists (select e.CustomerID from CATCustomerMonthlyData e
+							 where e.CustomerID = i.CustomerID
+							 and e.ServiceID = i.ServiceID
+							 and e.DateOfRequest = CONVERT(date, i.DateOfRequest))
+							 and i.BatchID  IN'+@myBatchList+'
+							 and i.CustomerID is not null
+							 and i.TCActive = 1
+							 group by DATEADD(month, DATEDIFF(month, 0,convert(date,i.DateofRequest)), 0), i.CustomerID, i.ServiceID) u 
+						WHERE 
+						     u.DateOfRequest = CATCustomerMonthlyData.DateOfRequest
+						 and u.[CustomerID]  = CATCustomerMonthlyData.CustomerID
+						 and u.[ServiceID]   = CATCustomerMonthlyData.ServiceID';
+						 EXEC(@myQuery);
+						 SELECT @rowCount =  @@ROWCOUNT;
+							if (@mydebug = 1 ) print 'Update Monthly table record: '+cast(@rowCount as varchar);
+							insert into [dbo].CATProcessStatus ([StepName], [BatchID], [BatchRecordNum])
+							values ('MonthlyData Update', @myBatchList, @rowCount);
+						IF (@rowCount >0)
+						BEGIN
+							SET @myQuery = 'UPDATE [dbo].[CATLogsOfService] 
+								SET TCActive = 2
+							WHERE  EXISTS (select e.CustomerID FROM CATCustomerMonthlyData e
+								   WHERE e.CustomerID = [CATLogsOfService].CustomerID
+									AND e.ServiceID = [CATLogsOfService].ServiceID
+									AND e.DateOfRequest = DATEADD(month, DATEDIFF(month, 0,convert(date,[CATLogsOfService].DateOfRequest)), 0)) 
+							AND	BatchID IN'+@myBatchList+'
+							AND CustomerID is not null AND TCActive = 1'
+							EXEC(@myQuery);
+							EXEC(@myQuery);
+							SELECT @rowCount =  @@ROWCOUNT;
+							if (@mydebug = 1 ) print 'After Update SET TCActive = 2 in CATLogsOfService. Number of  record: '+cast(@rowCount as varchar);
+						END;
+
 END
 

@@ -39,6 +39,7 @@ namespace WebPortal.DataContexts
         public DbSet<STLogImport> STLogImport { get; set; }
         public DbSet<CATLogsOfService > CATLogsOfService { get; set; }
         public DbSet<CATUnknownService> CATUnknownService { get; set; }
+        public DbSet<CATVRMService> CATVRMService { get; set; }
         public DbSet<CATCustomerDailyData> CATCustomerDailyData { get; set; }
         public DbSet<CATCustomerMonthlyData> CATCustomerMonthlyData { get; set; }
 

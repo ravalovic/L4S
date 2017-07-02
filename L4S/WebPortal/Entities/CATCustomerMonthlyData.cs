@@ -11,7 +11,7 @@ namespace Entities
         [Column(Order = 0)]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int ID { get; set; }
-        public DateTime RequestDate { get; set; }
+        public DateTime DateOfRequest { get; set; }
         public int CustomerID { get; set; }
         public int ServiceID { get; set; }
         public long? NumberOfRequest { get; set; }

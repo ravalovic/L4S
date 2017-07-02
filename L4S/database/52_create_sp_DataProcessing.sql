@@ -41,7 +41,8 @@ DECLARE
        @rowcountService int = 0 ,
 	   @rowcountCustomer int = 0,
 	   @rowcountUnknown int = 0,
-	   @rowcountAll int = 0
+	   @rowcountAll int = 0,
+	   @rowcount int = 0
 BEGIN
      
     IF (@tableInput = 0) SELECT  @countNewData = count(*) from [dbo].STLogImport;
@@ -65,8 +66,9 @@ BEGIN
 							@myCustomerQuery = @CustomerQuery OUTPUT;
                       if (@mydebug = 1 ) print @CustomerQuery;
 				      EXEC(@CustomerQuery);
-					  SELECT @rowcountCustomer =@rowcountCustomer+ @@ROWCOUNT;
-		              if (@mydebug = 1 ) print 'CustomerID: ' + cast(@CustomerID as varchar) +' find in '+ cast(@rowcountCustomer as varchar) +' lines';
+					  SELECT @rowcount = @@ROWCOUNT;
+					  SET @rowcountCustomer = @rowcountCustomer+ @rowcount;
+		              if (@mydebug = 1 ) print 'CustomerID: ' + cast(@CustomerID as varchar) +' find in '+ cast(@rowcount as varchar) +' lines. Total lines of Customer: ' +cast(@rowcountCustomer as varchar);
 					  FETCH NEXT FROM runCursor INTO @CustomerID
 		        END
 				
@@ -87,8 +89,9 @@ BEGIN
 							@myserviceQuery = @serviceQuery OUTPUT;
 					if (@mydebug = 1 ) print @serviceQuery;
 					EXEC(@serviceQuery);
-					SELECT @rowcountService =  @rowcountService + @@ROWCOUNT;
-		            if (@mydebug = 1 ) print 'ServiceID: ' + cast(@ServiceID as varchar) +' find in '+ cast(@rowcountService as varchar) +' lines';
+					SELECT @rowcount = @@ROWCOUNT;
+					SET @rowcountService =  @rowcountService + @rowcount;
+		            if (@mydebug = 1 ) print 'ServiceID: ' + cast(@ServiceID as varchar) +' find in '+ cast(@rowcount as varchar) +' lines. Total lines of Services: '+cast(@rowcountService as varchar);;
 					FETCH NEXT FROM runCursor INTO @ServiceID
 		        END
 			 CLOSE runCursor   
@@ -102,8 +105,7 @@ BEGIN
 			SET @myInsert = '
 							INSERT INTO [dbo].[CATUnknownService]([BatchID],[RecordID],[CustomerID],[ServiceID],[UserID],[DateOfRequest],[RequestedURL],[RequestStatus],[BytesSent],[RequestTime],[UserIPAddress])
 							SELECT [BatchID], [RecordID],[CustomerID], 0, [UserID]
-								,dateadd(hour,convert(int,substring([DateOfRequest],len([DateOfRequest])-5,4)) ,convert(datetime, substring([DateOfRequest],0,12)+'' ''+ substring([DateOfRequest],13,8),104))
-								,[RequestedURL],[RequestStatus],[BytesSent],[RequestTime],[UserIPAddress]
+								  ,[DatDate],[RequestedURL],[RequestStatus],[BytesSent],[RequestTime],[UserIPAddress]
 							FROM [dbo].[STLogImport] WHERE BatchID IN ' + @batchList +'
 							and not exists (select s.batchid, s.recordid  from CATLogsOfService s where s.batchid=STLogImport.batchid and s.recordid = STLogImport.recordid)';
 			if (@mydebug = 1 ) print @myInsert;

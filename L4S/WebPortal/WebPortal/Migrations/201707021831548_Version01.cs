@@ -1,8 +1,9 @@
 namespace WebPortal.Migrations
 {
- using System.Data.Entity.Migrations;
+    using System;
+    using System.Data.Entity.Migrations;
     
-    public partial class Version_01 : DbMigration
+    public partial class Version01 : DbMigration
     {
         public override void Up()
         {
@@ -11,12 +12,12 @@ namespace WebPortal.Migrations
                 c => new
                     {
                         ID = c.Int(nullable: false, identity: true),
-                        RequestDate = c.DateTime(nullable: false),
+                        DateOfRequest = c.DateTime(nullable: false),
                         CustomerID = c.Int(nullable: false),
                         ServiceID = c.Int(nullable: false),
                         NumberOfRequest = c.Long(),
                         ReceivedBytes = c.Long(),
-                        RequestedTime = c.Decimal(precision: 18, scale: 5),
+                        RequestedTime = c.Decimal(precision: 18, scale: 2),
                         TCInsertTime = c.DateTime(),
                         TCLastUpdate = c.DateTime(),
                         TCActive = c.Int(),
@@ -28,12 +29,12 @@ namespace WebPortal.Migrations
                 c => new
                     {
                         ID = c.Int(nullable: false, identity: true),
-                        RequestDate = c.DateTime(nullable: false),
+                        DateOfRequest = c.DateTime(nullable: false),
                         CustomerID = c.Int(nullable: false),
                         ServiceID = c.Int(nullable: false),
                         NumberOfRequest = c.Long(),
                         ReceivedBytes = c.Long(),
-                        RequestedTime = c.Decimal(precision: 18, scale: 5),
+                        RequestedTime = c.Decimal(precision: 18, scale: 2),
                         TCInsertTime = c.DateTime(),
                         TCLastUpdate = c.DateTime(),
                         TCActive = c.Int(),
@@ -68,12 +69,12 @@ namespace WebPortal.Migrations
                 c => new
                     {
                         ID = c.Int(nullable: false, identity: true),
-                        RequestDate = c.DateTime(nullable: false),
+                        DateOfRequest = c.DateTime(nullable: false),
                         CustomerID = c.Int(nullable: false),
                         ServiceID = c.Int(nullable: false),
                         NumberOfRequest = c.Long(),
                         ReceivedBytes = c.Long(),
-                        RequestedTime = c.Decimal(precision: 18, scale: 5),
+                        RequestedTime = c.Decimal(precision: 18, scale: 2),
                         TCInsertTime = c.DateTime(),
                         TCLastUpdate = c.DateTime(),
                         TCActive = c.Int(),
@@ -156,7 +157,7 @@ namespace WebPortal.Migrations
                         PKServiceID = c.Int(nullable: false),
                         ServiceCode = c.String(nullable: false, maxLength: 50),
                         ServiceDescription = c.String(nullable: false, maxLength: 150),
-                        ServiceBasicPrice = c.Decimal(nullable: false, precision: 18, scale: 5),
+                        ServiceBasicPrice = c.Decimal(nullable: false, precision: 18, scale: 2),
                         TCInsertTime = c.DateTime(),
                         TCLastUpdate = c.DateTime(),
                         TCActive = c.Int(),
@@ -189,12 +190,12 @@ namespace WebPortal.Migrations
                 c => new
                     {
                         ID = c.Int(nullable: false, identity: true),
-                        RequestDate = c.DateTime(nullable: false),
+                        DateOfRequest = c.DateTime(nullable: false),
                         CustomerID = c.Int(nullable: false),
                         ServiceID = c.Int(nullable: false),
                         NumberOfRequest = c.Long(),
                         ReceivedBytes = c.Long(),
-                        RequestedTime = c.Decimal(precision: 18, scale: 5),
+                        RequestedTime = c.Decimal(precision: 18, scale: 2),
                         TCInsertTime = c.DateTime(),
                         TCLastUpdate = c.DateTime(),
                         TCActive = c.Int(),
@@ -255,6 +256,29 @@ namespace WebPortal.Migrations
             
             CreateTable(
                 "dbo.CATUnknownService",
+                c => new
+                    {
+                        ID = c.Int(nullable: false, identity: true),
+                        BatchID = c.Int(nullable: false),
+                        RecordID = c.Int(nullable: false),
+                        CustomerID = c.Int(),
+                        ServiceID = c.Int(),
+                        UserID = c.String(maxLength: 50),
+                        DateOfRequest = c.DateTime(),
+                        RequestedURL = c.String(),
+                        RequestStatus = c.String(maxLength: 5),
+                        BytesSent = c.String(maxLength: 15),
+                        RequestTime = c.String(maxLength: 15),
+                        UserAgent = c.String(maxLength: 500),
+                        UserIPAddress = c.String(maxLength: 1000),
+                        TCInsertTime = c.DateTime(),
+                        TCLastUpdate = c.DateTime(),
+                        TCActive = c.Int(),
+                    })
+                .PrimaryKey(t => t.ID);
+            
+            CreateTable(
+                "dbo.CATVRMService",
                 c => new
                     {
                         ID = c.Int(nullable: false, identity: true),
@@ -424,15 +448,15 @@ namespace WebPortal.Migrations
             AlterColumn("dbo.CATCustomerDailyData", "TCInsertTime", c => c.DateTime(nullable: true, defaultValueSql: "GETDATE()"));
             AlterColumn("dbo.CATCustomerDailyData", "TCLastUpdate", c => c.DateTime(nullable: true, defaultValueSql: "GETDATE()"));
             AlterColumn("dbo.CATCustomerDailyData", "TCActive", c => c.Int(nullable: true, defaultValue: 0));
-            AlterColumn("dbo.CATCustomerDailyData", "NumberOfRequest", c => c.Int(nullable: true, defaultValue: 0));
-            AlterColumn("dbo.CATCustomerDailyData", "ReceivedBytes", c => c.Int(nullable: true, defaultValue: 0));
+            AlterColumn("dbo.CATCustomerDailyData", "NumberOfRequest", c => c.Long(nullable: true, defaultValue: 0));
+            AlterColumn("dbo.CATCustomerDailyData", "ReceivedBytes", c => c.Long(nullable: true, defaultValue: 0));
             AlterColumn("dbo.CATCustomerDailyData", "RequestedTime", c => c.Decimal(nullable: true, defaultValue: 0));
 
             AlterColumn("dbo.CATCustomerMonthlyData", "TCInsertTime", c => c.DateTime(nullable: true, defaultValueSql: "GETDATE()"));
             AlterColumn("dbo.CATCustomerMonthlyData", "TCLastUpdate", c => c.DateTime(nullable: true, defaultValueSql: "GETDATE()"));
             AlterColumn("dbo.CATCustomerMonthlyData", "TCActive", c => c.Int(nullable: true, defaultValue: 0));
-            AlterColumn("dbo.CATCustomerMonthlyData", "NumberOfRequest", c => c.Int(nullable: true, defaultValue: 0));
-            AlterColumn("dbo.CATCustomerMonthlyData", "ReceivedBytes", c => c.Int(nullable: true, defaultValue: 0));
+            AlterColumn("dbo.CATCustomerMonthlyData", "NumberOfRequest", c => c.Long(nullable: true, defaultValue: 0));
+            AlterColumn("dbo.CATCustomerMonthlyData", "ReceivedBytes", c => c.Long(nullable: true, defaultValue: 0));
             AlterColumn("dbo.CATCustomerMonthlyData", "RequestedTime", c => c.Decimal(nullable: true, defaultValue: 0));
 
             AlterColumn("dbo.CATProcessStatus", "TCInsertTime", c => c.DateTime(nullable: true, defaultValueSql: "GETDATE()"));
@@ -489,6 +513,7 @@ namespace WebPortal.Migrations
             DropTable("dbo.STInputFileDuplicity");
             DropTable("dbo.AspNetUserRoles");
             DropTable("dbo.AspNetRoles");
+            DropTable("dbo.CATVRMService");
             DropTable("dbo.CATUnknownService");
             DropTable("dbo.CATProcessStatus");
             DropTable("dbo.CATLogsOfService");
