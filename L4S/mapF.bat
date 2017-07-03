@@ -1,1 +1,1 @@
-subst f: d:\temp
+subst f: e:\temp

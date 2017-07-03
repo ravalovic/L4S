@@ -37,21 +37,21 @@ SET @rowCount = @@ROWCOUNT;
 insert into [dbo].CATProcessStatus ([StepName], [BatchRecordNum])
 values ('ArchiveLogsOfService',  @rowCount);
 
-INSERT INTO [dbo].[ARCHCustomerDailyData]([RequestDate],[CustomerID],[ServiceID],[NumberOfRequest],[ReceivedBytes],[RequestedTime])
-SELECT [RequestDate],[CustomerID],[ServiceID],[NumberOfRequest],[ReceivedBytes],[RequestedTime] 
-FROM [dbo].[CATCustomerDailyData] WHERE DATEDIFF( MONTH, [RequestDate], getdate()) > 12
+INSERT INTO [dbo].[ARCHCustomerDailyData]([DateOfRequest],[CustomerID],[ServiceID],[NumberOfRequest],[ReceivedBytes],[RequestedTime])
+SELECT [DateOfRequest],[CustomerID],[ServiceID],[NumberOfRequest],[ReceivedBytes],[RequestedTime] 
+FROM [dbo].[CATCustomerDailyData] WHERE DATEDIFF( MONTH, [DateOfRequest], getdate()) > 12
 
-DELETE FROM [dbo].[CATCustomerDailyData] WHERE DATEDIFF( MONTH, [RequestDate], getdate()) > 12
+DELETE FROM [dbo].[CATCustomerDailyData] WHERE DATEDIFF( MONTH, [DateOfRequest], getdate()) > 12
 SET @rowCount = @@ROWCOUNT;
 insert into [dbo].CATProcessStatus ([StepName], [BatchRecordNum])
 values ('ArchiveDailyData',  @rowCount);
 
 
-INSERT INTO [dbo].[ARCHCustomerMonthlyData]([RequestDate],[CustomerID],[ServiceID],[NumberOfRequest],[ReceivedBytes],[RequestedTime])
-SELECT [RequestDate],[CustomerID],[ServiceID],[NumberOfRequest],[ReceivedBytes],[RequestedTime] 
-FROM [dbo].[CATCustomerMonthlyData] WHERE DATEDIFF( MONTH, [RequestDate], getdate()) > 12
+INSERT INTO [dbo].[ARCHCustomerMonthlyData]([DateOfRequest],[CustomerID],[ServiceID],[NumberOfRequest],[ReceivedBytes],[RequestedTime])
+SELECT [DateOfRequest],[CustomerID],[ServiceID],[NumberOfRequest],[ReceivedBytes],[RequestedTime] 
+FROM [dbo].[CATCustomerMonthlyData] WHERE DATEDIFF( MONTH, [DateOfRequest], getdate()) > 12
 
-DELETE FROM [dbo].[CATCustomerMonthlyData] WHERE DATEDIFF( MONTH, [RequestDate], getdate()) > 12
+DELETE FROM [dbo].[CATCustomerMonthlyData] WHERE DATEDIFF( MONTH, [DateOfRequest], getdate()) > 12
 SET @rowCount = @@ROWCOUNT;
 insert into [dbo].CATProcessStatus ([StepName], [BatchRecordNum])
 values ('ArchiveMonthlyData',  @rowCount);    
