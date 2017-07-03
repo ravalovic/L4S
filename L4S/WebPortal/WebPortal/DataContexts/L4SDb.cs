@@ -19,7 +19,7 @@ namespace WebPortal.DataContexts
     public class L4SDb : IdentityDbContext<ApplicationUser>
     {
         public L4SDb()
-            : base("DefaultConnection") //used connection string
+            : base("webglobe") //used connection string
         {
 
         }
