@@ -1,5 +1,6 @@
 USE [log4service]
 GO
+DBCC CHECKIDENT ('CATCustomerData', RESEED,0);
 
 DELETE FROM [CATCustomerIdentifiers]
 GO
@@ -7,7 +8,7 @@ GO
 DELETE FROM [CATCustomerData]
 GO
 
-DBCC CHECKIDENT ('CATCustomerData', RESEED, 0);
+
 
 
 INSERT INTO [dbo].[CATCustomerData]

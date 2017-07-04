@@ -52,9 +52,6 @@ namespace WebPortal.DataContexts
         public DbSet<ARCHCustomerDailyData> ARCHCustomerDailyData { get; set; }
         public DbSet<ARCHCustomerMonthlyData> ARCHCustomerMonthlyData { get; set; }
         public DbSet<ARCHLogsOfService> ARCHLogsOfService { get; set; }
-
-        public DbSet<view_DetailFromDaily> view_DetailFromDaily { get; set; }
-        public DbSet<view_DetailFromMonthly> view_DetailFromMonthly { get; set; }
     }
    
     

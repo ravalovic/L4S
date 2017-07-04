@@ -1,8 +1,9 @@
 USE log4service
 GO
+DBCC CHECKIDENT ('CATServicePatterns', RESEED, 0);
 
 DELETE FROM [CATServicePatterns]; --Foreign key
-DBCC CHECKIDENT ('CATServicePatterns', RESEED, 0);
+
 DELETE FROM [CATServiceParameters];
 
 -- Insert service A 2.1.2

@@ -60,8 +60,6 @@
     <Compile Include="STInputFileDuplicity.cs" />
     <Compile Include="STInputFileInfo.cs" />
     <Compile Include="STLogImport.cs" />
-    <Compile Include="view_DetailFromDaily.cs" />
-    <Compile Include="view_DetailFromMonthly.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
