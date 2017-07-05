@@ -6,7 +6,8 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Entities
 {
-    public partial class CATServiceParameters
+    [Table("CATServiceParameters")]
+    public sealed partial class CATServiceParameters
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public CATServiceParameters()
@@ -37,10 +38,10 @@ namespace Entities
         public int? TCActive { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<CATCustomerServices> CATCustomerServices { get; set; }
+        public ICollection<CATCustomerServices> CATCustomerServices { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<CATServicePatterns> CATServicePatterns { get; set; }
+        public ICollection<CATServicePatterns> CATServicePatterns { get; set; }
     }
 }
 

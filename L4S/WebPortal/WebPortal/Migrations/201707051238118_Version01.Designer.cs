@@ -13,7 +13,7 @@ namespace WebPortal.Migrations
         
         string IMigrationMetadata.Id
         {
-            get { return "201707021831548_Version01"; }
+            get { return "201707051238118_Version01"; }
         }
         
         string IMigrationMetadata.Source

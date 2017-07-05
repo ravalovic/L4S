@@ -6,6 +6,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace Entities
 {
     [Table("CATCustomerData")]
+
     public partial class CATCustomerData
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
@@ -56,6 +57,9 @@ namespace Entities
         public string IndividualVATID { get; set; }
 
         [StringLength(50)]
+        public string BankAccountIBAN { get; set; }
+
+        [StringLength(50)]
         public string AddressStreet { get; set; }
 
         [Required]
@@ -92,9 +96,9 @@ namespace Entities
         public int? TCActive { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<CATCustomerServices> CATCustomerServices { get; set; }
+        public ICollection<CATCustomerServices> CATCustomerServices { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<CATCustomerIdentifiers> CATCustomerIdentifiers { get; set; }
+        public ICollection<CATCustomerIdentifiers> CATCustomerIdentifiers { get; set; }
     }
 }

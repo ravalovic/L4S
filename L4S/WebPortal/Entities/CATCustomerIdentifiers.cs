@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Entities
 {
-
+[Table("CATCustomerIdentifiers")]
     public partial class CATCustomerIdentifiers
     {
         [Key]
