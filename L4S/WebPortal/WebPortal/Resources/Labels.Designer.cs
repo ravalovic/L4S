@@ -151,6 +151,33 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Stránka na správu vzorov - Patternov.
+        /// </summary>
+        public static string Patterns_PageSubtitle {
+            get {
+                return ResourceManager.GetString("Patterns_PageSubtitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Vzory.
+        /// </summary>
+        public static string Patterns_PageTitle {
+            get {
+                return ResourceManager.GetString("Patterns_PageTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Zoznam vzorov.
+        /// </summary>
+        public static string Patterns_TableTitle {
+            get {
+                return ResourceManager.GetString("Patterns_TableTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Zapamätať?.
         /// </summary>
         public static string Remember {
@@ -214,11 +241,38 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Stránka na správu servisov.
+        /// </summary>
+        public static string Service_PageSubtitle {
+            get {
+                return ResourceManager.GetString("Service_PageSubtitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Servisy.
+        /// </summary>
+        public static string Service_PageTitle {
+            get {
+                return ResourceManager.GetString("Service_PageTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Vzory.
         /// </summary>
         public static string Service_Patterns {
             get {
                 return ResourceManager.GetString("Service_Patterns", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Zoznam servisov.
+        /// </summary>
+        public static string Service_TableTitle {
+            get {
+                return ResourceManager.GetString("Service_TableTitle", resourceCulture);
             }
         }
     }

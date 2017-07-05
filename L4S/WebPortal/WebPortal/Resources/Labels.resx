@@ -147,6 +147,15 @@
   <data name="Password" xml:space="preserve">
     <value>Heslo</value>
   </data>
+  <data name="Patterns_PageSubtitle" xml:space="preserve">
+    <value>Stránka na správu vzorov - Patternov</value>
+  </data>
+  <data name="Patterns_PageTitle" xml:space="preserve">
+    <value>Vzory</value>
+  </data>
+  <data name="Patterns_TableTitle" xml:space="preserve">
+    <value>Zoznam vzorov</value>
+  </data>
   <data name="Remember" xml:space="preserve">
     <value>Zapamätať?</value>
   </data>
@@ -168,7 +177,16 @@
   <data name="Service_LastUpdate" xml:space="preserve">
     <value>Posledná zmena</value>
   </data>
+  <data name="Service_PageSubtitle" xml:space="preserve">
+    <value>Stránka na správu servisov</value>
+  </data>
+  <data name="Service_PageTitle" xml:space="preserve">
+    <value>Servisy</value>
+  </data>
   <data name="Service_Patterns" xml:space="preserve">
     <value>Vzory</value>
+  </data>
+  <data name="Service_TableTitle" xml:space="preserve">
+    <value>Zoznam servisov</value>
   </data>
 </root>

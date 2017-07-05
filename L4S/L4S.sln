@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.25420.1
+# Visual Studio 15
+VisualStudioVersion = 15.0.26430.14
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PreProcessor", "PreProcessor\PreProcessor.csproj", "{91B033D7-F5BA-4BF0-807F-4E0AF59F5E4B}"
 EndProject
@@ -18,8 +18,6 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Web", "Web", "{0009A813-A720-4577-825B-AB953AF028A6}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebPortal", "WebPortal\WebPortal\WebPortal.csproj", "{177719EF-2448-461B-98E2-0C2E283312D3}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Entities", "WebPortal\Entities\Entities.csproj", "{06F593C4-5139-4D7B-956F-330870D0604B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -47,10 +45,6 @@ Global
 		{177719EF-2448-461B-98E2-0C2E283312D3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{177719EF-2448-461B-98E2-0C2E283312D3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{177719EF-2448-461B-98E2-0C2E283312D3}.Release|Any CPU.Build.0 = Release|Any CPU
-		{06F593C4-5139-4D7B-956F-330870D0604B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{06F593C4-5139-4D7B-956F-330870D0604B}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{06F593C4-5139-4D7B-956F-330870D0604B}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{06F593C4-5139-4D7B-956F-330870D0604B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -61,6 +55,5 @@ Global
 		{874A4F6A-1FD6-4CC0-AE9D-360B314FA8A1} = {A5E743EA-9190-4B14-A351-050D69BB9BC1}
 		{47D63BF4-C908-4EA5-9DAE-099D424E56B8} = {CC6E8E14-66AD-4AAC-A838-4A292EC44527}
 		{177719EF-2448-461B-98E2-0C2E283312D3} = {0009A813-A720-4577-825B-AB953AF028A6}
-		{06F593C4-5139-4D7B-956F-330870D0604B} = {0009A813-A720-4577-825B-AB953AF028A6}
 	EndGlobalSection
 EndGlobal
