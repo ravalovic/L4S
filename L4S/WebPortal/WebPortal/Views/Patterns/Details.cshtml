@@ -1,0 +1,98 @@
+﻿@model Entities.CATServicePatterns
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>CATServicePatterns</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.PatternLike)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.PatternLike)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.PatternRegExp)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.PatternRegExp)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.PatternDescription)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.PatternDescription)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.FKServiceID)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.FKServiceID)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Entity)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Entity)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Explanation)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Explanation)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.DatSelectMethod)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.DatSelectMethod)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.TCInsertTime)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.TCInsertTime)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.TCLastUpdate)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.TCLastUpdate)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.TCActive)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.TCActive)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.PKServicePatternID }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

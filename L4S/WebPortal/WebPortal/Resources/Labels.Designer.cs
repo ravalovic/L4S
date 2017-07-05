@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace WebPortal.Resources {
+namespace Resources {
     using System;
     
     
@@ -156,6 +156,69 @@ namespace WebPortal.Resources {
         public static string Remember {
             get {
                 return ResourceManager.GetString("Remember", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Aktívne.
+        /// </summary>
+        public static string Service_Active {
+            get {
+                return ResourceManager.GetString("Service_Active", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Základná cena.
+        /// </summary>
+        public static string Service_BasicPrice {
+            get {
+                return ResourceManager.GetString("Service_BasicPrice", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Kód.
+        /// </summary>
+        public static string Service_Code {
+            get {
+                return ResourceManager.GetString("Service_Code", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Opis.
+        /// </summary>
+        public static string Service_Description {
+            get {
+                return ResourceManager.GetString("Service_Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Čas zápisu.
+        /// </summary>
+        public static string Service_InsertTime {
+            get {
+                return ResourceManager.GetString("Service_InsertTime", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Posledná zmena.
+        /// </summary>
+        public static string Service_LastUpdate {
+            get {
+                return ResourceManager.GetString("Service_LastUpdate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Vzory.
+        /// </summary>
+        public static string Service_Patterns {
+            get {
+                return ResourceManager.GetString("Service_Patterns", resourceCulture);
             }
         }
     }

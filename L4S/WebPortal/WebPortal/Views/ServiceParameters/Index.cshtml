@@ -1,0 +1,63 @@
+﻿@model IEnumerable<Entities.CATServiceParameters>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.ServiceCode)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ServiceDescription)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ServiceBasicPrice)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.TCInsertTime)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.TCLastUpdate)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.TCActive)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.ServiceCode)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.ServiceDescription)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.ServiceBasicPrice)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.TCInsertTime)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.TCLastUpdate)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.TCActive)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.PKServiceID }) |
+            @Html.ActionLink("Details", "Details", new { id=item.PKServiceID }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.PKServiceID })
+        </td>
+    </tr>
+}
+
+</table>

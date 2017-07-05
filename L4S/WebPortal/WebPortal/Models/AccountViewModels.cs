@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using WebPortal.Resources;
+using Resources;
 
 namespace WebPortal.Models
 {

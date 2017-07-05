@@ -150,4 +150,25 @@
   <data name="Remember" xml:space="preserve">
     <value>Zapamätať?</value>
   </data>
+  <data name="Service_Active" xml:space="preserve">
+    <value>Aktívne</value>
+  </data>
+  <data name="Service_BasicPrice" xml:space="preserve">
+    <value>Základná cena</value>
+  </data>
+  <data name="Service_Code" xml:space="preserve">
+    <value>Kód</value>
+  </data>
+  <data name="Service_Description" xml:space="preserve">
+    <value>Opis</value>
+  </data>
+  <data name="Service_InsertTime" xml:space="preserve">
+    <value>Čas zápisu</value>
+  </data>
+  <data name="Service_LastUpdate" xml:space="preserve">
+    <value>Posledná zmena</value>
+  </data>
+  <data name="Service_Patterns" xml:space="preserve">
+    <value>Vzory</value>
+  </data>
 </root>

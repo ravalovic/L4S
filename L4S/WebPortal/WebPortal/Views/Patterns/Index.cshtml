@@ -1,0 +1,87 @@
+﻿@model IEnumerable<Entities.CATServicePatterns>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.PatternLike)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.PatternRegExp)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.PatternDescription)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.FKServiceID)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Entity)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Explanation)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.DatSelectMethod)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.TCInsertTime)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.TCLastUpdate)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.TCActive)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.PatternLike)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.PatternRegExp)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.PatternDescription)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.FKServiceID)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Entity)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Explanation)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.DatSelectMethod)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.TCInsertTime)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.TCLastUpdate)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.TCActive)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.PKServicePatternID }) |
+            @Html.ActionLink("Details", "Details", new { id=item.PKServicePatternID }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.PKServicePatternID })
+        </td>
+    </tr>
+}
+
+</table>

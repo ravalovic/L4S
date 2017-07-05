@@ -1,0 +1,66 @@
+﻿@model Entities.CATServiceParameters
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>CATServiceParameters</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.ServiceCode)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ServiceCode)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ServiceDescription)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ServiceDescription)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ServiceBasicPrice)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ServiceBasicPrice)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.TCInsertTime)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.TCInsertTime)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.TCLastUpdate)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.TCLastUpdate)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.TCActive)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.TCActive)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.PKServiceID }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>
