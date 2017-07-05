@@ -71,7 +71,8 @@ namespace WebPortal.Controllers
             {
                 return HttpNotFound();
             }
-            return View(cATServiceParameters);
+            //return View(cATServiceParameters);
+            return PartialView("_Edit", cATServiceParameters);
         }
 
         // POST: CATServiceParameters/Edit/5
@@ -102,7 +103,8 @@ namespace WebPortal.Controllers
             {
                 return HttpNotFound();
             }
-            return View(cATServiceParameters);
+            // return View(cATServiceParameters);
+            return PartialView("_Delete", cATServiceParameters);
         }
 
         // POST: CATServiceParameters/Delete/5

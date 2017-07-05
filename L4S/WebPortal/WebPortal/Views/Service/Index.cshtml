@@ -1,63 +1,119 @@
 ﻿@model IEnumerable<CATServiceParameters>
 
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = @Resources.Labels.Service_PageTitle;
 }
 
-<h2>Index</h2>
-
+<h2>@Resources.Labels.Service_PageTitle</h2>
+<p>@Resources.Labels.Service_PageSubtitle</p>
 <p>
     @Html.ActionLink("Create New", "Create")
 </p>
-<table class="table">
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.ServiceCode)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.ServiceDescription)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.ServiceBasicPrice)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.TCInsertTime)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.TCLastUpdate)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.TCActive)
-        </th>
-        <th></th>
-    </tr>
 
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.ServiceCode)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.ServiceDescription)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.ServiceBasicPrice)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.TCInsertTime)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.TCLastUpdate)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.TCActive)
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.PKServiceID }) |
-            @Html.ActionLink("Details", "Details", new { id=item.PKServiceID }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.PKServiceID })
-        </td>
-    </tr>
-}
+<div class="col-xs-12 col-sm-12 col-md-12">
+    <div class="panel panel-primary">
+        <div class="panel-heading">
+            <h4 class="panel-title"><strong>@Resources.Labels.Service_TableTitle</strong></h4>
+        </div>
+        <div class="panel-body">
+            <table class="table table-striped table-bordered table-hover table-condensed">
+                <tr>
+                    <th>
+                        @Html.DisplayNameFor(model => model.ServiceCode)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.ServiceDescription)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.ServiceBasicPrice)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.TCInsertTime)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.TCLastUpdate)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.TCActive)
+                    </th>
+                    <th>
+                        <label>@Resources.Labels.Service_Patterns </label>
+                    </th>
+                    <th>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</th>
+                </tr>
 
-</table>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.ServiceCode)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.ServiceDescription)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.ServiceBasicPrice)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.TCInsertTime)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.TCLastUpdate)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.TCActive)
+                        </td>
+                        <td>
+                            <a class="btn btn-primary" href="/Patterns/Index/@item.PKServiceID"><span class="glyphicon glyphicon-tasks" aria-hidden="true"></span> @Resources.Labels.Service_Patterns </a>
+                        </td>
+                        <td>
+                            <div class="btn-group">
+                                <a class="modal-link btn btn-success" href="/Service/Edit/@item.PKServiceID"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span> Edit </a>
+                                <a class="modal-link btn btn-danger" href="/Service/Delete/@item.PKServiceID"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span> Delete </a>
+                            </div>
+                        </td>
+                    </tr>
+                }
+            </table>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modal-container" data-backdrop="static" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-md">
+        <div class="modal-content">
+        </div>
+    </div>
+</div>
+
+
+<script type="text/javascript">
+
+
+    //modal window
+    $(function () {
+
+        // Initialize modal dialog
+        // attach modal-container bootstrap attributes to links with .modal-link class.
+        // when a link is clicked with these attributes, bootstrap will display the href content in a modal dialog.
+        $('body').on('click', '.modal-link', function (e) {
+            e.preventDefault();
+            $(this).attr('data-target', '#modal-container');
+            $(this).attr('data-toggle', 'modal');
+        });
+
+        // Attach listener to .modal-close-btn's so that when the button is pressed the modal dialog disappears
+        $('body').on('click', '.modal-close-btn', function () {
+            $('#modal-container').modal('hide');
+        });
+        //clear modal cache, so that new content can be loaded
+        $('#modal-container').on('hidden.bs.modal', function () {
+            $(this).removeData('bs.modal');
+        });
+        $('#CancelModal').on('click', function () {
+            return false;
+        });
+    });
+
+</script>
+<script src="~/Scripts/AppJs/index.js"></script>

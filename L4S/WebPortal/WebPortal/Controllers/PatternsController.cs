@@ -15,9 +15,18 @@ namespace WebPortal.Controllers
         private L4SDb db = new L4SDb();
 
         // GET: Patterns
-        public ActionResult Index()
+        public ActionResult Index(int? id)
         {
-            return View(db.CATServicePatterns.ToList());
+            if (id == null)
+            {
+                return View(db.CATServicePatterns.ToList());
+            }
+            List<CATServicePatterns> cATServicePatterns = db.CATServicePatterns.Where(p=>p.FKServiceID==id).ToList() ;
+            if (cATServicePatterns == null)
+            {
+                return HttpNotFound();
+            }
+            return View(cATServicePatterns);
         }
 
         // GET: Patterns/Details/5
