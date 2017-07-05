@@ -1,9 +1,8 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using WebPortal;
 
-namespace Entities
+namespace WebPortal
 {
     [Table("CATServicePatterns")]
     public partial class CATServicePatterns

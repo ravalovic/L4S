@@ -6,12 +6,12 @@ using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
-using Entities;
+using WebPortal;
 using WebPortal.DataContexts;
 
 namespace WebPortal.Controllers
 {
-    public class ServiceParametersController : Controller
+    public class ServiceController : Controller
     {
         private L4SDb db = new L4SDb();
 

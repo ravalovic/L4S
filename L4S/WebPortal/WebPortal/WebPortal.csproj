@@ -214,11 +214,34 @@
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\PatternsController.cs" />
-    <Compile Include="Controllers\ServiceParametersController.cs" />
+    <Compile Include="Controllers\ServiceController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Controllers\Stage_InputFileInfoController.cs" />
+    <Compile Include="Entities\ARCHCustomerDailyData.cs" />
+    <Compile Include="Entities\ARCHCustomerMonthlyData.cs" />
+    <Compile Include="Entities\ARCHLogsOfService.cs" />
+    <Compile Include="Entities\CATChangeDetect.cs" />
+    <Compile Include="Entities\CATCustomerDailyData.cs" />
+    <Compile Include="Entities\CATCustomerData.cs" />
+    <Compile Include="Entities\CATCustomerIdentifiers.cs" />
+    <Compile Include="Entities\CATCustomerMonthlyData.cs" />
+    <Compile Include="Entities\CATCustomerServices.cs" />
+    <Compile Include="Entities\CATLogsOfService.cs" />
+    <Compile Include="Entities\CATOwnerData.cs" />
+    <Compile Include="Entities\CATProcessStatus.cs" />
+    <Compile Include="Entities\CATServiceParameters.cs" />
+    <Compile Include="Entities\CATServicePatterns.cs" />
+    <Compile Include="Entities\CATUnknownService.cs" />
+    <Compile Include="Entities\CATVRMService.cs" />
     <Compile Include="DataContexts\L4SDb.cs" />
+    <Compile Include="Entities\STInputFileDuplicity.cs" />
+    <Compile Include="Entities\STInputFileInfo.cs" />
+    <Compile Include="Entities\STLogImport.cs" />
+    <Compile Include="Entities\view_DetailFromDaily.cs" />
+    <Compile Include="Entities\view_DetailFromMonthly.cs" />
+    <Compile Include="Entities\view_InvoiceByDay.cs" />
+    <Compile Include="Entities\view_InvoiceByMonth.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -322,23 +345,22 @@
     <Content Include="Views\Stage_InputFileInfo\Index.cshtml" />
     <Content Include="Views\Account\_LoginPartial.cshtml" />
     <Content Include="Views\Shared\_LoginForm.cshtml" />
-    <Content Include="Views\ServiceParameters\Create.cshtml" />
-    <Content Include="Views\ServiceParameters\Delete.cshtml" />
-    <Content Include="Views\ServiceParameters\Details.cshtml" />
-    <Content Include="Views\ServiceParameters\Edit.cshtml" />
-    <Content Include="Views\ServiceParameters\Index.cshtml" />
+    <Content Include="Views\Service\Create.cshtml" />
+    <Content Include="Views\Service\Delete.cshtml" />
+    <Content Include="Views\Service\Details.cshtml" />
+    <Content Include="Views\Service\Edit.cshtml" />
+    <Content Include="Views\Service\Index.cshtml" />
     <Content Include="Views\Patterns\Create.cshtml" />
     <Content Include="Views\Patterns\Delete.cshtml" />
     <Content Include="Views\Patterns\Details.cshtml" />
     <Content Include="Views\Patterns\Edit.cshtml" />
     <Content Include="Views\Patterns\Index.cshtml" />
     <Content Include="Views\Patterns\_Edit.cshtml" />
-    <Content Include="Views\ServiceParameters\_Edit.cshtml" />
-    <Content Include="Views\ServiceParameters\_Delete.cshtml" />
+    <Content Include="Views\Service\_Edit.cshtml" />
+    <Content Include="Views\Service\_Delete.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Views\Service\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />
@@ -348,12 +370,6 @@
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\Entities\Entities.csproj">
-      <Project>{06f593c4-5139-4d7b-956f-330870d0604b}</Project>
-      <Name>Entities</Name>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Migrations\201707051238118_Version01.resx">

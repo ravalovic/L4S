@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Reflection.Emit;
+using Resources;
 
-
-namespace Entities
-{/*
+namespace WebPortal
+{
     [Table("CATServiceParameters")]
     public sealed partial class CATServiceParameters
     {
@@ -50,7 +50,7 @@ namespace Entities
         [Display(Name = "Service_Patterns", ResourceType = typeof(Labels))]
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public ICollection<CATServicePatterns> CATServicePatterns { get; set; }
-    }*/
+    }
 }
 
 //CreateTable(
