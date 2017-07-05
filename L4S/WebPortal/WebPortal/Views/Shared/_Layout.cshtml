@@ -25,20 +25,94 @@
                     <li>@Html.ActionLink("About", "About", "Home")</li>
                     <li>@Html.ActionLink("Contact", "Contact", "Home")</li>
                 </ul>
-                @Html.Partial("_LoginPartial")
             </div>
         </div>
     </div>
-    <div class="container body-content">
-        @RenderBody()
-        <hr />
-        <footer>
-            <p>&copy; @DateTime.Now.Year - My ASP.NET Application</p>
-        </footer>
-    </div>
+
+
+    @*@if (User.IsInRole("admin"))*@
+    @*if (Request.IsAuthenticated)*@
+    @if ("a" == "a")
+            {
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-xs-12 col-sm-4 col-md-2">
+                    <div class="accordion" id="leftMenu">
+                        @*Nastavenia menu*@
+                        <div class="accordion-group">
+                            <div class="accordion-heading">
+                                <a class="accordion-toggle" data-toggle="collapse" data-parent="#leftMenu" href="#collapseTwo">
+                                    <i class="glyphicon glyphicon-cog"></i> @WebPortal.Resources.Labels.Menu_Nastavenia &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;@*<span class="badge pull-right">12</span>*@
+                                </a>
+                            </div>
+                            <div id="collapseTwo" class="accordion-body collapse" style="height: 0px;">
+                                <div class="accordion-inner">
+                                    <ul class="nav nav-pills nav-stacked">
+                                        <li class="active"><a href="/Account/Manage"><i class="glyphicon glyphicon-globe"></i> @WebPortal.Resources.Labels.Menu_Zakaznici</a></li>
+                                        <li class="active"><a href="/Account/Manage"><i class="glyphicon glyphicon-tasks"></i> @WebPortal.Resources.Labels.Menu_Sluzby</a></li>
+                                        <li class="active"><a href="/Account/Manage"><i class="glyphicon glyphicon-stats"></i> @WebPortal.Resources.Labels.Menu_Procesy</a></li>
+                                        <li class="active"><a href="/Account/Manage"><i class="glyphicon glyphicon-user"></i> @WebPortal.Resources.Labels.Menu_Pouzivatelia</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        @*Fakturácie menu*@
+                        <div class="accordion-group">
+                            <div class="accordion-heading">
+                                <a class="accordion-toggle" data-toggle="collapse" data-parent="#leftMenu" href="#collapseThree">
+                                    <i class="glyphicon glyphicon-duplicate"></i> @WebPortal.Resources.Labels.Menu_Fakturacie &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;@*<span class="badge pull-right">12</span>*@
+                                </a>
+                            </div>
+                            <div id="collapseThree" class="accordion-body collapse" style="height: 0px;">
+                                <div class="accordion-inner">
+                                    <ul class="nav nav-pills nav-stacked">
+                                        <li class="active"><a href="/Account/Manage"><i class="glyphicon glyphicon-search"></i> @WebPortal.Resources.Labels.Menu_Prehlad</a></li>
+                                        <li class="active"><a href="/Account/Manage"><i class="glyphicon glyphicon-duplicate"></i> @WebPortal.Resources.Labels.Menu_Fakturacie</a></li>
+                                        <li class="active"><a href="/Account/Manage"><i class="glyphicon glyphicon-list-alt"></i> @WebPortal.Resources.Labels.Menu_Report</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xs-12 col-md-10 ">
+                    @RenderSection("featured", required: false)
+                    @RenderBody()
+                </div>
+            </div>
+        </div>
+                <hr />
+                    <footer>
+                        <p class="text-center">&copy; @DateTime.Now.Year - Footer</p>
+                    </footer>
+    }
+    else
+    {
+        <div class="container">
+            <div class="page-header">
+                <img src="@Url.Content("~/Images/home.png")" alt="IMAGES" />
+                <h1 class="text-center">NADPIS <small>podnadpis</small></h1>
+            </div>
+
+            <div class="row">
+                @RenderSection("featured", required: false)
+                @RenderBody()
+            </div>
+        </div>
+                    <hr />
+                    <footer>
+                        <p class="text-center">&copy; @DateTime.Now.Year - Footer</p>
+                    </footer>
+    }
+
+
 
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")
     @RenderSection("scripts", required: false)
 </body>
 </html>
+
+
+
+

@@ -22,6 +22,14 @@ namespace WebPortal.Controllers
         {
         }
 
+        [AllowAnonymous]
+        public ActionResult LoginPartial(string returnUrl)
+        {
+            ViewBag.ReturnUrl = returnUrl;
+            LoginViewModel model = new LoginViewModel();
+            return PartialView("_LoginForm", model);
+        }
+   
         public AccountController(ApplicationUserManager userManager, ApplicationSignInManager signInManager )
         {
             UserManager = userManager;
