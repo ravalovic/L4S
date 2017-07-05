@@ -19,7 +19,6 @@ namespace WebPortal.DataContexts
     {
         public L4SDb()
             : base("DefaultConnection") //used connection string
-           
         {
 
         }
@@ -53,10 +52,14 @@ namespace WebPortal.DataContexts
         public DbSet<ARCHCustomerDailyData> ARCHCustomerDailyData { get; set; }
         public DbSet<ARCHCustomerMonthlyData> ARCHCustomerMonthlyData { get; set; }
         public DbSet<ARCHLogsOfService> ARCHLogsOfService { get; set; }
+        public DbSet<CATBillingInfo> CATBillingInfo { get; set; }
+
+
         public virtual DbSet<view_DetailFromDaily> view_DetailFromDaily { get; set; }
         public virtual DbSet<view_DetailFromMonthly> view_DetailFromMonthly { get; set; }
         public virtual DbSet<view_InvoiceByDay> view_InvoiceByDay { get; set; }
         public virtual DbSet<view_InvoiceByMonth> view_InvoiceByMonth { get; set; }
+
     }
    
     

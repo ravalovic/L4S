@@ -221,6 +221,7 @@
     <Compile Include="Entities\ARCHCustomerDailyData.cs" />
     <Compile Include="Entities\ARCHCustomerMonthlyData.cs" />
     <Compile Include="Entities\ARCHLogsOfService.cs" />
+    <Compile Include="Entities\CATBillingInfo.cs" />
     <Compile Include="Entities\CATChangeDetect.cs" />
     <Compile Include="Entities\CATCustomerDailyData.cs" />
     <Compile Include="Entities\CATCustomerData.cs" />
@@ -248,6 +249,10 @@
     <Compile Include="Migrations\201707051238118_Version01.cs" />
     <Compile Include="Migrations\201707051238118_Version01.Designer.cs">
       <DependentUpon>201707051238118_Version01.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201707052035282_Version02.cs" />
+    <Compile Include="Migrations\201707052035282_Version02.Designer.cs">
+      <DependentUpon>201707052035282_Version02.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
@@ -374,6 +379,9 @@
   <ItemGroup>
     <EmbeddedResource Include="Migrations\201707051238118_Version01.resx">
       <DependentUpon>201707051238118_Version01.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201707052035282_Version02.resx">
+      <DependentUpon>201707052035282_Version02.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Resources\Labels.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>

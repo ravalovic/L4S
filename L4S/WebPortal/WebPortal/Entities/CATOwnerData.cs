@@ -24,6 +24,8 @@ namespace WebPortal
         public string OwnerCompanyTAXID { get; set; }
         [StringLength(100)]
         public string OwnerCompanyVATID { get; set; }
+        [StringLength(50)]
+        public string OwnerBankAccountIban { get; set; }
         [StringLength(100)]
         public string OwnerAddressStreet { get; set; }
         [StringLength(100)]

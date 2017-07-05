@@ -210,11 +210,11 @@ namespace WebPortal.Migrations
                     {
                         ID = c.Int(nullable: false, identity: true),
                         OwnerCompanyName = c.String(maxLength: 100),
-                        OwnwerCompanyType = c.String(maxLength: 12),
                         OwnerCompanyType = c.String(maxLength: 100),
                         OwnerCompanyID = c.String(maxLength: 100),
                         OwnerCompanyTAXID = c.String(maxLength: 100),
                         OwnerCompanyVATID = c.String(maxLength: 100),
+                        OwnerBankAccountIban = c.String(maxLength: 20),
                         OwnerAddressStreet = c.String(maxLength: 100),
                         OwnerAddressBuildingNumber = c.String(maxLength: 100),
                         OwnerAddressCity = c.String(maxLength: 100),

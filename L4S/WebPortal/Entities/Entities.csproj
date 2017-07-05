@@ -67,6 +67,7 @@
     <Compile Include="CATServicePatterns.cs" />
     <Compile Include="CATVRMService.cs" />
     <Compile Include="CATUnknownService.cs" />
+    <Compile Include="CATBillingInfo.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="STInputFileDuplicity.cs" />
     <Compile Include="STInputFileInfo.cs" />
