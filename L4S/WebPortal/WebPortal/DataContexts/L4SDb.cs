@@ -19,7 +19,8 @@ namespace WebPortal.DataContexts
     public class L4SDb : IdentityDbContext<ApplicationUser>
     {
         public L4SDb()
-            : base("webglobe") //used connection string
+            : base("DefaultConnection") //used connection string
+           
         {
 
         }
@@ -30,6 +31,7 @@ namespace WebPortal.DataContexts
         }
 
         //Access to tables
+        public DbSet<CATOwnerData> CATOwnerData { get; set; }
         public DbSet<CATCustomerData> CATCustomerData { get; set; }
         public DbSet<CATCustomerIdentifiers> CATCustomerIdentifiers { get; set; }
         public DbSet<CATCustomerServices> CATCustomerServices { get; set; }
@@ -54,6 +56,8 @@ namespace WebPortal.DataContexts
         public DbSet<ARCHLogsOfService> ARCHLogsOfService { get; set; }
         public virtual DbSet<view_DetailFromDaily> view_DetailFromDaily { get; set; }
         public virtual DbSet<view_DetailFromMonthly> view_DetailFromMonthly { get; set; }
+        public virtual DbSet<view_InvoiceByDay> view_InvoiceByDay { get; set; }
+        public virtual DbSet<view_InvoiceByMonth> view_InvoiceByMonth { get; set; }
     }
    
     

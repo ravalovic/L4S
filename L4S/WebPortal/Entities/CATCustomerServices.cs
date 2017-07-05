@@ -5,13 +5,14 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Entities
 {
+   [Table("CATCustomerServices")]
     public partial class CATCustomerServices
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int PKServiceCustomerIdentifiersID { get; set; }
 
-        public int ServiceID { get; set; }
+        public int FKServiceID { get; set; }
 
         [Required]
         [StringLength(100)]
@@ -21,9 +22,7 @@ namespace Entities
         [StringLength(50)]
         public string ServiceCode { get; set; }
 
-        [StringLength(100)]
-        public string ServiceCustomerName { get; set; }
-
+        public decimal ServicePriceDiscount { get; set; }
         [StringLength(100)]
         public string ServiceNote { get; set; }
 
@@ -34,9 +33,5 @@ namespace Entities
         public DateTime? TCLastUpdate { get; set; }
 
         public int? TCActive { get; set; }
-
-        public virtual CATCustomerData CATCustomerData { get; set; }
-
-        public virtual CATServiceParameters CATServiceParameters { get; set; }
     }
 }

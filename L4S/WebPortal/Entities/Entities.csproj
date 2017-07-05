@@ -56,6 +56,7 @@
     <Compile Include="ARCHLogsOfService.cs" />
     <Compile Include="CATChangeDetect.cs" />
     <Compile Include="CATCustomerDailyData.cs" />
+    <Compile Include="CATOwnerData.cs" />
     <Compile Include="CATCustomerData.cs" />
     <Compile Include="CATCustomerIdentifiers.cs" />
     <Compile Include="CATCustomerMonthlyData.cs" />
@@ -70,6 +71,8 @@
     <Compile Include="STInputFileDuplicity.cs" />
     <Compile Include="STInputFileInfo.cs" />
     <Compile Include="STLogImport.cs" />
+    <Compile Include="view_InvoiceByDay.cs" />
+    <Compile Include="view_InvoiceByMonth.cs" />
     <Compile Include="view_DetailFromDaily.cs" />
     <Compile Include="view_DetailFromMonthly.cs" />
   </ItemGroup>
