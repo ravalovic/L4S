@@ -383,5 +383,32 @@ namespace Resources {
                 return ResourceManager.GetString("Service_TableTitle", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Zoznam oprávnených používateľov.
+        /// </summary>
+        public static string UserList_PageSubtitle_ {
+            get {
+                return ResourceManager.GetString("UserList_PageSubtitle_", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Používatelia.
+        /// </summary>
+        public static string UserList_PageTitle_ {
+            get {
+                return ResourceManager.GetString("UserList_PageTitle_", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Používatelia.
+        /// </summary>
+        public static string UserList_TableTitle_ {
+            get {
+                return ResourceManager.GetString("UserList_TableTitle_", resourceCulture);
+            }
+        }
     }
 }

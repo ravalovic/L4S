@@ -265,6 +265,7 @@
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
+    <Compile Include="Models\UserViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Resources\Labels.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -385,6 +386,7 @@
     <Content Include="Views\ProcessStatus\Details.cshtml" />
     <Content Include="Views\ProcessStatus\Edit.cshtml" />
     <Content Include="Views\ProcessStatus\Index.cshtml" />
+    <Content Include="Views\Account\UserList.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

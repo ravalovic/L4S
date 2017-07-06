@@ -9,6 +9,8 @@ using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using WebPortal.Models;
+using WebPortal.DataContexts;
+using System.Collections.Generic;
 
 namespace WebPortal.Controllers
 {
@@ -20,6 +22,19 @@ namespace WebPortal.Controllers
 
         public AccountController()
         {
+        }
+
+        //change to only Admin !!!
+        [AllowAnonymous]
+        public ActionResult UserList()
+        {
+            L4SDb db = new L4SDb();
+            var userprofiles = db.Users.ToList();
+
+            List<UserViewModel> users = new List<UserViewModel>();
+            foreach (ApplicationUser user in userprofiles) users.Add(new UserViewModel(user));
+            
+            return View(users);
         }
 
         [AllowAnonymous]

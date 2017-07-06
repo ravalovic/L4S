@@ -225,4 +225,13 @@
   <data name="Service_TableTitle" xml:space="preserve">
     <value>Zoznam servisov</value>
   </data>
+  <data name="UserList_PageSubtitle_" xml:space="preserve">
+    <value>Zoznam oprávnených používateľov</value>
+  </data>
+  <data name="UserList_PageTitle_" xml:space="preserve">
+    <value>Používatelia</value>
+  </data>
+  <data name="UserList_TableTitle_" xml:space="preserve">
+    <value>Používatelia</value>
+  </data>
 </root>
