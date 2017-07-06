@@ -1,0 +1,95 @@
+﻿@model IEnumerable<WebPortal.STInputFileDuplicity>
+
+@{
+    ViewBag.Title = "Index";
+}
+<ul class="nav nav-tabs" role="tablist">
+    <li>@Html.ActionLink(Resources.Labels.ProcessTab_Status, "Index", "ProcessStatus")</li>
+    <li>@Html.ActionLink(Resources.Labels.ProcessTab_File, "Index", "FileInfo")</li>
+    <li class="active">@Html.ActionLink(Resources.Labels.ProcessTab_FileDuplicity, "Index", "FileDupicity")</li>
+</ul>
+
+
+<h2>@Resources.Labels.FileDuplicity_PageTitle</h2>
+<p>@Resources.Labels.FileDuplicity_PageSubtitle</p>
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+
+<div class="col-xs-12 col-sm-12 col-md-12">
+    <div class="panel panel-primary">
+        <div class="panel-heading">
+            <h4 class="panel-title"><strong>@Resources.Labels.FileDuplicity_TableTitle</strong></h4>
+        </div>
+        <div class="panel-body">
+            <table class="table table-striped table-bordered table-hover table-condensed">
+                <tr>
+                    <th>
+                        @Html.DisplayNameFor(model => model.OriginalId)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.FileName)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.LinesInFile)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Checksum)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.LoadDateTime)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.InsertDateTime)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.OriFileName)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.OriginalFileChecksum)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.LoaderBatchID)
+                    </th>
+                    <th></th>
+                </tr>
+
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.OriginalId)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.FileName)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.LinesInFile)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Checksum)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.LoadDateTime)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.InsertDateTime)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.OriFileName)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.OriginalFileChecksum)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.LoaderBatchID)
+                        </td>
+                        <td>
+                            @Html.ActionLink("Edit", "Edit", new { id = item.ID }) |
+                            @Html.ActionLink("Details", "Details", new { id = item.ID }) |
+                            @Html.ActionLink("Delete", "Delete", new { id = item.ID })
+                        </td>
+                    </tr>
+                }
+
+            </table>

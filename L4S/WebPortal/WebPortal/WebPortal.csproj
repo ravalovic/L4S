@@ -213,7 +213,10 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\FileDuplicityController.cs" />
+    <Compile Include="Controllers\FileInfoController.cs" />
     <Compile Include="Controllers\PatternsController.cs" />
+    <Compile Include="Controllers\ProcessStatusController.cs" />
     <Compile Include="Controllers\ServiceController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
@@ -367,6 +370,21 @@
     <Content Include="Views\Patterns\_Edit.cshtml" />
     <Content Include="Views\Service\_Edit.cshtml" />
     <Content Include="Views\Service\_Delete.cshtml" />
+    <Content Include="Views\FileInfo\Create.cshtml" />
+    <Content Include="Views\FileInfo\Delete.cshtml" />
+    <Content Include="Views\FileInfo\Details.cshtml" />
+    <Content Include="Views\FileInfo\Edit.cshtml" />
+    <Content Include="Views\FileInfo\Index.cshtml" />
+    <Content Include="Views\FileDuplicity\Create.cshtml" />
+    <Content Include="Views\FileDuplicity\Delete.cshtml" />
+    <Content Include="Views\FileDuplicity\Details.cshtml" />
+    <Content Include="Views\FileDuplicity\Edit.cshtml" />
+    <Content Include="Views\FileDuplicity\Index.cshtml" />
+    <Content Include="Views\ProcessStatus\Create.cshtml" />
+    <Content Include="Views\ProcessStatus\Delete.cshtml" />
+    <Content Include="Views\ProcessStatus\Details.cshtml" />
+    <Content Include="Views\ProcessStatus\Edit.cshtml" />
+    <Content Include="Views\ProcessStatus\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
