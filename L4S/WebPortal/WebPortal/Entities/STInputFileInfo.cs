@@ -37,5 +37,8 @@ namespace WebPortal
         [Required]
         [StringLength(50)]
         public string OriginalFileChecksum { get; set; }
+        public DateTime? TCLastUpdate { get; set; }
+
+        public int? TCActive { get; set; }
     }
 }

@@ -44,6 +44,9 @@ namespace WebPortal
         [DatabaseGenerated(DatabaseGeneratedOption.None)]
         [System.ComponentModel.DefaultValue(-1)]
         public int LoaderBatchID { get; set; }
+        public DateTime? TCLastUpdate { get; set; }
+
+        public int? TCActive { get; set; }
     }
 }
 //CreateTable(
