@@ -120,6 +120,24 @@
   <data name="Email" xml:space="preserve">
     <value>Email</value>
   </data>
+  <data name="FileDuplicity_PageSubtitle" xml:space="preserve">
+    <value>Opis stránky</value>
+  </data>
+  <data name="FileDuplicity_PageTitle" xml:space="preserve">
+    <value>Duplicitné súbory</value>
+  </data>
+  <data name="FileDuplicity_TableTitle" xml:space="preserve">
+    <value>Duplicitné súbory</value>
+  </data>
+  <data name="FileInfo_PageSubtitle" xml:space="preserve">
+    <value>Opis stránky</value>
+  </data>
+  <data name="FileInfo_PageTitle" xml:space="preserve">
+    <value>Vstupné súbory</value>
+  </data>
+  <data name="FileInfo_TableTitle" xml:space="preserve">
+    <value>Vstupné súbory</value>
+  </data>
   <data name="Menu_Fakturacie" xml:space="preserve">
     <value>Fakturácie</value>
   </data>
@@ -155,6 +173,24 @@
   </data>
   <data name="Patterns_TableTitle" xml:space="preserve">
     <value>Zoznam vzorov</value>
+  </data>
+  <data name="ProcessTab_File" xml:space="preserve">
+    <value>Vstupné súbory</value>
+  </data>
+  <data name="ProcessTab_FileDuplicity" xml:space="preserve">
+    <value>Duplicitné súbory</value>
+  </data>
+  <data name="ProcessTab_Status" xml:space="preserve">
+    <value>Stav procesov</value>
+  </data>
+  <data name="Process_PageSubtitle" xml:space="preserve">
+    <value>Opis stránky</value>
+  </data>
+  <data name="Process_PageTitle" xml:space="preserve">
+    <value>Procesy</value>
+  </data>
+  <data name="Process_TableTitle" xml:space="preserve">
+    <value>Procesy</value>
   </data>
   <data name="Remember" xml:space="preserve">
     <value>Zapamätať?</value>

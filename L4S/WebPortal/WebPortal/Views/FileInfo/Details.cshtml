@@ -1,0 +1,82 @@
+﻿@model WebPortal.STInputFileInfo
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>STInputFileInfo</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.FileName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.FileName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Checksum)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Checksum)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.LinesInFile)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.LinesInFile)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.InsertDateTime)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.InsertDateTime)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.LoaderBatchID)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.LoaderBatchID)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.LoadedRecord)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.LoadedRecord)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.OriFileName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.OriFileName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.OriginalFileChecksum)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.OriginalFileChecksum)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

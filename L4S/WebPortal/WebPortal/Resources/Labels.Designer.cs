@@ -70,6 +70,60 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Opis stránky.
+        /// </summary>
+        public static string FileDuplicity_PageSubtitle {
+            get {
+                return ResourceManager.GetString("FileDuplicity_PageSubtitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Duplicitné súbory.
+        /// </summary>
+        public static string FileDuplicity_PageTitle {
+            get {
+                return ResourceManager.GetString("FileDuplicity_PageTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Duplicitné súbory.
+        /// </summary>
+        public static string FileDuplicity_TableTitle {
+            get {
+                return ResourceManager.GetString("FileDuplicity_TableTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Opis stránky.
+        /// </summary>
+        public static string FileInfo_PageSubtitle {
+            get {
+                return ResourceManager.GetString("FileInfo_PageSubtitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Vstupné súbory.
+        /// </summary>
+        public static string FileInfo_PageTitle {
+            get {
+                return ResourceManager.GetString("FileInfo_PageTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Vstupné súbory.
+        /// </summary>
+        public static string FileInfo_TableTitle {
+            get {
+                return ResourceManager.GetString("FileInfo_TableTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Fakturácie.
         /// </summary>
         public static string Menu_Fakturacie {
@@ -174,6 +228,60 @@ namespace Resources {
         public static string Patterns_TableTitle {
             get {
                 return ResourceManager.GetString("Patterns_TableTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Opis stránky.
+        /// </summary>
+        public static string Process_PageSubtitle {
+            get {
+                return ResourceManager.GetString("Process_PageSubtitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Procesy.
+        /// </summary>
+        public static string Process_PageTitle {
+            get {
+                return ResourceManager.GetString("Process_PageTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Procesy.
+        /// </summary>
+        public static string Process_TableTitle {
+            get {
+                return ResourceManager.GetString("Process_TableTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Vstupné súbory.
+        /// </summary>
+        public static string ProcessTab_File {
+            get {
+                return ResourceManager.GetString("ProcessTab_File", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Duplicitné súbory.
+        /// </summary>
+        public static string ProcessTab_FileDuplicity {
+            get {
+                return ResourceManager.GetString("ProcessTab_FileDuplicity", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Stav procesov.
+        /// </summary>
+        public static string ProcessTab_Status {
+            get {
+                return ResourceManager.GetString("ProcessTab_Status", resourceCulture);
             }
         }
         

@@ -1,0 +1,82 @@
+﻿@model WebPortal.CATProcessStatus
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>CATProcessStatus</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.StepName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.StepName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.BatchID)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.BatchID)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.BatchRecordNum)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.BatchRecordNum)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.NumberOfService)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.NumberOfService)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.NumberOfCustomer)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.NumberOfCustomer)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.NumberOfUnknownService)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.NumberOfUnknownService)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.NumberOfPreprocessDelete)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.NumberOfPreprocessDelete)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.TCInsertTime)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.TCInsertTime)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>
