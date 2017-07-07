@@ -7,8 +7,11 @@ for %%A in (.\??_create_sp*.sql) do (%SQLRUN% -S "(localdb)\LocalDBL4s" -i %%A)
 
 for %%A in (.\??_create_Trigger*.sql) do (%SQLRUN% -S "(localdb)\LocalDBL4s" -i %%A)
 
+for %%A in (.\??_create_view*.sql) do (%SQLRUN% -S "(localdb)\LocalDBL4s" -i %%A)
+
 for %%A in (.\??_insert*.sql) do (%SQLRUN% -S "(localdb)\LocalDBL4s" -i %%A -f 65001)
 
 for %%A in (.\??_grant*.sql) do (%SQLRUN% -S "(localdb)\LocalDBL4s" -i %%A)
+
 
 pause

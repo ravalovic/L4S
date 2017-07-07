@@ -28,7 +28,7 @@ namespace WebPortal
         public string Checksum { get; set; }
 
         [Required]
-        public DateTime LoadDateTime { get; set; }
+        public DateTime? LoadDateTime { get; set; }
 
         [Required]
         public DateTime InsertDateTime { get; set; }

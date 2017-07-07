@@ -27,6 +27,10 @@ namespace WebPortal
 
         [StringLength(150)]
         public string ServiceName { get; set; }
+        [StringLength(10)]
+        public string UnitOfMeasure { get; set; }
+
+        public decimal UnitPrice { get; set; }
 
         public decimal BasicPriceWithoutVAT { get; set; }
         public decimal VAT { get; set; }

@@ -232,12 +232,12 @@
     <Compile Include="Entities\CATCustomerMonthlyData.cs" />
     <Compile Include="Entities\CATCustomerServices.cs" />
     <Compile Include="Entities\CATLogsOfService.cs" />
+    <Compile Include="Entities\CONFGeneralSettings.cs" />
     <Compile Include="Entities\CATOwnerData.cs" />
     <Compile Include="Entities\CATProcessStatus.cs" />
     <Compile Include="Entities\CATServiceParameters.cs" />
     <Compile Include="Entities\CATServicePatterns.cs" />
     <Compile Include="Entities\CATUnknownService.cs" />
-    <Compile Include="Entities\CATVRMService.cs" />
     <Compile Include="DataContexts\L4SDb.cs" />
     <Compile Include="Entities\STInputFileDuplicity.cs" />
     <Compile Include="Entities\STInputFileInfo.cs" />
@@ -260,6 +260,14 @@
     <Compile Include="Migrations\201707060609206_Version03.cs" />
     <Compile Include="Migrations\201707060609206_Version03.Designer.cs">
       <DependentUpon>201707060609206_Version03.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201707071214261_Version04.cs" />
+    <Compile Include="Migrations\201707071214261_Version04.Designer.cs">
+      <DependentUpon>201707071214261_Version04.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201707071538493_Version05.cs" />
+    <Compile Include="Migrations\201707071538493_Version05.Designer.cs">
+      <DependentUpon>201707071538493_Version05.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
@@ -409,6 +417,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201707060609206_Version03.resx">
       <DependentUpon>201707060609206_Version03.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201707071214261_Version04.resx">
+      <DependentUpon>201707071214261_Version04.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201707071538493_Version05.resx">
+      <DependentUpon>201707071538493_Version05.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Resources\Labels.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
