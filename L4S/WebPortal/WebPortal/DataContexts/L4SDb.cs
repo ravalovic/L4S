@@ -39,7 +39,7 @@ namespace WebPortal.DataContexts
         public DbSet<STLogImport> STLogImport { get; set; }
         public DbSet<CATLogsOfService > CATLogsOfService { get; set; }
         public DbSet<CATUnknownService> CATUnknownService { get; set; }
-        public DbSet<CATVRMService> CATVRMService { get; set; }
+        
         public DbSet<CATCustomerDailyData> CATCustomerDailyData { get; set; }
         public DbSet<CATCustomerMonthlyData> CATCustomerMonthlyData { get; set; }
 
@@ -53,6 +53,7 @@ namespace WebPortal.DataContexts
         public DbSet<ARCHCustomerMonthlyData> ARCHCustomerMonthlyData { get; set; }
         public DbSet<ARCHLogsOfService> ARCHLogsOfService { get; set; }
         public DbSet<CATBillingInfo> CATBillingInfo { get; set; }
+        public DbSet<CONFGeneralSettings> CONFGeneralSettings { get; set; }
 
 
         public virtual DbSet<view_DetailFromDaily> view_DetailFromDaily { get; set; }

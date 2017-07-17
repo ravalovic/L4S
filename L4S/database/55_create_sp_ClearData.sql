@@ -53,6 +53,7 @@ WHERE
   or [RequestedURL] like'%GET /eskn/rest/services/NR/kn_wmts_orto_wm/MapServer?f=json HTTP/1.1%' 
   or [RequestedURL] like'%GET /eskn/rest/services/NR/kn_wmts_norm_wm/MapServer?f=json HTTP/1.1%'
   or [RequestedURL] like'%GET /eskn/rest/services/NR/kn_wmts_norm_wm/MapServer/layers?f=json HTTP/1.1%'
+  or [RequestedURL] like '%/VRM/%'
 
   SELECT @rowcount = @@ROWCOUNT;
   if (@mydebug = 1 ) print 'Clean ' + cast(@rowcount as varchar) +' lines ';
@@ -61,12 +62,4 @@ WHERE
 	  SET  BytesSent = replace(replace(BytesSent,'.',''),',','')
 	      ,DatDate = dateadd(hour,convert(int,substring([DateOfRequest],len([DateOfRequest])-5,4)) ,convert(datetime, substring([DateOfRequest],0,12)+' '+ substring([DateOfRequest],13,8),104));
 	  
-  -- Move '%/VRM/% to Unknown service 
- INSERT INTO [dbo].[CATVRMService]([BatchID],[RecordID],[UserID],[DateOfRequest],[RequestedURL],[RequestStatus],[BytesSent],[RequestTime],[UserIPAddress])
- SELECT [BatchID], [RecordID],[UserID]
- , [DatDate], [RequestedURL],[RequestStatus],[BytesSent],[RequestTime],[UserIPAddress]
- FROM [dbo].[STLogImport] WHERE [RequestedURL] like '%/VRM/%'
-SELECT @rowcount = @@ROWCOUNT
-if (@mydebug = 1 ) print 'Move VRM services to CATVRMServices: ' + cast(@rowcount as varchar) +' lines. Deleting ...';
-DELETE  FROM [dbo].[STLogImport] WHERE [RequestedURL] like '%/VRM/%'
 END
