@@ -213,6 +213,7 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\CustomerController.cs" />
     <Compile Include="Controllers\FileDuplicityController.cs" />
     <Compile Include="Controllers\FileInfoController.cs" />
     <Compile Include="Controllers\PatternsController.cs" />
@@ -387,6 +388,11 @@
     <Content Include="Views\ProcessStatus\Edit.cshtml" />
     <Content Include="Views\ProcessStatus\Index.cshtml" />
     <Content Include="Views\Account\UserList.cshtml" />
+    <Content Include="Views\Customer\Create.cshtml" />
+    <Content Include="Views\Customer\Delete.cshtml" />
+    <Content Include="Views\Customer\Details.cshtml" />
+    <Content Include="Views\Customer\Edit.cshtml" />
+    <Content Include="Views\Customer\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

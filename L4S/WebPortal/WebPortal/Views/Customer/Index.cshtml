@@ -1,0 +1,177 @@
+﻿@model IEnumerable<WebPortal.CATCustomerData>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.CustomerType)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.CompanyName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.CompanyType)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.CompanyID)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.CompanyTAXID)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.CompanyVATID)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.IndividualTitle)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.IndividualFirstName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.IndividualLastName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.IndividualID)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.IndividualTAXID)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.IndividualVATID)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.BankAccountIBAN)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.AddressStreet)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.AddressBuildingNumber)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.AddressCity)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.AddressZipCode)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.AddressCountry)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ContactEmail)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ContactMobile)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ContactPhone)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ContactWeb)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.TCInsertTime)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.TCLastUpdate)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.TCActive)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.CustomerType)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.CompanyName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.CompanyType)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.CompanyID)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.CompanyTAXID)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.CompanyVATID)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.IndividualTitle)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.IndividualFirstName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.IndividualLastName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.IndividualID)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.IndividualTAXID)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.IndividualVATID)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.BankAccountIBAN)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.AddressStreet)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.AddressBuildingNumber)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.AddressCity)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.AddressZipCode)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.AddressCountry)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.ContactEmail)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.ContactMobile)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.ContactPhone)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.ContactWeb)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.TCInsertTime)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.TCLastUpdate)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.TCActive)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.PKCustomerDataID }) |
+            @Html.ActionLink("Details", "Details", new { id=item.PKCustomerDataID }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.PKCustomerDataID })
+        </td>
+    </tr>
+}
+
+</table>
