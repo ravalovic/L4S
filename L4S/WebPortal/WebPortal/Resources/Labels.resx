@@ -276,6 +276,12 @@
   <data name="FileInfo_TableTitle" xml:space="preserve">
     <value>Vstupné súbory</value>
   </data>
+  <data name="Home_SubTitle" xml:space="preserve">
+    <value>Vyhodnotenie Odobratých Služieb Katastra</value>
+  </data>
+  <data name="Home_Title" xml:space="preserve">
+    <value>VOSK</value>
+  </data>
   <data name="Menu_Fakturacie" xml:space="preserve">
     <value>Fakturácie</value>
   </data>

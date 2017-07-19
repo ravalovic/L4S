@@ -7,14 +7,14 @@
         <div class="col-lg-5">
             <p class="site-title">
                 <a href="@Url.Action("Index", "Home")">
-                    <img class="headerLogo" src="@Url.Content("~/Resources/Images/logo-ugkk.png")" alt="Image Logo" />
+                    <img class="headerLogo" src="@Url.Content("~/Resources/Images/logoVugk.png")" alt="Image Logo" style="margin-top:10px;" />
                 </a>
             </p>
         </div>
-        <div class="col-lg-5">
-            <h1>Nadpis</h1>
-            <p class="lead">Podnadpis</p>
-            <p><a href="http://asp.net" class="btn btn-primary btn-lg">Learn more &raquo;</a></p>
+        <div class="col-lg-7">
+            <h1>@Resources.Labels.Home_Title</h1>
+            <p class="lead">@Resources.Labels.Home_SubTitle</p>
+            @*<p><a href="http://asp.net" class="btn btn-primary btn-lg">Learn more &raquo;</a></p>*@
 
         </div>
     </div>

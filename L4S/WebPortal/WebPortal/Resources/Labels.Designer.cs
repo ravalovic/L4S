@@ -538,6 +538,24 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Vyhodnotenie Odobratých Služieb Katastra.
+        /// </summary>
+        public static string Home_SubTitle {
+            get {
+                return ResourceManager.GetString("Home_SubTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to VOSK.
+        /// </summary>
+        public static string Home_Title {
+            get {
+                return ResourceManager.GetString("Home_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Fakturácie.
         /// </summary>
         public static string Menu_Fakturacie {
