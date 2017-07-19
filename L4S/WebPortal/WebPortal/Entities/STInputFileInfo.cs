@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Resources;
+using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -22,7 +23,9 @@ namespace WebPortal
 
         [Required]
         public int LinesInFile { get; set; }
+
         [Required]
+        [Display(Name = "File_CreationTime", ResourceType = typeof(Labels))]
         public DateTime InsertDateTime { get; set; }
 
         [Required]
@@ -32,10 +35,12 @@ namespace WebPortal
         public int LoadedRecord { get; set; }
 
         [StringLength(200)]
+        [Display(Name = "File_Name", ResourceType = typeof(Labels))]
         public string OriFileName { get; set; }
 
         [Required]
         [StringLength(50)]
+        [Display(Name = "File_CheckSum", ResourceType = typeof(Labels))]
         public string OriginalFileChecksum { get; set; }
         public DateTime? TCLastUpdate { get; set; }
 

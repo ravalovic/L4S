@@ -19,6 +19,7 @@ namespace WebPortal
 
         public int? BatchRecordNum { get; set; }
 
+
         public int? NumberOfService { get; set; }
 
         public int? NumberOfCustomer { get; set; }

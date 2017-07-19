@@ -484,6 +484,33 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to CheckSum.
+        /// </summary>
+        public static string File_CheckSum {
+            get {
+                return ResourceManager.GetString("File_CheckSum", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Čas vytvorenia.
+        /// </summary>
+        public static string File_CreationTime {
+            get {
+                return ResourceManager.GetString("File_CreationTime", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Názov súboru.
+        /// </summary>
+        public static string File_Name {
+            get {
+                return ResourceManager.GetString("File_Name", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Opis stránky.
         /// </summary>
         public static string FileDuplicity_PageSubtitle {

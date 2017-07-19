@@ -276,6 +276,15 @@
   <data name="FileInfo_TableTitle" xml:space="preserve">
     <value>Vstupné súbory</value>
   </data>
+  <data name="File_CheckSum" xml:space="preserve">
+    <value>CheckSum</value>
+  </data>
+  <data name="File_CreationTime" xml:space="preserve">
+    <value>Čas vytvorenia</value>
+  </data>
+  <data name="File_Name" xml:space="preserve">
+    <value>Názov súboru</value>
+  </data>
   <data name="Home_SubTitle" xml:space="preserve">
     <value>Vyhodnotenie Odobratých Služieb Katastra</value>
   </data>

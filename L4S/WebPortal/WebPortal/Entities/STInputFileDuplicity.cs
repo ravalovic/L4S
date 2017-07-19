@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Resources;
+using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -30,14 +31,18 @@ namespace WebPortal
         [Required]
         public DateTime? LoadDateTime { get; set; }
 
-        [Required]
+        [Required] 
+        [Display(Name = "File_CreationTime", ResourceType = typeof(Labels))]
         public DateTime InsertDateTime { get; set; }
 
+
         [StringLength(200)]
+        [Display(Name = "File_Name", ResourceType = typeof(Labels))]
         public string OriFileName { get; set; }
 
         [Required]
         [StringLength(50)]
+        [Display(Name = "File_CheckSum", ResourceType = typeof(Labels))]
         public string OriginalFileChecksum { get; set; }
 
         [Required]

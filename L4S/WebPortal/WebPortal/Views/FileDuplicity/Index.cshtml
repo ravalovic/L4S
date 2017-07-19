@@ -12,9 +12,6 @@
 
 <h2>@Resources.Labels.FileDuplicity_PageTitle</h2>
 <p>@Resources.Labels.FileDuplicity_PageSubtitle</p>
-<p>
-    @Html.ActionLink("Create New", "Create")
-</p>
 
 <div class="col-xs-12 col-sm-12 col-md-12">
     <div class="panel panel-primary">
@@ -24,21 +21,21 @@
         <div class="panel-body">
             <table class="table table-striped table-bordered table-hover table-condensed">
                 <tr>
-                    <th>
-                        @Html.DisplayNameFor(model => model.OriginalId)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.FileName)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.LinesInFile)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.Checksum)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.LoadDateTime)
-                    </th>
+                    @*<th>
+        @Html.DisplayNameFor(model => model.OriginalId)
+    </th>
+    <th>
+        @Html.DisplayNameFor(model => model.FileName)
+    </th>
+    <th>
+        @Html.DisplayNameFor(model => model.LinesInFile)
+    </th>
+    <th>
+        @Html.DisplayNameFor(model => model.Checksum)
+    </th>
+    <th>
+        @Html.DisplayNameFor(model => model.LoadDateTime)
+    </th>*@
                     <th>
                         @Html.DisplayNameFor(model => model.InsertDateTime)
                     </th>
@@ -48,9 +45,9 @@
                     <th>
                         @Html.DisplayNameFor(model => model.OriginalFileChecksum)
                     </th>
-                    <th>
+                    @*<th>
                         @Html.DisplayNameFor(model => model.LoaderBatchID)
-                    </th>
+                    </th>*@
                     <th></th>
                 </tr>
 
@@ -58,7 +55,7 @@
                 {
                     <tr>
                         <td>
-                            @Html.DisplayFor(modelItem => item.OriginalId)
+                            @*@Html.DisplayFor(modelItem => item.OriginalId)
                         </td>
                         <td>
                             @Html.DisplayFor(modelItem => item.FileName)
@@ -71,7 +68,7 @@
                         </td>
                         <td>
                             @Html.DisplayFor(modelItem => item.LoadDateTime)
-                        </td>
+                        </td>*@
                         <td>
                             @Html.DisplayFor(modelItem => item.InsertDateTime)
                         </td>
@@ -81,13 +78,13 @@
                         <td>
                             @Html.DisplayFor(modelItem => item.OriginalFileChecksum)
                         </td>
-                        <td>
+                        @*<td>
                             @Html.DisplayFor(modelItem => item.LoaderBatchID)
-                        </td>
+                        </td>*@
                         <td>
-                            @Html.ActionLink("Edit", "Edit", new { id = item.ID }) |
-                            @Html.ActionLink("Details", "Details", new { id = item.ID }) |
-                            @Html.ActionLink("Delete", "Delete", new { id = item.ID })
+                            <a class="modal-link btn btn-danger" href="/FileDuplicity/Delete/@item.ID"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span> @Resources.Labels.Btn_Delete </a>
+
+                            @*@Html.ActionLink("Delete", "Delete", new { id = item.ID })*@
                         </td>
                     </tr>
                 }

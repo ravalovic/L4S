@@ -12,9 +12,7 @@
 
 <h2>@Resources.Labels.Process_PageTitle</h2>
 <p>@Resources.Labels.Process_PageSubtitle</p>
-<p>
-    @Html.ActionLink("Create New", "Create")
-</p>
+
 
 <div class="col-xs-12 col-sm-12 col-md-12">
     <div class="panel panel-primary">
@@ -45,9 +43,9 @@
                     <th>
                         @Html.DisplayNameFor(model => model.NumberOfPreprocessDelete)
                     </th>
-                    <th>
+                    @*<th>
                         @Html.DisplayNameFor(model => model.TCInsertTime)
-                    </th>
+                    </th>*@
                     <th></th>
                 </tr>
 
@@ -75,9 +73,9 @@
                         <td>
                             @Html.DisplayFor(modelItem => item.NumberOfPreprocessDelete)
                         </td>
-                        <td>
+                        @*<td>
                             @Html.DisplayFor(modelItem => item.TCInsertTime)
-                        </td>
+                        </td>*@
                         <td>
                             @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
                             @*@Html.ActionLink("Details", "Details", new { id=item.Id }) |*@
