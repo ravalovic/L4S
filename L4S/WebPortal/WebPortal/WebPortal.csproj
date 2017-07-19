@@ -401,6 +401,15 @@
     <Content Include="Views\Customer\Details.cshtml" />
     <Content Include="Views\Customer\Edit.cshtml" />
     <Content Include="Views\Customer\Index.cshtml" />
+    <Content Include="Views\Customer\CompanyList.cshtml" />
+    <Content Include="Views\Customer\IndividualList.cshtml" />
+    <Content Include="Views\Customer\_CompanyEdit.cshtml" />
+    <Content Include="Views\Customer\_IndividualEdit.cshtml" />
+    <Content Include="Views\Customer\_CompanyCreate.cshtml" />
+    <Content Include="Views\Customer\_IndividualCreate.cshtml" />
+    <Content Include="Views\Customer\_delete.cshtml" />
+    <Content Include="Views\Customer\_CompanyDetails.cshtml" />
+    <Content Include="Views\Customer\_IndividualDetails.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

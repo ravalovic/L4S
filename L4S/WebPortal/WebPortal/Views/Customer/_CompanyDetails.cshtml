@@ -1,0 +1,235 @@
+﻿@model WebPortal.CATCustomerData
+
+<script src="~/Scripts/jquery-1.8.2.min.js"></script>
+<script src="~/Scripts/jquery.validate.min.js"></script>
+<script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+
+
+<div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal">×</button>
+    <h4><b>@Resources.Labels.Customer_CompanyDetailDialogTitle</b></h4>
+</div>
+
+
+
+    <div class="modal-body">
+
+        <div class="row">
+            <hr />
+            <div class="col-md-6">
+
+                <dl class="dl-horizontal">
+                    <dt>
+                        @Html.DisplayNameFor(model => model.CustomerType)
+                    </dt>
+
+                    <dd>
+                        @Html.DisplayFor(model => model.CustomerType)
+                    </dd>
+
+                    <dt>
+                        @Html.DisplayNameFor(model => model.CompanyName)
+                    </dt>
+
+                    <dd>
+                        @Html.DisplayFor(model => model.CompanyName)
+                    </dd>
+
+                    <dt>
+                        @Html.DisplayNameFor(model => model.CompanyType)
+                    </dt>
+
+                    <dd>
+                        @Html.DisplayFor(model => model.CompanyType)
+                    </dd>
+
+                    <dt>
+                        @Html.DisplayNameFor(model => model.CompanyID)
+                    </dt>
+
+                    <dd>
+                        @Html.DisplayFor(model => model.CompanyID)
+                    </dd>
+
+                    <dt>
+                        @Html.DisplayNameFor(model => model.CompanyTAXID)
+                    </dt>
+
+                    <dd>
+                        @Html.DisplayFor(model => model.CompanyTAXID)
+                    </dd>
+
+                    <dt>
+                        @Html.DisplayNameFor(model => model.CompanyVATID)
+                    </dt>
+
+                    <dd>
+                        @Html.DisplayFor(model => model.CompanyVATID)
+                    </dd>
+
+                    <dt>
+                        @Html.DisplayNameFor(model => model.IndividualTitle)
+                    </dt>
+
+                    <dd>
+                        @Html.DisplayFor(model => model.IndividualTitle)
+                    </dd>
+
+                    <dt>
+                        @Html.DisplayNameFor(model => model.IndividualFirstName)
+                    </dt>
+
+                    <dd>
+                        @Html.DisplayFor(model => model.IndividualFirstName)
+                    </dd>
+
+                    <dt>
+                        @Html.DisplayNameFor(model => model.IndividualLastName)
+                    </dt>
+
+                    <dd>
+                        @Html.DisplayFor(model => model.IndividualLastName)
+                    </dd>
+
+                    <dt>
+                        @Html.DisplayNameFor(model => model.IndividualID)
+                    </dt>
+
+                    <dd>
+                        @Html.DisplayFor(model => model.IndividualID)
+                    </dd>
+
+                    <dt>
+                        @Html.DisplayNameFor(model => model.IndividualTAXID)
+                    </dt>
+
+                    <dd>
+                        @Html.DisplayFor(model => model.IndividualTAXID)
+                    </dd>
+
+                    <dt>
+                        @Html.DisplayNameFor(model => model.IndividualVATID)
+                    </dt>
+
+                    <dd>
+                        @Html.DisplayFor(model => model.IndividualVATID)
+                    </dd>
+
+                    <dt>
+                        @Html.DisplayNameFor(model => model.BankAccountIBAN)
+                    </dt>
+
+                    <dd>
+                        @Html.DisplayFor(model => model.BankAccountIBAN)
+                    </dd>
+
+                    <dt>
+                        @Html.DisplayNameFor(model => model.AddressStreet)
+                    </dt>
+
+                    <dd>
+                        @Html.DisplayFor(model => model.AddressStreet)
+                    </dd>
+
+                    <dt>
+                        @Html.DisplayNameFor(model => model.AddressBuildingNumber)
+                    </dt>
+
+                    <dd>
+                        @Html.DisplayFor(model => model.AddressBuildingNumber)
+                    </dd>
+
+                    <dt>
+                        @Html.DisplayNameFor(model => model.AddressCity)
+                    </dt>
+
+                    <dd>
+                        @Html.DisplayFor(model => model.AddressCity)
+                    </dd>
+
+                    <dt>
+                        @Html.DisplayNameFor(model => model.AddressZipCode)
+                    </dt>
+
+                    <dd>
+                        @Html.DisplayFor(model => model.AddressZipCode)
+                    </dd>
+
+                    <dt>
+                        @Html.DisplayNameFor(model => model.AddressCountry)
+                    </dt>
+
+                    <dd>
+                        @Html.DisplayFor(model => model.AddressCountry)
+                    </dd>
+                
+                </dl>
+            </div>
+            <div class="col-md-6">
+
+                <dl class="dl-horizontal">
+                    <dt>
+                        @Html.DisplayNameFor(model => model.ContactEmail)
+                    </dt>
+
+                    <dd>
+                        @Html.DisplayFor(model => model.ContactEmail)
+                    </dd>
+                    <dd>
+                        @Html.DisplayFor(model => model.ContactMobile)
+                    </dd>
+
+                    <dt>
+                        @Html.DisplayNameFor(model => model.ContactPhone)
+                    </dt>
+
+                    <dd>
+                        @Html.DisplayFor(model => model.ContactPhone)
+                    </dd>
+
+                    <dt>
+                        @Html.DisplayNameFor(model => model.ContactWeb)
+                    </dt>
+
+                    <dd>
+                        @Html.DisplayFor(model => model.ContactWeb)
+                    </dd>
+
+                    <dt>
+                        @Html.DisplayNameFor(model => model.TCInsertTime)
+                    </dt>
+
+                    <dd>
+                        @Html.DisplayFor(model => model.TCInsertTime)
+                    </dd>
+
+                    <dt>
+                        @Html.DisplayNameFor(model => model.TCLastUpdate)
+                    </dt>
+
+                    <dd>
+                        @Html.DisplayFor(model => model.TCLastUpdate)
+                    </dd>
+
+                    <dt>
+                        @Html.DisplayNameFor(model => model.TCActive)
+                    </dt>
+
+                    <dd>
+                        @Html.DisplayFor(model => model.TCActive)
+                    </dd>
+
+                </dl>
+                </div>
+            </div>
+        </div>
+
+    <div class="modal-footer">
+        <button class="btn btn-danger" data-dismiss="modal" aria-hidden="true"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span> @Resources.Labels.Btn_Back</button>
+    </div>
+
+
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

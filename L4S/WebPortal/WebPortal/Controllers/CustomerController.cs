@@ -18,7 +18,8 @@ namespace WebPortal.Controllers
         // GET: Customer
         public ActionResult Index()
         {
-            return View(db.CATCustomerData.ToList());
+            // return View(db.CATCustomerData.ToList());
+            return RedirectToAction("CompanyList");
         }
 
         // GET: Customer/Details/5
@@ -33,13 +34,42 @@ namespace WebPortal.Controllers
             {
                 return HttpNotFound();
             }
-            return View(cATCustomerData);
+            if (cATCustomerData.CustomerType == "PO") return PartialView("_CompanyDetails", cATCustomerData);
+            return PartialView("_IndividualDetails", cATCustomerData);
         }
 
-        // GET: Customer/Create
-        public ActionResult Create()
+        // GET: Customer/IndividualList/
+        public ActionResult IndividualList()
         {
-            return View();
+            List<CATCustomerData> model = db.CATCustomerData.Where(p => p.CustomerType == "FO" && p.TCActive != 99).ToList();
+            // return PartialView("_IndividualList", model);
+            return View(model);
+        }
+
+        // GET: Customer/ComapnyList/
+        public ActionResult CompanyList()
+        {
+            List<CATCustomerData> model = db.CATCustomerData.Where(p => p.CustomerType == "PO" && p.TCActive!=99).ToList();
+            //return PartialView("_CompanyList", model);
+            return View(model);
+        }
+
+        // GET: Customer/Create/
+        public ActionResult Create(int? id)
+        {
+            CATCustomerData cATCustomerData = new CATCustomerData();
+
+            if (id == 1)
+            {
+                cATCustomerData.CustomerType = "PO";
+                return PartialView("_CompanyCreate", cATCustomerData);
+            }
+            else if (id == 2)
+            {
+                cATCustomerData.CustomerType = "FO";
+                return PartialView("_IndividualCreate", cATCustomerData);
+            }
+            else return RedirectToAction("CompanyList"); //return View();
         }
 
         // POST: Customer/Create
@@ -47,7 +77,7 @@ namespace WebPortal.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "PKCustomerDataID,CustomerType,CompanyName,CompanyType,CompanyID,CompanyTAXID,CompanyVATID,IndividualTitle,IndividualFirstName,IndividualLastName,IndividualID,IndividualTAXID,IndividualVATID,BankAccountIBAN,AddressStreet,AddressBuildingNumber,AddressCity,AddressZipCode,AddressCountry,ContactEmail,ContactMobile,ContactPhone,ContactWeb,TCInsertTime,TCLastUpdate,TCActive")] CATCustomerData cATCustomerData)
+        public ActionResult Create(CATCustomerData cATCustomerData)
         {
             if (ModelState.IsValid)
             {
@@ -56,7 +86,8 @@ namespace WebPortal.Controllers
                 return RedirectToAction("Index");
             }
 
-            return View(cATCustomerData);
+            if (cATCustomerData.CustomerType == "PO") return RedirectToAction("CompanyList");
+            return RedirectToAction("IndividualList");
         }
 
         // GET: Customer/Edit/5
@@ -71,23 +102,27 @@ namespace WebPortal.Controllers
             {
                 return HttpNotFound();
             }
-            return View(cATCustomerData);
+            if (cATCustomerData.CustomerType == "PO") return PartialView("_CompanyEdit", cATCustomerData);
+            return PartialView("_IndividualEdit", cATCustomerData);
         }
 
+        //[Bind(Include = "PKCustomerDataID,CustomerType,CompanyName,CompanyType,CompanyID,CompanyTAXID,CompanyVATID,IndividualTitle,IndividualFirstName,IndividualLastName,IndividualID,IndividualTAXID,IndividualVATID,BankAccountIBAN,AddressStreet,AddressBuildingNumber,AddressCity,AddressZipCode,AddressCountry,ContactEmail,ContactMobile,ContactPhone,ContactWeb,TCInsertTime,TCLastUpdate,TCActive")] 
         // POST: Customer/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "PKCustomerDataID,CustomerType,CompanyName,CompanyType,CompanyID,CompanyTAXID,CompanyVATID,IndividualTitle,IndividualFirstName,IndividualLastName,IndividualID,IndividualTAXID,IndividualVATID,BankAccountIBAN,AddressStreet,AddressBuildingNumber,AddressCity,AddressZipCode,AddressCountry,ContactEmail,ContactMobile,ContactPhone,ContactWeb,TCInsertTime,TCLastUpdate,TCActive")] CATCustomerData cATCustomerData)
+        public ActionResult Edit(CATCustomerData cATCustomerData)
         {
             if (ModelState.IsValid)
             {
+                cATCustomerData.TCLastUpdate = DateTime.Now;
                 db.Entry(cATCustomerData).State = EntityState.Modified;
                 db.SaveChanges();
-                return RedirectToAction("Index");
+               // return RedirectToAction("CompanyList");
             }
-            return View(cATCustomerData);
+            if (cATCustomerData.CustomerType == "PO") return RedirectToAction("CompanyList");
+            return RedirectToAction("IndividualList");
         }
 
         // GET: Customer/Delete/5
@@ -102,7 +137,7 @@ namespace WebPortal.Controllers
             {
                 return HttpNotFound();
             }
-            return View(cATCustomerData);
+            return PartialView("_Delete", cATCustomerData);
         }
 
         // POST: Customer/Delete/5
@@ -111,9 +146,12 @@ namespace WebPortal.Controllers
         public ActionResult DeleteConfirmed(int id)
         {
             CATCustomerData cATCustomerData = db.CATCustomerData.Find(id);
-            db.CATCustomerData.Remove(cATCustomerData);
+            cATCustomerData.TCActive = 99;
+            //db.CATCustomerData.Remove(cATCustomerData);
             db.SaveChanges();
-            return RedirectToAction("Index");
+
+            if (cATCustomerData.CustomerType == "PO") return RedirectToAction("CompanyList");
+            return RedirectToAction("IndividualList");
         }
 
         protected override void Dispose(bool disposing)

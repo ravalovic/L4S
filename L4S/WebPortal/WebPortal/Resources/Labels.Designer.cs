@@ -61,6 +61,420 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Pridať nové.
+        /// </summary>
+        public static string Btn_Add {
+            get {
+                return ResourceManager.GetString("Btn_Add", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Späť.
+        /// </summary>
+        public static string Btn_Back {
+            get {
+                return ResourceManager.GetString("Btn_Back", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Zrušiť.
+        /// </summary>
+        public static string Btn_Cancel {
+            get {
+                return ResourceManager.GetString("Btn_Cancel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Vytvoriť.
+        /// </summary>
+        public static string Btn_Create {
+            get {
+                return ResourceManager.GetString("Btn_Create", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Zmazať.
+        /// </summary>
+        public static string Btn_Delete {
+            get {
+                return ResourceManager.GetString("Btn_Delete", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Detail.
+        /// </summary>
+        public static string Btn_Detail {
+            get {
+                return ResourceManager.GetString("Btn_Detail", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Upraviť.
+        /// </summary>
+        public static string Btn_Edit {
+            get {
+                return ResourceManager.GetString("Btn_Edit", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to OK.
+        /// </summary>
+        public static string Btn_Ok {
+            get {
+                return ResourceManager.GetString("Btn_Ok", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Uložiť.
+        /// </summary>
+        public static string Btn_Save {
+            get {
+                return ResourceManager.GetString("Btn_Save", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Adresa.
+        /// </summary>
+        public static string Customer_Address {
+            get {
+                return ResourceManager.GetString("Customer_Address", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Číslo.
+        /// </summary>
+        public static string Customer_AddressBuildingNumber {
+            get {
+                return ResourceManager.GetString("Customer_AddressBuildingNumber", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Mesto.
+        /// </summary>
+        public static string Customer_AddressCity {
+            get {
+                return ResourceManager.GetString("Customer_AddressCity", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Štát.
+        /// </summary>
+        public static string Customer_AddressCountry {
+            get {
+                return ResourceManager.GetString("Customer_AddressCountry", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Ulica.
+        /// </summary>
+        public static string Customer_AddressStreet {
+            get {
+                return ResourceManager.GetString("Customer_AddressStreet", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to PSČ.
+        /// </summary>
+        public static string Customer_AddressZipCode {
+            get {
+                return ResourceManager.GetString("Customer_AddressZipCode", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Číslo účtu IBAN.
+        /// </summary>
+        public static string Customer_BankAccountIBAN {
+            get {
+                return ResourceManager.GetString("Customer_BankAccountIBAN", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Vytvoriť novú PO - právnickú osobu .
+        /// </summary>
+        public static string Customer_CompanyCreateDialogTitle {
+            get {
+                return ResourceManager.GetString("Customer_CompanyCreateDialogTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Podrobnosti.
+        /// </summary>
+        public static string Customer_CompanyDetailDialogTitle {
+            get {
+                return ResourceManager.GetString("Customer_CompanyDetailDialogTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Upraviť PO - právnickú osobu.
+        /// </summary>
+        public static string Customer_CompanyEditDialogTitle {
+            get {
+                return ResourceManager.GetString("Customer_CompanyEditDialogTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to IČO.
+        /// </summary>
+        public static string Customer_CompanyID {
+            get {
+                return ResourceManager.GetString("Customer_CompanyID", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Názov.
+        /// </summary>
+        public static string Customer_CompanyName {
+            get {
+                return ResourceManager.GetString("Customer_CompanyName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to DIČ.
+        /// </summary>
+        public static string Customer_CompanyTAXID {
+            get {
+                return ResourceManager.GetString("Customer_CompanyTAXID", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Typ.
+        /// </summary>
+        public static string Customer_CompanyType {
+            get {
+                return ResourceManager.GetString("Customer_CompanyType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to IČ DPH.
+        /// </summary>
+        public static string Customer_CompanyVATID {
+            get {
+                return ResourceManager.GetString("Customer_CompanyVATID", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Email.
+        /// </summary>
+        public static string Customer_ContactEmail {
+            get {
+                return ResourceManager.GetString("Customer_ContactEmail", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Mob. číslo.
+        /// </summary>
+        public static string Customer_ContactMobile {
+            get {
+                return ResourceManager.GetString("Customer_ContactMobile", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tel. číslo.
+        /// </summary>
+        public static string Customer_ContactPhone {
+            get {
+                return ResourceManager.GetString("Customer_ContactPhone", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Web stránka.
+        /// </summary>
+        public static string Customer_ContactWeb {
+            get {
+                return ResourceManager.GetString("Customer_ContactWeb", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Typ.
+        /// </summary>
+        public static string Customer_CustomerType {
+            get {
+                return ResourceManager.GetString("Customer_CustomerType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Naozaj chcete odstrániť tohto zákazníka?.
+        /// </summary>
+        public static string Customer_DeleteDialogSure {
+            get {
+                return ResourceManager.GetString("Customer_DeleteDialogSure", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Zmazať.
+        /// </summary>
+        public static string Customer_DeleteDialogTitle {
+            get {
+                return ResourceManager.GetString("Customer_DeleteDialogTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Vytvoriť novú FO - fyzickú osobu.
+        /// </summary>
+        public static string Customer_IndividualCreateDialogTitle {
+            get {
+                return ResourceManager.GetString("Customer_IndividualCreateDialogTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Podrobnosti.
+        /// </summary>
+        public static string Customer_IndividualDetailDialogTitle {
+            get {
+                return ResourceManager.GetString("Customer_IndividualDetailDialogTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Upraviť FO - fyzickú osobu.
+        /// </summary>
+        public static string Customer_IndividualEditDialogTitle {
+            get {
+                return ResourceManager.GetString("Customer_IndividualEditDialogTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Krsné meno.
+        /// </summary>
+        public static string Customer_IndividualFirstName {
+            get {
+                return ResourceManager.GetString("Customer_IndividualFirstName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ID číslo.
+        /// </summary>
+        public static string Customer_IndividualID {
+            get {
+                return ResourceManager.GetString("Customer_IndividualID", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Priezvisko.
+        /// </summary>
+        public static string Customer_IndividualLastName {
+            get {
+                return ResourceManager.GetString("Customer_IndividualLastName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to DIČ.
+        /// </summary>
+        public static string Customer_IndividualTAXID {
+            get {
+                return ResourceManager.GetString("Customer_IndividualTAXID", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Titul.
+        /// </summary>
+        public static string Customer_IndividualTitle {
+            get {
+                return ResourceManager.GetString("Customer_IndividualTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to IČ DPH.
+        /// </summary>
+        public static string Customer_IndividualVATID {
+            get {
+                return ResourceManager.GetString("Customer_IndividualVATID", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to PO - Právnická osoba.
+        /// </summary>
+        public static string CustomerTab_Company {
+            get {
+                return ResourceManager.GetString("CustomerTab_Company", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Zoznam.
+        /// </summary>
+        public static string CustomerTab_Company_PageSubtitle {
+            get {
+                return ResourceManager.GetString("CustomerTab_Company_PageSubtitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to PO - Právnická osoba.
+        /// </summary>
+        public static string CustomerTab_Company_PageTitle {
+            get {
+                return ResourceManager.GetString("CustomerTab_Company_PageTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to FO - Fyzická osoba.
+        /// </summary>
+        public static string CustomerTab_Individual {
+            get {
+                return ResourceManager.GetString("CustomerTab_Individual", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Zoznam.
+        /// </summary>
+        public static string CustomerTab_Individual_PageSubtitle {
+            get {
+                return ResourceManager.GetString("CustomerTab_Individual_PageSubtitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to FO - Fyzická osoba.
+        /// </summary>
+        public static string CustomerTab_Individual_PageTitle {
+            get {
+                return ResourceManager.GetString("CustomerTab_Individual_PageTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Email.
         /// </summary>
         public static string Email {

@@ -117,6 +117,144 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="Btn_Add" xml:space="preserve">
+    <value>Pridať nové</value>
+  </data>
+  <data name="Btn_Back" xml:space="preserve">
+    <value>Späť</value>
+  </data>
+  <data name="Btn_Cancel" xml:space="preserve">
+    <value>Zrušiť</value>
+  </data>
+  <data name="Btn_Create" xml:space="preserve">
+    <value>Vytvoriť</value>
+  </data>
+  <data name="Btn_Delete" xml:space="preserve">
+    <value>Zmazať</value>
+  </data>
+  <data name="Btn_Detail" xml:space="preserve">
+    <value>Detail</value>
+  </data>
+  <data name="Btn_Edit" xml:space="preserve">
+    <value>Upraviť</value>
+  </data>
+  <data name="Btn_Ok" xml:space="preserve">
+    <value>OK</value>
+  </data>
+  <data name="Btn_Save" xml:space="preserve">
+    <value>Uložiť</value>
+  </data>
+  <data name="CustomerTab_Company" xml:space="preserve">
+    <value>PO - Právnická osoba</value>
+  </data>
+  <data name="CustomerTab_Company_PageSubtitle" xml:space="preserve">
+    <value>Zoznam</value>
+  </data>
+  <data name="CustomerTab_Company_PageTitle" xml:space="preserve">
+    <value>PO - Právnická osoba</value>
+  </data>
+  <data name="CustomerTab_Individual" xml:space="preserve">
+    <value>FO - Fyzická osoba</value>
+  </data>
+  <data name="CustomerTab_Individual_PageSubtitle" xml:space="preserve">
+    <value>Zoznam</value>
+  </data>
+  <data name="CustomerTab_Individual_PageTitle" xml:space="preserve">
+    <value>FO - Fyzická osoba</value>
+  </data>
+  <data name="Customer_Address" xml:space="preserve">
+    <value>Adresa</value>
+  </data>
+  <data name="Customer_AddressBuildingNumber" xml:space="preserve">
+    <value>Číslo</value>
+  </data>
+  <data name="Customer_AddressCity" xml:space="preserve">
+    <value>Mesto</value>
+  </data>
+  <data name="Customer_AddressCountry" xml:space="preserve">
+    <value>Štát</value>
+  </data>
+  <data name="Customer_AddressStreet" xml:space="preserve">
+    <value>Ulica</value>
+  </data>
+  <data name="Customer_AddressZipCode" xml:space="preserve">
+    <value>PSČ</value>
+  </data>
+  <data name="Customer_BankAccountIBAN" xml:space="preserve">
+    <value>Číslo účtu IBAN</value>
+  </data>
+  <data name="Customer_CompanyCreateDialogTitle" xml:space="preserve">
+    <value>Vytvoriť novú PO - právnickú osobu </value>
+  </data>
+  <data name="Customer_CompanyDetailDialogTitle" xml:space="preserve">
+    <value>Podrobnosti</value>
+  </data>
+  <data name="Customer_CompanyEditDialogTitle" xml:space="preserve">
+    <value>Upraviť PO - právnickú osobu</value>
+  </data>
+  <data name="Customer_CompanyID" xml:space="preserve">
+    <value>IČO</value>
+  </data>
+  <data name="Customer_CompanyName" xml:space="preserve">
+    <value>Názov</value>
+  </data>
+  <data name="Customer_CompanyTAXID" xml:space="preserve">
+    <value>DIČ</value>
+  </data>
+  <data name="Customer_CompanyType" xml:space="preserve">
+    <value>Typ</value>
+  </data>
+  <data name="Customer_CompanyVATID" xml:space="preserve">
+    <value>IČ DPH</value>
+  </data>
+  <data name="Customer_ContactEmail" xml:space="preserve">
+    <value>Email</value>
+  </data>
+  <data name="Customer_ContactMobile" xml:space="preserve">
+    <value>Mob. číslo</value>
+  </data>
+  <data name="Customer_ContactPhone" xml:space="preserve">
+    <value>Tel. číslo</value>
+  </data>
+  <data name="Customer_ContactWeb" xml:space="preserve">
+    <value>Web stránka</value>
+  </data>
+  <data name="Customer_CustomerType" xml:space="preserve">
+    <value>Typ</value>
+  </data>
+  <data name="Customer_DeleteDialogSure" xml:space="preserve">
+    <value>Naozaj chcete odstrániť tohto zákazníka?</value>
+  </data>
+  <data name="Customer_DeleteDialogTitle" xml:space="preserve">
+    <value>Zmazať</value>
+  </data>
+  <data name="Customer_IndividualCreateDialogTitle" xml:space="preserve">
+    <value>Vytvoriť novú FO - fyzickú osobu</value>
+  </data>
+  <data name="Customer_IndividualDetailDialogTitle" xml:space="preserve">
+    <value>Podrobnosti</value>
+  </data>
+  <data name="Customer_IndividualEditDialogTitle" xml:space="preserve">
+    <value>Upraviť FO - fyzickú osobu</value>
+  </data>
+  <data name="Customer_IndividualFirstName" xml:space="preserve">
+    <value>Krsné meno</value>
+  </data>
+  <data name="Customer_IndividualID" xml:space="preserve">
+    <value>ID číslo</value>
+  </data>
+  <data name="Customer_IndividualLastName" xml:space="preserve">
+    <value>Priezvisko</value>
+  </data>
+  <data name="Customer_IndividualTAXID" xml:space="preserve">
+    <value>DIČ</value>
+  </data>
+  <data name="Customer_IndividualTitle" xml:space="preserve">
+    <value>Titul</value>
+  </data>
+  <data name="Customer_IndividualVATID" xml:space="preserve">
+    <value>IČ DPH</value>
+  </data>
   <data name="Email" xml:space="preserve">
     <value>Email</value>
   </data>
