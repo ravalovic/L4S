@@ -46,6 +46,7 @@ select m.ID, m.DateOfRequest, m.CustomerID, m.ServiceID, m.NumberOfRequest,
 	 when g.ParamValue = UPPER('MBYTE')  then (p.ServiceBasicPrice * m.ReceivedBytes/(1024.0*1024.0) * (1 + convert(decimal(18,5), d.ParamValue)))
 	 when g.ParamValue = UPPER('GBYTE')  then (p.ServiceBasicPrice * m.ReceivedBytes/(1024.0*1024.0*1024.0) * (1 + convert(decimal(18,5), d.ParamValue))) 
  end as BasicPriceWithVAT
+ ,m.TCActive
  from CATCustomerDailyData m, CATCustomerServices c, CATServiceParameters p , CONFGeneralSettings g, CONFGeneralSettings d
 where m.CustomerID = c.FKCustomerDataID and m.ServiceID = c.FKServiceID and c.FKServiceID = p.PKServiceID and g.ParamName = UPPER('METRICUNIT') and d.ParamName = UPPER('DPH')
 GO

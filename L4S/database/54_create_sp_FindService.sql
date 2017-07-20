@@ -53,7 +53,7 @@ BEGIN
 				INSERT INTO [dbo].[CATLogsOfService]([BatchID], [RecordID],[CustomerID], [ServiceID], [UserID], [DateOfRequest], [RequestedURL], [RequestStatus], [BytesSent], [RequestTime], [UserIPAddress])
 			    SELECT [BatchID], [RecordID],[CustomerID], ' + cast(@myServiceID as varchar) + ', [UserID], '+@myDate+'
 					   ,[RequestedURL], [RequestStatus], [BytesSent], [RequestTime], [UserIPAddress] FROM '+@myTable+' WHERE BatchID IN '+@myBatchList+' AND (';
-			DECLARE myCursor CURSOR FOR SELECT PatternLike FROM [dbo].[CATServicePatterns] WHERE FKServiceID = @myServiceID;
+			DECLARE myCursor CURSOR FOR SELECT PatternLike FROM [dbo].[CATServicePatterns] WHERE FKServiceID = @myServiceID and TCActive<>99;
 		    OPEN myCursor
 		    FETCH NEXT FROM myCursor INTO @myLike
 		    WHILE @@FETCH_STATUS = 0   

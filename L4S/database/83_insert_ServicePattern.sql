@@ -139,6 +139,7 @@ INSERT INTO [dbo].[CATServicePatterns]([PatternLike],[PatternRegExp],[PatternDes
 INSERT INTO [dbo].[CATServicePatterns]([PatternLike],[PatternRegExp],[PatternDescription],[FKServiceID],[Entity],[Explanation],[DatSelectMethod]) VALUES('%/GeneratePrf?houseNo=%&cadastralUnitCode=%&outputType=pdf%',null,'2.1.9',9,null  ,N'Vizualizácia výpisu z listu vlastníctva - pdf',N'Kód k.ú. + súpisné číslo');
 INSERT INTO [dbo].[CATServicePatterns]([PatternLike],[PatternRegExp],[PatternDescription],[FKServiceID],[Entity],[Explanation],[DatSelectMethod]) VALUES('%/GeneratePrf?parcelC=%&cadastralUnitCode=%&outputType=pdf%',null,'2.1.9',9,null  ,N'Vizualizácia výpisu z listu vlastníctva - pdf',N'Kód k.ú. + číslo parcely registra C');
 INSERT INTO [dbo].[CATServicePatterns]([PatternLike],[PatternRegExp],[PatternDescription],[FKServiceID],[Entity],[Explanation],[DatSelectMethod]) VALUES('%/GeneratePrf?parcelE=%&cadastralUnitCode=%&outputType=pdf%',null,'2.1.9',9,null  ,N'Vizualizácia výpisu z listu vlastníctva - pdf',N'Kód k.ú. + číslo parcely registra E');
+INSERT INTO [dbo].[CATServicePatterns]([PatternLike],[PatternRegExp],[PatternDescription],[FKServiceID],[Entity],[Explanation],[DatSelectMethod]) VALUES('%/GenerateRegister?%',null,'2.1.9.1',9,null  ,N'Vizualizácia výpisu z listu vlastníctva',N'Export csv');
 
 -- Insert service A 2.1.13
 INSERT INTO [dbo].[CATServiceParameters]([PKServiceID],[ServiceCode],[ServiceDescription],[ServiceBasicPrice]) VALUES(13,'2.1.13',N'A.2.1.13 Poskytnutie informácie z KN o súpise parciel z registra C a E',0.001);

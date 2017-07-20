@@ -37,6 +37,13 @@ namespace WebPortal.Controllers
             if (cATCustomerData.CustomerType == "PO") return PartialView("_CompanyDetails", cATCustomerData);
             return PartialView("_IndividualDetails", cATCustomerData);
         }
+        // GET: Customer/IndividualList/
+        public ActionResult Search(string Name)
+        {
+            List<CATCustomerData> model = db.CATCustomerData.Where(p =>(p.CompanyName.Contains(Name) || p.IndividualLastName.Contains(Name)) && p.TCActive != 99).ToList();
+            // return PartialView("_IndividualList", model);
+            return View("CompanyList", model);
+        }
 
         // GET: Customer/IndividualList/
         public ActionResult IndividualList()
@@ -83,7 +90,6 @@ namespace WebPortal.Controllers
             {
                 db.CATCustomerData.Add(cATCustomerData);
                 db.SaveChanges();
-                return RedirectToAction("Index");
             }
 
             if (cATCustomerData.CustomerType == "PO") return RedirectToAction("CompanyList");

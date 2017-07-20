@@ -34,3 +34,10 @@ INSERT INTO [dbo].[CONFGeneralSettings]
            ('DPH'
            ,'0.2');
 GO
+INSERT INTO [dbo].[CONFGeneralSettings]
+           ([ParamName]
+           ,[ParamValue])
+     VALUES
+           ('DenTvorbyFaktury'
+           ,'3');
+GO

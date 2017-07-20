@@ -44,7 +44,7 @@ BEGIN
 									SET 
 									 [CustomerID] = '+cast(@myCustomerID as varchar)+'
 								  WHERE BatchID IN'+@myBatchList+' AND (';
-			DECLARE myCursor CURSOR FOR SELECT  CustomerIdentifier FROM [dbo].CATCustomerIdentifiers WHERE  FKCustomerID = @myCustomerID;
+			DECLARE myCursor CURSOR FOR SELECT  CustomerIdentifier FROM [dbo].CATCustomerIdentifiers WHERE  FKCustomerID = @myCustomerID and TCActive<>99;
 		    OPEN myCursor
 		    FETCH NEXT FROM myCursor INTO @myLike
 		    WHILE @@FETCH_STATUS = 0   

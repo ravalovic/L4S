@@ -54,7 +54,7 @@ BEGIN
 			    @myBatchList = @batchList OUTPUT;
 		if (@return_value = 0) 
 		BEGIN
-		     DECLARE runCursor CURSOR FOR SELECT PKCustomerDataID FROM [dbo].CATCustomerData;
+		     DECLARE runCursor CURSOR FOR SELECT PKCustomerDataID FROM [dbo].CATCustomerData where TCActive<>99;
 		     OPEN runCursor
 			 FETCH NEXT FROM runCursor INTO @CustomerID
 			 WHILE @@FETCH_STATUS = 0   
@@ -77,7 +77,7 @@ BEGIN
 		END
 		if (@return_value = 0) 	
 		BEGIN	
-		 DECLARE runCursor CURSOR FOR SELECT PKServiceID FROM [dbo].CATServiceParameters;
+		 DECLARE runCursor CURSOR FOR SELECT PKServiceID FROM [dbo].CATServiceParameters where TCActive<>99;
 		     OPEN runCursor
 			 FETCH NEXT FROM runCursor INTO @ServiceID
 			 WHILE @@FETCH_STATUS = 0   

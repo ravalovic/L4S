@@ -1,0 +1,186 @@
+﻿@model WebPortal.CATOwnerData
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>CATOwnerData</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.OwnerCompanyName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.OwnerCompanyName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.OwnwerCompanyType)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.OwnwerCompanyType)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.OwnerCompanyType)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.OwnerCompanyType)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.OwnerCompanyID)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.OwnerCompanyID)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.OwnerCompanyTAXID)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.OwnerCompanyTAXID)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.OwnerCompanyVATID)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.OwnerCompanyVATID)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.OwnerBankAccountIban)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.OwnerBankAccountIban)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.OwnerAddressStreet)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.OwnerAddressStreet)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.OwnerAddressBuildingNumber)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.OwnerAddressBuildingNumber)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.OwnerAddressCity)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.OwnerAddressCity)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.OwnerAddressZipCode)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.OwnerAddressZipCode)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.OwnerAddressCountry)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.OwnerAddressCountry)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.OwnerResponsibleFirstName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.OwnerResponsibleFirstName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.OwnerResponsiblelastName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.OwnerResponsiblelastName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.OwnerContactEmail)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.OwnerContactEmail)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.OwnerContactMobile)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.OwnerContactMobile)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.OwnerContactPhone)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.OwnerContactPhone)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.OwnerContactWeb)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.OwnerContactWeb)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.TCInsertTime)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.TCInsertTime)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.TCLastUpdate)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.TCLastUpdate)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.TCActive)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.TCActive)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.ID }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>
