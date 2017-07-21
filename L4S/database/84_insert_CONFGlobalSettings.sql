@@ -16,6 +16,20 @@ INSERT INTO [dbo].[CONFGeneralSettings]
            ([ParamName]
            ,[ParamValue])
      VALUES
+           ('ArchivingDay'
+           ,'5');
+GO
+INSERT INTO [dbo].[CONFGeneralSettings]
+           ([ParamName]
+           ,[ParamValue])
+     VALUES
+           ('LastArchiveRUN'
+           ,'0');
+GO
+INSERT INTO [dbo].[CONFGeneralSettings]
+           ([ParamName]
+           ,[ParamValue])
+     VALUES
            ('ArchiveDetailDataMonth'
            ,'6');
 GO
@@ -38,6 +52,20 @@ INSERT INTO [dbo].[CONFGeneralSettings]
            ([ParamName]
            ,[ParamValue])
      VALUES
-           ('DenTvorbyFaktury'
+           ('InvoiceCreationDay'
            ,'3');
+GO
+INSERT INTO [dbo].[CONFGeneralSettings]
+           ([ParamName]
+           ,[ParamValue])
+     VALUES
+           ('DueDateDays'
+           ,'15');
+GO
+INSERT INTO [dbo].[CONFGeneralSettings]
+           ([ParamName]
+           ,[ParamValue])
+     VALUES
+           ('LastInvoiceGenerate'
+           ,'0');
 GO

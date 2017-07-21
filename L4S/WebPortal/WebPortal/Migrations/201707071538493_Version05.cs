@@ -22,6 +22,9 @@ namespace WebPortal.Migrations
                        TCActive = c.Int(),
                     })
                 .PrimaryKey(t => t.ID);
+            AlterColumn("dbo.CONFGeneralSettings", "TCInsertTime", c => c.DateTime(nullable: true, defaultValueSql: "GETDATE()"));
+            AlterColumn("dbo.CONFGeneralSettings", "TCLastUpdate", c => c.DateTime(nullable: true, defaultValueSql: "GETDATE()"));
+            AlterColumn("dbo.CONFGeneralSettings", "TCActive", c => c.Int(nullable: true, defaultValue: 0));
         }
         
         public override void Down()

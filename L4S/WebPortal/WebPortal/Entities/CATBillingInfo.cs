@@ -16,6 +16,10 @@ namespace WebPortal
         public DateTime DueDate { get; set; }
         public int CustomerID { get; set; }
         public int ServiceID { get; set; }
+        [StringLength(50)]
+        public string ServiceCode { get; set; }
+        [StringLength(150)]
+        public string ServiceName { get; set; }
         public long NumberOfRequest { get; set; }
         public decimal RequestedTime { get; set; }
         public long ReceivedBytes { get; set; }
