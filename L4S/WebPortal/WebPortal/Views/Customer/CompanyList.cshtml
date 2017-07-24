@@ -24,10 +24,10 @@
     <div class="panel panel-primary">
         <div class="panel-heading">
             <h4 class="panel-title"><strong>@Resources.Labels.CustomerTab_Company_PageTitle</strong></h4>
-        </div>
-        <div>
-            <input id ="SearchBox" name="Search" type="search"/>
-            <button class="btn btn-danger" data-dismiss="modal" aria-hidden="true" onclick="location.href='@Url.Action("Search", "Customer")?Name=' + document.getElementById('SearchBox').value"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span> Hľadať </button>
+            <p style="text-align: right" >      
+             <input style="color: black" id ="SearchBox" name="Search" type="search"  />
+             <button class="btn btn-danger" data-dismiss="modal" aria-hidden="true" onclick="location.href='@Url.Action("Search", "Customer")?Name=' + document.getElementById('SearchBox').value"><span class="glyphicon glyphicon-search" aria-hidden="true"></span> Hľadať </button>
+            </p>
         </div>
         <div class="panel-body">
             <table class="table table-striped table-bordered table-hover table-condensed">
