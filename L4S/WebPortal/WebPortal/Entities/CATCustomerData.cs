@@ -11,12 +11,12 @@ namespace WebPortal
 
     public partial class CATCustomerData
     {
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public CATCustomerData()
-        {
-            CATCustomerServices = new HashSet<CATCustomerServices>();
-            CATCustomerIdentifiers = new HashSet<CATCustomerIdentifiers>();
-        }
+        //[System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        //public CATCustomerData()
+        //{
+        //    CATCustomerServices = new HashSet<CATCustomerServices>();
+        //    CATCustomerIdentifiers = new HashSet<CATCustomerIdentifiers>();
+        //}
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int PKCustomerDataID { get; set; }
@@ -122,11 +122,11 @@ namespace WebPortal
 
         public int? TCActive { get; set; }
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public ICollection<CATCustomerServices> CATCustomerServices { get; set; }
+        //[System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<CATCustomerServices> CATCustomerServices { get; set; }
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public ICollection<CATCustomerIdentifiers> CATCustomerIdentifiers { get; set; }
+        //[System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<CATCustomerIdentifiers> CATCustomerIdentifiers { get; set; }
 
         public virtual string FullNameIndividual
         {

@@ -6,7 +6,34 @@
 
 <h2>Details</h2>
 
-<div>
+
+<div class="row">
+    <div class="col-md-9">
+        @if (ViewBag.CustomerType == 1)
+        {
+            @Html.Partial("_CompanyDetails", Model);
+        }
+        else
+        {
+            @Html.Partial("_IndividualDetails", Model);
+        }
+    </div>
+    <div class="col-md-9">
+
+    </div>
+        @Html.Partial("_CustomerIdentifiers", Model.CATCustomerIdentifiers);
+    </div>
+
+
+PV
+customer identifiers col3
+
+row12
+Customer services tabulka
+-service name
+-service discount
+- paternes
+@*<div>
     <h4>CATCustomerData</h4>
     <hr />
     <dl class="dl-horizontal">
@@ -215,4 +242,4 @@
 <p>
     @Html.ActionLink("Edit", "Edit", new { id = Model.PKCustomerDataID }) |
     @Html.ActionLink("Back to List", "Index")
-</p>
+</p>*@

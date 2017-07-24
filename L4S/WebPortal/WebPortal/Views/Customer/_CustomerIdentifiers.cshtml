@@ -1,0 +1,30 @@
+﻿@model IEnumerable<WebPortal.CATCustomerIdentifiers>
+
+
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.CustomerIdentifier)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.CustomerIdentifierDescription)
+        </th>       
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.CustomerIdentifier)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.CustomerIdentifierDescription)
+        </td>        
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.PKCustomerIdentifiersID }) |           
+            @Html.ActionLink("Delete", "Delete", new { id=item.PKCustomerIdentifiersID })
+        </td>
+    </tr>
+}
+
+</table>

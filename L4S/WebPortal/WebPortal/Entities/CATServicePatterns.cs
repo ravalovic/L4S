@@ -22,6 +22,9 @@ namespace WebPortal
         public string PatternDescription { get; set; }
 
         public int FKServiceID { get; set; }
+        [ForeignKey("FKServiceID")]
+        public virtual CATServiceParameters CATServiceParameters { get; set; }
+
 
         [StringLength(150)]
         public string Entity { get; set; }
@@ -38,7 +41,7 @@ namespace WebPortal
 
         public int? TCActive { get; set; }
 
-        public virtual CATServiceParameters CATServiceParameters { get; set; }
+        //public virtual CATServiceParameters CATServiceParameters { get; set; }
 
     }
 }

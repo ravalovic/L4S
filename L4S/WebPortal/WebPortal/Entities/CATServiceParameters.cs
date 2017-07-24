@@ -10,12 +10,12 @@ namespace WebPortal
     [Table("CATServiceParameters")]
     public sealed partial class CATServiceParameters
     {
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public CATServiceParameters()
-        {
-            CATCustomerServices = new HashSet<CATCustomerServices>();
-            CATServicePatterns = new HashSet<CATServicePatterns>();
-        }
+        //[System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        //public CATServiceParameters()
+        //{
+        //    CATCustomerServices = new HashSet<CATCustomerServices>();
+        //    CATServicePatterns = new HashSet<CATServicePatterns>();
+        //}
 
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.None)]

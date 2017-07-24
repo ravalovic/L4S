@@ -18,12 +18,11 @@ namespace WebPortal.Controllers
         // GET: Customer
         public ActionResult Index()
         {
-            // return View(db.CATCustomerData.ToList());
             return RedirectToAction("CompanyList");
         }
 
         // GET: Customer/Details/5
-        public ActionResult Details(int? id)
+        public ActionResult CustomerDetails(int? id)
         {
             if (id == null)
             {
@@ -37,6 +36,32 @@ namespace WebPortal.Controllers
             if (cATCustomerData.CustomerType == "PO") return PartialView("_CompanyDetails", cATCustomerData);
             return PartialView("_IndividualDetails", cATCustomerData);
         }
+
+        // GET: Customer/Details/5
+        public ActionResult Details(int? id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            CATCustomerData cATCustomerData = db.CATCustomerData.Where(l => l.PKCustomerDataID == id).Include(p => p.CATCustomerIdentifiers).FirstOrDefault(); //db.CATCustomerData.Find(id);
+            
+            if (cATCustomerData == null)
+            {
+                return HttpNotFound();
+            }
+
+            ////load list data from DB
+            //db.Entry(cATCustomerData).Collection(x => x.CATCustomerIdentifiers).Load();
+            //zoznam = db.Miesta.Include(l => l.Karty).Where(k => k.TypMiestoId == 1).ToList();
+            //cATCustomerData.CATCustomerIdentifiers = db.CATCustomerIdentifiers.Include(l => l.).Where(k => k.TypMiestoId == 1).ToList();
+
+            if (cATCustomerData.CustomerType == "PO") ViewBag.CustomerType = 1;
+            else ViewBag.CustomerType = 2;
+            
+            return View("Details", cATCustomerData);          
+        }
+
         // GET: Customer/IndividualList/
         public ActionResult Search(string Name)
         {
@@ -49,7 +74,6 @@ namespace WebPortal.Controllers
         public ActionResult IndividualList()
         {
             List<CATCustomerData> model = db.CATCustomerData.Where(p => p.CustomerType == "FO" && p.TCActive != 99).ToList();
-            // return PartialView("_IndividualList", model);
             return View(model);
         }
 
@@ -57,7 +81,6 @@ namespace WebPortal.Controllers
         public ActionResult CompanyList()
         {
             List<CATCustomerData> model = db.CATCustomerData.Where(p => p.CustomerType == "PO" && p.TCActive!=99).ToList();
-            //return PartialView("_CompanyList", model);
             return View(model);
         }
 
@@ -153,7 +176,6 @@ namespace WebPortal.Controllers
         {
             CATCustomerData cATCustomerData = db.CATCustomerData.Find(id);
             cATCustomerData.TCActive = 99;
-            //db.CATCustomerData.Remove(cATCustomerData);
             db.SaveChanges();
 
             if (cATCustomerData.CustomerType == "PO") return RedirectToAction("CompanyList");

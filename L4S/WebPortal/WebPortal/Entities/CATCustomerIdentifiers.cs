@@ -17,14 +17,18 @@ namespace WebPortal
 
         [StringLength(50)]
         public string CustomerIdentifierDescription { get; set; }
-
+               
         public int FKCustomerID { get; set; }
+
+        [ForeignKey("FKCustomerID")]
+        public virtual CATCustomerData CATCustomerData { get; set; }
+
         public DateTime? TCInsertTime { get; set; }
 
         public DateTime? TCLastUpdate { get; set; }
 
         public int? TCActive { get; set; }
 
-        public virtual CATCustomerData CATCustomerData { get; set; } 
+     
     }
 }

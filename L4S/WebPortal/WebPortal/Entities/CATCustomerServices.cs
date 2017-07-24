@@ -13,6 +13,14 @@ namespace WebPortal
         public int PKServiceCustomerIdentifiersID { get; set; }
 
         public int FKServiceID { get; set; }
+        [ForeignKey("FKServiceID")]
+        public virtual CATServiceParameters ServiceParameters { get; set; }
+
+
+        public int FKCustomerDataID { get; set; }
+        [ForeignKey("FKCustomerDataID")]
+        public virtual CATCustomerData CATCustomerData { get; set; }
+
 
         [Required]
         [StringLength(100)]
@@ -25,9 +33,7 @@ namespace WebPortal
         public decimal ServicePriceDiscount { get; set; }
         [StringLength(100)]
         public string ServiceNote { get; set; }
-
-        public int? FKCustomerDataID { get; set; }
-
+        
         public DateTime? TCInsertTime { get; set; }
 
         public DateTime? TCLastUpdate { get; set; }
