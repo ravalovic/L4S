@@ -65,9 +65,31 @@ namespace WebPortal.Controllers
         // GET: Customer/IndividualList/
         public ActionResult Search(string Name)
         {
-            List<CATCustomerData> model = db.CATCustomerData.Where(p =>(p.CompanyName.Contains(Name) || p.IndividualLastName.Contains(Name)) && p.TCActive != 99).ToList();
+
+            List<CATCustomerData> model = db.CATCustomerData.Where(p => p.TCActive != 99 && (p.CompanyName.Contains(Name) || p.IndividualLastName.Contains(Name))).ToList();
+            if (model.Exists(p => p.CustomerType.Equals("PO")))
+            {
+                model = db.CATCustomerData.Where(p => p.CustomerType.Equals("PO") && p.CompanyName.Contains(Name) && p.TCActive != 99).ToList();
+                if (model.Count == 0)
+                {
+                    model = db.CATCustomerData.Where(p => p.CustomerType.Equals("PO")).ToList();
+                }
+                return View("CompanyList", model);
+            }
+            else
+            {
+                model = db.CATCustomerData.Where(p => p.CustomerType.Equals("FO") && p.IndividualLastName.Contains(Name) && p.TCActive != 99).ToList();
+            
+            if (model.Count == 0)
+            {
+                    model = db.CATCustomerData.Where(p => p.CustomerType.Equals("FO")).ToList();
+            }
+                return View("IndividualList", model);
+            }
+
+
             // return PartialView("_IndividualList", model);
-            return View("CompanyList", model);
+            
         }
 
         // GET: Customer/IndividualList/
