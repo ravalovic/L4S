@@ -36,6 +36,24 @@ namespace WebPortal.Controllers
             return View(cATProcessStatus);
         }
 
+        public ActionResult Search(string insertDateFrom, string insertDateTo)
+        {
+            DateTime fromDate;
+            DateTime toDate;
+            DateTime.TryParse(insertDateFrom, out fromDate);
+            if (!DateTime.TryParse(insertDateTo, out toDate))
+            {
+                toDate=DateTime.Now;
+            }
+            List<CATProcessStatus> model = db.CATProcessStatus.Where(p => p.TCInsertTime >= fromDate && p.TCInsertTime <= toDate).ToList();
+            if (model.Count == 0)
+                {
+                    model = db.CATProcessStatus.ToList();
+                }
+              return View("Index", model);
+        
+        }
+
         // GET: ProcessStatus/Create
         public ActionResult Create()
         {

@@ -26,6 +26,15 @@ namespace WebPortal
             bundles.Add(new StyleBundle("~/Content/css").Include(
                       "~/Content/bootstrap.css",
                       "~/Content/site.css"));
+            //Create bundel for jQueryUI
+            //js   
+            bundles.Add(new ScriptBundle("~/bundles/jqueryui").Include("~/Scripts/jquery-ui-{version}.js"));
+            //css   
+            bundles.Add(new StyleBundle("~/Content/cssjqryUi").Include("~/Content/jquery-ui.css"));
+
+            bundles.Add(new ScriptBundle("~/bundles/datetime").Include("~/Scripts/moment*","~/Scripts/bootstrap-datetimepicker*"));
+
+
         }
     }
 }
