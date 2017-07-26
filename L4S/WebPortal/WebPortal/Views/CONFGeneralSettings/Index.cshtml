@@ -1,0 +1,77 @@
+﻿@model IEnumerable<WebPortal.CONFGeneralSettings>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>@Resources.Labels.Config_PageTitle</h2>
+
+<p>
+    @Html.ActionLink("Pridaj nový parameter", "Create")
+</p>
+<div class="col-xs-12 col-sm-12 col-md-12">
+<div class="panel panel-primary">
+    <div class="panel-heading">
+        <h4 class="panel-title"><strong>>@Resources.Labels.Config_TableTitle</strong></h4>
+    </div>
+    <div class="panel-body">
+        <table class="table table-striped table-bordered table-hover table-condensed">
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.ParamName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ParamValue)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Note)
+            </th>
+            @*<th>
+                        @Html.DisplayNameFor(model => model.TCInsertTime)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.TCLastUpdate)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.TCActive)
+                    </th>*@
+            <th></th>
+        </tr>
+
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ParamName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ParamValue)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Note)
+                </td>
+                @*<td>
+                            @Html.DisplayFor(modelItem => item.TCInsertTime)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.TCLastUpdate)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.TCActive)
+                        </td>*@
+                <td>
+                    <div >
+                        <a class="modal-link btn btn-success" href="/CONFGeneralSettings/Edit/@item.ID"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span> @Resources.Labels.Btn_Edit </a>
+                        <a class="modal-link btn btn-danger" href="/CONFGeneralSettings/Delete/@item.ID"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span> @Resources.Labels.Btn_Delete </a>
+                    </div>
+                    @*@Html.ActionLink("Edit", "Edit", new { id = item.ID }) |
+                    @Html.ActionLink("Details", "Details", new { id = item.ID }) |
+                    @Html.ActionLink("Delete", "Delete", new { id = item.ID })*@
+                </td>
+            </tr>
+        }
+        </table>
+        </div>
+    </div>
+</div>
+

@@ -1,0 +1,55 @@
+﻿@model WebPortal.CONFGeneralSettings
+
+@{
+    ViewBag.Title = "Zmazať";
+}
+
+<h2>Zmazať</h2>
+
+<h3>Skutočne zmazať záznam?</h3>
+<div>
+    <h4>Parameter</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.ParamName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ParamName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ParamValue)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ParamValue)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Note)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Note)
+        </dd>
+
+  
+    </dl>
+
+    @using (Html.BeginForm()) {
+        @Html.AntiForgeryToken()
+
+        <div class="form-actions no-color">
+            @*<input type="submit" value="Zmaž" class="btn btn-default" />*@ 
+            <div class="col-md-offset-2 col-md-10">
+                <button class="btn btn-danger" data-dismiss="modal" aria-hidden="true"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span> @Resources.Labels.Btn_Back</button>
+                <button type="submit" class="btn btn-primary"><span class="glyphicon glyphicon-floppy-disk" aria-hidden="true"></span> @Resources.Labels.Btn_Delete</button>
+            </div>
+        </div>
+        @*<div>
+            @Html.ActionLink("Back to List", "Index")
+        </div>*@
+    }
+</div>

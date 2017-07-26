@@ -1,0 +1,41 @@
+﻿@model WebPortal.CONFGeneralSettings
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>CONFGeneralSettings</h4>
+    <hr />
+    <dl class="col-md-10">
+        <dt>
+            @Html.DisplayNameFor(model => model.ParamName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ParamName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ParamValue)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ParamValue)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Note)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Note)
+        </dd>
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.ID }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

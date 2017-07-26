@@ -214,6 +214,7 @@
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\CATOwnerDatasController.cs" />
+    <Compile Include="Controllers\CONFGeneralSettingsController.cs" />
     <Compile Include="Controllers\CustomerController.cs" />
     <Compile Include="Controllers\FileDuplicityController.cs" />
     <Compile Include="Controllers\FileInfoController.cs" />
@@ -282,6 +283,10 @@
     <Compile Include="Migrations\201707242037463_Version8.cs" />
     <Compile Include="Migrations\201707242037463_Version8.Designer.cs">
       <DependentUpon>201707242037463_Version8.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201707260851277_Version09.cs" />
+    <Compile Include="Migrations\201707260851277_Version09.Designer.cs">
+      <DependentUpon>201707260851277_Version09.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
@@ -482,6 +487,11 @@
     <Content Include="Views\CATOwnerDatas\Edit.cshtml" />
     <Content Include="Views\CATOwnerDatas\Index.cshtml" />
     <Content Include="Views\Customer\_CustomerIdentifiers.cshtml" />
+    <Content Include="Views\CONFGeneralSettings\Create.cshtml" />
+    <Content Include="Views\CONFGeneralSettings\Delete.cshtml" />
+    <Content Include="Views\CONFGeneralSettings\Details.cshtml" />
+    <Content Include="Views\CONFGeneralSettings\Edit.cshtml" />
+    <Content Include="Views\CONFGeneralSettings\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -519,6 +529,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201707242037463_Version8.resx">
       <DependentUpon>201707242037463_Version8.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201707260851277_Version09.resx">
+      <DependentUpon>201707260851277_Version09.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Resources\Labels.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
