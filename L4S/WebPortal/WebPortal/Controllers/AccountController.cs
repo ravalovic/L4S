@@ -11,9 +11,27 @@ using Microsoft.Owin.Security;
 using WebPortal.Models;
 using WebPortal.DataContexts;
 using System.Collections.Generic;
+using System.Threading;
 
 namespace WebPortal.Controllers
 {
+    //public class BaseController : Controller
+    //{
+    //    protected override IAsyncResult BeginExecuteCore(AsyncCallback callback, object state)
+    //    {
+    //        //Localization in Base controller:
+
+    //        string language = (string)RouteData.Values["language"] ?? "sk";
+    //        string culture = (string)RouteData.Values["culture"] ?? "SK";
+
+    //        Thread.CurrentThread.CurrentCulture = CultureInfo.GetCultureInfo(string.Format("{0}-{1}", language, culture));
+    //        Thread.CurrentThread.CurrentUICulture = CultureInfo.GetCultureInfo(string.Format("{0}-{1}", language, culture));
+
+
+    //        return base.BeginExecuteCore(callback, state);
+    //    }
+    //}
+
     [Authorize]
     public class AccountController : Controller
     {
@@ -24,7 +42,7 @@ namespace WebPortal.Controllers
         {
         }
 
-        //change to only Admin !!!
+        //change to only Admin !!!  [Authorize]
         [AllowAnonymous]
         public ActionResult UserList()
         {

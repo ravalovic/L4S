@@ -285,6 +285,8 @@
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
+    <Compile Include="Models\CustomerViewModel.cs" />
+    <Compile Include="Models\DeleteModel.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Models\UserViewModel.cs" />
@@ -376,6 +378,7 @@
     <None Include="Scripts\jquery.validate-vsdoc.js" />
     <Content Include="Scripts\jquery-ui-1.12.1.js" />
     <Content Include="Scripts\jquery-ui-1.12.1.min.js" />
+    <Content Include="Scripts\jquery.Fixes.js" />
     <Content Include="Scripts\jquery.validate.js" />
     <Content Include="Scripts\jquery.validate.min.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
@@ -482,6 +485,11 @@
     <Content Include="Views\CATOwnerDatas\Edit.cshtml" />
     <Content Include="Views\CATOwnerDatas\Index.cshtml" />
     <Content Include="Views\Customer\_CustomerIdentifiers.cshtml" />
+    <Content Include="Views\Customer\Services.cshtml" />
+    <Content Include="Views\Customer\_ServicesList.cshtml" />
+    <Content Include="Views\Customer\_AddIdentifier.cshtml" />
+    <Content Include="Views\Customer\_EditIdentifier.cshtml" />
+    <Content Include="Views\Shared\_deleteModal.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

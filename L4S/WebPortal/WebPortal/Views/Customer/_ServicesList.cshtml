@@ -1,0 +1,100 @@
+﻿@model List<WebPortal.Models.ServicesViewModel>
+
+
+@using (Html.BeginForm("SaveServices", "Customer"))
+{
+    @Html.AntiForgeryToken()
+
+    <div class="panel panel-primary">
+        <div class="panel-heading">
+            <h4 class="panel-title"><strong>@Resources.Labels.Service_PageTitle</strong></h4>
+
+        </div>
+        <div class="panel-body">
+
+            <div class="table-responsive">
+                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+                <table style="" class="table table-bordered table-hover table-striped" id="mytable">
+                    <thead>
+                        <tr>
+                            <th class="col-md-1 text-center"><input type="checkbox" id="checkall" style="zoom:1.5" /> Všetky</th>
+                            <th class="col-md-3">@Html.LabelFor(model => model[0].ServiceCode)</th>
+                            <th class="col-md-2">@Html.LabelFor(model => model[0].ServiceName)</th>
+                            <th class="col-md-2">@Html.LabelFor(model => model[0].ServiceNote)</th>
+                            <th class="col-md-2">@Html.LabelFor(model => model[0].ServicePriceDiscount)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @for (int i = 0; i < Model.Count; i++)
+                            {
+
+                            <tr>
+                                <td class="text-center">@Html.EditorFor(model => model[i].Checked, new { htmlAttributes = new { @class = "checkthis", @style = "zoom:1.5" } })</td>
+                                <td>
+                                    <div class="input-group">
+                                        @Html.EditorFor(model => model[i].ServiceCode, new { htmlAttributes = new { @class = "form-control" } })
+                                        @Html.ValidationMessageFor(model => model[i].ServiceCode, "", new { @class = "text-danger" })
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="">
+                                        @Html.EditorFor(model => model[i].ServiceName, new { htmlAttributes = new { @class = "form-control" } })
+                                        @Html.ValidationMessageFor(model => model[i].ServiceName, "", new { @class = "text-danger" })
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="">
+                                        @Html.EditorFor(model => model[i].ServiceNote, new { htmlAttributes = new { @class = "form-control" } })
+                                        @Html.ValidationMessageFor(model => model[i].ServiceNote, "", new { @class = "text-danger" })
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="">
+                                        @Html.EditorFor(model => model[i].ServicePriceDiscount, new { htmlAttributes = new { @class = "form-control" } })
+                                        @Html.ValidationMessageFor(model => model[i].ServicePriceDiscount, "", new { @class = "text-danger" })
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+
+
+                <div class="form-group">
+                    <div class="col-md-offset-10 col-md-1">
+                        <div class="form-group">
+                            <button type="submit" class="btn btn-primary">
+                                <span class="glyphicon glyphicon-floppy-disk"></span>
+                                <span class="submit-text"> @Resources.Labels.Btn_Save</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        </div>
+        }
+
+
+        @section Scripts {
+            @Scripts.Render("~/bundles/jqueryval")
+        }
+        <script>
+            $(document).ready(function () {
+                $("#mytable #checkall").click(function () {
+                    if ($("#mytable #checkall").is(':checked')) {
+                        $("#mytable input[type=checkbox]").each(function () {
+                            $(this).prop("checked", true);
+                        });
+
+                    } else {
+                        $("#mytable input[type=checkbox]").each(function () {
+                            $(this).prop("checked", false);
+                        });
+                    }
+                });
+
+                $("[data-toggle=tooltip]").tooltip();
+            });
+        </script>

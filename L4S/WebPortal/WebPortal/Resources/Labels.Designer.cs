@@ -142,6 +142,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Nastavenia.
+        /// </summary>
+        public static string Btn_Settings {
+            get {
+                return ResourceManager.GetString("Btn_Settings", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Adresa.
         /// </summary>
         public static string Customer_Address {

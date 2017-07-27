@@ -97,9 +97,7 @@ namespace WebPortal
         [Display(Name = "Customer_AddressCountry", ResourceType = typeof(Labels))]
         public string AddressCountry { get; set; }
 
-        [Display(Name = "Customer_Address", ResourceType = typeof(Labels))]
-        public virtual string Address { get { return AddressStreet + " " + AddressBuildingNumber+", "+AddressZipCode+" "+AddressCity+", "+AddressCountry; } }
-
+        
         [StringLength(50)]
         [Display(Name = "Customer_ContactEmail", ResourceType = typeof(Labels))]
         public string ContactEmail { get; set; }
@@ -128,28 +126,16 @@ namespace WebPortal
         //[System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<CATCustomerIdentifiers> CATCustomerIdentifiers { get; set; }
 
-        public virtual string FullNameIndividual
-        {
-            get
-            {
-               return IndividualTitle + " " + IndividualFirstName + " " +IndividualLastName;               
-            }
-        }
 
-        public virtual string FullNameCompany
-        {
-            get
-            {
-                return CompanyName + " " + CompanyType;
-            }
-        }
-
-        public virtual string UniversalName
+        public virtual string FullName
         { get
-            { if (CustomerType == "PO") return FullNameCompany;
-                else return FullNameIndividual;
+            { if (CustomerType == "PO") return CompanyName + " " + CompanyType;
+                else return IndividualTitle + " " + IndividualFirstName + " " + IndividualLastName;
             }
         }
+
+        [Display(Name = "Customer_Address", ResourceType = typeof(Labels))]
+        public virtual string Address { get { return AddressStreet + " " + AddressBuildingNumber + ", " + AddressZipCode + " " + AddressCity + ", " + AddressCountry; } }
 
     }
 }

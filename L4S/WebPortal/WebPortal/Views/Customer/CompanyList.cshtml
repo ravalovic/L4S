@@ -99,6 +99,7 @@
                             @Html.ActionLink("Details", "Details", new { id = item.PKCustomerDataID }) |
                             @Html.ActionLink("Delete", "Delete", new { id = item.PKCustomerDataID })*@
                             <div>
+                                <a class="btn btn-primary" href="/Customer/Services/@item.PKCustomerDataID"><span class="glyphicon glyphicon-cog" aria-hidden="true"></span> @Resources.Labels.Btn_Settings </a>
                                 <a class="modal-link btn btn-success" href="/Customer/Edit/@item.PKCustomerDataID"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span> @Resources.Labels.Btn_Edit </a>
                                 <a class="modal-link btn btn-danger" href="/Customer/Delete/@item.PKCustomerDataID"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span> @Resources.Labels.Btn_Delete </a>
                             </div>

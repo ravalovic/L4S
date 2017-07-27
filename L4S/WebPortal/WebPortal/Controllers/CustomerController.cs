@@ -8,6 +8,7 @@ using System.Web;
 using System.Web.Mvc;
 using WebPortal;
 using WebPortal.DataContexts;
+using WebPortal.Models;
 
 namespace WebPortal.Controllers
 {
@@ -44,23 +45,57 @@ namespace WebPortal.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            CATCustomerData cATCustomerData = db.CATCustomerData.Where(l => l.PKCustomerDataID == id).Include(p => p.CATCustomerIdentifiers).FirstOrDefault(); //db.CATCustomerData.Find(id);
+            CATCustomerData cATCustomerData = db.CATCustomerData.Where(l => l.PKCustomerDataID == id).Include(p => p.CATCustomerIdentifiers).Include(p => p.CATCustomerServices).FirstOrDefault(); 
             
             if (cATCustomerData == null)
             {
                 return HttpNotFound();
             }
 
-            ////load list data from DB
-            //db.Entry(cATCustomerData).Collection(x => x.CATCustomerIdentifiers).Load();
-            //zoznam = db.Miesta.Include(l => l.Karty).Where(k => k.TypMiestoId == 1).ToList();
-            //cATCustomerData.CATCustomerIdentifiers = db.CATCustomerIdentifiers.Include(l => l.).Where(k => k.TypMiestoId == 1).ToList();
-
             if (cATCustomerData.CustomerType == "PO") ViewBag.CustomerType = 1;
             else ViewBag.CustomerType = 2;
             
             return View("Details", cATCustomerData);          
         }
+
+        // GET: Customer/Services/5
+        public ActionResult Services(int? id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+
+            CATCustomerData cATCustomerData = db.CATCustomerData.Where(l => l.PKCustomerDataID == id).Include(p => p.CATCustomerIdentifiers).FirstOrDefault();
+
+            if (cATCustomerData == null)
+            {
+                return HttpNotFound();
+            }
+
+            CustomerViewModel model = new CustomerViewModel(cATCustomerData);
+            if (cATCustomerData.CustomerType == "PO") ViewBag.CustomerType = 1;
+            else ViewBag.CustomerType = 2;
+
+            return View("Details",model);
+        }
+
+
+        // POST: Customer/EditServices
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult SaveServices(List<WebPortal.Models.ServicesViewModel> data)
+        {
+            if (ModelState.IsValid)
+            {
+              //  db.CATCustomerData.Add(cATCustomerData);
+             //   db.SaveChanges();
+            }
+
+           // if (cATCustomerData.CustomerType == "PO") return RedirectToAction("CompanyList");
+            return RedirectToAction("IndividualList");
+        }
+
 
         // GET: Customer/IndividualList/
         public ActionResult Search(string Name)
@@ -203,6 +238,112 @@ namespace WebPortal.Controllers
             if (cATCustomerData.CustomerType == "PO") return RedirectToAction("CompanyList");
             return RedirectToAction("IndividualList");
         }
+
+        // GET: Customer/AddIdentifier/5
+        public ActionResult AddIdentifier(int? id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+
+            CATCustomerIdentifiers cATCustomerIdent = new CATCustomerIdentifiers();
+            cATCustomerIdent.FKCustomerID = id.Value;
+
+
+            return PartialView("_AddIdentifier", cATCustomerIdent);
+        }
+
+
+        ////  POST- CREATE new ADD Identifier ////
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult AddIdentifier(CATCustomerIdentifiers cATCustomerIdent)
+        {
+            if (ModelState.IsValid)
+            {
+                cATCustomerIdent.TCLastUpdate = DateTime.Now;
+                cATCustomerIdent.TCInsertTime = DateTime.Now;
+                cATCustomerIdent.TCActive = 0;
+
+                db.CATCustomerIdentifiers.Add(cATCustomerIdent);
+                db.SaveChanges();           
+            }           
+            return RedirectToAction("Services", new { id = cATCustomerIdent.FKCustomerID });
+        }
+
+
+
+        // GET: Customer/EditIdentifier/5
+        public ActionResult EditIdentifier(int? id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+
+            CATCustomerIdentifiers cATCustomerIdent = db.CATCustomerIdentifiers.Find(id);
+            if (cATCustomerIdent == null)
+            {
+                return HttpNotFound();
+            }
+            return PartialView("_EditIdentifier", cATCustomerIdent);
+        }
+
+
+        //// POST EDIT Identifier - modal  ////
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult EditIdentifier(CATCustomerIdentifiers cATCustomerIdent)
+        {
+            if (ModelState.IsValid)
+            {
+                cATCustomerIdent.TCLastUpdate = DateTime.Now;
+                db.Entry(cATCustomerIdent).State = EntityState.Modified;
+                db.SaveChanges();
+            }
+
+            return RedirectToAction("Services", new { id = cATCustomerIdent.FKCustomerID });
+        }
+
+        // GET DELETE Identifier :  Customer/DeleteIdentifier/5
+        public ActionResult DeleteIdentifier(int? id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+
+            CATCustomerIdentifiers cATCustomerIdent = db.CATCustomerIdentifiers.Find(id);
+            if (cATCustomerIdent == null)
+            {
+                return HttpNotFound();
+            }
+
+            DeleteModel model = new DeleteModel(cATCustomerIdent.PKCustomerIdentifiersID, "Identifikátor");
+            return PartialView("_deleteModal", model);
+        }
+
+
+        ////    POST  DELETE Identifier ////
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult DeleteIdentifier(DeleteModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                CATCustomerIdentifiers cATCustomerIdent = db.CATCustomerIdentifiers.Find(model.Id);
+                cATCustomerIdent.TCLastUpdate = DateTime.Now;
+                cATCustomerIdent.TCActive = 99;
+                db.Entry(cATCustomerIdent).State = EntityState.Modified;
+                db.SaveChanges();
+                return RedirectToAction("Services", new { id = cATCustomerIdent.FKCustomerID });
+            }
+
+            return HttpNotFound();
+        }
+
+
 
         protected override void Dispose(bool disposing)
         {

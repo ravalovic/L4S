@@ -113,6 +113,45 @@
     @Scripts.Render("~/bundles/bootstrap")
     @Scripts.Render("~/bundles/datetime")
     @RenderSection("scripts", required: false)
+
+    <div class="modal fade" id="modal-small" data-backdrop="static" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-sm">
+            <div class="modal-content">
+            </div>
+        </div>
+    </div>
+
+
+    <script type="text/javascript">
+
+
+    //modal window
+    $(function () {
+
+        // Initialize modal dialog
+        // attach modal-container bootstrap attributes to links with .modal-link class.
+        // when a link is clicked with these attributes, bootstrap will display the href content in a modal dialog.
+        $('body').on('click', '.modal-link-small', function (e) {
+            e.preventDefault();
+            $(this).attr('data-target', '#modal-small');
+            $(this).attr('data-toggle', 'modal');
+        });
+
+        // Attach listener to .modal-close-btn's so that when the button is pressed the modal dialog disappears
+        $('body').on('click', '.modal-close-btn', function () {
+            $('#modal-small').modal('hide');
+        });
+        //clear modal cache, so that new content can be loaded
+        $('#modal-small').on('hidden.bs.modal', function () {
+            $(this).removeData('bs.modal');
+        });
+        $('#CancelModal').on('click', function () {
+            return false;
+        });
+    });
+
+    </script>
+
 </body>
 </html>
 
