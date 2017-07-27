@@ -14,8 +14,6 @@ namespace WebPortal
         public int ID { get; set; }
         [StringLength(100)]
         public string OwnerCompanyName { get; set; }
-        [StringLength(12)]
-        public string OwnwerCompanyType { get; set; }
         [StringLength(100)]
         public string OwnerCompanyType { get; set; }
         [StringLength(100)]

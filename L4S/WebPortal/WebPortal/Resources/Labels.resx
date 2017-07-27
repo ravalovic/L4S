@@ -144,6 +144,12 @@
   <data name="Btn_Save" xml:space="preserve">
     <value>Uložiť</value>
   </data>
+  <data name="Config_PageTitle" xml:space="preserve">
+    <value>Nastavenie parametrov systému</value>
+  </data>
+  <data name="Config_TableTitle" xml:space="preserve">
+    <value>Parametre</value>
+  </data>
   <data name="Btn_Settings" xml:space="preserve">
     <value>Nastavenia</value>
   </data>
@@ -297,6 +303,12 @@
   <data name="Menu_Fakturacie" xml:space="preserve">
     <value>Fakturácie</value>
   </data>
+  <data name="Menu_FakturacneData" xml:space="preserve">
+    <value>Moje fakturačné údaje</value>
+  </data>
+  <data name="Menu_GeneralSetup" xml:space="preserve">
+    <value>Parametre systému</value>
+  </data>
   <data name="Menu_Nastavenia" xml:space="preserve">
     <value>Nastavenia</value>
   </data>
@@ -317,6 +329,57 @@
   </data>
   <data name="Menu_Zakaznici" xml:space="preserve">
     <value>Zákazníci</value>
+  </data>
+  <data name="OwnerAddressBuildingNumber" xml:space="preserve">
+    <value>Popisné číslo</value>
+  </data>
+  <data name="OwnerAddressCity" xml:space="preserve">
+    <value>Mesto</value>
+  </data>
+  <data name="OwnerAddressCountry" xml:space="preserve">
+    <value>Krajina</value>
+  </data>
+  <data name="OwnerAddressStreet" xml:space="preserve">
+    <value>Ulica</value>
+  </data>
+  <data name="OwnerAddressZipCode" xml:space="preserve">
+    <value>PSČ</value>
+  </data>
+  <data name="OwnerBankAccountIban" xml:space="preserve">
+    <value>IBAN</value>
+  </data>
+  <data name="OwnerCompanyID" xml:space="preserve">
+    <value>IČO</value>
+  </data>
+  <data name="OwnerCompanyName" xml:space="preserve">
+    <value>Spoločnosť</value>
+  </data>
+  <data name="OwnerCompanyTAXID" xml:space="preserve">
+    <value>DIČ</value>
+  </data>
+  <data name="OwnerCompanyType" xml:space="preserve">
+    <value>Právna forma</value>
+  </data>
+  <data name="OwnerCompanyVATID" xml:space="preserve">
+    <value>IČ DPH</value>
+  </data>
+  <data name="OwnerContactEmail" xml:space="preserve">
+    <value>Email</value>
+  </data>
+  <data name="OwnerContactMobile" xml:space="preserve">
+    <value>Mobil</value>
+  </data>
+  <data name="OwnerContactPhone" xml:space="preserve">
+    <value>Telefón</value>
+  </data>
+  <data name="OwnerContactWeb" xml:space="preserve">
+    <value>Web</value>
+  </data>
+  <data name="OwnerResponsibleFirstName" xml:space="preserve">
+    <value>Meno</value>
+  </data>
+  <data name="OwnerResponsiblelastName" xml:space="preserve">
+    <value>Priezvisko</value>
   </data>
   <data name="Password" xml:space="preserve">
     <value>Heslo</value>

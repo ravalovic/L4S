@@ -142,6 +142,24 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Nastavenie parametrov systému.
+        /// </summary>
+        public static string Config_PageTitle {
+            get {
+                return ResourceManager.GetString("Config_PageTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Parametre.
+        /// </summary>
+        public static string Config_TableTitle {
+            get {
+                return ResourceManager.GetString("Config_TableTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Nastavenia.
         /// </summary>
         public static string Btn_Settings {
@@ -601,6 +619,24 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Moje fakturačné údaje.
+        /// </summary>
+        public static string Menu_FakturacneData {
+            get {
+                return ResourceManager.GetString("Menu_FakturacneData", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Parametre systému.
+        /// </summary>
+        public static string Menu_GeneralSetup {
+            get {
+                return ResourceManager.GetString("Menu_GeneralSetup", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Nastavenia.
         /// </summary>
         public static string Menu_Nastavenia {
@@ -660,6 +696,159 @@ namespace Resources {
         public static string Menu_Zakaznici {
             get {
                 return ResourceManager.GetString("Menu_Zakaznici", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Popisné číslo.
+        /// </summary>
+        public static string OwnerAddressBuildingNumber {
+            get {
+                return ResourceManager.GetString("OwnerAddressBuildingNumber", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Mesto.
+        /// </summary>
+        public static string OwnerAddressCity {
+            get {
+                return ResourceManager.GetString("OwnerAddressCity", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Krajina.
+        /// </summary>
+        public static string OwnerAddressCountry {
+            get {
+                return ResourceManager.GetString("OwnerAddressCountry", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Ulica.
+        /// </summary>
+        public static string OwnerAddressStreet {
+            get {
+                return ResourceManager.GetString("OwnerAddressStreet", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to PSČ.
+        /// </summary>
+        public static string OwnerAddressZipCode {
+            get {
+                return ResourceManager.GetString("OwnerAddressZipCode", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to IBAN.
+        /// </summary>
+        public static string OwnerBankAccountIban {
+            get {
+                return ResourceManager.GetString("OwnerBankAccountIban", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to IČO.
+        /// </summary>
+        public static string OwnerCompanyID {
+            get {
+                return ResourceManager.GetString("OwnerCompanyID", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Spoločnosť.
+        /// </summary>
+        public static string OwnerCompanyName {
+            get {
+                return ResourceManager.GetString("OwnerCompanyName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to DIČ.
+        /// </summary>
+        public static string OwnerCompanyTAXID {
+            get {
+                return ResourceManager.GetString("OwnerCompanyTAXID", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Právna forma.
+        /// </summary>
+        public static string OwnerCompanyType {
+            get {
+                return ResourceManager.GetString("OwnerCompanyType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to IČ DPH.
+        /// </summary>
+        public static string OwnerCompanyVATID {
+            get {
+                return ResourceManager.GetString("OwnerCompanyVATID", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Email.
+        /// </summary>
+        public static string OwnerContactEmail {
+            get {
+                return ResourceManager.GetString("OwnerContactEmail", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Mobil.
+        /// </summary>
+        public static string OwnerContactMobile {
+            get {
+                return ResourceManager.GetString("OwnerContactMobile", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Telefón.
+        /// </summary>
+        public static string OwnerContactPhone {
+            get {
+                return ResourceManager.GetString("OwnerContactPhone", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Web.
+        /// </summary>
+        public static string OwnerContactWeb {
+            get {
+                return ResourceManager.GetString("OwnerContactWeb", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Meno.
+        /// </summary>
+        public static string OwnerResponsibleFirstName {
+            get {
+                return ResourceManager.GetString("OwnerResponsibleFirstName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Priezvisko.
+        /// </summary>
+        public static string OwnerResponsiblelastName {
+            get {
+                return ResourceManager.GetString("OwnerResponsiblelastName", resourceCulture);
             }
         }
         

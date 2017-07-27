@@ -15,27 +15,6 @@ namespace WebPortal.Controllers
     {
         private L4SDb db = new L4SDb();
 
-        // GET: CATOwnerDatas
-        public ActionResult Index()
-        {
-            return View(db.CATOwnerData.ToList());
-        }
-
-        // GET: CATOwnerDatas/Details/5
-        public ActionResult Details(int? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            CATOwnerData cATOwnerData = db.CATOwnerData.Find(id);
-            if (cATOwnerData == null)
-            {
-                return HttpNotFound();
-            }
-            return View(cATOwnerData);
-        }
-
         // GET: CATOwnerDatas/Create
         public ActionResult Create()
         {
@@ -53,25 +32,28 @@ namespace WebPortal.Controllers
         {
             if (ModelState.IsValid)
             {
+                cATOwnerData.TCLastUpdate = DateTime.Now;
+                cATOwnerData.TCActive = 0;
+                cATOwnerData.TCInsertTime = DateTime.Now;
                 db.CATOwnerData.Add(cATOwnerData);
                 db.SaveChanges();
-                return RedirectToAction("Index");
+                return RedirectToAction("Edit");
             }
 
             return View(cATOwnerData);
         }
 
         // GET: CATOwnerDatas/Edit/5
-        public ActionResult Edit(int? id)
+        public ActionResult Edit()
         {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            CATOwnerData cATOwnerData = db.CATOwnerData.Find(id);
+            //if (id == null)
+            //{
+            //    return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            //}
+            CATOwnerData cATOwnerData = db.CATOwnerData.FirstOrDefault();
             if (cATOwnerData == null)
             {
-                return HttpNotFound();
+                return RedirectToAction("Create");
             }
             return View(cATOwnerData);
         }
@@ -85,39 +67,15 @@ namespace WebPortal.Controllers
         {
             if (ModelState.IsValid)
             {
+                cATOwnerData.TCLastUpdate = DateTime.Now;
+                cATOwnerData.TCActive = 0;
+                cATOwnerData.TCInsertTime = DateTime.Now;
                 db.Entry(cATOwnerData).State = EntityState.Modified;
                 db.SaveChanges();
-                return RedirectToAction("Index");
+                return RedirectToAction("Edit");
             }
             return View(cATOwnerData);
         }
-
-        // GET: CATOwnerDatas/Delete/5
-        public ActionResult Delete(int? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            CATOwnerData cATOwnerData = db.CATOwnerData.Find(id);
-            if (cATOwnerData == null)
-            {
-                return HttpNotFound();
-            }
-            return View(cATOwnerData);
-        }
-
-        // POST: CATOwnerDatas/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public ActionResult DeleteConfirmed(int id)
-        {
-            CATOwnerData cATOwnerData = db.CATOwnerData.Find(id);
-            db.CATOwnerData.Remove(cATOwnerData);
-            db.SaveChanges();
-            return RedirectToAction("Index");
-        }
-
         protected override void Dispose(bool disposing)
         {
             if (disposing)
