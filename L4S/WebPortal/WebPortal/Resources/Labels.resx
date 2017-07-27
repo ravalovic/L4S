@@ -349,7 +349,7 @@
     <value>IČO</value>
   </data>
   <data name="OwnerCompanyName" xml:space="preserve">
-    <value>Meno spoločnosti</value>
+    <value>Spoločnosť</value>
   </data>
   <data name="OwnerCompanyTAXID" xml:space="preserve">
     <value>DIČ</value>
@@ -361,22 +361,22 @@
     <value>IČ DPH</value>
   </data>
   <data name="OwnerContactEmail" xml:space="preserve">
-    <value>Kontaktný email</value>
+    <value>Email</value>
   </data>
   <data name="OwnerContactMobile" xml:space="preserve">
-    <value>Kontaktné mobilné číslo</value>
+    <value>Mobil</value>
   </data>
   <data name="OwnerContactPhone" xml:space="preserve">
-    <value>Kontaktný telefón</value>
+    <value>Telefón</value>
   </data>
   <data name="OwnerContactWeb" xml:space="preserve">
-    <value>Web adresa</value>
+    <value>Web</value>
   </data>
   <data name="OwnerResponsibleFirstName" xml:space="preserve">
-    <value>Kontaktná osoba - Meno</value>
+    <value>Meno</value>
   </data>
   <data name="OwnerResponsiblelastName" xml:space="preserve">
-    <value>Kontaktná osob - Priezvisko</value>
+    <value>Priezvisko</value>
   </data>
   <data name="Password" xml:space="preserve">
     <value>Heslo</value>

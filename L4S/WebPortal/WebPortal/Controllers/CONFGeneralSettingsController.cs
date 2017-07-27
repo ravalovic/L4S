@@ -21,21 +21,6 @@ namespace WebPortal.Controllers
             return View(db.CONFGeneralSettings.Where(p => p.TCActive != 99).ToList());
         }
 
-        // GET: CONFGeneralSettings/Details/5
-        public ActionResult Details(int? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            CONFGeneralSettings cONFGeneralSettings = db.CONFGeneralSettings.Find(id);
-            if (cONFGeneralSettings == null)
-            {
-                return HttpNotFound();
-            }
-            return View(cONFGeneralSettings);
-        }
-
         // GET: CONFGeneralSettings/Create
         public ActionResult Create()
         {

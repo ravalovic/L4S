@@ -754,7 +754,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Meno spoločnosti.
+        ///   Looks up a localized string similar to Spoločnosť.
         /// </summary>
         public static string OwnerCompanyName {
             get {
@@ -790,7 +790,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Kontaktný email.
+        ///   Looks up a localized string similar to Email.
         /// </summary>
         public static string OwnerContactEmail {
             get {
@@ -799,7 +799,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Kontaktné mobilné číslo.
+        ///   Looks up a localized string similar to Mobil.
         /// </summary>
         public static string OwnerContactMobile {
             get {
@@ -808,7 +808,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Kontaktný telefón.
+        ///   Looks up a localized string similar to Telefón.
         /// </summary>
         public static string OwnerContactPhone {
             get {
@@ -817,7 +817,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Web adresa.
+        ///   Looks up a localized string similar to Web.
         /// </summary>
         public static string OwnerContactWeb {
             get {
@@ -826,7 +826,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Kontaktná osoba - Meno.
+        ///   Looks up a localized string similar to Meno.
         /// </summary>
         public static string OwnerResponsibleFirstName {
             get {
@@ -835,7 +835,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Kontaktná osob - Priezvisko.
+        ///   Looks up a localized string similar to Priezvisko.
         /// </summary>
         public static string OwnerResponsiblelastName {
             get {

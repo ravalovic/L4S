@@ -15,27 +15,6 @@ namespace WebPortal.Controllers
     {
         private L4SDb db = new L4SDb();
 
-        // GET: CATOwnerDatas
-        //public ActionResult Index()
-        //{
-        //    return View(db.CATOwnerData.ToList());
-        //}
-
-        //// GET: CATOwnerDatas/Details/5
-        //public ActionResult Details(int? id)
-        //{
-        //    if (id == null)
-        //    {
-        //        return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-        //    }
-        //    CATOwnerData cATOwnerData = db.CATOwnerData.Find(id);
-        //    if (cATOwnerData == null)
-        //    {
-        //        return HttpNotFound();
-        //    }
-        //    return View(cATOwnerData);
-        //}
-
         // GET: CATOwnerDatas/Create
         public ActionResult Create()
         {
@@ -97,34 +76,6 @@ namespace WebPortal.Controllers
             }
             return View(cATOwnerData);
         }
-
-        //// GET: CATOwnerDatas/Delete/5
-        //public ActionResult Delete()
-        //{
-           
-        //    CATOwnerData cATOwnerData = db.CATOwnerData.FirstOrDefault();
-        //    if (cATOwnerData == null)
-        //    {
-        //        return HttpNotFound();
-        //    }
-        //    return View(cATOwnerData);
-        //}
-
-        //// POST: CATOwnerDatas/Delete/5
-        //[HttpPost, ActionName("Delete")]
-        //[ValidateAntiForgeryToken]
-        //public ActionResult DeleteConfirmed()
-        //{
-        //    CATOwnerData cATOwnerData = db.CATOwnerData.FirstOrDefault();
-        //    if (cATOwnerData != null)
-        //    { 
-        //     db.CATOwnerData.Remove(cATOwnerData);
-        //        db.SaveChanges();
-        //    }
-            
-        //    return RedirectToAction("Create");
-        //}
-
         protected override void Dispose(bool disposing)
         {
             if (disposing)

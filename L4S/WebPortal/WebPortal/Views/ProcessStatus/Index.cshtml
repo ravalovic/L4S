@@ -1,4 +1,6 @@
-﻿@model IEnumerable<WebPortal.CATProcessStatus>
+﻿@model PagedList.IPagedList<WebPortal.CATProcessStatus>
+@using PagedList.Mvc;
+<link href="~/Content/PagedList.css" rel="stylesheet" type="text/css" />
 
 @{
     ViewBag.Title = "Index";
@@ -28,33 +30,32 @@
         <div class="panel-body">
             <table class="table table-striped table-bordered table-hover table-condensed">
                 <tr>
-                    <th>
-                        @Html.DisplayNameFor(model => model.StepName)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.BatchID)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.BatchRecordNum)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.NumberOfService)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.NumberOfCustomer)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.NumberOfUnknownService)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.NumberOfPreprocessDelete)
-                    </th>
-                   <th>
-                        @Html.DisplayNameFor(model => model.TCInsertTime)
-                    </th>
-                    <th></th>
-                </tr>
-
+                        <th>
+                            @Html.DisplayNameFor(m => m.FirstOrDefault().StepName)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(m => m.FirstOrDefault().BatchID)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(m => m.FirstOrDefault().BatchRecordNum)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(m => m.FirstOrDefault().NumberOfService)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(m => m.FirstOrDefault().NumberOfCustomer)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(m => m.FirstOrDefault().NumberOfUnknownService)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(m => m.FirstOrDefault().NumberOfPreprocessDelete)
+                         </th>
+                        <th>
+                            @Html.DisplayNameFor(m => m.FirstOrDefault().TCInsertTime)
+                        </th>
+                    </tr>
+                
                 @foreach (var item in Model)
                 {
                     <tr>
@@ -82,17 +83,16 @@
                         <td>
                             @Html.DisplayFor(modelItem => item.TCInsertTime)
                         </td>
-                        @*<td>
-                            @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
-                            @Html.ActionLink("Details", "Details", new { id=item.Id }) |
-                            @Html.ActionLink("Delete", "Delete", new { id = item.Id })
-                        </td>*@
                     </tr>
                 }
 
             </table>
         </div>
     </div>
+    <br />
+    Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
+    @Html.PagedListPager(Model, page => Url.Action("Index", new { page}))
+
 </div>
 @section Scripts {   
     @Scripts.Render("~/bundles/jqueryui")   

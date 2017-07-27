@@ -8,17 +8,22 @@ using System.Web;
 using System.Web.Mvc;
 using WebPortal;
 using WebPortal.DataContexts;
+using PagedList;
 
 namespace WebPortal.Controllers
 {
+   
     public class ProcessStatusController : Controller
     {
         private L4SDb db = new L4SDb();
 
         // GET: ProcessStatus
-        public ActionResult Index()
+        public ActionResult Index(int? page)
         {
-            return View(db.CATProcessStatus.ToList());
+            int pageSize = 20;
+            int pageNumber = (page ?? 1);
+            List<CATProcessStatus> cATProcessStatus = db.CATProcessStatus.ToList();
+            return View(cATProcessStatus.ToPagedList(pageNumber: pageNumber, pageSize: pageSize));
         }
 
         // GET: ProcessStatus/Details/5
@@ -36,8 +41,10 @@ namespace WebPortal.Controllers
             return View(cATProcessStatus);
         }
 
-        public ActionResult Search(string insertDateFrom, string insertDateTo)
+        public ActionResult Search(int? page, string insertDateFrom, string insertDateTo)
         {
+            int pageSize = 20;
+            int pageNumber = (page ?? 1);
             DateTime fromDate;
             DateTime toDate;
             DateTime.TryParse(insertDateFrom, out fromDate);
@@ -45,12 +52,12 @@ namespace WebPortal.Controllers
             {
                 toDate=DateTime.Now;
             }
-            List<CATProcessStatus> model = db.CATProcessStatus.Where(p => p.TCInsertTime >= fromDate && p.TCInsertTime <= toDate).ToList();
-            if (model.Count == 0)
+            List<CATProcessStatus> cATProcessStatus = db.CATProcessStatus.Where(p => p.TCInsertTime >= fromDate && p.TCInsertTime <= toDate).ToList();
+            if (cATProcessStatus.Count == 0)
                 {
-                    model = db.CATProcessStatus.ToList();
+                    cATProcessStatus = db.CATProcessStatus.ToList();
                 }
-              return View("Index", model);
+              return View("Index", cATProcessStatus.ToPagedList(pageNumber: pageNumber, pageSize: pageSize));
         
         }
 
