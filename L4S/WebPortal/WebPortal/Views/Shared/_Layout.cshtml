@@ -6,9 +6,10 @@
     <title>@ViewBag.Title - My ASP.NET Application</title>
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
-    
+  
+    @* pre calendare, odstranene lebo nefunguje Menu rozbalenie/zbalenie
     @Scripts.Render("~/bundles/jquery")
-    @Scripts.Render("~/bundles/bootstrap")
+     @Scripts.Render("~/bundles/bootstrap")*@
 </head>
 <body>
     <div class="navbar navbar-inverse navbar-fixed-top">
@@ -123,6 +124,12 @@
         </div>
     </div>
 
+    <div class="modal fade" id="modal-medium" data-backdrop="static" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-md">
+            <div class="modal-content">
+            </div>
+        </div>
+    </div>
 
     <script type="text/javascript">
 
@@ -130,7 +137,7 @@
     //modal window
     $(function () {
 
-        // Initialize modal dialog
+        // Initialize modal Small  dialog
         // attach modal-container bootstrap attributes to links with .modal-link class.
         // when a link is clicked with these attributes, bootstrap will display the href content in a modal dialog.
         $('body').on('click', '.modal-link-small', function (e) {
@@ -150,6 +157,27 @@
         $('#CancelModal').on('click', function () {
             return false;
         });
+
+
+
+        // Initialize modal Medium dialog
+        // attach modal-container bootstrap attributes to links with .modal-link class.
+        // when a link is clicked with these attributes, bootstrap will display the href content in a modal dialog.
+        $('body').on('click', '.modal-link-medium', function (e) {
+            e.preventDefault();
+            $(this).attr('data-target', '#modal-medium');
+            $(this).attr('data-toggle', 'modal');
+        });
+
+        // Attach listener to .modal-close-btn's so that when the button is pressed the modal dialog disappears
+        $('body').on('click', '.modal-close-btn', function () {
+            $('#modal-medium').modal('hide');
+        });
+        //clear modal cache, so that new content can be loaded
+        $('#modal-medium').on('hidden.bs.modal', function () {
+            $(this).removeData('bs.modal');
+        });
+     
     });
 
     </script>
