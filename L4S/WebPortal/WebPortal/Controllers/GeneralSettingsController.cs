@@ -11,7 +11,7 @@ using WebPortal.DataContexts;
 
 namespace WebPortal.Controllers
 {
-    public class CONFGeneralSettingsController : Controller
+    public class GeneralSettingsController : Controller
     {
         private L4SDb db = new L4SDb();
 

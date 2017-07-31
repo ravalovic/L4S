@@ -504,4 +504,16 @@
   <data name="MonthlyDataTab" xml:space="preserve">
     <value>Mesačný sumár </value>
   </data>
+  <data name="DetailDataTab" xml:space="preserve">
+    <value>Detailný zoznam logov</value>
+  </data>
+  <data name="DailyLog_TableTitle" xml:space="preserve">
+    <value>Denný sumár údajov</value>
+  </data>
+  <data name="DeatilLog_TableTitle" xml:space="preserve">
+    <value>Detailný výpis</value>
+  </data>
+  <data name="MonthlyLog_TableTitle" xml:space="preserve">
+    <value>Mesačný sumár údajov</value>
+  </data>
 </root>

@@ -547,6 +547,33 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Denný sumár údajov.
+        /// </summary>
+        public static string DailyLog_TableTitle {
+            get {
+                return ResourceManager.GetString("DailyLog_TableTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Detailný výpis.
+        /// </summary>
+        public static string DeatilLog_TableTitle {
+            get {
+                return ResourceManager.GetString("DeatilLog_TableTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Detailný zoznam logov.
+        /// </summary>
+        public static string DetailDataTab {
+            get {
+                return ResourceManager.GetString("DetailDataTab", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Email.
         /// </summary>
         public static string Email {
@@ -750,6 +777,15 @@ namespace Resources {
         public static string MonthlyDataTab {
             get {
                 return ResourceManager.GetString("MonthlyDataTab", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Mesačný sumár údajov.
+        /// </summary>
+        public static string MonthlyLog_TableTitle {
+            get {
+                return ResourceManager.GetString("MonthlyLog_TableTitle", resourceCulture);
             }
         }
         

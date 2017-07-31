@@ -221,8 +221,9 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="Controllers\AccountController.cs" />
-    <Compile Include="Controllers\CATOwnerDatasController.cs" />
-    <Compile Include="Controllers\CONFGeneralSettingsController.cs" />
+    <Compile Include="Controllers\LogsOfServicesController.cs" />
+    <Compile Include="Controllers\OwnerDatasController.cs" />
+    <Compile Include="Controllers\GeneralSettingsController.cs" />
     <Compile Include="Controllers\CustomerController.cs" />
     <Compile Include="Controllers\FileDuplicityController.cs" />
     <Compile Include="Controllers\FileInfoController.cs" />
@@ -303,7 +304,7 @@
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
-    <Compile Include="Controllers\CATCustomerMonthlyDatasController.cs" />
+    <Compile Include="Controllers\CustomerMonthlyDatasController.cs" />
     <Compile Include="Models\CustomerViewModel.cs" />
     <Compile Include="Models\DeleteModel.cs" />
     <Compile Include="Models\IdentityModels.cs" />
@@ -316,7 +317,7 @@
       <DependentUpon>Labels.resx</DependentUpon>
     </Compile>
     <Compile Include="Startup.cs" />
-    <Compile Include="Controllers\CATCustomerDailyDatasController.cs" />
+    <Compile Include="Controllers\CustomerDailyDatasController.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\bootstrap-datetimepicker.css" />
@@ -500,30 +501,23 @@
     <Content Include="Views\Customer\_delete.cshtml" />
     <Content Include="Views\Customer\_CompanyDetails.cshtml" />
     <Content Include="Views\Customer\_IndividualDetails.cshtml" />
-    <Content Include="Views\CATOwnerDatas\Create.cshtml" />
-    <Content Include="Views\CATOwnerDatas\Edit.cshtml" />
+    <Content Include="Views\OwnerDatas\Create.cshtml" />
+    <Content Include="Views\OwnerDatas\Edit.cshtml" />
     <Content Include="Views\Customer\_CustomerIdentifiers.cshtml" />
-    <Content Include="Views\CONFGeneralSettings\Create.cshtml" />
-    <Content Include="Views\CONFGeneralSettings\Delete.cshtml" />
-    <Content Include="Views\CONFGeneralSettings\Edit.cshtml" />
-    <Content Include="Views\CONFGeneralSettings\Index.cshtml" />
+    <Content Include="Views\GeneralSettings\Create.cshtml" />
+    <Content Include="Views\GeneralSettings\Delete.cshtml" />
+    <Content Include="Views\GeneralSettings\Edit.cshtml" />
+    <Content Include="Views\GeneralSettings\Index.cshtml" />
     <Content Include="Views\Customer\Services.cshtml" />
     <Content Include="Views\Customer\_ServicesList.cshtml" />
     <Content Include="Views\Customer\_AddIdentifier.cshtml" />
     <Content Include="Views\Customer\_EditIdentifier.cshtml" />
     <Content Include="Views\Shared\_deleteModal.cshtml" />
-    <Content Include="Views\CATCustomerMonthlyDatas\Create.cshtml" />
-    <Content Include="Views\CATCustomerMonthlyDatas\Delete.cshtml" />
-    <Content Include="Views\CATCustomerMonthlyDatas\Details.cshtml" />
-    <Content Include="Views\CATCustomerMonthlyDatas\Edit.cshtml" />
-    <Content Include="Views\CATCustomerMonthlyDatas\CustomerMonthly.cshtml" />
-    <Content Include="Views\CATCustomerDailyDatas\Create.cshtml" />
-    <Content Include="Views\CATCustomerDailyDatas\Delete.cshtml" />
-    <Content Include="Views\CATCustomerDailyDatas\Details.cshtml" />
-    <Content Include="Views\CATCustomerDailyDatas\Edit.cshtml" />
-    <Content Include="Views\CATCustomerDailyDatas\CustomerDaily.cshtml" />
+    <Content Include="Views\CustomerMonthlyDatas\CustomerMonthly.cshtml" />
+    <Content Include="Views\CustomerDailyDatas\CustomerDaily.cshtml" />
     <Content Include="Views\Service\_Create.cshtml" />
     <Content Include="Views\Patterns\_Create.cshtml" />
+    <Content Include="Views\LogsOfServices\DetailData.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

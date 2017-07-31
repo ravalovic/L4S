@@ -11,7 +11,7 @@ using WebPortal.DataContexts;
 
 namespace WebPortal.Controllers
 {
-    public class CATOwnerDatasController : Controller
+    public class OwnerDatasController : Controller
     {
         private L4SDb db = new L4SDb();
 

@@ -100,6 +100,8 @@ BEGIN
 		if (@mydebug = 1 ) print 'Mark ' + cast(@rowcount as varchar) +'lines from [CATCustomerMonthlyData] as processed for Invoice ';
 		insert into [dbo].CATProcessStatus ([StepName], [BatchRecordNum])
 		values ('Create Invoices: MarkMonthlyRecods as processed',  @rowCount);
+
+		-- create summaryInvoice
 	END
 	ELSE
 	BEGIN
