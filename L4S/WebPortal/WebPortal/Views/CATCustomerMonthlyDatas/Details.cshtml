@@ -1,0 +1,90 @@
+﻿@model WebPortal.CATCustomerMonthlyData
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>CATCustomerMonthlyData</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.DateOfRequest)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.DateOfRequest)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.CustomerID)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.CustomerID)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ServiceID)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ServiceID)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.NumberOfRequest)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.NumberOfRequest)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ReceivedBytes)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ReceivedBytes)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.RequestedTime)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.RequestedTime)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.TCInsertTime)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.TCInsertTime)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.TCLastUpdate)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.TCLastUpdate)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.TCActive)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.TCActive)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.ID }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

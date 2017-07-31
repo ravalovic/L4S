@@ -14,7 +14,7 @@ select count(*)unknown  from CATUnknownService;
 --select  count(*), batchid from CATUnknownService group by batchid order by batchid;
 select * from CATCustomerDailyData;
 select * from CATCustomerMonthlyData;
-select * from catVRmService;
+
 
 /*
 delete  FROM [dbo].[STInputFileInfo];  
@@ -32,3 +32,4 @@ delete from CATCustomerDailyData;
 delete from CATChangeDetect;
 delete from CATBillingInfo;
 */
+ 
