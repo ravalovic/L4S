@@ -460,6 +460,7 @@
     <Content Include="Content\bootstrap\alerts.less" />
     <Content Include="Content\_bootstrap-datetimepicker.less" />
     <Content Include="Content\bootstrap-datetimepicker-build.less" />
+    <Content Include="Scripts\bootstrap-datetimepicker.sk.js" />
     <None Include="Scripts\jquery-3.1.1.intellisense.js" />
     <None Include="Resources\Images\logo-ugkk.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
