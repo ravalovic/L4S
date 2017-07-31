@@ -3,7 +3,11 @@
 @{
     ViewBag.Title = "Index";
 }
+<ul class="nav nav-tabs" role="tablist">
+    <li class="active">@Html.ActionLink(Resources.Labels.DailyDataTab, "CustomerDaily", "CATCustomerDailyDatas")</li>
+    <li>@Html.ActionLink(Resources.Labels.MonthlyDataTab, "CustomerMonthly", "CATCustomerMonthlyDatas")</li>
 
+</ul>
 <h2>Index</h2>
 
 <p>

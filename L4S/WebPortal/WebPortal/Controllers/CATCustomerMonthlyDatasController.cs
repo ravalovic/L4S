@@ -16,7 +16,7 @@ namespace WebPortal.Models
         private L4SDb db = new L4SDb();
 
         // GET: CATCustomerMonthlyDatas
-        public ActionResult Index()
+        public ActionResult CustomerMonthly()
         {
             return View(db.CATCustomerMonthlyData.ToList());
         }

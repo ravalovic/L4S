@@ -53,8 +53,9 @@ namespace WebPortal.DataContexts
         public DbSet<ARCHCustomerMonthlyData> ARCHCustomerMonthlyData { get; set; }
         public DbSet<ARCHLogsOfService> ARCHLogsOfService { get; set; }
         public DbSet<CATBillingInfo> CATBillingInfo { get; set; }
+        public DbSet<CATSummaryInvoice> CATSummaryInvoice { get; set; }
         public DbSet<CONFGeneralSettings> CONFGeneralSettings { get; set; }
-
+        
 
         public virtual DbSet<view_DetailFromDaily> view_DetailFromDaily { get; set; }
         public virtual DbSet<view_DetailFromMonthly> view_DetailFromMonthly { get; set; }

@@ -453,4 +453,10 @@
   <data name="UserList_TableTitle_" xml:space="preserve">
     <value>Používatelia</value>
   </data>
+  <data name="DailyDataTab" xml:space="preserve">
+    <value>Denný sumár </value>
+  </data>
+  <data name="MonthlyDataTab" xml:space="preserve">
+    <value>Mesačný sumár </value>
+  </data>
 </root>
