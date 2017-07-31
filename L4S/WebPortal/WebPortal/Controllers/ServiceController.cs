@@ -19,7 +19,7 @@ namespace WebPortal.Controllers
         // GET: CATServiceParameters
         public ActionResult Index()
         {
-            return View(db.CATServiceParameters.ToList());
+            return View(db.CATServiceParameters.Where(p=>p.TCActive!=99).ToList());
         }
 
         // GET: CATServiceParameters/Details/5

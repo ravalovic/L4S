@@ -6,7 +6,7 @@
     <h4><b>@Resources.Labels.Customer_IndividualCreateDialogTitle</b></h4>
 </div>
 
-@using (Html.BeginForm("Edit", "Customer"))
+@using (Html.BeginForm("Create", "Customer"))
 {
     @Html.AntiForgeryToken()
     @Html.HiddenFor(model => model.CustomerType)

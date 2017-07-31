@@ -22,11 +22,12 @@ namespace WebPortal.Controllers
             {
                 return View(db.CATServicePatterns.ToList());
             }
-            List<CATServicePatterns> cATServicePatterns = db.CATServicePatterns.Where(p=>p.FKServiceID==id).ToList() ;
+            List<CATServicePatterns> cATServicePatterns = db.CATServicePatterns.Where(p=>p.FKServiceID==id && p.TCActive!=99).ToList() ;
             if (cATServicePatterns == null)
             {
                 return HttpNotFound();
             }
+            ViewBag.FKServiceID = id.Value; //inportat Id for map FK to new if create 
             return View(cATServicePatterns);
         }
 
@@ -46,9 +47,14 @@ namespace WebPortal.Controllers
         }
 
         // GET: Patterns/Create
-        public ActionResult Create()
+        public ActionResult Create(int? id)
         {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
             CATServicePatterns model = new CATServicePatterns();
+            model.FKServiceID = id.Value;
             return PartialView("_Create", model);
         }
 
@@ -61,9 +67,13 @@ namespace WebPortal.Controllers
         {
             if (ModelState.IsValid)
             {
+                cATServicePatterns.TCActive = 0;
+                cATServicePatterns.TCInsertTime = DateTime.Now;
+                cATServicePatterns.TCLastUpdate = DateTime.Now;
+               
                 db.CATServicePatterns.Add(cATServicePatterns);
                 db.SaveChanges();
-                return RedirectToAction("Index");
+                return RedirectToAction("Index", new { id = cATServicePatterns.FKServiceID });
             }
 
             return View(cATServicePatterns);
@@ -95,7 +105,7 @@ namespace WebPortal.Controllers
             {
                 db.Entry(cATServicePatterns).State = EntityState.Modified;
                 db.SaveChanges();
-                return RedirectToAction("Index");
+                return RedirectToAction("Index", new { id = cATServicePatterns.FKServiceID });
             }
             return View(cATServicePatterns);
         }
@@ -137,7 +147,7 @@ namespace WebPortal.Controllers
             CATServicePatterns cATServicePatterns = db.CATServicePatterns.Find(id);
             cATServicePatterns.TCActive = 99;
             db.SaveChanges();
-            return RedirectToAction("Index");
+            return RedirectToAction("Index", new { id = cATServicePatterns.FKServiceID });
         }
 
         protected override void Dispose(bool disposing)
