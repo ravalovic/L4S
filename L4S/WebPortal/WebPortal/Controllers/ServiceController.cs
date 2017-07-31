@@ -8,6 +8,7 @@ using System.Web;
 using System.Web.Mvc;
 using WebPortal;
 using WebPortal.DataContexts;
+using WebPortal.Models;
 
 namespace WebPortal.Controllers
 {
@@ -39,7 +40,8 @@ namespace WebPortal.Controllers
         // GET: CATServiceParameters/Create
         public ActionResult Create()
         {
-            return View();
+            CATServiceParameters model = new CATServiceParameters();
+            return PartialView("_Create", model);
         }
 
         // POST: CATServiceParameters/Create
@@ -98,13 +100,27 @@ namespace WebPortal.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
+
             CATServiceParameters cATServiceParameters = db.CATServiceParameters.Find(id);
             if (cATServiceParameters == null)
             {
                 return HttpNotFound();
             }
-            // return View(cATServiceParameters);
-            return PartialView("_Delete", cATServiceParameters);
+
+            DeleteModel model = new DeleteModel(cATServiceParameters.PKServiceID, Resources.Labels.Service_PageTitle);
+            return PartialView("_deleteModal", model);
+
+            //if (id == null)
+            //{
+            //    return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            //}
+            //CATServiceParameters cATServiceParameters = db.CATServiceParameters.Find(id);
+            //if (cATServiceParameters == null)
+            //{
+            //    return HttpNotFound();
+            //}
+            //// return View(cATServiceParameters);
+            //return PartialView("_Delete", cATServiceParameters);
         }
 
         // POST: CATServiceParameters/Delete/5
@@ -112,8 +128,8 @@ namespace WebPortal.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            CATServiceParameters cATServiceParameters = db.CATServiceParameters.Find(id);
-            db.CATServiceParameters.Remove(cATServiceParameters);
+            CATServiceParameters cATServiceParameters = db.CATServiceParameters.Find(id);         
+            cATServiceParameters.TCActive = 99;
             db.SaveChanges();
             return RedirectToAction("Index");
         }

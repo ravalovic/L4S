@@ -453,4 +453,49 @@
   <data name="UserList_TableTitle_" xml:space="preserve">
     <value>Používatelia</value>
   </data>
+  <data name="CustomerIdentificators_Title" xml:space="preserve">
+    <value>Identifikátory</value>
+  </data>
+  <data name="Customer_IdentifierDescription" xml:space="preserve">
+    <value>Opis identifikátora</value>
+  </data>
+  <data name="Customer_IdentifierName" xml:space="preserve">
+    <value>Identifikátor</value>
+  </data>
+  <data name="Service_Discount" xml:space="preserve">
+    <value>Zľava (Pr: 0,9 = 10%)</value>
+  </data>
+  <data name="Service_Name" xml:space="preserve">
+    <value>Názov</value>
+  </data>
+  <data name="Service_Note" xml:space="preserve">
+    <value>Poznámka</value>
+  </data>
+  <data name="Service_Parameters" xml:space="preserve">
+    <value>Parametre servisu</value>
+  </data>
+  <data name="Service_Paterns" xml:space="preserve">
+    <value>Vzory</value>
+  </data>
+  <data name="Pattern_DatSelectMethod" xml:space="preserve">
+    <value>Metóda selekcie</value>
+  </data>
+  <data name="Pattern_Description" xml:space="preserve">
+    <value>Opis</value>
+  </data>
+  <data name="Pattern_Entity" xml:space="preserve">
+    <value>Entita</value>
+  </data>
+  <data name="Pattern_Explanation" xml:space="preserve">
+    <value>Explanation</value>
+  </data>
+  <data name="Pattern_Like" xml:space="preserve">
+    <value>Like</value>
+  </data>
+  <data name="Pattern_Regex" xml:space="preserve">
+    <value>Regex</value>
+  </data>
+  <data name="Customer_Delete" xml:space="preserve">
+    <value>Zákazníka</value>
+  </data>
 </root>

@@ -9,6 +9,7 @@ using System.Web.Mvc;
 using WebPortal;
 using WebPortal.DataContexts;
 using PagedList;
+using WebPortal.Models;
 
 namespace WebPortal.Controllers
 {
@@ -122,12 +123,26 @@ namespace WebPortal.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
+
             CATProcessStatus cATProcessStatus = db.CATProcessStatus.Find(id);
             if (cATProcessStatus == null)
             {
                 return HttpNotFound();
             }
-            return View(cATProcessStatus);
+
+            DeleteModel model = new DeleteModel(cATProcessStatus.Id, Resources.Labels.ProcessTab_Status);
+            return PartialView("_deleteModal", model);
+
+            //if (id == null)
+            //{
+            //    return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            //}
+            //CATProcessStatus cATProcessStatus = db.CATProcessStatus.Find(id);
+            //if (cATProcessStatus == null)
+            //{
+            //    return HttpNotFound();
+            //}
+            //return View(cATProcessStatus);
         }
 
         // POST: ProcessStatus/Delete/5
@@ -135,9 +150,9 @@ namespace WebPortal.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            CATProcessStatus cATProcessStatus = db.CATProcessStatus.Find(id);
-            db.CATProcessStatus.Remove(cATProcessStatus);
-            db.SaveChanges();
+            //CATProcessStatus cATProcessStatus = db.CATProcessStatus.Find(id);
+           // db.CATProcessStatus.Remove(cATProcessStatus);
+           // db.SaveChanges();
             return RedirectToAction("Index");
         }
 

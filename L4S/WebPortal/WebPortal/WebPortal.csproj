@@ -505,6 +505,8 @@
     <Content Include="Views\Customer\_AddIdentifier.cshtml" />
     <Content Include="Views\Customer\_EditIdentifier.cshtml" />
     <Content Include="Views\Shared\_deleteModal.cshtml" />
+    <Content Include="Views\Service\_Create.cshtml" />
+    <Content Include="Views\Patterns\_Create.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

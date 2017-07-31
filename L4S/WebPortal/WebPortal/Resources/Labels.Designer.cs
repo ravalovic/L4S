@@ -142,6 +142,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Nastavenia.
+        /// </summary>
+        public static string Btn_Settings {
+            get {
+                return ResourceManager.GetString("Btn_Settings", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Nastavenie parametrov systému.
         /// </summary>
         public static string Config_PageTitle {
@@ -156,15 +165,6 @@ namespace Resources {
         public static string Config_TableTitle {
             get {
                 return ResourceManager.GetString("Config_TableTitle", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Nastavenia.
-        /// </summary>
-        public static string Btn_Settings {
-            get {
-                return ResourceManager.GetString("Btn_Settings", resourceCulture);
             }
         }
         
@@ -349,6 +349,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Zákazníka.
+        /// </summary>
+        public static string Customer_Delete {
+            get {
+                return ResourceManager.GetString("Customer_Delete", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Naozaj chcete odstrániť tohto zákazníka?.
         /// </summary>
         public static string Customer_DeleteDialogSure {
@@ -363,6 +372,24 @@ namespace Resources {
         public static string Customer_DeleteDialogTitle {
             get {
                 return ResourceManager.GetString("Customer_DeleteDialogTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Opis identifikátora.
+        /// </summary>
+        public static string Customer_IdentifierDescription {
+            get {
+                return ResourceManager.GetString("Customer_IdentifierDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Identifikátor.
+        /// </summary>
+        public static string Customer_IdentifierName {
+            get {
+                return ResourceManager.GetString("Customer_IdentifierName", resourceCulture);
             }
         }
         
@@ -444,6 +471,15 @@ namespace Resources {
         public static string Customer_IndividualVATID {
             get {
                 return ResourceManager.GetString("Customer_IndividualVATID", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Identifikátory.
+        /// </summary>
+        public static string CustomerIdentificators_Title {
+            get {
+                return ResourceManager.GetString("CustomerIdentificators_Title", resourceCulture);
             }
         }
         
@@ -862,6 +898,60 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Metóda selekcie.
+        /// </summary>
+        public static string Pattern_DatSelectMethod {
+            get {
+                return ResourceManager.GetString("Pattern_DatSelectMethod", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Opis.
+        /// </summary>
+        public static string Pattern_Description {
+            get {
+                return ResourceManager.GetString("Pattern_Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Entita.
+        /// </summary>
+        public static string Pattern_Entity {
+            get {
+                return ResourceManager.GetString("Pattern_Entity", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Explanation.
+        /// </summary>
+        public static string Pattern_Explanation {
+            get {
+                return ResourceManager.GetString("Pattern_Explanation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Like.
+        /// </summary>
+        public static string Pattern_Like {
+            get {
+                return ResourceManager.GetString("Pattern_Like", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Regex.
+        /// </summary>
+        public static string Pattern_Regex {
+            get {
+                return ResourceManager.GetString("Pattern_Regex", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Stránka na správu vzorov - Patternov.
         /// </summary>
         public static string Patterns_PageSubtitle {
@@ -988,6 +1078,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Zľava (Pr: 0,9 = 10%).
+        /// </summary>
+        public static string Service_Discount {
+            get {
+                return ResourceManager.GetString("Service_Discount", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Čas zápisu.
         /// </summary>
         public static string Service_InsertTime {
@@ -1006,6 +1105,24 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Názov.
+        /// </summary>
+        public static string Service_Name {
+            get {
+                return ResourceManager.GetString("Service_Name", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Poznámka.
+        /// </summary>
+        public static string Service_Note {
+            get {
+                return ResourceManager.GetString("Service_Note", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Stránka na správu servisov.
         /// </summary>
         public static string Service_PageSubtitle {
@@ -1020,6 +1137,24 @@ namespace Resources {
         public static string Service_PageTitle {
             get {
                 return ResourceManager.GetString("Service_PageTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Parametre servisu.
+        /// </summary>
+        public static string Service_Parameters {
+            get {
+                return ResourceManager.GetString("Service_Parameters", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Vzory.
+        /// </summary>
+        public static string Service_Paterns {
+            get {
+                return ResourceManager.GetString("Service_Paterns", resourceCulture);
             }
         }
         

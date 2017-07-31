@@ -8,6 +8,7 @@ using System.Web;
 using System.Web.Mvc;
 using WebPortal;
 using WebPortal.DataContexts;
+using WebPortal.Models;
 
 namespace WebPortal.Controllers
 {
@@ -97,12 +98,26 @@ namespace WebPortal.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
+
             STInputFileDuplicity sTInputFileDuplicity = db.STInputFileDuplicity.Find(id);
             if (sTInputFileDuplicity == null)
             {
                 return HttpNotFound();
             }
-            return View(sTInputFileDuplicity);
+
+            DeleteModel model = new DeleteModel(sTInputFileDuplicity.ID, Resources.Labels.FileDuplicity_PageTitle);
+            return PartialView("_deleteModal", model);
+
+            //if (id == null)
+            //{
+            //    return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            //}
+            //STInputFileDuplicity sTInputFileDuplicity = db.STInputFileDuplicity.Find(id);
+            //if (sTInputFileDuplicity == null)
+            //{
+            //    return HttpNotFound();
+            //}
+            //return View(sTInputFileDuplicity);
         }
 
         // POST: FileDuplicity/Delete/5
@@ -111,7 +126,7 @@ namespace WebPortal.Controllers
         public ActionResult DeleteConfirmed(int id)
         {
             STInputFileDuplicity sTInputFileDuplicity = db.STInputFileDuplicity.Find(id);
-            db.STInputFileDuplicity.Remove(sTInputFileDuplicity);
+            sTInputFileDuplicity.TCActive = 99;
             db.SaveChanges();
             return RedirectToAction("Index");
         }

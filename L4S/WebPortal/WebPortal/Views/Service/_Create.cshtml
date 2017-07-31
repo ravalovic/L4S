@@ -1,25 +1,28 @@
-﻿@model CATServiceParameters
+﻿
+@model CATServiceParameters
+
+@{
+    ViewBag.Title = "Create";
+}
 
 <div class="modal-header">
     <button type="button" class="close" data-dismiss="modal">×</button>
-    <h4><b>@Resources.Labels.Btn_Edit</b></h4>
+    <h4><b>@Resources.Labels.Btn_Create</b></h4>
     <h4>@Resources.Labels.Service_Parameters</h4>
 </div>
 
+
 @using (Html.BeginForm())
 {
+    @Html.AntiForgeryToken()
+
     <div class="modal-body">
+
         <div class="row">
-
-            @Html.AntiForgeryToken()
-            <div class="form-horizontal">
-
+            <div class="form-horizontal">               
+               
                 @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-                @Html.HiddenFor(model => model.PKServiceID)
-                @Html.HiddenFor(model => model.TCActive)
-                @Html.HiddenFor(model => model.TCInsertTime)
-                @Html.HiddenFor(model => model.TCLastUpdate)
-
+               
 
                 <div class="form-group">
                     @Html.LabelFor(model => model.ServiceCode, htmlAttributes: new { @class = "control-label col-md-4" })
@@ -44,8 +47,8 @@
                         @Html.ValidationMessageFor(model => model.ServiceBasicPrice, "", new { @class = "text-danger" })
                     </div>
                 </div>
-
-                @*<div class="form-group">
+                @*
+                <div class="form-group">
                     @Html.LabelFor(model => model.TCInsertTime, htmlAttributes: new { @class = "control-label col-md-4" })
                     <div class="col-md-8">
                         @Html.EditorFor(model => model.TCInsertTime, new { htmlAttributes = new { @class = "form-control" } })
@@ -67,21 +70,25 @@
                         @Html.EditorFor(model => model.TCActive, new { htmlAttributes = new { @class = "form-control" } })
                         @Html.ValidationMessageFor(model => model.TCActive, "", new { @class = "text-danger" })
                     </div>
-                </div>*@
+                </div>
 
-            </div>
-        </div>
-
-
+                <div class="form-group">
+                    <div class="col-md-offset-2 col-md-8">
+                        <input type="submit" value="Create" class="btn btn-default" />
+                    </div>
+                </div> *@
+   
+            </div>       
+           
             <div class="modal-footer">
                 <button class="btn btn-danger" data-dismiss="modal" aria-hidden="true"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span> @Resources.Labels.Btn_Back</button>
-                <button type="submit" class="btn btn-primary"><span class="glyphicon glyphicon-floppy-disk" aria-hidden="true"></span> @Resources.Labels.Btn_Save</button>
-            </div>
-                   
-        </div>
-        }
-       
+                <button type="submit" class="btn btn-primary"><span class="glyphicon glyphicon-floppy-disk" aria-hidden="true"></span> @Resources.Labels.Btn_Create</button>
 
-        @section Scripts {
-            @Scripts.Render("~/bundles/jqueryval")
-        }
+            </div>
+            </div>
+        </div>
+    }
+
+            @section Scripts {
+                @Scripts.Render("~/bundles/jqueryval")
+            }

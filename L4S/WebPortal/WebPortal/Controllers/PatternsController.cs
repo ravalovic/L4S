@@ -7,6 +7,7 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using WebPortal.DataContexts;
+using WebPortal.Models;
 
 namespace WebPortal.Controllers
 {
@@ -47,7 +48,8 @@ namespace WebPortal.Controllers
         // GET: Patterns/Create
         public ActionResult Create()
         {
-            return View();
+            CATServicePatterns model = new CATServicePatterns();
+            return PartialView("_Create", model);
         }
 
         // POST: Patterns/Create
@@ -55,7 +57,7 @@ namespace WebPortal.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "PKServicePatternID,PatternLike,PatternRegExp,PatternDescription,FKServiceID,Entity,Explanation,DatSelectMethod,TCInsertTime,TCLastUpdate,TCActive")] CATServicePatterns cATServicePatterns)
+        public ActionResult Create(CATServicePatterns cATServicePatterns)
         {
             if (ModelState.IsValid)
             {
@@ -79,7 +81,7 @@ namespace WebPortal.Controllers
             {
                 return HttpNotFound();
             }
-            return View(cATServicePatterns);
+            return PartialView("_Edit",cATServicePatterns);
         }
 
         // POST: Patterns/Edit/5
@@ -101,16 +103,30 @@ namespace WebPortal.Controllers
         // GET: Patterns/Delete/5
         public ActionResult Delete(int? id)
         {
+
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
+
             CATServicePatterns cATServicePatterns = db.CATServicePatterns.Find(id);
             if (cATServicePatterns == null)
             {
                 return HttpNotFound();
             }
-            return View(cATServicePatterns);
+
+            DeleteModel model = new DeleteModel(cATServicePatterns.PKServicePatternID, Resources.Labels.Patterns_PageTitle);
+            return PartialView("_deleteModal", model);
+            //if (id == null)
+            //{
+            //    return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            //}
+            //CATServicePatterns cATServicePatterns = db.CATServicePatterns.Find(id);
+            //if (cATServicePatterns == null)
+            //{
+            //    return HttpNotFound();
+            //}
+            //return View(cATServicePatterns);
         }
 
         // POST: Patterns/Delete/5
@@ -119,7 +135,7 @@ namespace WebPortal.Controllers
         public ActionResult DeleteConfirmed(int id)
         {
             CATServicePatterns cATServicePatterns = db.CATServicePatterns.Find(id);
-            db.CATServicePatterns.Remove(cATServicePatterns);
+            cATServicePatterns.TCActive = 99;
             db.SaveChanges();
             return RedirectToAction("Index");
         }

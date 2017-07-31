@@ -218,12 +218,26 @@ namespace WebPortal.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
+
             CATCustomerData cATCustomerData = db.CATCustomerData.Find(id);
             if (cATCustomerData == null)
             {
                 return HttpNotFound();
             }
-            return PartialView("_Delete", cATCustomerData);
+
+            DeleteModel model = new DeleteModel(cATCustomerData.PKCustomerDataID, Resources.Labels.Customer_Delete);
+            return PartialView("_deleteModal", model);
+
+            //if (id == null)
+            //{
+            //    return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            //}
+            //CATCustomerData cATCustomerData = db.CATCustomerData.Find(id);
+            //if (cATCustomerData == null)
+            //{
+            //    return HttpNotFound();
+            //}
+            //return PartialView("_Delete", cATCustomerData);
         }
 
         // POST: Customer/Delete/5

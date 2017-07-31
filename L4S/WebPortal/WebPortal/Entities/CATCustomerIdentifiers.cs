@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Resources;
+using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -13,9 +14,11 @@ namespace WebPortal
 
         [Required]
         [StringLength(200)]
+        [Display(Name = "Customer_IdentifierName", ResourceType = typeof(Labels))]
         public string CustomerIdentifier { get; set; }
 
         [StringLength(50)]
+        [Display(Name = "Customer_IdentifierDescription", ResourceType = typeof(Labels))]
         public string CustomerIdentifierDescription { get; set; }
                
         public int FKCustomerID { get; set; }

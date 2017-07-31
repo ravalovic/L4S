@@ -100,8 +100,7 @@ namespace WebPortal.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            CONFGeneralSettings cONFGeneralSettings = db.CONFGeneralSettings.Find(id);
-            //db.CONFGeneralSettings.Remove(cONFGeneralSettings);
+            CONFGeneralSettings cONFGeneralSettings = db.CONFGeneralSettings.Find(id);            
             if (cONFGeneralSettings != null)
             {
                 cONFGeneralSettings.TCActive = 99;
