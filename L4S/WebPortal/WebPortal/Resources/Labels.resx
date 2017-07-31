@@ -498,4 +498,10 @@
   <data name="Customer_Delete" xml:space="preserve">
     <value>Zákazníka</value>
   </data>
+  <data name="DailyDataTab" xml:space="preserve">
+    <value>Denný sumár </value>
+  </data>
+  <data name="MonthlyDataTab" xml:space="preserve">
+    <value>Mesačný sumár </value>
+  </data>
 </root>

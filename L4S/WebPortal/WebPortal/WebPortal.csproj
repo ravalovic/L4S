@@ -235,6 +235,7 @@
     <Compile Include="Entities\ARCHCustomerDailyData.cs" />
     <Compile Include="Entities\ARCHCustomerMonthlyData.cs" />
     <Compile Include="Entities\ARCHLogsOfService.cs" />
+    <Compile Include="Entities\CATSummaryInvoice.cs" />
     <Compile Include="Entities\CATBillingInfo.cs" />
     <Compile Include="Entities\CATChangeDetect.cs" />
     <Compile Include="Entities\CATCustomerDailyData.cs" />
@@ -296,8 +297,13 @@
     <Compile Include="Migrations\201707260851277_Version09.Designer.cs">
       <DependentUpon>201707260851277_Version09.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201707311633200_Version10.cs" />
+    <Compile Include="Migrations\201707311633200_Version10.Designer.cs">
+      <DependentUpon>201707311633200_Version10.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
+    <Compile Include="Controllers\CATCustomerMonthlyDatasController.cs" />
     <Compile Include="Models\CustomerViewModel.cs" />
     <Compile Include="Models\DeleteModel.cs" />
     <Compile Include="Models\IdentityModels.cs" />
@@ -310,6 +316,7 @@
       <DependentUpon>Labels.resx</DependentUpon>
     </Compile>
     <Compile Include="Startup.cs" />
+    <Compile Include="Controllers\CATCustomerDailyDatasController.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\bootstrap-datetimepicker.css" />
@@ -505,6 +512,16 @@
     <Content Include="Views\Customer\_AddIdentifier.cshtml" />
     <Content Include="Views\Customer\_EditIdentifier.cshtml" />
     <Content Include="Views\Shared\_deleteModal.cshtml" />
+    <Content Include="Views\CATCustomerMonthlyDatas\Create.cshtml" />
+    <Content Include="Views\CATCustomerMonthlyDatas\Delete.cshtml" />
+    <Content Include="Views\CATCustomerMonthlyDatas\Details.cshtml" />
+    <Content Include="Views\CATCustomerMonthlyDatas\Edit.cshtml" />
+    <Content Include="Views\CATCustomerMonthlyDatas\CustomerMonthly.cshtml" />
+    <Content Include="Views\CATCustomerDailyDatas\Create.cshtml" />
+    <Content Include="Views\CATCustomerDailyDatas\Delete.cshtml" />
+    <Content Include="Views\CATCustomerDailyDatas\Details.cshtml" />
+    <Content Include="Views\CATCustomerDailyDatas\Edit.cshtml" />
+    <Content Include="Views\CATCustomerDailyDatas\CustomerDaily.cshtml" />
     <Content Include="Views\Service\_Create.cshtml" />
     <Content Include="Views\Patterns\_Create.cshtml" />
   </ItemGroup>
@@ -547,6 +564,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201707260851277_Version09.resx">
       <DependentUpon>201707260851277_Version09.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201707311633200_Version10.resx">
+      <DependentUpon>201707311633200_Version10.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Resources\Labels.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>

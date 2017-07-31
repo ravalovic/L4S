@@ -538,6 +538,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Denný sumár .
+        /// </summary>
+        public static string DailyDataTab {
+            get {
+                return ResourceManager.GetString("DailyDataTab", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Email.
         /// </summary>
         public static string Email {
@@ -732,6 +741,15 @@ namespace Resources {
         public static string Menu_Zakaznici {
             get {
                 return ResourceManager.GetString("Menu_Zakaznici", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Mesačný sumár .
+        /// </summary>
+        public static string MonthlyDataTab {
+            get {
+                return ResourceManager.GetString("MonthlyDataTab", resourceCulture);
             }
         }
         

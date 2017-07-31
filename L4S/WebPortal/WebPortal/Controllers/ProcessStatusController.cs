@@ -18,12 +18,17 @@ namespace WebPortal.Controllers
     {
         private L4SDb db = new L4SDb();
 
+        private const int pageSize = 30;
         // GET: ProcessStatus
         public ActionResult Index(int? page)
         {
-            int pageSize = 20;
             int pageNumber = (page ?? 1);
-            List<CATProcessStatus> cATProcessStatus = db.CATProcessStatus.ToList();
+            int toSkip = 0;
+            if (pageNumber != 1)
+            {
+                toSkip = pageSize * (pageNumber - 1);
+            }
+            List<CATProcessStatus> cATProcessStatus = db.CATProcessStatus.OrderByDescending(d => d.TCInsertTime).ToList();
             return View(cATProcessStatus.ToPagedList(pageNumber: pageNumber, pageSize: pageSize));
         }
 
@@ -44,8 +49,12 @@ namespace WebPortal.Controllers
 
         public ActionResult Search(int? page, string insertDateFrom, string insertDateTo)
         {
-            int pageSize = 20;
             int pageNumber = (page ?? 1);
+            int toSkip = 0;
+            if (pageNumber != 1)
+            {
+                toSkip = pageSize * (pageNumber - 1);
+            }
             DateTime fromDate;
             DateTime toDate;
             DateTime.TryParse(insertDateFrom, out fromDate);
@@ -53,7 +62,7 @@ namespace WebPortal.Controllers
             {
                 toDate=DateTime.Now;
             }
-            List<CATProcessStatus> cATProcessStatus = db.CATProcessStatus.Where(p => p.TCInsertTime >= fromDate && p.TCInsertTime <= toDate).ToList();
+            List<CATProcessStatus> cATProcessStatus = db.CATProcessStatus.Where(p => p.TCInsertTime >= fromDate && p.TCInsertTime <= toDate).OrderByDescending(d => d.TCInsertTime).ToList();
             if (cATProcessStatus.Count == 0)
                 {
                     cATProcessStatus = db.CATProcessStatus.ToList();

@@ -36,7 +36,7 @@ BEGIN
 		where  not exists (select e.CustomerID from CATCustomerMonthlyData e
 		                 where e.CustomerID = i.CustomerID
 						 and e.ServiceID = i.ServiceID
-						 and e.DateOfRequest = CONVERT(date, i.DateOfRequest))
+						 and e.DateOfRequest = DATEADD(month, DATEDIFF(month, 0,convert(date,i.DateofRequest)), 0))
 		and i.BatchID IN'+@myBatchList+'
 		and i.CustomerID is not null
 		and i.TCActive = 1
@@ -74,7 +74,7 @@ SET @myQuery = 'UPDATE  [dbo].[CATCustomerMonthlyData]
 							 where   exists (select e.CustomerID from CATCustomerMonthlyData e
 							 where e.CustomerID = i.CustomerID
 							 and e.ServiceID = i.ServiceID
-							 and e.DateOfRequest = CONVERT(date, i.DateOfRequest))
+							 and e.DateOfRequest = DATEADD(month, DATEDIFF(month, 0,convert(date,i.DateofRequest)), 0))
 							 and i.BatchID  IN'+@myBatchList+'
 							 and i.CustomerID is not null
 							 and i.TCActive = 1

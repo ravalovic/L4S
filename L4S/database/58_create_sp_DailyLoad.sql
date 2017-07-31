@@ -32,16 +32,16 @@ BEGIN
 -- Insert new 
 		SET @myQuery = 'INSERT INTO [dbo].[CATCustomerDailyData]
 		(DateOfRequest, [CustomerID], [ServiceID], [NumberOfRequest], [ReceivedBytes], [RequestedTime])   
-		select CONVERT(date, i.DateOfRequest), i.CustomerID, i.ServiceID, 
+		select dateadd(second, 0, dateadd(day, datediff(day, 0, i.DateOfRequest), 0)), i.CustomerID, i.ServiceID, 
 		       count(*), sum(convert(bigint,i.BytesSent)), sum(convert(decimal,i.RequestTime))  from CATLogsOfService i
 		where  not exists (select e.CustomerID from CATCustomerDailyData e
 		                 where e.CustomerID = i.CustomerID
 						 and e.ServiceID = i.ServiceID
-						 and e.DateOfRequest = CONVERT(date, i.DateOfRequest))
+						 and dateadd(second, 0, dateadd(day, datediff(day, 0, e.DateOfRequest), 0)) = dateadd(second, 0, dateadd(day, datediff(day, 0, i.DateOfRequest), 0)))
 		and i.BatchID IN'+@myBatchList+'
 		and i.CustomerID is not null
 		and i.TCActive = 0
-		group by CONVERT(date, i.DateOfRequest), i.CustomerID, i.ServiceID';
+		group by dateadd(second, 0, dateadd(day, datediff(day, 0, i.DateOfRequest), 0)), i.CustomerID, i.ServiceID';
 		EXEC(@myQuery);
 		SELECT @rowCount =  @@ROWCOUNT;
 		if (@mydebug = 1 ) print 'Insert Daily table record: '+cast(@rowCount as varchar);
@@ -54,7 +54,7 @@ BEGIN
 							WHERE  EXISTS (select e.CustomerID FROM CATCustomerDailyData e
 								   WHERE e.CustomerID = [CATLogsOfService].CustomerID
 									AND e.ServiceID = [CATLogsOfService].ServiceID
-									AND e.DateOfRequest = CONVERT(date, [CATLogsOfService].DateOfRequest)) 
+									AND e.DateOfRequest = dateadd(second, 0, dateadd(day, datediff(day, 0, [CATLogsOfService].DateOfRequest), 0))) 
 							AND	BatchID IN'+@myBatchList+'
 							AND CustomerID is not null AND TCActive = 0'
 			EXEC(@myQuery);
@@ -70,16 +70,16 @@ SET @myQuery = 'UPDATE  [dbo].[CATCustomerDailyData]
 						    ,[ReceivedBytes] = CATCustomerDailyData.ReceivedBytes + u.[ReceivedBytes]
 						    ,[RequestedTime] = CATCustomerDailyData.RequestedTime + u.[RequestedTime]
 							,TCLastUpdate = getdate()
-						FROM (select CONVERT(date, i.DateOfRequest) DateOfRequest, i.CustomerID, i.ServiceID, 
+						FROM (select dateadd(second, 0, dateadd(day, datediff(day, 0, i.DateOfRequest), 0)) DateOfRequest, i.CustomerID, i.ServiceID, 
 							 count(*) [NumberOfRequest] , sum(convert(bigint,i.BytesSent)) [ReceivedBytes], sum(convert(decimal,i.RequestTime)) [RequestedTime]  from CATLogsOfService i
 							 where   exists (select e.CustomerID from CATCustomerDailyData e
 							 where e.CustomerID = i.CustomerID
 							 and e.ServiceID = i.ServiceID
-							 and e.DateOfRequest = CONVERT(date, i.DateOfRequest))
+							 and e.DateOfRequest = dateadd(second, 0, dateadd(day, datediff(day, 0, i.DateOfRequest), 0)))
 							 and i.BatchID  IN'+@myBatchList+'
 							 and i.CustomerID is not null
 							 and i.TCActive = 0
-							 group by CONVERT(date, i.DateOfRequest), i.CustomerID, i.ServiceID) u 
+							 group by dateadd(second, 0, dateadd(day, datediff(day, 0, i.DateOfRequest), 0)), i.CustomerID, i.ServiceID) u 
 						WHERE 
 						     u.DateOfRequest = CATCustomerDailyData.DateOfRequest
 						 and u.[CustomerID]  = CATCustomerDailyData.CustomerID
@@ -96,7 +96,7 @@ SET @myQuery = 'UPDATE  [dbo].[CATCustomerDailyData]
 											WHERE  EXISTS (select e.CustomerID FROM CATCustomerDailyData e
 															 WHERE e.CustomerID = [CATLogsOfService].CustomerID
 																AND e.ServiceID = [CATLogsOfService].ServiceID
-																AND e.DateOfRequest = CONVERT(date, [CATLogsOfService].DateOfRequest)) 
+																AND e.DateOfRequest = dateadd(second, 0, dateadd(day, datediff(day, 0, [CATLogsOfService].DateOfRequest), 0))) 
 											AND	BatchID IN'+@myBatchList+'
 											AND CustomerID is not null AND TCActive = 0'
 							EXEC(@myQuery);
