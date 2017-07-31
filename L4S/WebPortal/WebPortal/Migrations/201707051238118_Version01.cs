@@ -214,7 +214,7 @@ namespace WebPortal.Migrations
                         OwnerCompanyID = c.String(maxLength: 100),
                         OwnerCompanyTAXID = c.String(maxLength: 100),
                         OwnerCompanyVATID = c.String(maxLength: 100),
-                        OwnerBankAccountIban = c.String(maxLength: 20),
+                        OwnerBankAccountIban = c.String(maxLength: 50),
                         OwnerAddressStreet = c.String(maxLength: 100),
                         OwnerAddressBuildingNumber = c.String(maxLength: 100),
                         OwnerAddressCity = c.String(maxLength: 100),
