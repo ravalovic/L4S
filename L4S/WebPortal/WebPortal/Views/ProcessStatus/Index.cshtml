@@ -22,6 +22,12 @@
         <div class="panel-heading clearfix">
             <h4 class="panel-title pull-left"><strong>@Resources.Labels.Process_TableTitle</strong></h4>
             <br />
+            <div class="form-group">
+                <!-- Date input -->
+                <label class="control-label" for="date">Date</label>
+                <input class="form-control" id="date" name="date" placeholder="MM/DD/YYY" type="text" />
+            </div>
+
             <div class="input-group">
                 Od: <input style="color: black" type="text" name="dtFrom" id="datepickerFrom" class="datefield" />
                 Do: <input style="color: black" type="text" name="dtTo" id="datepickerTo" class="datefield" />
@@ -110,6 +116,7 @@
     @Html.PagedListPager(Model, page => Url.Action("Index", new { page}))
 
 </div>
+
 @section Scripts {   
     @Scripts.Render("~/bundles/jqueryui")   
     @*@Styles.Render("~/Content/cssjqryUi")*@   
@@ -122,6 +129,16 @@
                 changeYear: true,   
                 yearRange: "-60:+0"   
             });   
+
+            var date_input = $('input[name="date"]'); //our date input has the name "date"
+            var container = $('.bootstrap-iso form').length > 0 ? $('.bootstrap-iso form').parent() : "body";
+            var options = {
+                format: 'mm/dd/yyyy',
+                container: container,
+                todayHighlight: true,
+                autoclose: true,
+            };
+            date_input.datepicker(options);
         });   
     </script>   
 }

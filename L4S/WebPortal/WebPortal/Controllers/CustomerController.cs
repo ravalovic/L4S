@@ -168,6 +168,9 @@ namespace WebPortal.Controllers
         {
             if (ModelState.IsValid)
             {
+                cATCustomerData.TCActive = 0;
+                cATCustomerData.TCInsertTime = DateTime.Now;
+                cATCustomerData.TCLastUpdate = DateTime.Now;
                 db.CATCustomerData.Add(cATCustomerData);
                 db.SaveChanges();
             }

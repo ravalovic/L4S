@@ -8,6 +8,7 @@ using System.Web;
 using System.Web.Mvc;
 using WebPortal;
 using WebPortal.DataContexts;
+using WebPortal.Models;
 
 namespace WebPortal.Controllers
 {
@@ -87,12 +88,26 @@ namespace WebPortal.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
+
             CONFGeneralSettings cONFGeneralSettings = db.CONFGeneralSettings.Find(id);
             if (cONFGeneralSettings == null)
             {
                 return HttpNotFound();
             }
-            return View(cONFGeneralSettings);
+
+            DeleteModel model = new DeleteModel(cONFGeneralSettings.ID, Resources.Labels.Menu_GeneralSetup);
+            return PartialView("_deleteModal", model);
+
+            //if (id == null)
+            //{
+            //    return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            //}
+            //CONFGeneralSettings cONFGeneralSettings = db.CONFGeneralSettings.Find(id);
+            //if (cONFGeneralSettings == null)
+            //{
+            //    return HttpNotFound();
+            //}
+            //return View(cONFGeneralSettings);
         }
 
         // POST: CONFGeneralSettings/Delete/5
