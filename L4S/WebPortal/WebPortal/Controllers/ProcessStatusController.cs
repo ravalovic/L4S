@@ -32,21 +32,6 @@ namespace WebPortal.Controllers
             return View(cATProcessStatus.ToPagedList(pageNumber: pageNumber, pageSize: pageSize));
         }
 
-        // GET: ProcessStatus/Details/5
-        public ActionResult Details(int? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            CATProcessStatus cATProcessStatus = db.CATProcessStatus.Find(id);
-            if (cATProcessStatus == null)
-            {
-                return HttpNotFound();
-            }
-            return View(cATProcessStatus);
-        }
-
         public ActionResult Search(int? page, string insertDateFrom, string insertDateTo)
         {
             int pageNumber = (page ?? 1);
@@ -71,101 +56,7 @@ namespace WebPortal.Controllers
         
         }
 
-        // GET: ProcessStatus/Create
-        public ActionResult Create()
-        {
-            return View();
-        }
-
-        // POST: ProcessStatus/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,StepName,BatchID,BatchRecordNum,NumberOfService,NumberOfCustomer,NumberOfUnknownService,NumberOfPreprocessDelete,TCInsertTime")] CATProcessStatus cATProcessStatus)
-        {
-            if (ModelState.IsValid)
-            {
-                db.CATProcessStatus.Add(cATProcessStatus);
-                db.SaveChanges();
-                return RedirectToAction("Index");
-            }
-
-            return View(cATProcessStatus);
-        }
-
-        // GET: ProcessStatus/Edit/5
-        public ActionResult Edit(int? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            CATProcessStatus cATProcessStatus = db.CATProcessStatus.Find(id);
-            if (cATProcessStatus == null)
-            {
-                return HttpNotFound();
-            }
-            return View(cATProcessStatus);
-        }
-
-        // POST: ProcessStatus/Edit/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,StepName,BatchID,BatchRecordNum,NumberOfService,NumberOfCustomer,NumberOfUnknownService,NumberOfPreprocessDelete,TCInsertTime")] CATProcessStatus cATProcessStatus)
-        {
-            if (ModelState.IsValid)
-            {
-                db.Entry(cATProcessStatus).State = EntityState.Modified;
-                db.SaveChanges();
-                return RedirectToAction("Index");
-            }
-            return View(cATProcessStatus);
-        }
-
-        // GET: ProcessStatus/Delete/5
-        public ActionResult Delete(int? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-
-            CATProcessStatus cATProcessStatus = db.CATProcessStatus.Find(id);
-            if (cATProcessStatus == null)
-            {
-                return HttpNotFound();
-            }
-
-            DeleteModel model = new DeleteModel(cATProcessStatus.Id, Resources.Labels.ProcessTab_Status);
-            return PartialView("_deleteModal", model);
-
-            //if (id == null)
-            //{
-            //    return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            //}
-            //CATProcessStatus cATProcessStatus = db.CATProcessStatus.Find(id);
-            //if (cATProcessStatus == null)
-            //{
-            //    return HttpNotFound();
-            //}
-            //return View(cATProcessStatus);
-        }
-
-        // POST: ProcessStatus/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public ActionResult DeleteConfirmed(int id)
-        {
-            //CATProcessStatus cATProcessStatus = db.CATProcessStatus.Find(id);
-           // db.CATProcessStatus.Remove(cATProcessStatus);
-           // db.SaveChanges();
-            return RedirectToAction("Index");
-        }
-
-        protected override void Dispose(bool disposing)
+    protected override void Dispose(bool disposing)
         {
             if (disposing)
             {

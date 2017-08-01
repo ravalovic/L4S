@@ -29,9 +29,11 @@ namespace WebPortal
         public DateTime InsertDateTime { get; set; }
 
         [Required]
+        [Display(Name = "File_BatchID", ResourceType = typeof(Labels))]
         public int LoaderBatchID { get; set; }
 
         [Required]
+        [Display(Name = "File_LoadedRecord", ResourceType = typeof(Labels))]
         public int LoadedRecord { get; set; }
 
         [StringLength(200)]

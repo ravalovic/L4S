@@ -583,6 +583,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Číslo Dávky.
+        /// </summary>
+        public static string File_BatchID {
+            get {
+                return ResourceManager.GetString("File_BatchID", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to CheckSum.
         /// </summary>
         public static string File_CheckSum {
@@ -597,6 +606,15 @@ namespace Resources {
         public static string File_CreationTime {
             get {
                 return ResourceManager.GetString("File_CreationTime", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Počet záznamov.
+        /// </summary>
+        public static string File_LoadedRecord {
+            get {
+                return ResourceManager.GetString("File_LoadedRecord", resourceCulture);
             }
         }
         

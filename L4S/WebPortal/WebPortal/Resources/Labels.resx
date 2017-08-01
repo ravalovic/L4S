@@ -516,4 +516,10 @@
   <data name="MonthlyLog_TableTitle" xml:space="preserve">
     <value>Mesačný sumár údajov</value>
   </data>
+  <data name="File_BatchID" xml:space="preserve">
+    <value>Číslo Dávky</value>
+  </data>
+  <data name="File_LoadedRecord" xml:space="preserve">
+    <value>Počet záznamov</value>
+  </data>
 </root>

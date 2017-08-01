@@ -9,87 +9,54 @@ using System.Web.Mvc;
 using WebPortal;
 using WebPortal.DataContexts;
 using WebPortal.Models;
+using PagedList;
 
 namespace WebPortal.Controllers
 {
     public class FileInfoController : Controller
     {
         private L4SDb db = new L4SDb();
+        private const int pageSize = 30;
 
         // GET: FileInfo
-        public ActionResult Index()
+        public ActionResult Index(int? page)
         {
-            return View(db.STInputFileInfo.ToList());
+            int pageNumber = (page ?? 1);
+            int toSkip = 0;
+            if (pageNumber != 1)
+            {
+                toSkip = pageSize * (pageNumber - 1);
+            }
+            List<STInputFileInfo> stFile = db.STInputFileInfo.OrderByDescending(f => f.LoaderBatchID).ToList();
+            return View(stFile.ToPagedList(pageNumber: pageNumber, pageSize: pageSize));
         }
 
-        // GET: FileInfo/Details/5
-        public ActionResult Details(int? id)
+
+        public ActionResult Search(int? page, string insertDateFrom, string insertDateTo)
         {
-            if (id == null)
+            int pageNumber = (page ?? 1);
+            int toSkip = 0;
+            if (pageNumber != 1)
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                toSkip = pageSize * (pageNumber - 1);
             }
-            STInputFileInfo sTInputFileInfo = db.STInputFileInfo.Find(id);
-            if (sTInputFileInfo == null)
+            DateTime fromDate;
+            DateTime toDate;
+            DateTime.TryParse(insertDateFrom, out fromDate);
+            if (!DateTime.TryParse(insertDateTo, out toDate))
             {
-                return HttpNotFound();
+                toDate = DateTime.Now;
             }
-            return View(sTInputFileInfo);
+            List<STInputFileInfo> sTInputFileInfo = db.STInputFileInfo.Where(p => p.InsertDateTime >= fromDate && p.InsertDateTime <= toDate).OrderByDescending(f => f.LoaderBatchID).ToList();
+            if (sTInputFileInfo.Count == 0)
+            {
+                sTInputFileInfo = db.STInputFileInfo.OrderByDescending(f => f.LoaderBatchID).ToList();
+            }
+            return View("Index", sTInputFileInfo.ToPagedList(pageNumber: pageNumber, pageSize: pageSize));
+
         }
 
-        // GET: FileInfo/Create
-        public ActionResult Create()
-        {
-            return View();
-        }
-
-        // POST: FileInfo/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,FileName,Checksum,LinesInFile,InsertDateTime,LoaderBatchID,LoadedRecord,OriFileName,OriginalFileChecksum")] STInputFileInfo sTInputFileInfo)
-        {
-            if (ModelState.IsValid)
-            {
-                db.STInputFileInfo.Add(sTInputFileInfo);
-                db.SaveChanges();
-                return RedirectToAction("Index");
-            }
-
-            return View(sTInputFileInfo);
-        }
-
-        // GET: FileInfo/Edit/5
-        public ActionResult Edit(int? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            STInputFileInfo sTInputFileInfo = db.STInputFileInfo.Find(id);
-            if (sTInputFileInfo == null)
-            {
-                return HttpNotFound();
-            }
-            return View(sTInputFileInfo);
-        }
-
-        // POST: FileInfo/Edit/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,FileName,Checksum,LinesInFile,InsertDateTime,LoaderBatchID,LoadedRecord,OriFileName,OriginalFileChecksum")] STInputFileInfo sTInputFileInfo)
-        {
-            if (ModelState.IsValid)
-            {
-                db.Entry(sTInputFileInfo).State = EntityState.Modified;
-                db.SaveChanges();
-                return RedirectToAction("Index");
-            }
-            return View(sTInputFileInfo);
-        }
+        
 
         // GET: FileInfo/Delete/5
         public ActionResult Delete(int? id)

@@ -9,89 +9,52 @@ using System.Web.Mvc;
 using WebPortal;
 using WebPortal.DataContexts;
 using WebPortal.Models;
+using PagedList;
 
 namespace WebPortal.Controllers
 {
     public class FileDuplicityController : Controller
     {
         private L4SDb db = new L4SDb();
+        private const int pageSize = 30;
 
         // GET: FileDuplicity
-        public ActionResult Index()
+        public ActionResult Index(int? page)
         {
-            return View(db.STInputFileDuplicity.ToList());
+            int pageNumber = (page ?? 1);
+            int toSkip = 0;
+            if (pageNumber != 1)
+            {
+                toSkip = pageSize * (pageNumber - 1);
+            }
+            List<STInputFileDuplicity> sTInputFileDuplicity = db.STInputFileDuplicity.OrderByDescending(f => f.InsertDateTime).ToList();
+            return View(sTInputFileDuplicity.ToPagedList(pageNumber: pageNumber, pageSize: pageSize));
+        }
+        public ActionResult Search(int? page, string insertDateFrom, string insertDateTo)
+        {
+            int pageNumber = (page ?? 1);
+            int toSkip = 0;
+            if (pageNumber != 1)
+            {
+                toSkip = pageSize * (pageNumber - 1);
+            }
+            DateTime fromDate;
+            DateTime toDate;
+            DateTime.TryParse(insertDateFrom, out fromDate);
+            if (!DateTime.TryParse(insertDateTo, out toDate))
+            {
+                toDate = DateTime.Now;
+            }
+            List<STInputFileDuplicity> sTInputFileDuplicity = db.STInputFileDuplicity.Where(p => p.InsertDateTime >= fromDate && p.InsertDateTime <= toDate).OrderByDescending(f => f.InsertDateTime).ToList();
+            if (sTInputFileDuplicity.Count == 0)
+            {
+                sTInputFileDuplicity = db.STInputFileDuplicity.OrderByDescending(f => f.InsertDateTime).ToList();
+            }
+            return View("Index", sTInputFileDuplicity.ToPagedList(pageNumber: pageNumber, pageSize: pageSize));
+
         }
 
-        // GET: FileDuplicity/Details/5
-        public ActionResult Details(int? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            STInputFileDuplicity sTInputFileDuplicity = db.STInputFileDuplicity.Find(id);
-            if (sTInputFileDuplicity == null)
-            {
-                return HttpNotFound();
-            }
-            return View(sTInputFileDuplicity);
-        }
-
-        // GET: FileDuplicity/Create
-        public ActionResult Create()
-        {
-            return View();
-        }
-
-        // POST: FileDuplicity/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "ID,OriginalId,FileName,LinesInFile,Checksum,LoadDateTime,InsertDateTime,OriFileName,OriginalFileChecksum,LoaderBatchID")] STInputFileDuplicity sTInputFileDuplicity)
-        {
-            if (ModelState.IsValid)
-            {
-                db.STInputFileDuplicity.Add(sTInputFileDuplicity);
-                db.SaveChanges();
-                return RedirectToAction("Index");
-            }
-
-            return View(sTInputFileDuplicity);
-        }
-
-        // GET: FileDuplicity/Edit/5
-        public ActionResult Edit(int? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            STInputFileDuplicity sTInputFileDuplicity = db.STInputFileDuplicity.Find(id);
-            if (sTInputFileDuplicity == null)
-            {
-                return HttpNotFound();
-            }
-            return View(sTInputFileDuplicity);
-        }
-
-        // POST: FileDuplicity/Edit/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "ID,OriginalId,FileName,LinesInFile,Checksum,LoadDateTime,InsertDateTime,OriFileName,OriginalFileChecksum,LoaderBatchID")] STInputFileDuplicity sTInputFileDuplicity)
-        {
-            if (ModelState.IsValid)
-            {
-                db.Entry(sTInputFileDuplicity).State = EntityState.Modified;
-                db.SaveChanges();
-                return RedirectToAction("Index");
-            }
-            return View(sTInputFileDuplicity);
-        }
-
-        // GET: FileDuplicity/Delete/5
+       // GET: FileDuplicity/Delete/5
         public ActionResult Delete(int? id)
         {
             if (id == null)
