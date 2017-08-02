@@ -277,7 +277,7 @@
     <value>Duplicitné súbory</value>
   </data>
   <data name="FileInfo_PageSubtitle" xml:space="preserve">
-    <value>Opis stránky</value>
+    <value>Spracované súbory</value>
   </data>
   <data name="FileInfo_PageTitle" xml:space="preserve">
     <value>Vstupné súbory</value>
@@ -403,7 +403,7 @@
     <value>Stav procesov</value>
   </data>
   <data name="Process_PageSubtitle" xml:space="preserve">
-    <value>Opis stránky</value>
+    <value>Stav systémových procesov</value>
   </data>
   <data name="Process_PageTitle" xml:space="preserve">
     <value>Procesy</value>
@@ -481,7 +481,7 @@
     <value>Metóda selekcie</value>
   </data>
   <data name="Pattern_Description" xml:space="preserve">
-    <value>Opis</value>
+    <value>Vyhľadávacie pravidlá</value>
   </data>
   <data name="Pattern_Entity" xml:space="preserve">
     <value>Entita</value>
@@ -521,5 +521,26 @@
   </data>
   <data name="File_LoadedRecord" xml:space="preserve">
     <value>Počet záznamov</value>
+  </data>
+  <data name="Filter" xml:space="preserve">
+    <value>Vyhľadávanie</value>
+  </data>
+  <data name="GAP_DayOfProcess" xml:space="preserve">
+    <value>Deň spracovania</value>
+  </data>
+  <data name="GAP_FileName" xml:space="preserve">
+    <value>Meno stiahnutého súboru</value>
+  </data>
+  <data name="GAP_FileNumber" xml:space="preserve">
+    <value>Počet stiahnutých súborov</value>
+  </data>
+  <data name="GAP_PageTitle" xml:space="preserve">
+    <value>Zoznam prijatých súborov</value>
+  </data>
+  <data name="GAP_TCInsert" xml:space="preserve">
+    <value>Čas spracovania</value>
+  </data>
+  <data name="ProcessTap_GAP" xml:space="preserve">
+    <value>Prijaté súbory</value>
   </data>
 </root>

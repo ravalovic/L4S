@@ -5,6 +5,7 @@
 }
 
 <ul class="nav nav-tabs" role="tablist">
+    <li>@Html.ActionLink(Resources.Labels.ProcessTap_GAP, "Index", "GAPAnalyzes")</li>
     <li>@Html.ActionLink(Resources.Labels.ProcessTab_Status, "Index", "ProcessStatus")</li>
     <li class="active">@Html.ActionLink(Resources.Labels.ProcessTab_File, "Index", "FileInfo")</li>
     <li>@Html.ActionLink(Resources.Labels.ProcessTab_FileDuplicity, "Index", "FileDuplicity")</li>
@@ -12,13 +13,11 @@
 
 
 <h2>@Resources.Labels.FileInfo_PageTitle</h2>
-<p>@Resources.Labels.FileInfo_PageSubtitle</p>
-
 
 <div class="col-xs-12 col-sm-12 col-md-12">
     <div class="panel panel-primary">
         <div class="panel-heading clearfix">
-            <h4 class="panel-title pull-left"><strong>@Resources.Labels.FileInfo_TableTitle</strong></h4>
+            <h4 class="panel-title pull-left"><strong>@Resources.Labels.Filter</strong></h4>
             <br />
             <div class="form-group form-horizontal col-md-12">
                 <!-- Date input -->

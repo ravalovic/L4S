@@ -655,7 +655,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Opis stránky.
+        ///   Looks up a localized string similar to Spracované súbory.
         /// </summary>
         public static string FileInfo_PageSubtitle {
             get {
@@ -678,6 +678,60 @@ namespace Resources {
         public static string FileInfo_TableTitle {
             get {
                 return ResourceManager.GetString("FileInfo_TableTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Vyhľadávanie.
+        /// </summary>
+        public static string Filter {
+            get {
+                return ResourceManager.GetString("Filter", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Deň spracovania.
+        /// </summary>
+        public static string GAP_DayOfProcess {
+            get {
+                return ResourceManager.GetString("GAP_DayOfProcess", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Meno stiahnutého súboru.
+        /// </summary>
+        public static string GAP_FileName {
+            get {
+                return ResourceManager.GetString("GAP_FileName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Počet stiahnutých súborov.
+        /// </summary>
+        public static string GAP_FileNumber {
+            get {
+                return ResourceManager.GetString("GAP_FileNumber", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Zoznam prijatých súborov.
+        /// </summary>
+        public static string GAP_PageTitle {
+            get {
+                return ResourceManager.GetString("GAP_PageTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Čas spracovania.
+        /// </summary>
+        public static string GAP_TCInsert {
+            get {
+                return ResourceManager.GetString("GAP_TCInsert", resourceCulture);
             }
         }
         
@@ -979,7 +1033,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Opis.
+        ///   Looks up a localized string similar to Vyhľadávacie pravidlá.
         /// </summary>
         public static string Pattern_Description {
             get {
@@ -1051,7 +1105,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Opis stránky.
+        ///   Looks up a localized string similar to Stav systémových procesov.
         /// </summary>
         public static string Process_PageSubtitle {
             get {
@@ -1101,6 +1155,15 @@ namespace Resources {
         public static string ProcessTab_Status {
             get {
                 return ResourceManager.GetString("ProcessTab_Status", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Prijaté súbory.
+        /// </summary>
+        public static string ProcessTap_GAP {
+            get {
+                return ResourceManager.GetString("ProcessTap_GAP", resourceCulture);
             }
         }
         

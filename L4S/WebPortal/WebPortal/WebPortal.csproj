@@ -221,6 +221,7 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\GAPAnalyzesController.cs" />
     <Compile Include="Controllers\LogsOfServicesController.cs" />
     <Compile Include="Controllers\OwnerDatasController.cs" />
     <Compile Include="Controllers\GeneralSettingsController.cs" />
@@ -236,6 +237,7 @@
     <Compile Include="Entities\ARCHCustomerDailyData.cs" />
     <Compile Include="Entities\ARCHCustomerMonthlyData.cs" />
     <Compile Include="Entities\ARCHLogsOfService.cs" />
+    <Compile Include="Entities\GAPAnalyze.cs" />
     <Compile Include="Entities\CATSummaryInvoice.cs" />
     <Compile Include="Entities\CATBillingInfo.cs" />
     <Compile Include="Entities\CATChangeDetect.cs" />
@@ -301,6 +303,10 @@
     <Compile Include="Migrations\201707311633200_Version10.cs" />
     <Compile Include="Migrations\201707311633200_Version10.Designer.cs">
       <DependentUpon>201707311633200_Version10.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201708020742292_Version11.cs" />
+    <Compile Include="Migrations\201708020742292_Version11.Designer.cs">
+      <DependentUpon>201708020742292_Version11.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
@@ -597,6 +603,11 @@
     <Content Include="Views\Service\_Create.cshtml" />
     <Content Include="Views\Patterns\_Create.cshtml" />
     <Content Include="Views\LogsOfServices\DetailData.cshtml" />
+    <Content Include="Views\GAPAnalyzes\Create.cshtml" />
+    <Content Include="Views\GAPAnalyzes\Delete.cshtml" />
+    <Content Include="Views\GAPAnalyzes\Details.cshtml" />
+    <Content Include="Views\GAPAnalyzes\Edit.cshtml" />
+    <Content Include="Views\GAPAnalyzes\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -640,6 +651,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201707311633200_Version10.resx">
       <DependentUpon>201707311633200_Version10.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201708020742292_Version11.resx">
+      <DependentUpon>201708020742292_Version11.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Resources\Labels.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>

@@ -31,7 +31,7 @@ INSERT INTO [dbo].[CONFGeneralSettings]
            ,[ParamValue])
      VALUES
            ('ArchiveDetailDataMonth'
-           ,'6');
+           ,'-1');
 GO
 
 INSERT INTO [dbo].[CONFGeneralSettings]
@@ -68,4 +68,11 @@ INSERT INTO [dbo].[CONFGeneralSettings]
      VALUES
            ('LastInvoiceGenerate'
            ,'0');
+GO
+INSERT INTO [dbo].[CONFGeneralSettings]
+           ([ParamName]
+           ,[ParamValue])
+     VALUES
+           ('GAPAnalyzeDays'
+           ,'15');
 GO
