@@ -543,4 +543,22 @@
   <data name="ProcessTap_GAP" xml:space="preserve">
     <value>Prijaté súbory</value>
   </data>
+  <data name="Menu_InvoiceView" xml:space="preserve">
+    <value>Účtovný prehľad</value>
+  </data>
+  <data name="OwnerActive" xml:space="preserve">
+    <value>Aktívna</value>
+  </data>
+  <data name="Owner_CreatePageTitle" xml:space="preserve">
+    <value>Vytvorenie novej spoločnosti</value>
+  </data>
+  <data name="Owner_EditPageTitle" xml:space="preserve">
+    <value>Zmena fakturačných údajov</value>
+  </data>
+  <data name="Owner_IndexPageTitle" xml:space="preserve">
+    <value>Zoznam fakturačných spoločností</value>
+  </data>
+  <data name="Owner_IndexTableTitle" xml:space="preserve">
+    <value>Spoločnosti</value>
+  </data>
 </root>

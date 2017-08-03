@@ -1,0 +1,93 @@
+﻿@model IEnumerable<WebPortal.view_InvoiceByMonth>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.DateOfRequest)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.CustomerID)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ServiceID)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.NumberOfRequest)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ReceivedBytes)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.RequestedTime)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ServiceCode)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ServiceName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.BasicPriceWithoutVAT)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.VAT)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.BasicPriceWithVAT)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.DateOfRequest)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.CustomerID)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.ServiceID)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.NumberOfRequest)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.ReceivedBytes)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.RequestedTime)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.ServiceCode)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.ServiceName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.BasicPriceWithoutVAT)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.VAT)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.BasicPriceWithVAT)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.ID }) |
+            @Html.ActionLink("Details", "Details", new { id=item.ID }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.ID })
+        </td>
+    </tr>
+}
+
+</table>

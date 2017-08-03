@@ -34,37 +34,55 @@ select  @ArchivingDay = CONVERT(int, ParamValue) from [CONFGeneralSettings] wher
 select  @LastArchiveRUN = ParamValue from [CONFGeneralSettings] where Paramname='LastArchiveRUN';
 select  @ArchiveDetailDataMonth = CONVERT(int, ParamValue) from [CONFGeneralSettings] where Paramname='ArchiveDetailDataMonth';
 select  @ArchiveCumulativeDataMonth = CONVERT(int, ParamValue) from [CONFGeneralSettings] where Paramname='ArchiveCumulativeDataMonth';
+
 IF ( (DAY(getdate()) = @ArchivingDay) and (@LastArchiveRUN <> (CAST(FORMAT(YEAR(GETDATE()),'0000')AS VARCHAR) + CAST(FORMAT(MONTH(GETDATE()),'00') AS VARCHAR))))
 	BEGIN
-
-		INSERT INTO [dbo].[ARCHLogsOfService]
-		           ([BatchID],[RecordID],[CustomerID],[ServiceID],[UserID],[DateOfRequest],[RequestedURL],[RequestStatus],[BytesSent],[RequestTime],[UserAgent],[UserIPAddress])
-		SELECT [BatchID],[RecordID],[CustomerID],[ServiceID],[UserID],[DateOfRequest],[RequestedURL],[RequestStatus],[BytesSent],[RequestTime],[UserAgent],[UserIPAddress] 
-		FROM [dbo].[CATLogsOfService] WHERE DATEDIFF( MONTH, DateOfRequest, getdate()) > @ArchiveDetailDataMonth
+	    IF (@ArchiveDetailDataMonth != -1) 
+		BEGIN 
+			INSERT INTO [dbo].[ARCHLogsOfService]
+			           ([BatchID],[RecordID],[CustomerID],[ServiceID],[UserID],[DateOfRequest],[RequestedURL],[RequestStatus],[BytesSent],[RequestTime],[UserAgent],[UserIPAddress])
+			SELECT [BatchID],[RecordID],[CustomerID],[ServiceID],[UserID],[DateOfRequest],[RequestedURL],[RequestStatus],[BytesSent],[RequestTime],[UserAgent],[UserIPAddress] 
+			FROM [dbo].[CATLogsOfService] WHERE DATEDIFF( MONTH, DateOfRequest, getdate()) > @ArchiveDetailDataMonth
+			SET @rowCount = @@ROWCOUNT;
+			insert into [dbo].CATProcessStatus ([StepName], [BatchRecordNum])
+			values ('Insert to ArchiveLogsOfService',  @rowCount);
+		END
 		
 		DELETE FROM [dbo].[CATLogsOfService] WHERE DATEDIFF( MONTH, DateOfRequest, getdate()) > @ArchiveDetailDataMonth
 		SET @rowCount = @@ROWCOUNT;
 		insert into [dbo].CATProcessStatus ([StepName], [BatchRecordNum])
-		values ('ArchiveLogsOfService',  @rowCount);
+		values ('Delete from CATLogsOfService',  @rowCount);
 		
-		INSERT INTO [dbo].[ARCHCustomerDailyData]([DateOfRequest],[CustomerID],[ServiceID],[NumberOfRequest],[ReceivedBytes],[RequestedTime])
-		SELECT [DateOfRequest],[CustomerID],[ServiceID],[NumberOfRequest],[ReceivedBytes],[RequestedTime] 
-		FROM [dbo].[CATCustomerDailyData] WHERE DATEDIFF( MONTH, [DateOfRequest], getdate()) > @ArchiveCumulativeDataMonth and TCActive = 1
+		IF (@ArchiveCumulativeDataMonth != -1) 
+		BEGIN
+			INSERT INTO [dbo].[ARCHCustomerDailyData]([DateOfRequest],[CustomerID],[ServiceID],[NumberOfRequest],[ReceivedBytes],[RequestedTime])
+			SELECT [DateOfRequest],[CustomerID],[ServiceID],[NumberOfRequest],[ReceivedBytes],[RequestedTime] 
+			FROM [dbo].[CATCustomerDailyData] WHERE DATEDIFF( MONTH, [DateOfRequest], getdate()) > @ArchiveCumulativeDataMonth and TCActive = 1
+			SET @rowCount = @@ROWCOUNT;
+			insert into [dbo].CATProcessStatus ([StepName], [BatchRecordNum])
+			values ('Insert to ArchiveDailyData',  @rowCount);
+		END
 		
 		DELETE FROM [dbo].[CATCustomerDailyData] WHERE DATEDIFF( MONTH, [DateOfRequest], getdate()) > @ArchiveCumulativeDataMonth and TCActive = 1
 		SET @rowCount = @@ROWCOUNT;
 		insert into [dbo].CATProcessStatus ([StepName], [BatchRecordNum])
-		values ('ArchiveDailyData',  @rowCount);
+		values ('Delete from CATCustomerDailyData',  @rowCount);
 		
-		
-		INSERT INTO [dbo].[ARCHCustomerMonthlyData]([DateOfRequest],[CustomerID],[ServiceID],[NumberOfRequest],[ReceivedBytes],[RequestedTime])
-		SELECT [DateOfRequest],[CustomerID],[ServiceID],[NumberOfRequest],[ReceivedBytes],[RequestedTime] 
-		FROM [dbo].[CATCustomerMonthlyData] WHERE DATEDIFF( MONTH, [DateOfRequest], getdate()) > @ArchiveCumulativeDataMonth and TCActive = 1
+		IF(@ArchiveCumulativeDataMonth != -1)
+		BEGIN
+			INSERT INTO [dbo].[ARCHCustomerMonthlyData]([DateOfRequest],[CustomerID],[ServiceID],[NumberOfRequest],[ReceivedBytes],[RequestedTime])
+			SELECT [DateOfRequest],[CustomerID],[ServiceID],[NumberOfRequest],[ReceivedBytes],[RequestedTime] 
+			FROM [dbo].[CATCustomerMonthlyData] WHERE DATEDIFF( MONTH, [DateOfRequest], getdate()) > @ArchiveCumulativeDataMonth and TCActive = 1
+			SET @rowCount = @@ROWCOUNT;
+			insert into [dbo].CATProcessStatus ([StepName], [BatchRecordNum])
+			values ('Insert to ArchiveMonthlyData',  @rowCount);    
+		END
 		
 		DELETE FROM [dbo].[CATCustomerMonthlyData] WHERE DATEDIFF( MONTH, [DateOfRequest], getdate()) > @ArchiveCumulativeDataMonth and TCActive = 1
 		SET @rowCount = @@ROWCOUNT;
 		insert into [dbo].CATProcessStatus ([StepName], [BatchRecordNum])
-		values ('ArchiveMonthlyData',  @rowCount);    
+		values ('Delete from CATCustomerMonthlyData',  @rowCount);    
+
 	END
 	ELSE
 	BEGIN

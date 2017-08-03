@@ -19,8 +19,8 @@ namespace WebPortal
         public int ServiceID { get; set; }
 
         public long NumberOfRequest { get; set; }
-
-        public long ReceivedBytes { get; set; }
+        
+        public decimal ReceivedBytes { get; set; }
         public decimal RequestedTime { get; set; }
 
         [StringLength(50)]

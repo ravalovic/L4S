@@ -781,6 +781,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Účtovný prehľad.
+        /// </summary>
+        public static string Menu_InvoiceView {
+            get {
+                return ResourceManager.GetString("Menu_InvoiceView", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Nastavenia.
         /// </summary>
         public static string Menu_Nastavenia {
@@ -858,6 +867,51 @@ namespace Resources {
         public static string MonthlyLog_TableTitle {
             get {
                 return ResourceManager.GetString("MonthlyLog_TableTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Vytvorenie novej spoločnosti.
+        /// </summary>
+        public static string Owner_CreatePageTitle {
+            get {
+                return ResourceManager.GetString("Owner_CreatePageTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Zmena fakturačných údajov.
+        /// </summary>
+        public static string Owner_EditPageTitle {
+            get {
+                return ResourceManager.GetString("Owner_EditPageTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Zoznam fakturačných spoločností.
+        /// </summary>
+        public static string Owner_IndexPageTitle {
+            get {
+                return ResourceManager.GetString("Owner_IndexPageTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Spoločnosti.
+        /// </summary>
+        public static string Owner_IndexTableTitle {
+            get {
+                return ResourceManager.GetString("Owner_IndexTableTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Aktívna.
+        /// </summary>
+        public static string OwnerActive {
+            get {
+                return ResourceManager.GetString("OwnerActive", resourceCulture);
             }
         }
         
