@@ -14,7 +14,7 @@ GO
 
 
 create  view [dbo].[view_DetailFromMonthly] as
-select s.BatchID, s.RecordID, s.DateOfRequest, DATEADD(month, DATEDIFF(month, 0,convert(date,s.DateofRequest)), 0) Monthdate, s.CustomerID, s.ServiceID, s.BytesSent, s.RequestTime,s.RequestedURL, s.RequestStatus, s.UserIPAddress from CATLogsOfService s
+select s.BatchID, s.RecordID, s.DateOfRequest, DATEADD(month, DATEDIFF(month, 0,convert(date,s.DateofRequest)), 0) Monthdate, s.CustomerID, s.ServiceID, convert(decimal(18,5),s.BytesSent) as BytesSent,  convert(decimal(18,5),s.RequestTime) as RequestTime, s.RequestedURL, s.RequestStatus, s.UserIPAddress from CATLogsOfService s
 where exists( select d.CustomerID from CATCustomerMonthlyData d
                where s.CustomerID = d.CustomerID
 			   and s.ServiceID = d.ServiceID

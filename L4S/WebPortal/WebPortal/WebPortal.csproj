@@ -222,6 +222,7 @@
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\GAPAnalyzesController.cs" />
+    <Compile Include="Controllers\InvoiceByMonthController.cs" />
     <Compile Include="Controllers\LogsOfServicesController.cs" />
     <Compile Include="Controllers\OwnerDatasController.cs" />
     <Compile Include="Controllers\GeneralSettingsController.cs" />
@@ -257,7 +258,6 @@
     <Compile Include="Entities\STInputFileDuplicity.cs" />
     <Compile Include="Entities\STInputFileInfo.cs" />
     <Compile Include="Entities\STLogImport.cs" />
-    <Compile Include="Entities\view_DetailFromDaily.cs" />
     <Compile Include="Entities\view_DetailFromMonthly.cs" />
     <Compile Include="Entities\view_InvoiceByDay.cs" />
     <Compile Include="Entities\view_InvoiceByMonth.cs" />
@@ -307,6 +307,14 @@
     <Compile Include="Migrations\201708020742292_Version11.cs" />
     <Compile Include="Migrations\201708020742292_Version11.Designer.cs">
       <DependentUpon>201708020742292_Version11.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201708031139441_Version12.cs" />
+    <Compile Include="Migrations\201708031139441_Version12.Designer.cs">
+      <DependentUpon>201708031139441_Version12.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201708031249300_Version13.cs" />
+    <Compile Include="Migrations\201708031249300_Version13.Designer.cs">
+      <DependentUpon>201708031249300_Version13.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
@@ -556,20 +564,13 @@
     <Content Include="Views\Patterns\_Edit.cshtml" />
     <Content Include="Views\Service\_Edit.cshtml" />
     <Content Include="Views\Service\_Delete.cshtml" />
-    <Content Include="Views\FileInfo\Create.cshtml" />
     <Content Include="Views\FileInfo\Delete.cshtml" />
-    <Content Include="Views\FileInfo\Details.cshtml" />
-    <Content Include="Views\FileInfo\Edit.cshtml" />
     <Content Include="Views\FileInfo\Index.cshtml" />
     <Content Include="Views\FileDuplicity\Create.cshtml" />
     <Content Include="Views\FileDuplicity\Delete.cshtml" />
     <Content Include="Views\FileDuplicity\Details.cshtml" />
     <Content Include="Views\FileDuplicity\Edit.cshtml" />
     <Content Include="Views\FileDuplicity\Index.cshtml" />
-    <Content Include="Views\ProcessStatus\Create.cshtml" />
-    <Content Include="Views\ProcessStatus\Delete.cshtml" />
-    <Content Include="Views\ProcessStatus\Details.cshtml" />
-    <Content Include="Views\ProcessStatus\Edit.cshtml" />
     <Content Include="Views\ProcessStatus\Index.cshtml" />
     <Content Include="Views\Account\UserList.cshtml" />
     <Content Include="Views\Customer\Create.cshtml" />
@@ -603,11 +604,14 @@
     <Content Include="Views\Service\_Create.cshtml" />
     <Content Include="Views\Patterns\_Create.cshtml" />
     <Content Include="Views\LogsOfServices\DetailData.cshtml" />
-    <Content Include="Views\GAPAnalyzes\Create.cshtml" />
-    <Content Include="Views\GAPAnalyzes\Delete.cshtml" />
-    <Content Include="Views\GAPAnalyzes\Details.cshtml" />
-    <Content Include="Views\GAPAnalyzes\Edit.cshtml" />
     <Content Include="Views\GAPAnalyzes\Index.cshtml" />
+    <Content Include="Views\OwnerDatas\Delete.cshtml" />
+    <Content Include="Views\OwnerDatas\Index.cshtml" />
+    <Content Include="Views\InvoiceByMonth\Create.cshtml" />
+    <Content Include="Views\InvoiceByMonth\Delete.cshtml" />
+    <Content Include="Views\InvoiceByMonth\Details.cshtml" />
+    <Content Include="Views\InvoiceByMonth\Edit.cshtml" />
+    <Content Include="Views\InvoiceByMonth\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -654,6 +658,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201708020742292_Version11.resx">
       <DependentUpon>201708020742292_Version11.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201708031139441_Version12.resx">
+      <DependentUpon>201708031139441_Version12.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201708031249300_Version13.resx">
+      <DependentUpon>201708031249300_Version13.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Resources\Labels.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>

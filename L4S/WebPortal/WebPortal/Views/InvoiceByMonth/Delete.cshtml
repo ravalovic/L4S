@@ -1,0 +1,112 @@
+﻿@model WebPortal.view_InvoiceByMonth
+
+@{
+    ViewBag.Title = "Delete";
+}
+
+<h2>Delete</h2>
+
+<h3>Are you sure you want to delete this?</h3>
+<div>
+    <h4>view_InvoiceByMonth</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.DateOfRequest)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.DateOfRequest)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.CustomerID)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.CustomerID)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ServiceID)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ServiceID)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.NumberOfRequest)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.NumberOfRequest)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ReceivedBytes)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ReceivedBytes)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.RequestedTime)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.RequestedTime)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ServiceCode)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ServiceCode)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ServiceName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ServiceName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.BasicPriceWithoutVAT)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.BasicPriceWithoutVAT)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.VAT)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.VAT)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.BasicPriceWithVAT)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.BasicPriceWithVAT)
+        </dd>
+
+    </dl>
+
+    @using (Html.BeginForm()) {
+        @Html.AntiForgeryToken()
+
+        <div class="form-actions no-color">
+            <input type="submit" value="Delete" class="btn btn-default" /> |
+            @Html.ActionLink("Back to List", "Index")
+        </div>
+    }
+</div>

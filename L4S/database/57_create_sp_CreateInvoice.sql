@@ -65,7 +65,7 @@ BEGIN
 		       , v.CustomerID, v.ServiceID, v.ServiceCode, v.ServiceName
 		       , v.NumberOfRequest, v.RequestedTime, v.ReceivedBytes, v.MeasureOfUnits, v.BasicPriceWithVAT
 		       , v.UnitPrice, v.BasicPriceWithoutVAT, v.VAT  
-		FROM view_InvoiceByMonth v, CONFGeneralSettings p where v.TCActive = 0 and p.ParamName='DueDateDays' order by CustomerID, ServiceID 
+		FROM view_InvoiceByMonth v, CONFGeneralSettings p where v.TCActive = 0 and p.ParamName='DueDateDays' order by DateOfRequest, CustomerID, ServiceID 
 		SELECT @rowcount = @@ROWCOUNT;
 		if (@mydebug = 1 ) print 'Create ' + cast(@rowcount as varchar) +' invoices ';
 
