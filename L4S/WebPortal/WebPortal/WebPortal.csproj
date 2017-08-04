@@ -234,14 +234,14 @@
     <Compile Include="Controllers\ServiceController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
-    <Compile Include="Controllers\Stage_InputFileInfoController.cs" />
     <Compile Include="Controllers\UnknownServicesController.cs" />
     <Compile Include="Entities\ARCHCustomerDailyData.cs" />
     <Compile Include="Entities\ARCHCustomerMonthlyData.cs" />
     <Compile Include="Entities\ARCHLogsOfService.cs" />
+    <Compile Include="Entities\view_CustomerMontlyTotalInvoice.cs" />
     <Compile Include="Entities\GAPAnalyze.cs" />
     <Compile Include="Entities\CATSummaryInvoice.cs" />
-    <Compile Include="Entities\CATBillingInfo.cs" />
+    <Compile Include="Entities\CATCustomerServiceDetailInvoice.cs" />
     <Compile Include="Entities\CATChangeDetect.cs" />
     <Compile Include="Entities\CATCustomerDailyData.cs" />
     <Compile Include="Entities\CATCustomerData.cs" />
@@ -318,6 +318,14 @@
     <Compile Include="Migrations\201708041243328_Version13.cs" />
     <Compile Include="Migrations\201708041243328_Version13.Designer.cs">
       <DependentUpon>201708041243328_Version13.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201708042003555_Version14.cs" />
+    <Compile Include="Migrations\201708042003555_Version14.Designer.cs">
+      <DependentUpon>201708042003555_Version14.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201708042105486_Version15.cs" />
+    <Compile Include="Migrations\201708042105486_Version15.Designer.cs">
+      <DependentUpon>201708042105486_Version15.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
@@ -547,11 +555,6 @@
     <Content Include="Views\Manage\VerifyPhoneNumber.cshtml" />
     <Content Include="Views\Shared\Lockout.cshtml" />
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
-    <Content Include="Views\Stage_InputFileInfo\Create.cshtml" />
-    <Content Include="Views\Stage_InputFileInfo\Delete.cshtml" />
-    <Content Include="Views\Stage_InputFileInfo\Details.cshtml" />
-    <Content Include="Views\Stage_InputFileInfo\Edit.cshtml" />
-    <Content Include="Views\Stage_InputFileInfo\Index.cshtml" />
     <Content Include="Views\Account\_LoginPartial.cshtml" />
     <Content Include="Views\Shared\_LoginForm.cshtml" />
     <Content Include="Views\Service\Create.cshtml" />
@@ -665,6 +668,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201708041243328_Version13.resx">
       <DependentUpon>201708041243328_Version13.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201708042003555_Version14.resx">
+      <DependentUpon>201708042003555_Version14.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201708042105486_Version15.resx">
+      <DependentUpon>201708042105486_Version15.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Resources\Labels.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>

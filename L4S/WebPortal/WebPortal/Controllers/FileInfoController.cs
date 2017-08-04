@@ -73,7 +73,7 @@ namespace WebPortal.Controllers
                 return HttpNotFound();
             }
 
-            DeleteModel model = new DeleteModel(sTInputFileInfo.Id, Resources.Labels.FileInfo_PageTitle);
+            DeleteModel model = new DeleteModel(sTInputFileInfo.Id, sTInputFileInfo.OriFileName);
             return PartialView("_deleteModal", model);
 
             //if (id == null)

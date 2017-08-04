@@ -95,7 +95,7 @@ namespace WebPortal.Controllers
                 return HttpNotFound();
             }
 
-            DeleteModel model = new DeleteModel(cONFGeneralSettings.ID, Resources.Labels.Menu_GeneralSetup);
+            DeleteModel model = new DeleteModel(cONFGeneralSettings.ID, cONFGeneralSettings.ParamName);  
             return PartialView("_deleteModal", model);
 
             //if (id == null)

@@ -125,7 +125,7 @@ namespace WebPortal.Controllers
                 return HttpNotFound();
             }
 
-            DeleteModel model = new DeleteModel(cATServicePatterns.PKServicePatternID, Resources.Labels.Patterns_PageTitle);
+            DeleteModel model = new DeleteModel(cATServicePatterns.PKServicePatternID, cATServicePatterns.PatternDescription);
             return PartialView("_deleteModal", model);
             //if (id == null)
             //{

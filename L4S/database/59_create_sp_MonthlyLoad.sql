@@ -32,7 +32,7 @@ BEGIN
 		SET @myQuery = 'INSERT INTO [dbo].[CATCustomerMonthlyData]
 		(DateOfRequest, [CustomerID], [ServiceID], [NumberOfRequest], [ReceivedBytes], [RequestedTime])   
 		select DATEADD(month, DATEDIFF(month, 0,convert(date,i.DateofRequest)), 0), i.CustomerID, i.ServiceID, 
-		       count(*), sum(convert(bigint,i.BytesSent)), sum(convert(decimal,i.RequestTime))  from CATLogsOfService i
+		       count(*), sum(convert(bigint,i.BytesSent)), sum(convert(decimal(18,5),i.RequestTime))  from CATLogsOfService i
 		where  not exists (select e.CustomerID from CATCustomerMonthlyData e
 		                 where e.CustomerID = i.CustomerID
 						 and e.ServiceID = i.ServiceID
@@ -70,7 +70,7 @@ SET @myQuery = 'UPDATE  [dbo].[CATCustomerMonthlyData]
 						    ,[RequestedTime] = CATCustomerMonthlyData.RequestedTime + u.[RequestedTime]
 							,TCLastUpdate = getdate()
 						FROM (select DATEADD(month, DATEDIFF(month, 0,convert(date,i.DateofRequest)), 0) DateOfRequest, i.CustomerID, i.ServiceID, 
-							 count(*) [NumberOfRequest] , sum(convert(bigint,i.BytesSent)) [ReceivedBytes], sum(convert(decimal,i.RequestTime)) [RequestedTime]  from CATLogsOfService i
+							 count(*) [NumberOfRequest] , sum(convert(bigint,i.BytesSent)) [ReceivedBytes], sum(convert(decimal(18,5),i.RequestTime)) [RequestedTime]  from CATLogsOfService i
 							 where   exists (select e.CustomerID from CATCustomerMonthlyData e
 							 where e.CustomerID = i.CustomerID
 							 and e.ServiceID = i.ServiceID

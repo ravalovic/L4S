@@ -33,7 +33,7 @@ BEGIN
 		SET @myQuery = 'INSERT INTO [dbo].[CATCustomerDailyData]
 		(DateOfRequest, [CustomerID], [ServiceID], [NumberOfRequest], [ReceivedBytes], [RequestedTime])   
 		select dateadd(second, 0, dateadd(day, datediff(day, 0, i.DateOfRequest), 0)), i.CustomerID, i.ServiceID, 
-		       count(*), sum(convert(bigint,i.BytesSent)), sum(convert(decimal,i.RequestTime))  from CATLogsOfService i
+		       count(*), sum(convert(bigint,i.BytesSent)), sum(convert(decimal(18,5),i.RequestTime))  from CATLogsOfService i
 		where  not exists (select e.CustomerID from CATCustomerDailyData e
 		                 where e.CustomerID = i.CustomerID
 						 and e.ServiceID = i.ServiceID
@@ -71,7 +71,7 @@ SET @myQuery = 'UPDATE  [dbo].[CATCustomerDailyData]
 						    ,[RequestedTime] = CATCustomerDailyData.RequestedTime + u.[RequestedTime]
 							,TCLastUpdate = getdate()
 						FROM (select dateadd(second, 0, dateadd(day, datediff(day, 0, i.DateOfRequest), 0)) DateOfRequest, i.CustomerID, i.ServiceID, 
-							 count(*) [NumberOfRequest] , sum(convert(bigint,i.BytesSent)) [ReceivedBytes], sum(convert(decimal,i.RequestTime)) [RequestedTime]  from CATLogsOfService i
+							 count(*) [NumberOfRequest] , sum(convert(bigint,i.BytesSent)) [ReceivedBytes], sum(convert(decimal(18,5),i.RequestTime)) [RequestedTime]  from CATLogsOfService i
 							 where   exists (select e.CustomerID from CATCustomerDailyData e
 							 where e.CustomerID = i.CustomerID
 							 and e.ServiceID = i.ServiceID

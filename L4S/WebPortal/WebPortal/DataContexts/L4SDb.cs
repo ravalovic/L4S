@@ -52,7 +52,7 @@ namespace WebPortal.DataContexts
         public DbSet<ARCHCustomerDailyData> ARCHCustomerDailyData { get; set; }
         public DbSet<ARCHCustomerMonthlyData> ARCHCustomerMonthlyData { get; set; }
         public DbSet<ARCHLogsOfService> ARCHLogsOfService { get; set; }
-        public DbSet<CATBillingInfo> CATBillingInfo { get; set; }
+        public DbSet<CATCustomerServiceDetailInvoice> CATCustomerServiceDetailInvoice { get; set; }
         public DbSet<CATSummaryInvoice> CATSummaryInvoice { get; set; }
         public DbSet<CONFGeneralSettings> CONFGeneralSettings { get; set; }
         public DbSet<GAPAnalyze> GAPAnalyze { get; set; }
@@ -62,6 +62,7 @@ namespace WebPortal.DataContexts
         public virtual DbSet<view_InvoiceByMonth> view_InvoiceByMonth { get; set; }
         public virtual DbSet<view_DailyData> view_DailyData { get; set; }
         public virtual DbSet<view_MonthlyData> view_MonthlyData { get; set; }
+        public virtual DbSet<view_CustomerMontlyTotalInvoice> view_CustomerMontlyTotalInvoice { get; set; }
 
     }
    

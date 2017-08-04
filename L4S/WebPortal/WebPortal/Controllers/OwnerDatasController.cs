@@ -106,7 +106,7 @@ namespace WebPortal.Controllers
                 return HttpNotFound();
             }
 
-            DeleteModel model = new DeleteModel(catOwnerData.ID, Resources.Labels.OwnerCompanyName +": "+ catOwnerData.OwnerCompanyName);
+            DeleteModel model = new DeleteModel(catOwnerData.ID, catOwnerData.OwnerCompanyName);
             return PartialView("_deleteModal", model);
 
             //if (id == null)

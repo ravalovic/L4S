@@ -44,20 +44,7 @@ namespace WebPortal.Controllers
             return View(cATUnknownService);
         }
 
-        // GET: UnknownServices/Edit/5
-        public ActionResult Edit(int? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            CATUnknownService cATUnknownService = db.CATUnknownService.Find(id);
-            if (cATUnknownService == null)
-            {
-                return HttpNotFound();
-            }
-            return View(cATUnknownService);
-        }
+        
         public ActionResult Search(int? page, string insertDateFrom, string insertDateTo)
         {
             int pageNumber = (page ?? 1);
@@ -82,47 +69,7 @@ namespace WebPortal.Controllers
             return View("Index", cATUnknownService.ToPagedList(pageNumber: pageNumber, pageSize: pageSize));
 
         }
-        // POST: UnknownServices/Edit/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "ID,BatchID,RecordID,CustomerID,ServiceID,UserID,DateOfRequest,RequestedURL,RequestStatus,BytesSent,RequestTime,UserAgent,UserIPAddress,TCInsertTime,TCLastUpdate,TCActive")] CATUnknownService cATUnknownService)
-        {
-            if (ModelState.IsValid)
-            {
-                db.Entry(cATUnknownService).State = EntityState.Modified;
-                db.SaveChanges();
-                return RedirectToAction("Index");
-            }
-            return View(cATUnknownService);
-        }
-
-        // GET: UnknownServices/Delete/5
-        public ActionResult Delete(int? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            CATUnknownService cATUnknownService = db.CATUnknownService.Find(id);
-            if (cATUnknownService == null)
-            {
-                return HttpNotFound();
-            }
-            return View(cATUnknownService);
-        }
-
-        // POST: UnknownServices/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public ActionResult DeleteConfirmed(int id)
-        {
-            CATUnknownService cATUnknownService = db.CATUnknownService.Find(id);
-            db.CATUnknownService.Remove(cATUnknownService);
-            db.SaveChanges();
-            return RedirectToAction("Index");
-        }
+        
 
         protected override void Dispose(bool disposing)
         {

@@ -228,7 +228,8 @@ namespace WebPortal.Controllers
                 return HttpNotFound();
             }
 
-            DeleteModel model = new DeleteModel(cATCustomerData.PKCustomerDataID, Resources.Labels.Customer_Delete);
+            DeleteModel model = new DeleteModel(cATCustomerData.PKCustomerDataID,
+                cATCustomerData.IndividualFirstName + ' ' + cATCustomerData.IndividualLastName);
             return PartialView("_deleteModal", model);
 
             //if (id == null)
