@@ -28,12 +28,20 @@ DECLARE
  @ArchivingDay int,
  @ArchiveDetailDataMonth int,
  @ArchiveCumulativeDataMonth int,
+ @UnknownServiceStoreDays int,
  @LastArchiveRUN varchar(50)
 BEGIN
 select  @ArchivingDay = CONVERT(int, ParamValue) from [CONFGeneralSettings] where Paramname='ArchivingDay';
 select  @LastArchiveRUN = ParamValue from [CONFGeneralSettings] where Paramname='LastArchiveRUN';
 select  @ArchiveDetailDataMonth = CONVERT(int, ParamValue) from [CONFGeneralSettings] where Paramname='ArchiveDetailDataMonth';
 select  @ArchiveCumulativeDataMonth = CONVERT(int, ParamValue) from [CONFGeneralSettings] where Paramname='ArchiveCumulativeDataMonth';
+select  @UnknownServiceStoreDays = CONVERT(int, ParamValue) from [CONFGeneralSettings] where Paramname='UnknownServiceStoreDays';
+
+-- Delete unknown services
+delete from CATUnknownService WHERE DATEDIFF( DAY, DateOfRequest, getdate()) > @UnknownServiceStoreDays
+SET @rowCount = @@ROWCOUNT;
+insert into [dbo].CATProcessStatus ([StepName], [BatchRecordNum])
+			values ('Delete CATUnknownService ',  @rowCount);
 
 IF ( (DAY(getdate()) = @ArchivingDay) and (@LastArchiveRUN <> (CAST(FORMAT(YEAR(GETDATE()),'0000')AS VARCHAR) + CAST(FORMAT(MONTH(GETDATE()),'00') AS VARCHAR))))
 	BEGIN

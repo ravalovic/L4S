@@ -45,6 +45,7 @@ namespace WebPortal.Controllers
             {
                 toDate = DateTime.Now;
             }
+            if (fromDate == toDate) toDate = toDate.AddDays(1);
             List<STInputFileDuplicity> sTInputFileDuplicity = db.STInputFileDuplicity.Where(p => p.InsertDateTime >= fromDate && p.InsertDateTime <= toDate).OrderByDescending(f => f.InsertDateTime).ToList();
             if (sTInputFileDuplicity.Count == 0)
             {

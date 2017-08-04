@@ -47,6 +47,7 @@ namespace WebPortal.Controllers
             {
                 toDate=DateTime.Now;
             }
+            if (fromDate == toDate) toDate = toDate.AddDays(1);
             List<CATProcessStatus> cATProcessStatus = db.CATProcessStatus.Where(p => p.TCInsertTime >= fromDate && p.TCInsertTime <= toDate).OrderByDescending(d => d.TCInsertTime).ToList();
             if (cATProcessStatus.Count == 0)
                 {

@@ -561,4 +561,13 @@
   <data name="Owner_IndexTableTitle" xml:space="preserve">
     <value>Spoločnosti</value>
   </data>
+  <data name="Menu_MonthlyData" xml:space="preserve">
+    <value>Prehľad dát</value>
+  </data>
+  <data name="ProcessTab_UnknownService" xml:space="preserve">
+    <value>Neidentifikované služby</value>
+  </data>
+  <data name="UnknownService_PageTitle" xml:space="preserve">
+    <value>Zoznam neidentifikovaných služieb</value>
+  </data>
 </root>

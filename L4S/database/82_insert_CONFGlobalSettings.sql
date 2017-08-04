@@ -76,3 +76,10 @@ INSERT INTO [dbo].[CONFGeneralSettings]
            ('GAPAnalyzeDays'
            ,'15');
 GO
+INSERT INTO [dbo].[CONFGeneralSettings]
+           ([ParamName]
+           ,[ParamValue])
+     VALUES
+           ('UnknownServiceStoreDays'
+           ,'60');
+GO

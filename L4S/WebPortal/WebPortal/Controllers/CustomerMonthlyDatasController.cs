@@ -26,12 +26,20 @@ namespace WebPortal.Models
             {
                 toSkip = pageSize * (pageNumber - 1);
             }
-            List<CATCustomerMonthlyData> cAtMonthlyList = db.CATCustomerMonthlyData.OrderByDescending(d => d.DateOfRequest).ToList();
+            List<view_MonthlyData> cAtMonthlyList = db.view_MonthlyData.ToList();
             return View(cAtMonthlyList.ToPagedList(pageNumber: pageNumber, pageSize: pageSize));
 
         }
-        public ActionResult Search(int? page, string insertDateFrom, string insertDateTo)
+        public ActionResult Search(int? page, string insertDateFrom, string insertDateTo, string searchText)
         {
+            bool datCondition = false;
+            bool textCondition = false;
+            int searchID;
+            List<view_MonthlyData> cAtMonthlyList = new List<view_MonthlyData>();
+            int.TryParse(searchText, out searchID);
+            if (insertDateFrom != null) datCondition = true;
+            if (searchText != null) textCondition = true;
+
             int pageNumber = (page ?? 1);
             int toSkip = 0;
             if (pageNumber != 1)
@@ -45,10 +53,24 @@ namespace WebPortal.Models
             {
                 toDate = DateTime.Now;
             }
-            List<CATCustomerMonthlyData> cAtMonthlyList = db.CATCustomerMonthlyData.Where(p => p.DateOfRequest >= fromDate && p.DateOfRequest <= toDate).OrderByDescending(d => d.DateOfRequest).ToList();
+            if (fromDate == toDate) toDate = toDate.AddDays(1);
+
+            if (datCondition && !textCondition)
+            {
+                cAtMonthlyList = db.view_MonthlyData.Where(p => p.DateOfRequest >= fromDate && p.DateOfRequest <= toDate).OrderByDescending(d => d.DateOfRequest).ToList();
+            }
+            if (textCondition && !datCondition)
+            {
+                cAtMonthlyList = db.view_MonthlyData.Where(p => p.CustomerIdentification.Contains(searchText) || p.CustomerName.Contains(searchText) || p.CustomerID == searchID).OrderByDescending(d => d.DateOfRequest).ToList();
+            }
+            if (textCondition && datCondition)
+            {
+                cAtMonthlyList = db.view_MonthlyData.Where(p => (p.DateOfRequest >= fromDate && p.DateOfRequest <= toDate) && (p.CustomerIdentification.Contains(searchText) || p.CustomerName.Contains(searchText) || p.CustomerID == searchID)).OrderByDescending(d => d.DateOfRequest).ToList();
+            }
+
             if (cAtMonthlyList.Count == 0)
             {
-                cAtMonthlyList = db.CATCustomerMonthlyData.ToList();
+                cAtMonthlyList = db.view_MonthlyData.OrderByDescending(d => d.DateOfRequest).ToList();
             }
             return View("CustomerMonthly", cAtMonthlyList.ToPagedList(pageNumber: pageNumber, pageSize: pageSize));
 

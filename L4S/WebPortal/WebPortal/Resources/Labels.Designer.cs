@@ -790,6 +790,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Prehľad dát.
+        /// </summary>
+        public static string Menu_MonthlyData {
+            get {
+                return ResourceManager.GetString("Menu_MonthlyData", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Nastavenia.
         /// </summary>
         public static string Menu_Nastavenia {
@@ -1213,6 +1222,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Neidentifikované služby.
+        /// </summary>
+        public static string ProcessTab_UnknownService {
+            get {
+                return ResourceManager.GetString("ProcessTab_UnknownService", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Prijaté súbory.
         /// </summary>
         public static string ProcessTap_GAP {
@@ -1362,6 +1380,15 @@ namespace Resources {
         public static string Service_TableTitle {
             get {
                 return ResourceManager.GetString("Service_TableTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Zoznam neidentifikovaných služieb.
+        /// </summary>
+        public static string UnknownService_PageTitle {
+            get {
+                return ResourceManager.GetString("UnknownService_PageTitle", resourceCulture);
             }
         }
         

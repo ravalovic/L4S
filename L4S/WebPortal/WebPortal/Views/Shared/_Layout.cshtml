@@ -67,17 +67,32 @@
                                 </div>
                             </div>
                         </div>
-                        @*Fakturácie menu*@
+                        @*Prehľad menu*@
                         <div class="accordion-group">
                             <div class="accordion-heading">
                                 <a class="accordion-toggle" data-toggle="collapse" data-parent="#leftMenu" href="#collapseThree">
-                                    <i class="glyphicon glyphicon-duplicate"></i> @Resources.Labels.Menu_Fakturacie &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;@*<span class="badge pull-right">12</span>*@
+                                    <i class="glyphicon glyphicon-cog"></i> @Resources.Labels.Menu_Prehlad &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;@*<span class="badge pull-right">12</span>*@
                                 </a>
                             </div>
                             <div id="collapseThree" class="accordion-body collapse" style="height: 0px;">
                                 <div class="accordion-inner">
                                     <ul class="nav nav-pills nav-stacked">
-                                        <li class="active"><a href="/CustomerDailyDatas/CustomerDaily"><i class="glyphicon glyphicon-search"></i> @Resources.Labels.Menu_Prehlad</a></li>
+                                        <li class="active"><a href="/CustomerMonthlyDatas/CustomerMonthly"><i class="glyphicon glyphicon-search"></i> @Resources.Labels.Menu_MonthlyData</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        @*Fakturácie menu*@
+                        <div class="accordion-group">
+                            <div class="accordion-heading">
+                                <a class="accordion-toggle" data-toggle="collapse" data-parent="#leftMenu" href="#collapseFour">
+                                    <i class="glyphicon glyphicon-duplicate"></i> @Resources.Labels.Menu_Fakturacie &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;@*<span class="badge pull-right">12</span>*@
+                                </a>
+                            </div>
+                            <div id="collapseFour" class="accordion-body collapse" style="height: 0px;">
+                                <div class="accordion-inner">
+                                    <ul class="nav nav-pills nav-stacked">
+                                        
                                         <li class="active"><a href="/InvoiceByMonth/Index"><i class="glyphicon glyphicon-search"></i> @Resources.Labels.Menu_InvoiceView</a></li>
                                         <li class="active"><a href="/Account/Manage"><i class="glyphicon glyphicon-duplicate"></i> @Resources.Labels.Menu_Fakturacie</a></li>
                                         <li class="active"><a href="/Account/Manage"><i class="glyphicon glyphicon-list-alt"></i> @Resources.Labels.Menu_Report</a></li>

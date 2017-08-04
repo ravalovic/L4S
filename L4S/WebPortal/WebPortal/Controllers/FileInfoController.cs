@@ -47,6 +47,7 @@ namespace WebPortal.Controllers
             {
                 toDate = DateTime.Now;
             }
+            if (fromDate == toDate) toDate = toDate.AddDays(1);
             List<STInputFileInfo> sTInputFileInfo = db.STInputFileInfo.Where(p => p.InsertDateTime >= fromDate && p.InsertDateTime <= toDate).OrderByDescending(f => f.LoaderBatchID).ToList();
             if (sTInputFileInfo.Count == 0)
             {

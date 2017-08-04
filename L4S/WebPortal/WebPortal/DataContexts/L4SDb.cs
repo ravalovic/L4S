@@ -57,10 +57,11 @@ namespace WebPortal.DataContexts
         public DbSet<CONFGeneralSettings> CONFGeneralSettings { get; set; }
         public DbSet<GAPAnalyze> GAPAnalyze { get; set; }
 
-        public virtual DbSet<view_DetailFromDaily> view_DetailFromDaily { get; set; }
         public virtual DbSet<view_DetailFromMonthly> view_DetailFromMonthly { get; set; }
         public virtual DbSet<view_InvoiceByDay> view_InvoiceByDay { get; set; }
         public virtual DbSet<view_InvoiceByMonth> view_InvoiceByMonth { get; set; }
+        public virtual DbSet<view_DailyData> view_DailyData { get; set; }
+        public virtual DbSet<view_MonthlyData> view_MonthlyData { get; set; }
 
     }
    

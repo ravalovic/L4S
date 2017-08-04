@@ -235,6 +235,7 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Controllers\Stage_InputFileInfoController.cs" />
+    <Compile Include="Controllers\UnknownServicesController.cs" />
     <Compile Include="Entities\ARCHCustomerDailyData.cs" />
     <Compile Include="Entities\ARCHCustomerMonthlyData.cs" />
     <Compile Include="Entities\ARCHLogsOfService.cs" />
@@ -258,6 +259,8 @@
     <Compile Include="Entities\STInputFileDuplicity.cs" />
     <Compile Include="Entities\STInputFileInfo.cs" />
     <Compile Include="Entities\STLogImport.cs" />
+    <Compile Include="Entities\view_DailyData.cs" />
+    <Compile Include="Entities\view_MonthlyData.cs" />
     <Compile Include="Entities\view_DetailFromMonthly.cs" />
     <Compile Include="Entities\view_InvoiceByDay.cs" />
     <Compile Include="Entities\view_InvoiceByMonth.cs" />
@@ -312,9 +315,9 @@
     <Compile Include="Migrations\201708031139441_Version12.Designer.cs">
       <DependentUpon>201708031139441_Version12.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201708031249300_Version13.cs" />
-    <Compile Include="Migrations\201708031249300_Version13.Designer.cs">
-      <DependentUpon>201708031249300_Version13.cs</DependentUpon>
+    <Compile Include="Migrations\201708041243328_Version13.cs" />
+    <Compile Include="Migrations\201708041243328_Version13.Designer.cs">
+      <DependentUpon>201708041243328_Version13.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
@@ -566,10 +569,6 @@
     <Content Include="Views\Service\_Delete.cshtml" />
     <Content Include="Views\FileInfo\Delete.cshtml" />
     <Content Include="Views\FileInfo\Index.cshtml" />
-    <Content Include="Views\FileDuplicity\Create.cshtml" />
-    <Content Include="Views\FileDuplicity\Delete.cshtml" />
-    <Content Include="Views\FileDuplicity\Details.cshtml" />
-    <Content Include="Views\FileDuplicity\Edit.cshtml" />
     <Content Include="Views\FileDuplicity\Index.cshtml" />
     <Content Include="Views\ProcessStatus\Index.cshtml" />
     <Content Include="Views\Account\UserList.cshtml" />
@@ -612,6 +611,8 @@
     <Content Include="Views\InvoiceByMonth\Details.cshtml" />
     <Content Include="Views\InvoiceByMonth\Edit.cshtml" />
     <Content Include="Views\InvoiceByMonth\Index.cshtml" />
+    <Content Include="Views\UnknownServices\Details.cshtml" />
+    <Content Include="Views\UnknownServices\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -662,8 +663,8 @@
     <EmbeddedResource Include="Migrations\201708031139441_Version12.resx">
       <DependentUpon>201708031139441_Version12.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201708031249300_Version13.resx">
-      <DependentUpon>201708031249300_Version13.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201708041243328_Version13.resx">
+      <DependentUpon>201708041243328_Version13.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Resources\Labels.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>

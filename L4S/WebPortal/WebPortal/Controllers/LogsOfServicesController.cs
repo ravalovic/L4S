@@ -46,6 +46,7 @@ namespace WebPortal.Controllers
             {
                 toDate = DateTime.Now;
             }
+            if (fromDate == toDate) toDate = toDate.AddDays(1);
             List<CATLogsOfService> cAtDetailList = db.CATLogsOfService.Where(p => p.DateOfRequest >= fromDate && p.DateOfRequest <= toDate).OrderByDescending(d => d.DateOfRequest).Take(999).ToList();
             if (cAtDetailList.Count == 0)
             {
@@ -55,6 +56,74 @@ namespace WebPortal.Controllers
 
         }
 
+        public ActionResult Search(int? page, string insertDateFrom, string insertDateTo, string searchText)
+        {
+            bool datCondition = false;
+            bool textCondition = false;
+            int searchID;
+            List<CATLogsOfService> cAtDetailList = new List<CATLogsOfService>();
+            int.TryParse(searchText, out searchID);
+            if (insertDateFrom != null) datCondition = true;
+            if (searchText != null) textCondition = true;
+
+            int pageNumber = (page ?? 1);
+            int toSkip = 0;
+            if (pageNumber != 1)
+            {
+                toSkip = pageSize * (pageNumber - 1);
+            }
+            DateTime fromDate;
+            DateTime toDate;
+            DateTime.TryParse(insertDateFrom, out fromDate);
+            if (!DateTime.TryParse(insertDateTo, out toDate))
+            {
+                toDate = DateTime.Now;
+            }
+            if (fromDate == toDate) toDate = toDate.AddDays(1);
+
+            if (datCondition && !textCondition)
+            {
+                cAtDetailList = db.CATLogsOfService.Where(p => p.DateOfRequest >= fromDate && p.DateOfRequest <= toDate).OrderByDescending(d => d.DateOfRequest).ToList();
+            }
+            if (textCondition && !datCondition)
+            {
+                cAtDetailList = db.CATLogsOfService.Where(p => p.BatchID == searchID || p.RequestedURL.Contains(searchText) || p.CustomerID == searchID).OrderByDescending(d => d.DateOfRequest).ToList();
+            }
+            if (textCondition && datCondition)
+            {
+                cAtDetailList = db.CATLogsOfService.Where(p => (p.DateOfRequest >= fromDate && p.DateOfRequest <= toDate) && (p.BatchID == searchID || p.RequestedURL.Contains(searchText) || p.UserAgent.Contains(searchText) || p.CustomerID == searchID)).OrderByDescending(d => d.DateOfRequest).ToList();
+            }
+
+            if (cAtDetailList.Count == 0)
+            {
+                cAtDetailList = db.CATLogsOfService.OrderByDescending(d => d.DateOfRequest).ToList();
+            }
+            return View("DetailData", cAtDetailList.ToPagedList(pageNumber: pageNumber, pageSize: pageSize));
+
+        }
+
+        public ActionResult Details(int? page, int custId, int servId, DateTime reqDate)
+        {
+            int pageNumber = (page ?? 1);
+
+            var startDate = new DateTime(reqDate.Year, reqDate.Month, 1);
+            var endDate = startDate.AddDays(1).AddTicks(-1);
+
+
+            int toSkip = 0;
+            if (pageNumber != 1)
+            {
+                toSkip = pageSize * (pageNumber - 1);
+            }
+
+            List<CATLogsOfService> cAtDetailList = db.CATLogsOfService.Where(p => p.DateOfRequest >= startDate && p.DateOfRequest <= endDate && p.CustomerID == custId && p.ServiceID == servId).OrderBy(d => d.DateOfRequest).ToList();
+            if (cAtDetailList.Count == 0)
+            {
+                cAtDetailList = db.CATLogsOfService.Take(999).ToList();
+            }
+            return View("DetailData", cAtDetailList.ToPagedList(pageNumber: pageNumber, pageSize: pageSize));
+
+        }
         protected override void Dispose(bool disposing)
         {
             if (disposing)

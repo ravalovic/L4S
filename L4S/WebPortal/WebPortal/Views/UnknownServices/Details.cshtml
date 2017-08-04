@@ -1,0 +1,117 @@
+﻿@model WebPortal.CATUnknownService
+
+@{
+    ViewBag.Title = "Details";
+}
+<style>
+    /* Set width on the form input elements since they're 100% wide by default */
+    input,
+    select,
+    textarea {
+        max-width:100%;
+    }
+</style>
+<h2>Details</h2>
+<div>
+    <h4>CATUnknownService</h4>
+    <hr />
+        <div class="form-group">
+            @Html.LabelFor(model => model.BatchID, Html.DisplayNameFor(model => model.BatchID).ToString(), htmlAttributes: new {@class = "control-label col-md-2"})
+            <div class="col-md-9">
+                @Html.EditorFor(model => model.BatchID, new {htmlAttributes = new {@class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.BatchID, "", new {@class = "text-danger"})
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.RecordID, Html.DisplayNameFor(model => model.RecordID).ToString(), htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-9">
+                @Html.EditorFor(model => model.RecordID, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.RecordID, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.CustomerID, Html.DisplayNameFor(model => model.CustomerID).ToString(), htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-9">
+                @Html.EditorFor(model => model.CustomerID, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.CustomerID, "", new { @class = "text-danger" })
+            </div>
+        </div>
+    
+        <div class="form-group">
+            @Html.LabelFor(model => model.ServiceID, Html.DisplayNameFor(model => model.ServiceID).ToString(), htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-9">
+                @Html.EditorFor(model => model.ServiceID, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.ServiceID, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.UserID, Html.DisplayNameFor(model => model.UserID).ToString(), htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-9">
+                @Html.EditorFor(model => model.UserID, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.UserID, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.DateOfRequest, Html.DisplayNameFor(model => model.DateOfRequest).ToString(), htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-9">
+                @Html.EditorFor(model => model.DateOfRequest, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.DateOfRequest, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.RequestedURL, Html.DisplayNameFor(model => model.RequestedURL).ToString(), htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-9">
+                @Html.EditorFor(model => model.RequestedURL, new { htmlAttributes = new { @class = "form-control"} })
+                @Html.ValidationMessageFor(model => model.RequestedURL, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.RequestStatus, Html.DisplayNameFor(model => model.RequestStatus).ToString(), htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-9">
+                @Html.EditorFor(model => model.RequestStatus, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.RequestStatus, "", new { @class = "text-danger" })
+            </div>
+        </div>
+    
+        <div class="form-group">
+            @Html.LabelFor(model => model.BytesSent, Html.DisplayNameFor(model => model.BytesSent).ToString(), htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-9">
+                @Html.EditorFor(model => model.BytesSent, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.BytesSent, "", new { @class = "text-danger" })
+            </div>
+        </div>
+    
+        <div class="form-group">
+            @Html.LabelFor(model => model.RequestTime, Html.DisplayNameFor(model => model.RequestTime).ToString(), htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-9">
+                @Html.EditorFor(model => model.RequestTime, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.RequestTime, "", new { @class = "text-danger" })
+            </div>
+        </div>
+    
+        <div class="form-group">
+            @Html.LabelFor(model => model.UserAgent, Html.DisplayNameFor(model => model.UserAgent).ToString(), htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-9">
+                @Html.EditorFor(model => model.UserAgent, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.UserAgent, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.UserIPAddress, Html.DisplayNameFor(model => model.UserIPAddress).ToString(), htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-9">
+                @Html.EditorFor(model => model.UserIPAddress, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.UserIPAddress, "", new { @class = "text-danger" })
+            </div>
+        </div>
+`</div>
+
+
+<div class="form-group row" >
+    <div class="col-md-12">     
+        <br/>
+        <a class="btn btn-primary" href="/UnknownServices/Index/"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span> @Resources.Labels.Btn_Back </a>
+    </div>
+</div>
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}
