@@ -26,7 +26,7 @@ namespace WebPortal.Models
             {
                 toSkip = pageSize * (pageNumber - 1);
             }
-            List<view_MonthlyData> cAtMonthlyList = db.view_MonthlyData.ToList();
+            List<view_MonthlyData> cAtMonthlyList = db.view_MonthlyData.OrderByDescending(l=>l.DateOfRequest).ToList();
             return View(cAtMonthlyList.ToPagedList(pageNumber: pageNumber, pageSize: pageSize));
 
         }

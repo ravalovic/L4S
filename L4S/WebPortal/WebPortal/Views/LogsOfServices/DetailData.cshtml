@@ -136,7 +136,7 @@
     </div>
     <br />
     Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
-    @Html.PagedListPager(Model, page => Url.Action("DetailData", new { page}))
+    @Html.PagedListPager(Model, page => Url.Action("DetailData", new { page, currentFilter  = ViewBag.CurrentFilter, currentFrom = ViewBag.CurrentFrom, currentTo = ViewBag.CurrentTo, currentCustId = ViewBag.CurrentCustId, currentServId = ViewBag.CurrentServId, currentDate = ViewBag.CurrentReqDate }))
 
 </div>
 @section Scripts {   
