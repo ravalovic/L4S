@@ -1,8 +1,5 @@
-using System.ComponentModel.DataAnnotations;
-
 namespace WebPortal.Migrations
 {
-    using System;
     using System.Data.Entity.Migrations;
     
     public partial class Version05 : DbMigration
