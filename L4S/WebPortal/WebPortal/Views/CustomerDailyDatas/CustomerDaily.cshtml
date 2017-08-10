@@ -1,4 +1,5 @@
 ﻿@model PagedList.IPagedList<view_DailyData>
+@using PagedList
 @using PagedList.Mvc;
 <link href="~/Content/PagedList.css" rel="stylesheet" type="text/css" />
 @{
@@ -46,10 +47,10 @@
 <table class="table table-striped table-bordered table-hover table-condensed">
     <tr>
         <th>
-            @Html.DisplayNameFor(model => model.FirstOrDefault().DateOfRequest)
+            @Html.DisplayNameFor(model => ViewBag.PageList. .FirstOrDefault().DateOfRequest)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.FirstOrDefault().CustomerID)
+            @Html.DisplayNameFor(model => ViewBag.PageList.FirstOrDefault().CustomerID)
         </th>
         <th>
             @Html.DisplayNameFor(model => model.FirstOrDefault().ServiceID)
@@ -65,7 +66,7 @@
         </th>
     </tr>
 
-    @foreach (var item in Model)
+    @foreach (var item in ViewBag.PageList)
     {
         <tr onclick="location.href = '@(Url.Action("Details", "LogsOfServices", new { custId = item.CustomerID, servId =item.ServiceID, reqDate = item.DateOfRequest }))'">
             <td>
@@ -94,8 +95,8 @@
     </div>
     <br />
     Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
-    @Html.PagedListPager(Model, page => Url.Action("CustomerDaily", new { page, currentFilter = ViewBag.CurrentFilter, currentFrom = ViewBag.CurrentFrom, currentTo = ViewBag.CurrentTo, currentCustId = ViewBag.CurrentCustId, currentServId = ViewBag.CurrentServId, currentDate = ViewBag.CurrentReqDate }))
-
+    @*@Html.PagedListPager(Model, page => Url.Action("CustomerDaily", new { page, currentFilter = ViewBag.CurrentFilter, currentFrom = ViewBag.CurrentFrom, currentTo = ViewBag.CurrentTo, currentCustId = ViewBag.CurrentCustId, currentServId = ViewBag.CurrentServId, currentDate = ViewBag.CurrentReqDate }))*@
+    @Html.PagedListPager((IPagedList)ViewBag.PageList, page => Url.Action("CustomerDaily", new { page, currentFilter = ViewBag.CurrentFilter, currentFrom = ViewBag.CurrentFrom, currentTo = ViewBag.CurrentTo, currentCustId = ViewBag.CurrentCustId, currentServId = ViewBag.CurrentServId, currentDate = ViewBag.CurrentReqDate }))
 </div>
 @section Scripts {   
     @Scripts.Render("~/bundles/jqueryui")   
