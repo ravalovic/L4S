@@ -11,18 +11,20 @@ namespace WebPortal.Controllers
     public class UnknownServicesController : Controller
     {
         private L4SDb db = new L4SDb();
-        private const int pageSize = 30;
+        private const int PageSize = 30;
+
+        private const int ToTake = 900;
         // GET: UnknownServices
         public ActionResult Index(int? page)
         {
             int pageNumber = (page ?? 1);
             int toSkip = 0;
-            if (pageNumber != 1)
+            if (pageNumber * PageSize >= ToTake)
             {
-                toSkip = pageSize * (pageNumber - 1);
+                toSkip = PageSize * (pageNumber - 1);
             }
             List<CATUnknownService> catUnknown = db.CATUnknownService.OrderByDescending(d => d.TCInsertTime).Take(999).ToList();
-            return View(catUnknown.ToPagedList(pageNumber:pageNumber, pageSize: pageSize));
+            return View(catUnknown.ToPagedList(pageNumber:pageNumber, pageSize: PageSize));
             
         }
 
@@ -46,14 +48,12 @@ namespace WebPortal.Controllers
         {
             int pageNumber = (page ?? 1);
             int toSkip = 0;
-            if (pageNumber != 1)
+            if (pageNumber * PageSize >= ToTake)
             {
-                toSkip = pageSize * (pageNumber - 1);
+                toSkip = PageSize * (pageNumber - 1);
             }
-            DateTime fromDate;
-            DateTime toDate;
-            DateTime.TryParse(insertDateFrom, out fromDate);
-            if (!DateTime.TryParse(insertDateTo, out toDate))
+            DateTime.TryParse(insertDateFrom, out DateTime fromDate);
+            if (!DateTime.TryParse(insertDateTo, out DateTime toDate))
             {
                 toDate = DateTime.Now;
             }
@@ -63,7 +63,7 @@ namespace WebPortal.Controllers
             {
                 cATUnknownService = db.CATUnknownService.ToList();
             }
-            return View("Index", cATUnknownService.ToPagedList(pageNumber: pageNumber, pageSize: pageSize));
+            return View("Index", cATUnknownService.ToPagedList(pageNumber: pageNumber, pageSize: PageSize));
 
         }
         

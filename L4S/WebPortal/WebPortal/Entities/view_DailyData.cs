@@ -9,7 +9,7 @@ namespace WebPortal
     {
         [Key]
         [Column(Order = 0)]
-        [DataType(DataType.Date)]
+        //[DataType(DataType.Date)]
         public DateTime? DateOfRequest { get; set; }
         [Key]
         [Column(Order = 1)]
