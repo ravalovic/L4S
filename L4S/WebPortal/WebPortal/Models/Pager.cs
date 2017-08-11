@@ -34,6 +34,8 @@ namespace WebPortal.Models
             TotalPages = totalPages;
             StartPage = startPage;
             EndPage = endPage;
+            ToSkip = (currentPage - 1) * pageSize;
+            ToTake =  pageSize;
         }
         public int TotalItems { get; private set; }
         public int CurrentPage { get; private set; }
@@ -41,5 +43,7 @@ namespace WebPortal.Models
         public int TotalPages { get; private set; }
         public int StartPage { get; private set; }
         public int EndPage { get; private set; }
+        public int ToSkip { get; private set; }
+        public int ToTake { get; private set; }
     }
 }

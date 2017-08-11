@@ -7,7 +7,7 @@ using Microsoft.Ajax.Utilities;
 using WebPortal.DataContexts;
 using PagedList;
 
-namespace WebPortal.Models
+namespace WebPortal.Controllers
 {
     public class CustomerMonthlyDatasController : Controller
     {
