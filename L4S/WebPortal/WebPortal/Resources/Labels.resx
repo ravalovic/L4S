@@ -570,4 +570,19 @@
   <data name="UnknownService_PageTitle" xml:space="preserve">
     <value>Zoznam neidentifikovaných služieb</value>
   </data>
+  <data name="DailyData_PageHeader" xml:space="preserve">
+    <value>Denný sumár</value>
+  </data>
+  <data name="DetailData_PageHeader" xml:space="preserve">
+    <value>Detailný výpis</value>
+  </data>
+  <data name="MonthlyData_PageHeader" xml:space="preserve">
+    <value>Mesačný sumár</value>
+  </data>
+  <data name="File_FirstlLoadTime" xml:space="preserve">
+    <value>Dátum prvého nahratia</value>
+  </data>
+  <data name="File_PreProcessorName" xml:space="preserve">
+    <value>Názov súboru z preprocesora</value>
+  </data>
 </root>

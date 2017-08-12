@@ -32,7 +32,7 @@
                         @Html.LabelFor(model => model.CustomerIdentifier, htmlAttributes: new { @class = "control-label col-md-4" })
                         <div class="col-md-8">
                             @Html.EditorFor(model => model.CustomerIdentifier, new { htmlAttributes = new { @class = "form-control" } })
-                            @Html.ValidationMessageFor(model => model.CustomerIdentifier, "", new { @class = "text-danger" })
+                            @Html.ValidationMessageFor(model => model.CustomerIdentifier, "IP adresa", new { @class = "text-danger" })
                         </div>
                     </div>
 

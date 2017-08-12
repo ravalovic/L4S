@@ -83,3 +83,10 @@ INSERT INTO [dbo].[CONFGeneralSettings]
            ('UnknownServiceStoreDays'
            ,'60');
 GO
+INSERT INTO [dbo].[CONFGeneralSettings]
+           ([ParamName]
+           ,[ParamValue])
+     VALUES
+           ('ProcessDataStoreDays'
+           ,'60');
+GO

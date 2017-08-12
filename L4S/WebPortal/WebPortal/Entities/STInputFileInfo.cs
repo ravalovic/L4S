@@ -15,6 +15,7 @@ namespace WebPortal
 
         [Required]
         [StringLength(200)]
+        [Display(Name = "File_PreProcessorName", ResourceType = typeof(Labels))]
         public string FileName { get; set; }
 
         [Required]

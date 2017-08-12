@@ -19,7 +19,7 @@ namespace WebPortal.Controllers
         
 
         // GET: CATCustomerDailyDatas
-        public ActionResult CustomerDaily(int? page, string insertDateFrom, string insertDateTo, string searchText, string currentFilter, string currentFrom, string currentTo, int? currentCustId, int? currentServId, DateTime? currentDate)
+        public ActionResult Index(int? page, string insertDateFrom, string insertDateTo, string searchText, string currentFilter, string currentFrom, string currentTo, int? currentCustId, int? currentServId, DateTime? currentDate)
         {
             var dbAccess = _db.view_DailyData;
 
@@ -97,97 +97,10 @@ namespace WebPortal.Controllers
             var pageList = new StaticPagedList<view_DailyData>(_dataList, _pager.CurrentPage, _pager.PageSize, _pager.TotalItems);
             //ViewBag.PageList = pageList;
             //return View(model.ToPagedList(pageNumber: _pager.CurrentPage, pageSize: _pager.PageSize));
-            return View(pageList);
+            return View("Index",pageList);
         }
 
-        public ActionResult Search(int? page, string insertDateFrom, string insertDateTo, string searchText, string currentFilter, string currentFrom, string currentTo)
-        {
-            var dbAccess = _db.view_DailyData;
-
-            if (searchText.IsNullOrWhiteSpace())
-            {
-                searchText = currentFilter;
-            }
-            if (insertDateFrom.IsNullOrWhiteSpace())
-            {
-                insertDateFrom = currentFrom;
-            }
-            if (insertDateTo.IsNullOrWhiteSpace())
-            {
-                insertDateTo = currentTo;
-            }
-
-            // set actual filter to ViewBag
-            ViewBag.CurrentFilter = searchText;
-            ViewBag.CurrentFrom = insertDateFrom;
-            ViewBag.CurrentTo = insertDateTo;
-
-            bool datCondition = false;
-                bool textCondition = false;
-
-                int.TryParse(searchText, out int searchId);
-                if (!insertDateFrom.IsNullOrWhiteSpace() || !insertDateTo.IsNullOrWhiteSpace()) datCondition = true;
-                if (!searchText.IsNullOrWhiteSpace()) textCondition = true;
-
-                DateTime.TryParse(insertDateFrom, out DateTime fromDate);
-                if (!DateTime.TryParse(insertDateTo, out DateTime toDate))
-                {
-                    toDate = DateTime.Now;
-                }
-                if (fromDate == toDate) toDate = toDate.AddDays(1).AddTicks(-1);
-
-                if (datCondition && !textCondition)
-                {
-                    _model = dbAccess.Where(p => p.DateOfRequest >= fromDate && p.DateOfRequest <= toDate)
-                        .OrderBy(d => d.DateOfRequest).ToList();
-
-                }
-                if (textCondition && !datCondition)
-                {
-                    if (searchId != 0)
-                    {
-                        _model = dbAccess.Where(p => p.CustomerID == searchId || p.ServiceID == searchId)
-                            .OrderByDescending(d => d.DateOfRequest).ToList();
-                    }
-                    else
-                    {
-                        _model = dbAccess
-                            .Where(p => p.CustomerIdentification.Contains(searchText) ||
-                                        p.CustomerName.Contains(searchText) || p.ServiceCode.Contains(searchText))
-                            .OrderByDescending(d => d.DateOfRequest).ToList();
-                    }
-                }
-                if (textCondition && datCondition)
-                {
-                    if (searchId != 0)
-                    {
-                        _model = dbAccess
-                            .Where(p => (p.DateOfRequest >= fromDate && p.DateOfRequest <= toDate) &&
-                                        (p.CustomerID == searchId || p.ServiceID == searchId))
-                            .OrderByDescending(d => d.DateOfRequest).ToList();
-                    }
-                    else
-                    {
-                        _model = dbAccess
-                            .Where(p => (p.DateOfRequest >= fromDate && p.DateOfRequest <= toDate) &&
-                                        (p.CustomerIdentification.Contains(searchText) ||
-                                         p.CustomerName.Contains(searchText) || p.ServiceCode.Contains(searchText)))
-                            .OrderByDescending(d => d.DateOfRequest).ToList();
-                    }
-                }
-
-                if (_model == null || _model.Count == 0)
-                {
-                    _model = dbAccess.OrderByDescending(d => d.DateOfRequest).ToList();
-                }
-            _pager = new Pager(_model.Count(), page);
-            _dataList = _model.Skip(_pager.ToSkip).Take(_pager.ToTake).ToList();
-            var pageList = new StaticPagedList<view_DailyData>(_dataList, _pager.CurrentPage, _pager.PageSize, _pager.TotalItems);
-            //return View("CustomerDaily", _dataList.ToPagedList(pageNumber: pager.CurrentPage, pageSize: _pager.PageSize));
-            return View("CustomerDaily", pageList);
-        }
-
-        public ActionResult Details(int? page, int custId, int servId, DateTime reqDate)
+       public ActionResult Details(int? page, int custId, int servId, DateTime reqDate)
         {
             var dbAccess = _db.view_DailyData;
             var startDate = new DateTime(reqDate.Year, reqDate.Month, reqDate.Day);
@@ -206,7 +119,7 @@ namespace WebPortal.Controllers
             _dataList = _model.Skip(_pager.ToSkip).Take(_pager.ToTake).ToList();
             var pageList = new StaticPagedList<view_DailyData>(_dataList, _pager.CurrentPage, _pager.PageSize, _pager.TotalItems);
             //return View("CustomerDaily", _dataList.ToPagedList(pageNumber: _pager.CurrentPage, pageSize: _pager.PageSize));
-            return View("CustomerDaily", pageList);
+            return View("Index", pageList);
         }
 
         protected override void Dispose(bool disposing)

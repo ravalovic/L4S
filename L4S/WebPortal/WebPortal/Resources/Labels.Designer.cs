@@ -538,6 +538,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Denný sumár.
+        /// </summary>
+        public static string DailyData_PageHeader {
+            get {
+                return ResourceManager.GetString("DailyData_PageHeader", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Denný sumár .
         /// </summary>
         public static string DailyDataTab {
@@ -561,6 +570,15 @@ namespace Resources {
         public static string DeatilLog_TableTitle {
             get {
                 return ResourceManager.GetString("DeatilLog_TableTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Detailný výpis.
+        /// </summary>
+        public static string DetailData_PageHeader {
+            get {
+                return ResourceManager.GetString("DetailData_PageHeader", resourceCulture);
             }
         }
         
@@ -610,6 +628,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Dátum prvého nahratia.
+        /// </summary>
+        public static string File_FirstlLoadTime {
+            get {
+                return ResourceManager.GetString("File_FirstlLoadTime", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Počet záznamov.
         /// </summary>
         public static string File_LoadedRecord {
@@ -624,6 +651,15 @@ namespace Resources {
         public static string File_Name {
             get {
                 return ResourceManager.GetString("File_Name", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Názov súboru z preprocesora.
+        /// </summary>
+        public static string File_PreProcessorName {
+            get {
+                return ResourceManager.GetString("File_PreProcessorName", resourceCulture);
             }
         }
         
@@ -858,6 +894,15 @@ namespace Resources {
         public static string Menu_Zakaznici {
             get {
                 return ResourceManager.GetString("Menu_Zakaznici", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Mesačný sumár.
+        /// </summary>
+        public static string MonthlyData_PageHeader {
+            get {
+                return ResourceManager.GetString("MonthlyData_PageHeader", resourceCulture);
             }
         }
         

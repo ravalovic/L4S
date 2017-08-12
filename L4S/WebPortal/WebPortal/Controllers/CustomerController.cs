@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Microsoft.Ajax.Utilities;
+using PagedList;
+using System;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
@@ -11,8 +13,8 @@ namespace WebPortal.Controllers
 {
     public class CustomerController : Controller
     {
-        private L4SDb db = new L4SDb();
-
+        private L4SDb _db = new L4SDb();
+        private Pager _pager;
         // GET: Customer
         public ActionResult Index()
         {
@@ -26,33 +28,37 @@ namespace WebPortal.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            CATCustomerData cATCustomerData = db.CATCustomerData.Find(id);
-            if (cATCustomerData == null)
+            CATCustomerData cAtCustomerData = _db.CATCustomerData.Find(id);
+            if (cAtCustomerData == null)
             {
                 return HttpNotFound();
             }
-            if (cATCustomerData.CustomerType == "PO") return PartialView("_CompanyDetails", cATCustomerData);
-            return PartialView("_IndividualDetails", cATCustomerData);
+            if (cAtCustomerData.CustomerType == "PO") return PartialView("_CompanyDetails", cAtCustomerData);
+            return PartialView("_IndividualDetails", cAtCustomerData);
         }
 
         // GET: Customer/Details/5
-        public ActionResult Details(int? id)
+        public ActionResult Details(int? page, int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            CATCustomerData cATCustomerData = db.CATCustomerData.Where(l => l.PKCustomerDataID == id).Include(p => p.CATCustomerIdentifiers).Include(p => p.CATCustomerServices).FirstOrDefault(); 
-            
-            if (cATCustomerData == null)
+            CATCustomerData model = _db.CATCustomerData.Where(l => l.PKCustomerDataID == id).Include(p => p.CATCustomerIdentifiers).Include(p => p.CATCustomerServices).FirstOrDefault();
+            var dataList = _db.CATCustomerData.Where(l => l.PKCustomerDataID == id).ToList();
+            if (model == null)
             {
                 return HttpNotFound();
             }
 
-            if (cATCustomerData.CustomerType == "PO") ViewBag.CustomerType = 1;
+            if (model.CustomerType == "PO") ViewBag.CustomerType = 1;
             else ViewBag.CustomerType = 2;
-            
-            return View("Details", cATCustomerData);          
+
+            _pager = new Pager(1, page);
+            var pageList = new StaticPagedList<CATCustomerData>(dataList, _pager.CurrentPage, _pager.PageSize, _pager.TotalItems);
+            return View("CompanyList", pageList);
+
+            //return View("Details", cATCustomerData);          
         }
 
         // GET: Customer/Services/5
@@ -63,95 +69,113 @@ namespace WebPortal.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
 
-            CATCustomerData cATCustomerData = db.CATCustomerData.Where(l => l.PKCustomerDataID == id).Include(p => p.CATCustomerIdentifiers).FirstOrDefault();
+            CATCustomerData cAtCustomerData = _db.CATCustomerData.Where(l => l.PKCustomerDataID == id).Include(p => p.CATCustomerIdentifiers).FirstOrDefault();
 
-            if (cATCustomerData == null)
+            if (cAtCustomerData == null)
             {
                 return HttpNotFound();
             }
 
-            CustomerViewModel model = new CustomerViewModel(cATCustomerData);
-            if (cATCustomerData.CustomerType == "PO") ViewBag.CustomerType = 1;
+            CustomerViewModel model = new CustomerViewModel(cAtCustomerData);
+            if (cAtCustomerData.CustomerType == "PO") ViewBag.CustomerType = 1;
             else ViewBag.CustomerType = 2;
 
-            return View("Details",model);
+            return View("Details", model);
         }
 
 
         // POST: Customer/EditServices
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult SaveServices(List<WebPortal.Models.ServicesViewModel> data)
+        public ActionResult SaveServices(List<ServicesViewModel> data)
         {
             if (ModelState.IsValid)
             {
-              //  db.CATCustomerData.Add(cATCustomerData);
-             //   db.SaveChanges();
+                //  db.CATCustomerData.Add(cATCustomerData);
+                //   db.SaveChanges();
             }
 
-           // if (cATCustomerData.CustomerType == "PO") return RedirectToAction("CompanyList");
+            // if (cATCustomerData.CustomerType == "PO") return RedirectToAction("CompanyList");
             return RedirectToAction("IndividualList");
         }
 
 
         // GET: Customer/IndividualList/
-        public ActionResult Search(string Name)
+        public ActionResult Search(int? page, string searchText, string currentFilter)
         {
-
-            List<CATCustomerData> model = db.CATCustomerData.Where(p => p.TCActive != 99 && (p.CompanyName.Contains(Name) || p.IndividualLastName.Contains(Name))).ToList();
-            if (model.Exists(p => p.CustomerType.Equals("PO")))
+            StaticPagedList<CATCustomerData> pageList;
+            if (searchText.IsNullOrWhiteSpace())
             {
-                model = db.CATCustomerData.Where(p => p.CustomerType.Equals("PO") && p.CompanyName.Contains(Name) && p.TCActive != 99).ToList();
-                if (model.Count == 0)
-                {
-                    model = db.CATCustomerData.Where(p => p.CustomerType.Equals("PO")).ToList();
-                }
-                return View("CompanyList", model);
+                searchText = currentFilter;
             }
-            else
-            {
-                model = db.CATCustomerData.Where(p => p.CustomerType.Equals("FO") && p.IndividualLastName.Contains(Name) && p.TCActive != 99).ToList();
+            // set actual filter to ViewBag
+            ViewBag.CurrentFilter = searchText;
+
+            List<CATCustomerData> model = _db.CATCustomerData.ToList();
+            List<CATCustomerData> dataList;
+            dataList = model.Where(p => p.CustomerType.Equals("PO") 
+                                    && (p.CompanyName.ToUpper().Contains(searchText.ToUpper())
+                                    || p.Address.ToUpper().Contains(searchText.ToUpper()))).ToList();
             
-            if (model.Count == 0)
+            if (dataList.Count > 0)
             {
-                    model = db.CATCustomerData.Where(p => p.CustomerType.Equals("FO")).ToList();
-            }
-                return View("IndividualList", model);
+                _pager = new Pager(dataList.Count, page);
+                pageList = new StaticPagedList<CATCustomerData>(dataList, _pager.CurrentPage, _pager.PageSize, _pager.TotalItems);
+                return View("CompanyList", pageList);
             }
 
+            dataList = model.Where(p => p.CustomerType.Equals("FO")
+                                        && (p.FullName.ToUpper().Contains(searchText.ToUpper())
+                                            || p.Address.ToUpper().Contains(searchText.ToUpper()))).ToList();
+            if (dataList.Count > 0)
+            {
+                _pager = new Pager(dataList.Count, page);
+                 pageList = new StaticPagedList<CATCustomerData>(dataList, _pager.CurrentPage, _pager.PageSize, _pager.TotalItems);
+                return View("IndividualList", pageList);
+            }
 
-            // return PartialView("_IndividualList", model);
-            
+           dataList = model.Where(p => p.CustomerType.Equals("PO")).ToList();
+                _pager = new Pager(model.Count, page);
+                pageList = new StaticPagedList<CATCustomerData>(dataList, _pager.CurrentPage, _pager.PageSize,
+                    _pager.TotalItems);
+                return View("CompanyList", pageList);
+           
         }
 
         // GET: Customer/IndividualList/
-        public ActionResult IndividualList()
+        public ActionResult IndividualList(int? page)
         {
-            List<CATCustomerData> model = db.CATCustomerData.Where(p => p.CustomerType == "FO" && p.TCActive != 99).ToList();
-            return View(model);
+            List<CATCustomerData> model = _db.CATCustomerData.Where(p => p.CustomerType == "FO" && p.TCActive != 99).ToList();
+            _pager = new Pager(model.Count(), page);
+            var pageList = new StaticPagedList<CATCustomerData>(model, _pager.CurrentPage, _pager.PageSize, _pager.TotalItems);
+            return View("IndividualList", pageList);
+            //return View(model);
         }
 
         // GET: Customer/ComapnyList/
-        public ActionResult CompanyList()
+        public ActionResult CompanyList(int? page)
         {
-            List<CATCustomerData> model = db.CATCustomerData.Where(p => p.CustomerType == "PO" && p.TCActive!=99).ToList();
-            return View(model);
+            List<CATCustomerData> model = _db.CATCustomerData.Where(p => p.CustomerType == "PO" && p.TCActive != 99).ToList();
+            //return View(model);
+            _pager = new Pager(model.Count(), page);
+            var pageList = new StaticPagedList<CATCustomerData>(model, _pager.CurrentPage, _pager.PageSize, _pager.TotalItems);
+            return View("CompanyList", pageList);
         }
 
         // GET: Customer/Create/
         public ActionResult Create(int? id)
         {
-            CATCustomerData cATCustomerData = new CATCustomerData();
+            CATCustomerData cAtCustomerData = new CATCustomerData();
 
             if (id == 1)
             {
-                cATCustomerData.CustomerType = "PO";
-                return PartialView("_CompanyCreate", cATCustomerData);
+                cAtCustomerData.CustomerType = "PO";
+                return PartialView("_CompanyCreate", cAtCustomerData);
             }
             else if (id == 2)
             {
-                cATCustomerData.CustomerType = "FO";
-                return PartialView("_IndividualCreate", cATCustomerData);
+                cAtCustomerData.CustomerType = "FO";
+                return PartialView("_IndividualCreate", cAtCustomerData);
             }
             else return RedirectToAction("CompanyList"); //return View();
         }
@@ -161,18 +185,18 @@ namespace WebPortal.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(CATCustomerData cATCustomerData)
+        public ActionResult Create(CATCustomerData cAtCustomerData)
         {
             if (ModelState.IsValid)
             {
-                cATCustomerData.TCActive = 0;
-                cATCustomerData.TCInsertTime = DateTime.Now;
-                cATCustomerData.TCLastUpdate = DateTime.Now;
-                db.CATCustomerData.Add(cATCustomerData);
-                db.SaveChanges();
+                cAtCustomerData.TCActive = 0;
+                cAtCustomerData.TCInsertTime = DateTime.Now;
+                cAtCustomerData.TCLastUpdate = DateTime.Now;
+                _db.CATCustomerData.Add(cAtCustomerData);
+                _db.SaveChanges();
             }
 
-            if (cATCustomerData.CustomerType == "PO") return RedirectToAction("CompanyList");
+            if (cAtCustomerData.CustomerType == "PO") return RedirectToAction("CompanyList");
             return RedirectToAction("IndividualList");
         }
 
@@ -183,13 +207,13 @@ namespace WebPortal.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            CATCustomerData cATCustomerData = db.CATCustomerData.Find(id);
-            if (cATCustomerData == null)
+            CATCustomerData cAtCustomerData = _db.CATCustomerData.Find(id);
+            if (cAtCustomerData == null)
             {
                 return HttpNotFound();
             }
-            if (cATCustomerData.CustomerType == "PO") return PartialView("_CompanyEdit", cATCustomerData);
-            return PartialView("_IndividualEdit", cATCustomerData);
+            if (cAtCustomerData.CustomerType == "PO") return PartialView("_CompanyEdit", cAtCustomerData);
+            return PartialView("_IndividualEdit", cAtCustomerData);
         }
 
         //[Bind(Include = "PKCustomerDataID,CustomerType,CompanyName,CompanyType,CompanyID,CompanyTAXID,CompanyVATID,IndividualTitle,IndividualFirstName,IndividualLastName,IndividualID,IndividualTAXID,IndividualVATID,BankAccountIBAN,AddressStreet,AddressBuildingNumber,AddressCity,AddressZipCode,AddressCountry,ContactEmail,ContactMobile,ContactPhone,ContactWeb,TCInsertTime,TCLastUpdate,TCActive")] 
@@ -198,16 +222,16 @@ namespace WebPortal.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(CATCustomerData cATCustomerData)
+        public ActionResult Edit(CATCustomerData cAtCustomerData)
         {
             if (ModelState.IsValid)
             {
-                cATCustomerData.TCLastUpdate = DateTime.Now;
-                db.Entry(cATCustomerData).State = EntityState.Modified;
-                db.SaveChanges();
-               // return RedirectToAction("CompanyList");
+                cAtCustomerData.TCLastUpdate = DateTime.Now;
+                _db.Entry(cAtCustomerData).State = EntityState.Modified;
+                _db.SaveChanges();
+                // return RedirectToAction("CompanyList");
             }
-            if (cATCustomerData.CustomerType == "PO") return RedirectToAction("CompanyList");
+            if (cAtCustomerData.CustomerType == "PO") return RedirectToAction("CompanyList");
             return RedirectToAction("IndividualList");
         }
 
@@ -219,14 +243,14 @@ namespace WebPortal.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
 
-            CATCustomerData cATCustomerData = db.CATCustomerData.Find(id);
-            if (cATCustomerData == null)
+            CATCustomerData cAtCustomerData = _db.CATCustomerData.Find(id);
+            if (cAtCustomerData == null)
             {
                 return HttpNotFound();
             }
 
-            DeleteModel model = new DeleteModel(cATCustomerData.PKCustomerDataID,
-                cATCustomerData.IndividualFirstName + ' ' + cATCustomerData.IndividualLastName);
+            DeleteModel model = new DeleteModel(cAtCustomerData.PKCustomerDataID,
+                cAtCustomerData.IndividualFirstName + ' ' + cAtCustomerData.IndividualLastName);
             return PartialView("_deleteModal", model);
 
             //if (id == null)
@@ -246,11 +270,14 @@ namespace WebPortal.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            CATCustomerData cATCustomerData = db.CATCustomerData.Find(id);
-            cATCustomerData.TCActive = 99;
-            db.SaveChanges();
+            CATCustomerData cAtCustomerData = _db.CATCustomerData.Find(id);
+            if (cAtCustomerData != null)
+            {
+                cAtCustomerData.TCActive = 99;
+                _db.SaveChanges();
 
-            if (cATCustomerData.CustomerType == "PO") return RedirectToAction("CompanyList");
+                if (cAtCustomerData.CustomerType == "PO") return RedirectToAction("CompanyList");
+            }
             return RedirectToAction("IndividualList");
         }
 
@@ -262,29 +289,28 @@ namespace WebPortal.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
 
-            CATCustomerIdentifiers cATCustomerIdent = new CATCustomerIdentifiers();
-            cATCustomerIdent.FKCustomerID = id.Value;
+            CATCustomerIdentifiers cAtCustomerIdent = new CATCustomerIdentifiers { FKCustomerID = id.Value };
 
 
-            return PartialView("_AddIdentifier", cATCustomerIdent);
+            return PartialView("_AddIdentifier", cAtCustomerIdent);
         }
 
 
         ////  POST- CREATE new ADD Identifier ////
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult AddIdentifier(CATCustomerIdentifiers cATCustomerIdent)
+        public ActionResult AddIdentifier(CATCustomerIdentifiers cAtCustomerIdent)
         {
             if (ModelState.IsValid)
             {
-                cATCustomerIdent.TCLastUpdate = DateTime.Now;
-                cATCustomerIdent.TCInsertTime = DateTime.Now;
-                cATCustomerIdent.TCActive = 0;
+                cAtCustomerIdent.TCLastUpdate = DateTime.Now;
+                cAtCustomerIdent.TCInsertTime = DateTime.Now;
+                cAtCustomerIdent.TCActive = 0;
 
-                db.CATCustomerIdentifiers.Add(cATCustomerIdent);
-                db.SaveChanges();           
-            }           
-            return RedirectToAction("Services", new { id = cATCustomerIdent.FKCustomerID });
+                _db.CATCustomerIdentifiers.Add(cAtCustomerIdent);
+                _db.SaveChanges();
+            }
+            return RedirectToAction("Services", new { id = cAtCustomerIdent.FKCustomerID });
         }
 
 
@@ -297,28 +323,28 @@ namespace WebPortal.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
 
-            CATCustomerIdentifiers cATCustomerIdent = db.CATCustomerIdentifiers.Find(id);
-            if (cATCustomerIdent == null)
+            CATCustomerIdentifiers cAtCustomerIdent = _db.CATCustomerIdentifiers.Find(id);
+            if (cAtCustomerIdent == null)
             {
                 return HttpNotFound();
             }
-            return PartialView("_EditIdentifier", cATCustomerIdent);
+            return PartialView("_EditIdentifier", cAtCustomerIdent);
         }
 
 
         //// POST EDIT Identifier - modal  ////
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult EditIdentifier(CATCustomerIdentifiers cATCustomerIdent)
+        public ActionResult EditIdentifier(CATCustomerIdentifiers cAtCustomerIdent)
         {
             if (ModelState.IsValid)
             {
-                cATCustomerIdent.TCLastUpdate = DateTime.Now;
-                db.Entry(cATCustomerIdent).State = EntityState.Modified;
-                db.SaveChanges();
+                cAtCustomerIdent.TCLastUpdate = DateTime.Now;
+                _db.Entry(cAtCustomerIdent).State = EntityState.Modified;
+                _db.SaveChanges();
             }
 
-            return RedirectToAction("Services", new { id = cATCustomerIdent.FKCustomerID });
+            return RedirectToAction("Services", new { id = cAtCustomerIdent.FKCustomerID });
         }
 
         // GET DELETE Identifier :  Customer/DeleteIdentifier/5
@@ -329,13 +355,13 @@ namespace WebPortal.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
 
-            CATCustomerIdentifiers cATCustomerIdent = db.CATCustomerIdentifiers.Find(id);
-            if (cATCustomerIdent == null)
+            CATCustomerIdentifiers cAtCustomerIdent = _db.CATCustomerIdentifiers.Find(id);
+            if (cAtCustomerIdent == null)
             {
                 return HttpNotFound();
             }
 
-            DeleteModel model = new DeleteModel(cATCustomerIdent.PKCustomerIdentifiersID, "Identifikátor");
+            DeleteModel model = new DeleteModel(cAtCustomerIdent.PKCustomerIdentifiersID, "Identifikátor");
             return PartialView("_deleteModal", model);
         }
 
@@ -347,12 +373,15 @@ namespace WebPortal.Controllers
         {
             if (ModelState.IsValid)
             {
-                CATCustomerIdentifiers cATCustomerIdent = db.CATCustomerIdentifiers.Find(model.Id);
-                cATCustomerIdent.TCLastUpdate = DateTime.Now;
-                cATCustomerIdent.TCActive = 99;
-                db.Entry(cATCustomerIdent).State = EntityState.Modified;
-                db.SaveChanges();
-                return RedirectToAction("Services", new { id = cATCustomerIdent.FKCustomerID });
+                CATCustomerIdentifiers cAtCustomerIdent = _db.CATCustomerIdentifiers.Find(model.Id);
+                if (cAtCustomerIdent != null)
+                {
+                    cAtCustomerIdent.TCLastUpdate = DateTime.Now;
+                    cAtCustomerIdent.TCActive = 99;
+                    _db.Entry(cAtCustomerIdent).State = EntityState.Modified;
+                    _db.SaveChanges();
+                    return RedirectToAction("Services", new { id = cAtCustomerIdent.FKCustomerID });
+                }
             }
 
             return HttpNotFound();
@@ -364,7 +393,7 @@ namespace WebPortal.Controllers
         {
             if (disposing)
             {
-                db.Dispose();
+                _db.Dispose();
             }
             base.Dispose(disposing);
         }

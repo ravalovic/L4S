@@ -6,8 +6,8 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace WebPortal
 {
-    [Table("STInputFileDuplicity")]
-    public partial class STInputFileDuplicity
+    [Table("ARCHInputFileDuplicity")]
+    public partial class ARCHInputFileDuplicity
     {
         [Key]
         [Column(Order = 0)]
@@ -29,7 +29,6 @@ namespace WebPortal
         public string Checksum { get; set; }
 
         [Required]
-        [Display(Name = "File_FirstlLoadTime", ResourceType = typeof(Labels))]
         public DateTime? LoadDateTime { get; set; }
 
         [Required] 
@@ -55,10 +54,3 @@ namespace WebPortal
         public int? TCActive { get; set; }
     }
 }
-//CreateTable(
-//    "dbo.STInputFileDuplicity",
-//    c => new
-//        {
-//            LoadDateTime = c.DateTime(defaultValueSql: "GETDATE()")
-//            InsertDateTime = c.DateTime(defaultValueSql: "GETDATE()")
-//        });

@@ -238,6 +238,9 @@
     <Compile Include="Entities\ARCHCustomerDailyData.cs" />
     <Compile Include="Entities\ARCHCustomerMonthlyData.cs" />
     <Compile Include="Entities\ARCHLogsOfService.cs" />
+    <Compile Include="Entities\ARCHProcessStatus.cs" />
+    <Compile Include="Entities\ARCHInputFileDuplicity.cs" />
+    <Compile Include="Entities\ARCHInputFileInfo.cs" />
     <Compile Include="Entities\view_CustomerMontlyTotalInvoice.cs" />
     <Compile Include="Entities\GAPAnalyze.cs" />
     <Compile Include="Entities\CATSummaryInvoice.cs" />
@@ -326,6 +329,10 @@
     <Compile Include="Migrations\201708042105486_Version15.cs" />
     <Compile Include="Migrations\201708042105486_Version15.Designer.cs">
       <DependentUpon>201708042105486_Version15.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201708121543077_Version16.cs" />
+    <Compile Include="Migrations\201708121543077_Version16.Designer.cs">
+      <DependentUpon>201708121543077_Version16.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
@@ -487,7 +494,6 @@
     <Content Include="Content\bootstrap\alerts.less" />
     <Content Include="Content\_bootstrap-datetimepicker.less" />
     <Content Include="Content\bootstrap-datetimepicker-build.less" />
-    <Content Include="Scripts\bootstrap-datetimepicker.sk.js" />
     <None Include="Scripts\jquery-3.1.1.intellisense.js" />
     <None Include="Resources\Images\logo-ugkk.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -602,11 +608,11 @@
     <Content Include="Views\Customer\_AddIdentifier.cshtml" />
     <Content Include="Views\Customer\_EditIdentifier.cshtml" />
     <Content Include="Views\Shared\_deleteModal.cshtml" />
-    <Content Include="Views\CustomerMonthlyDatas\CustomerMonthly.cshtml" />
-    <Content Include="Views\CustomerDailyDatas\CustomerDaily.cshtml" />
+    <Content Include="Views\CustomerMonthlyDatas\Index.cshtml" />
+    <Content Include="Views\CustomerDailyDatas\Index.cshtml" />
     <Content Include="Views\Service\_Create.cshtml" />
     <Content Include="Views\Patterns\_Create.cshtml" />
-    <Content Include="Views\LogsOfServices\DetailData.cshtml" />
+    <Content Include="Views\LogsOfServices\Index.cshtml" />
     <Content Include="Views\GAPAnalyzes\Index.cshtml" />
     <Content Include="Views\OwnerDatas\Delete.cshtml" />
     <Content Include="Views\OwnerDatas\Index.cshtml" />
@@ -676,10 +682,14 @@
     <EmbeddedResource Include="Migrations\201708042105486_Version15.resx">
       <DependentUpon>201708042105486_Version15.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201708121543077_Version16.resx">
+      <DependentUpon>201708121543077_Version16.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Resources\Labels.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>Labels.Designer.cs</LastGenOutput>
       <CustomToolNamespace>Resources</CustomToolNamespace>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

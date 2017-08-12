@@ -6,36 +6,35 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace WebPortal
 {
-    [Table("STInputFileDuplicity")]
-    public partial class STInputFileDuplicity
+    [Table("ARCHInputFileInfo")]
+    public partial class ARCHInputFileInfo
     {
         [Key]
-        [Column(Order = 0)]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int ID { get; set; }
-        [Required]
-        [System.ComponentModel.DefaultValue(-1)]
-        public int OriginalId { get; set; }
+        public int Id { get; set; }
 
+        [Required]
         [StringLength(200)]
         public string FileName { get; set; }
-
-
-        [Required]
-        public int LinesInFile { get; set; }
 
         [Required]
         [StringLength(50)]
         public string Checksum { get; set; }
 
         [Required]
-        [Display(Name = "File_FirstlLoadTime", ResourceType = typeof(Labels))]
-        public DateTime? LoadDateTime { get; set; }
+        public int LinesInFile { get; set; }
 
-        [Required] 
+        [Required]
         [Display(Name = "File_CreationTime", ResourceType = typeof(Labels))]
         public DateTime InsertDateTime { get; set; }
 
+        [Required]
+        [Display(Name = "File_BatchID", ResourceType = typeof(Labels))]
+        public int LoaderBatchID { get; set; }
+
+        [Required]
+        [Display(Name = "File_LoadedRecord", ResourceType = typeof(Labels))]
+        public int LoadedRecord { get; set; }
 
         [StringLength(200)]
         [Display(Name = "File_Name", ResourceType = typeof(Labels))]
@@ -45,20 +44,8 @@ namespace WebPortal
         [StringLength(50)]
         [Display(Name = "File_CheckSum", ResourceType = typeof(Labels))]
         public string OriginalFileChecksum { get; set; }
-
-        [Required]
-        [DatabaseGenerated(DatabaseGeneratedOption.None)]
-        [System.ComponentModel.DefaultValue(-1)]
-        public int LoaderBatchID { get; set; }
         public DateTime? TCLastUpdate { get; set; }
 
         public int? TCActive { get; set; }
     }
 }
-//CreateTable(
-//    "dbo.STInputFileDuplicity",
-//    c => new
-//        {
-//            LoadDateTime = c.DateTime(defaultValueSql: "GETDATE()")
-//            InsertDateTime = c.DateTime(defaultValueSql: "GETDATE()")
-//        });

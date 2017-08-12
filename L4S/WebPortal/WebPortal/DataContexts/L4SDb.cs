@@ -45,14 +45,22 @@ namespace WebPortal.DataContexts
         public DbSet<CATProcessStatus> CATProcessStatus { get; set; }
         public DbSet<CATChangeDetect> CATChangeDetect { get; set; }
 
-        public DbSet<ARCHCustomerDailyData> ARCHCustomerDailyData { get; set; }
-        public DbSet<ARCHCustomerMonthlyData> ARCHCustomerMonthlyData { get; set; }
-        public DbSet<ARCHLogsOfService> ARCHLogsOfService { get; set; }
-        public DbSet<CATCustomerServiceDetailInvoice> CATCustomerServiceDetailInvoice { get; set; }
+       public DbSet<CATCustomerServiceDetailInvoice> CATCustomerServiceDetailInvoice { get; set; }
         public DbSet<CATSummaryInvoice> CATSummaryInvoice { get; set; }
         public DbSet<CONFGeneralSettings> CONFGeneralSettings { get; set; }
         public DbSet<GAPAnalyze> GAPAnalyze { get; set; }
 
+
+        //archive tables
+        public DbSet<ARCHCustomerDailyData> ARCHCustomerDailyData { get; set; }
+        public DbSet<ARCHCustomerMonthlyData> ARCHCustomerMonthlyData { get; set; }
+        public DbSet<ARCHLogsOfService> ARCHLogsOfService { get; set; }
+        public DbSet<ARCHProcessStatus> ARCHProcessStatus { get; set; }
+        public DbSet<ARCHInputFileDuplicity> ARCHInputFileDuplicity { get; set; }
+        public DbSet<ARCHInputFileInfo> ARCHInputFileInfo { get; set; }
+        
+
+        //views
         public virtual DbSet<view_DetailFromMonthly> view_DetailFromMonthly { get; set; }
         public virtual DbSet<view_InvoiceByDay> view_InvoiceByDay { get; set; }
         public virtual DbSet<view_InvoiceByMonth> view_InvoiceByMonth { get; set; }
