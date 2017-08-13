@@ -9,19 +9,17 @@ using WebPortal.Models;
 
 namespace WebPortal.Controllers
 {
-    public class CustomerDailyDatasController : Controller
+    public class InvoiceByDayController : Controller
     {
-        
         private readonly L4SDb _db = new L4SDb();
-        private List<view_DailyData> _dataList;
-        private List<view_DailyData> _model;
+        private List<view_InvoiceByDay> _dataList;
+        private List<view_InvoiceByDay> _model;
         private Pager _pager;
-        
 
-        // GET: CATCustomerDailyDatas
+        // GET: InvoiceByDay
         public ActionResult Index(int? page, string insertDateFrom, string insertDateTo, string searchText, string currentFilter, string currentFrom, string currentTo, int? currentCustId, int? currentServId, DateTime? currentDate)
         {
-            var dbAccess = _db.view_DailyData;
+            var dbAccess = _db.view_InvoiceByDay;
 
             if (currentCustId != 0 && currentServId != 0 && currentDate.HasValue)
             {
@@ -45,64 +43,82 @@ namespace WebPortal.Controllers
                 ViewBag.CurrentFilter = searchText;
                 ViewBag.CurrentFrom = insertDateFrom;
                 ViewBag.CurrentTo = insertDateTo;
+                if (searchText.IsNullOrWhiteSpace() && insertDateFrom.IsNullOrWhiteSpace() &&
+                    insertDateTo.IsNullOrWhiteSpace())
+                {
+                    _model = dbAccess.OrderByDescending(d => d.DateOfRequest).ThenBy(p => p.CustomerID).ToList();
+                    if (_model.FirstOrDefault() != null)
+                    {
+                        var actualdate = _model.FirstOrDefault().DateOfRequest;
 
+                        insertDateFrom = actualdate.Date.AddDays(1-actualdate.Day).ToString("dd.MM.yyyy");
+                        insertDateTo = actualdate.Date.AddDays(1 - actualdate.Day).AddMonths(1).AddTicks(-1).ToString("dd.MM.yyyy");
+                    }
+                    else
+                    {
+                        insertDateFrom = DateTime.Now.AddDays(1-DateTime.Now.Day).ToString("dd.MM.yyyy");
+                        insertDateTo = DateTime.Now.AddDays(1 - DateTime.Now.Day).AddMonths(1).AddTicks(-1).ToString("dd.MM.yyyy");
+                        
+                    }
+                    ViewBag.CurrentFrom = insertDateFrom;
+                    ViewBag.CurrentTo = insertDateTo;
+                }
                 bool datCondition = false;
                 bool textCondition = false;
-               
-                int.TryParse(searchText, out  int searchId);
+
+                int.TryParse(searchText, out int searchId);
                 if (!insertDateFrom.IsNullOrWhiteSpace() || !insertDateTo.IsNullOrWhiteSpace()) datCondition = true;
                 if (searchText != null) textCondition = true;
 
-               DateTime.TryParse(insertDateFrom, out DateTime fromDate);
+                DateTime.TryParse(insertDateFrom, out DateTime fromDate);
                 if (!DateTime.TryParse(insertDateTo, out DateTime toDate))
                 {
                     toDate = DateTime.Now;
                 }
-                if (fromDate == toDate) toDate = toDate.AddDays(1).AddTicks(-1);
+                toDate = toDate.AddDays(1).AddTicks(-1);
 
                 if (datCondition && !textCondition)
                 {
-                    _model = dbAccess.Where(p => p.DateOfRequest >= fromDate && p.DateOfRequest <= toDate).OrderByDescending(d => d.DateOfRequest).ToList();
+                    _model = dbAccess.Where(p => p.DateOfRequest >= fromDate && p.DateOfRequest <= toDate)
+                        .OrderByDescending(d => d.DateOfRequest).ThenBy(p => p.CustomerID).ThenBy(p => p.ServiceID).ToList();
                 }
                 if (textCondition && !datCondition)
                 {
-                    if (searchId != 0)
-                    {
-                        _model = dbAccess.Where(p => p.CustomerID == searchId || p.ServiceID == searchId).OrderByDescending(d => d.DateOfRequest).ToList();
-                    }
-                    else
-                    {
-                        _model = dbAccess.Where(p => p.CustomerIdentification.Contains(searchText) || p.CustomerName.Contains(searchText) || p.ServiceCode.Contains(searchText)).OrderByDescending(d => d.DateOfRequest).ToList();
-                    }
+                    _model = dbAccess
+                            .Where(p => p.CustomerID == searchId || p.ServiceID == searchId|| 
+                                        p.CustomerIdentification.Contains(searchText) ||
+                                        p.CustomerName.Contains(searchText) || p.ServiceCode.Contains(searchText))
+                        .OrderByDescending(d => d.DateOfRequest).ThenBy(p => p.CustomerID).ThenBy(p => p.ServiceID).ToList();
+
                 }
                 if (textCondition && datCondition)
                 {
-                    if (searchId != 0)
-                    {
-                        _model = dbAccess.Where(p => (p.DateOfRequest >= fromDate && p.DateOfRequest <= toDate) && (p.ServiceID == searchId || p.CustomerID == searchId)).OrderByDescending(d => d.DateOfRequest).ToList();
-                    }
-                    else
-                    {
-                        _model =  dbAccess.Where(p => (p.DateOfRequest >= fromDate && p.DateOfRequest <= toDate) && (p.CustomerIdentification.Contains(searchText) || p.CustomerName.Contains(searchText) || p.ServiceCode.Contains(searchText))).OrderByDescending(d => d.DateOfRequest).ToList();
-                    }
+                    
+                        _model = dbAccess
+                            .Where(p => (p.DateOfRequest >= fromDate && p.DateOfRequest <= toDate) &&
+                                        (p.CustomerID == searchId || p.ServiceID == searchId||
+                                         p.CustomerIdentification.Contains(searchText) ||
+                                         p.CustomerName.Contains(searchText) || p.ServiceCode.Contains(searchText)))
+                            .OrderByDescending(d => d.DateOfRequest).ThenBy(p => p.CustomerID).ThenBy(p => p.ServiceID).ToList();
+
                 }
             }
-            if ( _model == null || _model.Count == 0)
+            if (_model == null || _model.Count == 0)
             {
-                _model = dbAccess.OrderByDescending(d => d.DateOfRequest).ToList();
+                _model = dbAccess.OrderByDescending(d => d.DateOfRequest)
+                    .ThenBy(p => p.CustomerID).ThenBy(p => p.ServiceID).ToList();
             }
 
             _pager = new Pager(_model.Count(), page);
             _dataList = _model.Skip(_pager.ToSkip).Take(_pager.ToTake).ToList();
-            var pageList = new StaticPagedList<view_DailyData>(_dataList, _pager.CurrentPage, _pager.PageSize, _pager.TotalItems);
+            var pageList = new StaticPagedList<view_InvoiceByDay>(_dataList, _pager.CurrentPage, _pager.PageSize, _pager.TotalItems);
             //ViewBag.PageList = pageList;
             //return View(model.ToPagedList(pageNumber: _pager.CurrentPage, pageSize: _pager.PageSize));
-            return View("Index",pageList);
+            return View("Index", pageList);
         }
-
-       public ActionResult Details(int? page, int custId, int servId, DateTime reqDate)
+        public ActionResult Details(int? page, int custId, int servId, DateTime reqDate)
         {
-            var dbAccess = _db.view_DailyData;
+            var dbAccess = _db.view_InvoiceByDay;
             var startDate = new DateTime(reqDate.Year, reqDate.Month, reqDate.Day);
             var endDate = startDate.AddMonths(1).AddTicks(-1);
             ViewBag.CurrentCustId = custId;
@@ -110,17 +126,20 @@ namespace WebPortal.Controllers
             ViewBag.CurrentReqDate = reqDate;
             _model = dbAccess
                 .Where(p => p.DateOfRequest >= startDate.Date && p.DateOfRequest <= endDate && p.CustomerID == custId && p.ServiceID == servId)
-                .OrderByDescending(d => d.DateOfRequest).ToList();
+                .OrderByDescending(d => d.DateOfRequest).ThenBy(p => p.ServiceID).ToList();
             if (_model == null || _model.Count == 0)
             {
                 _model = dbAccess.OrderByDescending(p => p.DateOfRequest).ToList();
             }
             _pager = new Pager(_model.Count(), page);
             _dataList = _model.Skip(_pager.ToSkip).Take(_pager.ToTake).ToList();
-            var pageList = new StaticPagedList<view_DailyData>(_dataList, _pager.CurrentPage, _pager.PageSize, _pager.TotalItems);
+            var pageList = new StaticPagedList<view_InvoiceByDay>(_dataList, _pager.CurrentPage, _pager.PageSize, _pager.TotalItems);
             //return View("CustomerDaily", _dataList.ToPagedList(pageNumber: _pager.CurrentPage, pageSize: _pager.PageSize));
             return View("Index", pageList);
         }
+
+      
+
 
         protected override void Dispose(bool disposing)
         {

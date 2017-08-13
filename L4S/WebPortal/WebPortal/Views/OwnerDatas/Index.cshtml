@@ -17,7 +17,7 @@
                 </div>
             </div>
         </div>
-   
+
         <div class="panel-body">
             <table class="table table-striped table-bordered table-hover table-condensed">
                 <tr>
@@ -55,12 +55,13 @@
                             @Html.DisplayFor(modelItem => item.OwnerCompanyType)
                         </td>
                         <td>
-                            @Html.CheckBoxFor(modelItem => item.Active, new { onclick = "changeStatus("+ item.ID+")" })
+                            @Html.CheckBoxFor(modelItem => item.Active, new { onclick = "changeStatus(" + item.ID + ")" })
                         </td>
                         <td>
-                            <div >
+                            <div>
                                 <a class="btn btn-success" href="/OwnerDatas/Edit/@item.ID"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span> @Resources.Labels.Btn_Edit </a>
-                                <a class="modal-link-small btn btn-danger" href="/OwnerDatas/Delete/@item.ID"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span> @Resources.Labels.Btn_Delete </a></div>
+                                <a class="modal-link-small btn btn-danger" href="/OwnerDatas/Delete/@item.ID"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span> @Resources.Labels.Btn_Delete </a>
+                            </div>
                         </td>
                     </tr>
                 }

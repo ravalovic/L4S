@@ -221,7 +221,9 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\CustomerMontlyTotalInvoiceController.cs" />
     <Compile Include="Controllers\GAPAnalyzesController.cs" />
+    <Compile Include="Controllers\InvoiceByDayController.cs" />
     <Compile Include="Controllers\InvoiceByMonthController.cs" />
     <Compile Include="Controllers\LogsOfServicesController.cs" />
     <Compile Include="Controllers\OwnerDatasController.cs" />
@@ -333,6 +335,10 @@
     <Compile Include="Migrations\201708121543077_Version16.cs" />
     <Compile Include="Migrations\201708121543077_Version16.Designer.cs">
       <DependentUpon>201708121543077_Version16.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201708131849350_version17.cs" />
+    <Compile Include="Migrations\201708131849350_version17.Designer.cs">
+      <DependentUpon>201708131849350_version17.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
@@ -616,13 +622,14 @@
     <Content Include="Views\GAPAnalyzes\Index.cshtml" />
     <Content Include="Views\OwnerDatas\Delete.cshtml" />
     <Content Include="Views\OwnerDatas\Index.cshtml" />
-    <Content Include="Views\InvoiceByMonth\Create.cshtml" />
-    <Content Include="Views\InvoiceByMonth\Delete.cshtml" />
-    <Content Include="Views\InvoiceByMonth\Details.cshtml" />
-    <Content Include="Views\InvoiceByMonth\Edit.cshtml" />
     <Content Include="Views\InvoiceByMonth\Index.cshtml" />
     <Content Include="Views\UnknownServices\Details.cshtml" />
     <Content Include="Views\UnknownServices\Index.cshtml" />
+    <Content Include="Views\InvoiceByDay\Details.cshtml" />
+    <Content Include="Views\InvoiceByDay\Edit.cshtml" />
+    <Content Include="Views\InvoiceByDay\Index.cshtml" />
+    <Content Include="Views\CustomerMontlyTotalInvoice\Details.cshtml" />
+    <Content Include="Views\CustomerMontlyTotalInvoice\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -684,6 +691,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201708121543077_Version16.resx">
       <DependentUpon>201708121543077_Version16.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201708131849350_version17.resx">
+      <DependentUpon>201708131849350_version17.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Resources\Labels.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>

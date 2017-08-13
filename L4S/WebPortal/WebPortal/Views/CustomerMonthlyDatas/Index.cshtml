@@ -67,7 +67,7 @@
 
                 @foreach (var item in Model)
                 {
-                    <tr onclick="location.href = '@(Url.Action("Index", "CustomerDailyDatas", new { custId = item.CustomerID, servId =item.ServiceID, reqDate = item.DateOfRequest }))'">
+                    <tr onclick="location.href = '@(Url.Action("Details", "CustomerDailyDatas", new { custId = item.CustomerID, servId =item.ServiceID, reqDate = item.DateOfRequest }))'">
                         <td>
                             @Html.DisplayFor(modelItem => item.DateOfRequest)
                         </td>

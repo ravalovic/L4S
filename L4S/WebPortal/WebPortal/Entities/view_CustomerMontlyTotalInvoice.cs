@@ -6,9 +6,11 @@ namespace WebPortal
     [Table("view_CustomerMontlyTotalInvoice")]
     public partial class view_CustomerMontlyTotalInvoice
     {
-        public int ID { get; set; }
+        [Key]
+        [Column(Order = 0)]
         [StringLength(50)]
         public string InvoiceNumber { get; set; }
+        [DataType(DataType.Date)]
         public DateTime StartBillingPeriod { get; set; }
         [DataType(DataType.Date)]
         public DateTime StopBillingPeriod { get; set; }
@@ -28,8 +30,6 @@ namespace WebPortal
         public decimal RequestedTime { get; set; }
         [StringLength(50)]
         public string MeasureofUnits { get; set; }
-        [DataType("decimal(18,5)")]
-        public decimal UnitPrice { get; set; }
         [DataType("decimal(18,5)")]
         public decimal TotalPriceWithoutVAT { get; set; }
         [DataType("decimal(18,5)")]

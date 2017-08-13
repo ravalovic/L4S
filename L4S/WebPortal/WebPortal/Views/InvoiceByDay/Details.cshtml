@@ -1,14 +1,13 @@
-﻿@model WebPortal.view_InvoiceByMonth
+﻿@*@model WebPortal.view_InvoiceByDay
 
 @{
-    ViewBag.Title = "Delete";
+    ViewBag.Title = "Details";
 }
 
-<h2>Delete</h2>
+<h2>Details</h2>
 
-<h3>Are you sure you want to delete this?</h3>
 <div>
-    <h4>view_InvoiceByMonth</h4>
+    <h4>view_InvoiceByDay</h4>
     <hr />
     <dl class="dl-horizontal">
         <dt>
@@ -28,11 +27,43 @@
         </dd>
 
         <dt>
+            @Html.DisplayNameFor(model => model.CustomerIdentification)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.CustomerIdentification)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.CustomerName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.CustomerName)
+        </dd>
+
+        <dt>
             @Html.DisplayNameFor(model => model.ServiceID)
         </dt>
 
         <dd>
             @Html.DisplayFor(model => model.ServiceID)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ServiceCode)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ServiceCode)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ServiceDescription)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ServiceDescription)
         </dd>
 
         <dt>
@@ -60,19 +91,27 @@
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.ServiceCode)
+            @Html.DisplayNameFor(model => model.CustomerServiceCode)
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.ServiceCode)
+            @Html.DisplayFor(model => model.CustomerServiceCode)
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.ServiceName)
+            @Html.DisplayNameFor(model => model.CustomerServicename)
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.ServiceName)
+            @Html.DisplayFor(model => model.CustomerServicename)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.UnitPrice)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.UnitPrice)
         </dd>
 
         <dt>
@@ -99,14 +138,17 @@
             @Html.DisplayFor(model => model.BasicPriceWithVAT)
         </dd>
 
+        <dt>
+            @Html.DisplayNameFor(model => model.TCActive)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.TCActive)
+        </dd>
+
     </dl>
-
-    @using (Html.BeginForm()) {
-        @Html.AntiForgeryToken()
-
-        <div class="form-actions no-color">
-            <input type="submit" value="Delete" class="btn btn-default" /> |
-            @Html.ActionLink("Back to List", "Index")
-        </div>
-    }
 </div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.ID }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>*@

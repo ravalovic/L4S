@@ -35,6 +35,8 @@ namespace WebPortal
         public string CustomerServicename { get; set; }
         [DataType("decimal(18,5)")]
         public decimal UnitPrice { get; set; }
+        [StringLength(12)]
+        public string MeasureOfUnits { get; set; }
         [DataType("decimal(18,5)")]
         public decimal BasicPriceWithoutVAT { get; set; }
         [DataType("decimal(18,5)")]

@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@ViewBag.Title - My ASP.NET Application</title>
+    <title>@ViewBag.Title - VOSK</title>
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
   
@@ -20,19 +20,19 @@
 <body>
     <div class="navbar navbar-inverse navbar-fixed-top">
         <div class="container">
-            <div class="navbar-header">
+            <div class="navbar-header col-md-6">
                 <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                @Html.ActionLink("Application name", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
+               @* @Html.ActionLink("VOSK", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })*@
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
-                    <li>@Html.ActionLink("Home", "Index", "Home")</li>
-                    <li>@Html.ActionLink("About", "About", "Home")</li>
-                    <li>@Html.ActionLink("Contact", "Contact", "Home")</li>
+                    <li>@Html.ActionLink("Domov", "Index", "Home")</li>
+                    <li>@Html.ActionLink("O aplikácii", "About", "Home")</li>
+                    <li>@Html.ActionLink("Kontakt", "Contact", "Home")</li>
                 </ul>
             </div>
         </div>
@@ -93,9 +93,9 @@
                                 <div class="accordion-inner">
                                     <ul class="nav nav-pills nav-stacked">
                                         
-                                        <li class="active"><a href="/InvoiceByMonth/Index"><i class="glyphicon glyphicon-search"></i> @Resources.Labels.Menu_InvoiceView</a></li>
-                                        <li class="active"><a href="/Account/Manage"><i class="glyphicon glyphicon-duplicate"></i> @Resources.Labels.Menu_Fakturacie</a></li>
-                                        <li class="active"><a href="/Account/Manage"><i class="glyphicon glyphicon-list-alt"></i> @Resources.Labels.Menu_Report</a></li>
+                                        <li class="active"><a href="/CustomerMontlyTotalInvoice/Index"><i class="glyphicon glyphicon-search"></i> @Resources.Labels.SubMenu_Fakturacie</a></li>
+                                        @*<li class="active"><a href="/Account/Manage"><i class="glyphicon glyphicon-duplicate"></i> @Resources.Labels.Menu_Fakturacie</a></li>*@
+                                        @*<li class="active"><a href="/Account/Manage"><i class="glyphicon glyphicon-list-alt"></i> @Resources.Labels.Menu_Report</a></li>*@
                                     </ul>
                                 </div>
                             </div>
@@ -109,9 +109,11 @@
             </div>
         </div>
                 <hr />
-                    <footer>
-                        <p class="text-center">&copy; @DateTime.Now.Year - Footer</p>
-                    </footer>
+                <footer>
+                    
+                    <p class="text-center">&copy; @DateTime.Now.Year - Výskumný ústav geodézie a kartografie v Bratislave - developed by BlueZ s.r.o</p>
+                  
+                </footer>
     }
     else
     {

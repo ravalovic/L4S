@@ -1,121 +1,144 @@
-﻿using System.Data.Entity;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
-using System.Net;
 using System.Web.Mvc;
 using WebPortal.DataContexts;
+using PagedList;
+using Microsoft.Ajax.Utilities;
+using WebPortal.Models;
 
 namespace WebPortal.Controllers
 {
     public class InvoiceByMonthController : Controller
     {
-        private L4SDb db = new L4SDb();
+        private readonly L4SDb _db = new L4SDb();
+        private List<view_InvoiceByMonth> _dataList;
+        private List<view_InvoiceByMonth> _model;
+        private Pager _pager;
 
         // GET: InvoiceByMonth
-        public ActionResult Index()
+        public ActionResult Index(int? page, string insertDateFrom, string insertDateTo, string searchText, string currentFilter, string currentFrom, string currentTo)
         {
-            return View(db.view_InvoiceByMonth.ToList());
-        }
-
-        // GET: InvoiceByMonth/Details/5
-        public ActionResult Details(int? id)
-        {
-            if (id == null)
+            var dbAccess = _db.view_InvoiceByMonth;
+            if (searchText.IsNullOrWhiteSpace())
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                searchText = currentFilter;
             }
-            view_InvoiceByMonth view_InvoiceByMonth = db.view_InvoiceByMonth.Find(id);
-            if (view_InvoiceByMonth == null)
+            if (insertDateFrom.IsNullOrWhiteSpace())
             {
-                return HttpNotFound();
+                insertDateFrom = currentFrom;
             }
-            return View(view_InvoiceByMonth);
-        }
-
-        // GET: InvoiceByMonth/Create
-        public ActionResult Create()
-        {
-            return View();
-        }
-
-        // POST: InvoiceByMonth/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "ID,DateOfRequest,CustomerID,ServiceID,NumberOfRequest,ReceivedBytes,RequestedTime,ServiceCode,ServiceName,BasicPriceWithoutVAT,VAT,BasicPriceWithVAT")] view_InvoiceByMonth view_InvoiceByMonth)
-        {
-            if (ModelState.IsValid)
+            if (insertDateTo.IsNullOrWhiteSpace())
             {
-                db.view_InvoiceByMonth.Add(view_InvoiceByMonth);
-                db.SaveChanges();
-                return RedirectToAction("Index");
+                insertDateTo = currentTo;
             }
 
-            return View(view_InvoiceByMonth);
-        }
+            // set actual filter to ViewBag
+            ViewBag.CurrentFilter = searchText;
+            ViewBag.CurrentFrom = insertDateFrom;
+            ViewBag.CurrentTo = insertDateTo;
 
-        // GET: InvoiceByMonth/Edit/5
-        public ActionResult Edit(int? id)
+            if (searchText.IsNullOrWhiteSpace() && insertDateFrom.IsNullOrWhiteSpace() &&
+                insertDateTo.IsNullOrWhiteSpace())
+            {
+                _model = dbAccess.OrderByDescending(d => d.DateOfRequest).ThenBy(p => p.CustomerID).ToList();
+                if (_model.FirstOrDefault() != null)
+                {
+                    insertDateFrom = _model.FirstOrDefault().DateOfRequest.ToString("dd.MM.yyyy");
+                    ViewBag.CurrentFrom = _model.FirstOrDefault().DateOfRequest.ToString("MM.yyyy");
+                    ViewBag.CurrentTo = ViewBag.CurrentFrom;
+                }
+                else
+                {
+                    insertDateFrom = DateTime.Now.AddDays(1 - DateTime.Now.Day).ToString("dd.MM.yyyy");
+                    ViewBag.CurrentFrom = DateTime.Now.AddDays(1 - DateTime.Now.Day).ToString("MM.yyyy");
+                    ViewBag.CurrentTo = ViewBag.CurrentFrom;
+                }
+                insertDateTo = insertDateFrom;
+            }
+
+            bool datCondition = false;
+            bool textCondition = false;
+
+            int.TryParse(searchText, out int searchId);
+            if (!insertDateFrom.IsNullOrWhiteSpace() || !insertDateTo.IsNullOrWhiteSpace()) datCondition = true;
+            if (!searchText.IsNullOrWhiteSpace()) textCondition = true;
+
+            DateTime.TryParse(insertDateFrom, out DateTime fromDate);
+            if (!DateTime.TryParse(insertDateTo, out DateTime toDate))
+            {
+                toDate = DateTime.Now;
+            }
+            if (fromDate == toDate) toDate = toDate.AddDays(1).AddTicks(-1);
+
+            if (datCondition && !textCondition)
+            {
+                _model = dbAccess.Where(p => p.DateOfRequest >= fromDate && p.DateOfRequest <= toDate)
+                    .OrderBy(d => d.DateOfRequest).ThenBy(p => p.CustomerID).ThenBy(p => p.ServiceID).ToList();
+
+            }
+            if (textCondition && !datCondition)
+            {
+                _model = dbAccess
+                    .Where(p => p.CustomerID == searchId ||p.ServiceID == searchId ||
+                                p.CustomerName.ToUpper().Contains(searchText.ToUpper()) ||
+                                p.CustomerIdentification.ToUpper().Contains(searchText.ToUpper()) ||
+                                p.ServiceCode.ToUpper().Contains(searchText.ToUpper()) ||
+                                p.CustomerServicename.ToUpper().Contains(searchText.ToUpper()) ||
+                                p.CustomerServiceCode.ToUpper().Contains(searchText.ToUpper()) 
+                                )
+                    .OrderByDescending(d => d.DateOfRequest).ThenBy(p=>p.CustomerID).ThenBy(p=>p.ServiceID).ToList();
+
+            }
+            if (textCondition && datCondition)
+            {
+                _model = dbAccess
+                    .Where(p => (p.DateOfRequest >= fromDate && p.DateOfRequest <= toDate) &&
+                                (p.CustomerID == searchId || p.ServiceID == searchId ||
+                                 p.CustomerName.ToUpper().Contains(searchText.ToUpper()) ||
+                                 p.CustomerIdentification.ToUpper().Contains(searchText.ToUpper()) ||
+                                 p.ServiceCode.ToUpper().Contains(searchText.ToUpper()) ||
+                                 p.CustomerServicename.ToUpper().Contains(searchText.ToUpper()) ||
+                                 p.CustomerServiceCode.ToUpper().Contains(searchText.ToUpper())))
+                    .OrderByDescending(d => d.DateOfRequest).ThenBy(p => p.CustomerID).ThenBy(p => p.ServiceID).ToList();
+
+            }
+
+            if (_model == null || _model.Count == 0)
+            {
+                _model = dbAccess.OrderByDescending(d => d.DateOfRequest)
+                    .ThenBy(p => p.CustomerID).ThenBy(p => p.ServiceID).ToList();
+            }
+            _pager = new Pager(_model.Count(), page);
+            _dataList = _model.Skip(_pager.ToSkip).Take(_pager.ToTake).ToList();
+            var pageList = new StaticPagedList<view_InvoiceByMonth>(_dataList, _pager.CurrentPage, _pager.PageSize, _pager.TotalItems);
+            return View("Index", pageList);
+        }
+        public ActionResult Details(int? page, int custId, int servId, DateTime reqDate)
         {
-            if (id == null)
+            var dbAccess = _db.view_InvoiceByMonth;
+            var startDate = new DateTime(reqDate.Year, reqDate.Month, reqDate.Day);
+            var endDate = startDate.AddMonths(1).AddTicks(-1);
+            ViewBag.CurrentCustId = custId;
+            ViewBag.CurrentServId = servId;
+            ViewBag.CurrentReqDate = reqDate;
+            _model = dbAccess
+                .Where(p => p.DateOfRequest >= startDate.Date && p.DateOfRequest <= endDate && p.CustomerID == custId )
+                .OrderByDescending(d => d.DateOfRequest).ThenBy(p => p.ServiceID).ToList();
+            if (_model == null || _model.Count == 0)
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                _model = dbAccess.OrderByDescending(p => p.DateOfRequest).ToList();
             }
-            view_InvoiceByMonth view_InvoiceByMonth = db.view_InvoiceByMonth.Find(id);
-            if (view_InvoiceByMonth == null)
-            {
-                return HttpNotFound();
-            }
-            return View(view_InvoiceByMonth);
+            _pager = new Pager(_model.Count(), page);
+            _dataList = _model.Skip(_pager.ToSkip).Take(_pager.ToTake).ToList();
+            var pageList = new StaticPagedList<view_InvoiceByMonth>(_dataList, _pager.CurrentPage, _pager.PageSize, _pager.TotalItems);
+            return View("Index", pageList);
         }
-
-        // POST: InvoiceByMonth/Edit/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "ID,DateOfRequest,CustomerID,ServiceID,NumberOfRequest,ReceivedBytes,RequestedTime,ServiceCode,ServiceName,BasicPriceWithoutVAT,VAT,BasicPriceWithVAT")] view_InvoiceByMonth view_InvoiceByMonth)
-        {
-            if (ModelState.IsValid)
-            {
-                db.Entry(view_InvoiceByMonth).State = EntityState.Modified;
-                db.SaveChanges();
-                return RedirectToAction("Index");
-            }
-            return View(view_InvoiceByMonth);
-        }
-
-        // GET: InvoiceByMonth/Delete/5
-        public ActionResult Delete(int? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            view_InvoiceByMonth view_InvoiceByMonth = db.view_InvoiceByMonth.Find(id);
-            if (view_InvoiceByMonth == null)
-            {
-                return HttpNotFound();
-            }
-            return View(view_InvoiceByMonth);
-        }
-
-        // POST: InvoiceByMonth/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public ActionResult DeleteConfirmed(int id)
-        {
-            view_InvoiceByMonth view_InvoiceByMonth = db.view_InvoiceByMonth.Find(id);
-            db.view_InvoiceByMonth.Remove(view_InvoiceByMonth);
-            db.SaveChanges();
-            return RedirectToAction("Index");
-        }
-
         protected override void Dispose(bool disposing)
         {
             if (disposing)
             {
-                db.Dispose();
+                _db.Dispose();
             }
             base.Dispose(disposing);
         }

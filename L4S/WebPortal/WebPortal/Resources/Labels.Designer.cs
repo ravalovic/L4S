@@ -790,7 +790,61 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Fakturácie.
+        ///   Looks up a localized string similar to Denný cenový výpočet.
+        /// </summary>
+        public static string InvoiceDailyData_PageHeader {
+            get {
+                return ResourceManager.GetString("InvoiceDailyData_PageHeader", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Denný fakturačný report.
+        /// </summary>
+        public static string InvoiceDailyDataTab {
+            get {
+                return ResourceManager.GetString("InvoiceDailyDataTab", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Mesačný cenový výpočet.
+        /// </summary>
+        public static string InvoiceMonthlyData_PageHeader {
+            get {
+                return ResourceManager.GetString("InvoiceMonthlyData_PageHeader", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Mesačný fakturačný report.
+        /// </summary>
+        public static string InvoiceMonthlyDataTab {
+            get {
+                return ResourceManager.GetString("InvoiceMonthlyDataTab", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Fakturačný výpočet pre zákazníka.
+        /// </summary>
+        public static string InvoiceTotal_PageHeader {
+            get {
+                return ResourceManager.GetString("InvoiceTotal_PageHeader", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Fakturačný report.
+        /// </summary>
+        public static string InvoiceTotalDataTab {
+            get {
+                return ResourceManager.GetString("InvoiceTotalDataTab", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Fakturácia.
         /// </summary>
         public static string Menu_Fakturacie {
             get {
@@ -1425,6 +1479,15 @@ namespace Resources {
         public static string Service_TableTitle {
             get {
                 return ResourceManager.GetString("Service_TableTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Fakturačné údaje.
+        /// </summary>
+        public static string SubMenu_Fakturacie {
+            get {
+                return ResourceManager.GetString("SubMenu_Fakturacie", resourceCulture);
             }
         }
         

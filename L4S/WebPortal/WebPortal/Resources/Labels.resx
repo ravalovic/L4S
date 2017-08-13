@@ -301,7 +301,7 @@
     <value>VOSK</value>
   </data>
   <data name="Menu_Fakturacie" xml:space="preserve">
-    <value>Fakturácie</value>
+    <value>Fakturácia</value>
   </data>
   <data name="Menu_FakturacneData" xml:space="preserve">
     <value>Moje fakturačné údaje</value>
@@ -584,5 +584,26 @@
   </data>
   <data name="File_PreProcessorName" xml:space="preserve">
     <value>Názov súboru z preprocesora</value>
+  </data>
+  <data name="InvoiceDailyDataTab" xml:space="preserve">
+    <value>Denný fakturačný report</value>
+  </data>
+  <data name="InvoiceDailyData_PageHeader" xml:space="preserve">
+    <value>Denný cenový výpočet</value>
+  </data>
+  <data name="InvoiceMonthlyDataTab" xml:space="preserve">
+    <value>Mesačný fakturačný report</value>
+  </data>
+  <data name="InvoiceMonthlyData_PageHeader" xml:space="preserve">
+    <value>Mesačný cenový výpočet</value>
+  </data>
+  <data name="InvoiceTotalDataTab" xml:space="preserve">
+    <value>Fakturačný report</value>
+  </data>
+  <data name="InvoiceTotal_PageHeader" xml:space="preserve">
+    <value>Fakturačný výpočet pre zákazníka</value>
+  </data>
+  <data name="SubMenu_Fakturacie" xml:space="preserve">
+    <value>Fakturačné údaje</value>
   </data>
 </root>

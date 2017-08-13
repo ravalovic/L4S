@@ -1,0 +1,133 @@
+﻿@model PagedList.IPagedList<WebPortal.view_CustomerMontlyTotalInvoice>
+@using PagedList.Mvc;
+<link href="~/Content/PagedList.css" rel="stylesheet" type="text/css" />
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>view_CustomerMontlyTotalInvoice</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.FirstOrDefault().StartBillingPeriod)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.FirstOrDefault().StartBillingPeriod)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.FirstOrDefault().StopBillingPeriod)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.FirstOrDefault().StopBillingPeriod)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.FirstOrDefault().DeliveryDate)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.FirstOrDefault().DeliveryDate)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.FirstOrDefault().DueDate)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.FirstOrDefault().DueDate)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.FirstOrDefault().CustomerID)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.FirstOrDefault().CustomerID)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.FirstOrDefault().CustomerIdentification)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.FirstOrDefault().CustomerIdentification)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.FirstOrDefault().CustomerName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.FirstOrDefault().CustomerName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.FirstOrDefault().NumberOfRequest)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.FirstOrDefault().NumberOfRequest)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.FirstOrDefault().ReceivedBytes)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.FirstOrDefault().ReceivedBytes)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.FirstOrDefault().RequestedTime)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.FirstOrDefault().RequestedTime)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.FirstOrDefault().MeasureofUnits)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.FirstOrDefault().MeasureofUnits)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.FirstOrDefault().TotalPriceWithoutVAT)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.FirstOrDefault().TotalPriceWithoutVAT)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.FirstOrDefault().VAT)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.FirstOrDefault().VAT)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.FirstOrDefault().TotalPriceWithVAT)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.FirstOrDefault().TotalPriceWithVAT)
+        </dd>
+
+    </dl>
+</div>
+<br />
+Strana @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) z @Model.PageCount Počet záznamov @Model.TotalItemCount
+@Html.PagedListPager(Model, page => Url.Action("Details", new { page, billingPeriod = ViewBag.BillingPeriod, customerId = ViewBag.CustomerId}))
+<p>
+    @Html.ActionLink("Back to List", "Index")
+</p>
