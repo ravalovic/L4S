@@ -38,6 +38,7 @@ namespace SQLBulkCopy
         public string LoaderMode { get; set; }
         public int BatchSize { get; set; }
         public int BatchTimeout { get; set; }
+        public bool OnlyOneFileFromList { get; set; }
 
 
         public MyApConfig()
@@ -66,7 +67,9 @@ namespace SQLBulkCopy
             DbUser = configManager.ReadSetting("dbuser");
             DbPassword = configManager.ReadSetting("dbpassword");
             LoaderMode = configManager.ReadSetting("loaderMode").ToLower();
-
+            bool oneFile;
+            bool.TryParse(configManager.ReadSetting("onlyOneFile"), out oneFile);
+            OnlyOneFileFromList = oneFile;
             int batchSize;
             int.TryParse(configManager.ReadSetting("batchSize"), out batchSize);
             BatchSize = batchSize != 0 ? batchSize : 10000;
@@ -142,9 +145,11 @@ namespace SQLBulkCopy
                 var myStopWatch = Stopwatch.StartNew();
                 
                 var iFiles = Directory.GetFiles(appSettings.WorkDir, appSettings.InputFileName);
+                var toTake = iFiles.Length;
+                if (appSettings.OnlyOneFileFromList) {toTake = 1;}
                 if (iFiles.Any())
                 {
-                    foreach (var iFile in iFiles)
+                    foreach (var iFile in iFiles.Take(toTake))
                     {
                         int action = 0; // 0 - new file, 1 - duplicity file 
                         try
