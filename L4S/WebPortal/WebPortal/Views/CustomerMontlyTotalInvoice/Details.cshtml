@@ -1,133 +1,133 @@
-﻿@model PagedList.IPagedList<WebPortal.view_CustomerMontlyTotalInvoice>
-@using PagedList.Mvc;
-<link href="~/Content/PagedList.css" rel="stylesheet" type="text/css" />
+﻿@model WebPortal.view_CustomerMontlyTotalInvoice
+
+@*@model PagedList.IPagedList<WebPortal.view_CustomerMontlyTotalInvoice>
+    @using PagedList.Mvc;
+    <link href="~/Content/PagedList.css" rel="stylesheet" type="text/css" />*@
 @{
     ViewBag.Title = "Details";
 }
 
-<h2>Details</h2>
+<h2>Fakturačné dáta</h2>
+<h4>Obdobie: @Model.StartBillingPeriod.ToString("MM.yyyy")</h4>
+<h4><b>@Model.CustomerName - @Model.CustomerIdentification</b></h4>
 
-<div>
-    <h4>view_CustomerMontlyTotalInvoice</h4>
-    <hr />
-    <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.FirstOrDefault().StartBillingPeriod)
-        </dt>
+    <div class="row">
+        <div class="form-horizontal">
+            <hr />
+            <div class="col-md-5">
+                <div class="form-group">
+                    @Html.LabelFor(model => model.StartBillingPeriod, htmlAttributes: new { @class = "control-label col-md-3" })
+                    <div class="col-md-9">
+                        @Html.EditorFor(model => model.StartBillingPeriod, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                    </div>
+                </div>
 
-        <dd>
-            @Html.DisplayFor(model => model.FirstOrDefault().StartBillingPeriod)
-        </dd>
+                <div class="form-group">
+                    @Html.LabelFor(model => model.StopBillingPeriod, htmlAttributes: new { @class = "control-label col-md-3" })
+                    <div class="col-md-9">
+                        @Html.EditorFor(model => model.StopBillingPeriod, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                    </div>
+                </div>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.FirstOrDefault().StopBillingPeriod)
-        </dt>
+                <div class="form-group">
+                    @Html.LabelFor(model => model.DeliveryDate, htmlAttributes: new { @class = "control-label col-md-3" })
+                    <div class="col-md-9">
+                        @Html.EditorFor(model => model.DeliveryDate, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                    </div>
+                </div>
 
-        <dd>
-            @Html.DisplayFor(model => model.FirstOrDefault().StopBillingPeriod)
-        </dd>
+                <div class="form-group">
+                    @Html.LabelFor(model => model.DueDate, htmlAttributes: new { @class = "control-label col-md-3" })
+                    <div class="col-md-9">
+                        @Html.EditorFor(model => model.DueDate, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                    </div>
+                </div>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.FirstOrDefault().DeliveryDate)
-        </dt>
+                <div class="form-group">
+                    @Html.LabelFor(model => model.CustomerID, htmlAttributes: new { @class = "control-label col-md-3" })
+                    <div class="col-md-9">
+                        @Html.EditorFor(model => model.CustomerID, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                    </div>
+                </div>
 
-        <dd>
-            @Html.DisplayFor(model => model.FirstOrDefault().DeliveryDate)
-        </dd>
+                <div class="form-group">
+                        @Html.LabelFor(model => model.CustomerIdentification, htmlAttributes: new { @class = "control-label col-md-3" })
 
-        <dt>
-            @Html.DisplayNameFor(model => model.FirstOrDefault().DueDate)
-        </dt>
+                        <div class="col-md-9">
+                            @Html.EditorFor(model => model.CustomerIdentification, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                        </div>
+                    </div>
 
-        <dd>
-            @Html.DisplayFor(model => model.FirstOrDefault().DueDate)
-        </dd>
+                <div class="form-group">
+                    @Html.LabelFor(model => model.CustomerName, htmlAttributes: new { @class = "control-label col-md-3" })
+                    <div class="col-md-9">
+                        @Html.EditorFor(model => model.CustomerName, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                    </div>
+                </div>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.FirstOrDefault().CustomerID)
-        </dt>
+                <div class="form-group">
+                    @Html.LabelFor(model => model.NumberOfRequest, htmlAttributes: new { @class = "control-label col-md-3" })
+                    <div class="col-md-9">
+                        @Html.EditorFor(model => model.NumberOfRequest, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                    </div>
+                </div>
 
-        <dd>
-            @Html.DisplayFor(model => model.FirstOrDefault().CustomerID)
-        </dd>
+                <div class="form-group">
+                    @Html.LabelFor(model => model.ReceivedBytes, htmlAttributes: new { @class = "control-label col-md-3" })
+                    <div class="col-md-9">
+                        @Html.EditorFor(model => model.ReceivedBytes, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                    </div>
+                </div>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.FirstOrDefault().CustomerIdentification)
-        </dt>
+                <div class="form-group">
+                    @Html.LabelFor(model => model.RequestedTime, htmlAttributes: new { @class = "control-label col-md-3" })
+                    <div class="col-md-9">
+                        @Html.EditorFor(model => model.RequestedTime, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                    </div>
+                </div>
 
-        <dd>
-            @Html.DisplayFor(model => model.FirstOrDefault().CustomerIdentification)
-        </dd>
+                <div class="form-group">
+                    @Html.LabelFor(model => model.MeasureOfUnits, htmlAttributes: new { @class = "control-label col-md-3" })
+                    <div class="col-md-9">
+                        @Html.EditorFor(model => model.MeasureOfUnits, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                    </div>
+                </div>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.FirstOrDefault().CustomerName)
-        </dt>
+                <div class="form-group">
+                    @Html.LabelFor(model => model.TotalPriceWithoutVAT, htmlAttributes: new { @class = "control-label col-md-3" })
+                    <div class="col-md-9">
+                        @Html.EditorFor(model => model.TotalPriceWithoutVAT, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                    </div>
+                </div>
 
-        <dd>
-            @Html.DisplayFor(model => model.FirstOrDefault().CustomerName)
-        </dd>
+                <div class="form-group">
+                    @Html.LabelFor(model => model.VAT, htmlAttributes: new { @class = "control-label col-md-3" })
+                    <div class="col-md-9">
+                        @Html.EditorFor(model => model.VAT, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                    </div>
+                </div>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.FirstOrDefault().NumberOfRequest)
-        </dt>
+                <div class="form-group">
+                    @Html.LabelFor(model => model.TotalPriceWithVAT, htmlAttributes: new { @class = "control-label col-md-3" })
+                    <div class="col-md-9">
+                        @Html.EditorFor(model => model.TotalPriceWithVAT, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                    </div>
+                </div>
 
-        <dd>
-            @Html.DisplayFor(model => model.FirstOrDefault().NumberOfRequest)
-        </dd>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.FirstOrDefault().ReceivedBytes)
-        </dt>
+                </div>
+            </div>
+        </div>
+        <div class="form-group row">
+            <div class="col-md-12">
+                <a class="btn btn-primary btn-sm" href="/CustomerMontlyTotalInvoice/Details/?billingPeriod=@ViewBag.BillingPeriod&customerId=@ViewBag.PreviousCustomerId"> @Resources.Labels.Btn_Previous</a>
+                <a class="btn btn-primary btn-sm" href="/CustomerMontlyTotalInvoice/Details/?billingPeriod=@ViewBag.BillingPeriod&customerId=@ViewBag.NextCustomerId">@Resources.Labels.Btn_Next</a>
+            </div>
+        </div>
+        <br />
 
-        <dd>
-            @Html.DisplayFor(model => model.FirstOrDefault().ReceivedBytes)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.FirstOrDefault().RequestedTime)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.FirstOrDefault().RequestedTime)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.FirstOrDefault().MeasureofUnits)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.FirstOrDefault().MeasureofUnits)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.FirstOrDefault().TotalPriceWithoutVAT)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.FirstOrDefault().TotalPriceWithoutVAT)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.FirstOrDefault().VAT)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.FirstOrDefault().VAT)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.FirstOrDefault().TotalPriceWithVAT)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.FirstOrDefault().TotalPriceWithVAT)
-        </dd>
-
-    </dl>
-</div>
-<br />
-Strana @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) z @Model.PageCount Počet záznamov @Model.TotalItemCount
-@Html.PagedListPager(Model, page => Url.Action("Details", new { page, billingPeriod = ViewBag.BillingPeriod, customerId = ViewBag.CustomerId}))
-<p>
-    @Html.ActionLink("Back to List", "Index")
-</p>
+        <div class="form-group row">
+            <div class="col-md-12">
+                <a class="btn btn-primary text-center" href="/CustomerMontlyTotalInvoice/Index/"><span class="glyphicon glyphicon-remove" aria-hidiven="true"></span> @Resources.Labels.Btn_Back </a>
+            </div>
+        </div>

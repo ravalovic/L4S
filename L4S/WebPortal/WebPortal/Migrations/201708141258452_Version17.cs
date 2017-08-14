@@ -3,7 +3,7 @@ namespace WebPortal.Migrations
     using System;
     using System.Data.Entity.Migrations;
     
-    public partial class version17 : DbMigration
+    public partial class Version17 : DbMigration
     {
         public override void Up()
         {

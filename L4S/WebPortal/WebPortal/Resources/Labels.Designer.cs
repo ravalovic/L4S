@@ -124,11 +124,29 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to &gt;&gt;&gt;.
+        /// </summary>
+        public static string Btn_Next {
+            get {
+                return ResourceManager.GetString("Btn_Next", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to OK.
         /// </summary>
         public static string Btn_Ok {
             get {
                 return ResourceManager.GetString("Btn_Ok", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to &lt;&lt;&lt;.
+        /// </summary>
+        public static string Btn_Previous {
+            get {
+                return ResourceManager.GetString("Btn_Previous", resourceCulture);
             }
         }
         
@@ -1488,6 +1506,312 @@ namespace Resources {
         public static string SubMenu_Fakturacie {
             get {
                 return ResourceManager.GetString("SubMenu_Fakturacie", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Základná cena bez DPH €.
+        /// </summary>
+        public static string TabHead_BasicPriceWithoutVAT {
+            get {
+                return ResourceManager.GetString("TabHead_BasicPriceWithoutVAT", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Základná cena s DPH €.
+        /// </summary>
+        public static string TabHead_BasicPriceWithVAT {
+            get {
+                return ResourceManager.GetString("TabHead_BasicPriceWithVAT", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ID Dávky.
+        /// </summary>
+        public static string TabHead_BatchID {
+            get {
+                return ResourceManager.GetString("TabHead_BatchID", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Zaslané bytes.
+        /// </summary>
+        public static string TabHead_BytesSent {
+            get {
+                return ResourceManager.GetString("TabHead_BytesSent", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ID zákazník.
+        /// </summary>
+        public static string TabHead_CustomerID {
+            get {
+                return ResourceManager.GetString("TabHead_CustomerID", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Identifikátor zákazníka.
+        /// </summary>
+        public static string TabHead_CustomerIdentification {
+            get {
+                return ResourceManager.GetString("TabHead_CustomerIdentification", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Meno zákazníka.
+        /// </summary>
+        public static string TabHead_CustomerName {
+            get {
+                return ResourceManager.GetString("TabHead_CustomerName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Kód balíka služieb.
+        /// </summary>
+        public static string TabHead_CustomerServiceCode {
+            get {
+                return ResourceManager.GetString("TabHead_CustomerServiceCode", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Balík služieb.
+        /// </summary>
+        public static string TabHead_CustomerServicename {
+            get {
+                return ResourceManager.GetString("TabHead_CustomerServicename", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Dátum.
+        /// </summary>
+        public static string TabHead_DateOfRequest {
+            get {
+                return ResourceManager.GetString("TabHead_DateOfRequest", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Dátum dodania.
+        /// </summary>
+        public static string TabHead_DeliveryDate {
+            get {
+                return ResourceManager.GetString("TabHead_DeliveryDate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Dátum splatnosti.
+        /// </summary>
+        public static string TabHead_DueDate {
+            get {
+                return ResourceManager.GetString("TabHead_DueDate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Číslo faktúry.
+        /// </summary>
+        public static string TabHead_InvoiceNumber {
+            get {
+                return ResourceManager.GetString("TabHead_InvoiceNumber", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Merná jednotka.
+        /// </summary>
+        public static string TabHead_MeasureOfUnits {
+            get {
+                return ResourceManager.GetString("TabHead_MeasureOfUnits", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Mesiac.
+        /// </summary>
+        public static string TabHead_Monthdate {
+            get {
+                return ResourceManager.GetString("TabHead_Monthdate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Počet dotazov.
+        /// </summary>
+        public static string TabHead_NumberOfRequest {
+            get {
+                return ResourceManager.GetString("TabHead_NumberOfRequest", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Prenesené dáta.
+        /// </summary>
+        public static string TabHead_ReceivedBytes {
+            get {
+                return ResourceManager.GetString("TabHead_ReceivedBytes", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ID záznamu.
+        /// </summary>
+        public static string TabHead_RecordID {
+            get {
+                return ResourceManager.GetString("TabHead_RecordID", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Trvanie[s].
+        /// </summary>
+        public static string TabHead_RequestedTime {
+            get {
+                return ResourceManager.GetString("TabHead_RequestedTime", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Dotazovaná služba.
+        /// </summary>
+        public static string TabHead_RequestedURL {
+            get {
+                return ResourceManager.GetString("TabHead_RequestedURL", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Návratový kód.
+        /// </summary>
+        public static string TabHead_RequestStatus {
+            get {
+                return ResourceManager.GetString("TabHead_RequestStatus", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Trvanie.
+        /// </summary>
+        public static string TabHead_RequestTime {
+            get {
+                return ResourceManager.GetString("TabHead_RequestTime", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Kód služby.
+        /// </summary>
+        public static string TabHead_ServiceCode {
+            get {
+                return ResourceManager.GetString("TabHead_ServiceCode", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Popis služby.
+        /// </summary>
+        public static string TabHead_ServiceDescription {
+            get {
+                return ResourceManager.GetString("TabHead_ServiceDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ID služby.
+        /// </summary>
+        public static string TabHead_ServiceID {
+            get {
+                return ResourceManager.GetString("TabHead_ServiceID", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Obdobie Od.
+        /// </summary>
+        public static string TabHead_StartBillingPeriod {
+            get {
+                return ResourceManager.GetString("TabHead_StartBillingPeriod", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Obdobie do.
+        /// </summary>
+        public static string TabHead_StopBillingPeriod {
+            get {
+                return ResourceManager.GetString("TabHead_StopBillingPeriod", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Cena bez DPH €.
+        /// </summary>
+        public static string TabHead_TotalPriceWithoutVAT {
+            get {
+                return ResourceManager.GetString("TabHead_TotalPriceWithoutVAT", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Cena s DPH €.
+        /// </summary>
+        public static string TabHead_TotalPriceWithVAT {
+            get {
+                return ResourceManager.GetString("TabHead_TotalPriceWithVAT", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Jenotková cena.
+        /// </summary>
+        public static string TabHead_UnitPrice {
+            get {
+                return ResourceManager.GetString("TabHead_UnitPrice", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to UserAgent.
+        /// </summary>
+        public static string TabHead_UserAgent {
+            get {
+                return ResourceManager.GetString("TabHead_UserAgent", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ID užívateľa.
+        /// </summary>
+        public static string TabHead_UserID {
+            get {
+                return ResourceManager.GetString("TabHead_UserID", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to IPAdresa.
+        /// </summary>
+        public static string TabHead_UserIPAddress {
+            get {
+                return ResourceManager.GetString("TabHead_UserIPAddress", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to DPH €.
+        /// </summary>
+        public static string TabHead_VAT {
+            get {
+                return ResourceManager.GetString("TabHead_VAT", resourceCulture);
             }
         }
         

@@ -40,22 +40,13 @@
                         @Html.DisplayNameFor(model => model.FirstOrDefault().DateOfRequest)
                     </th>
                     <th>
-                        @Html.DisplayNameFor(model => model.FirstOrDefault().CustomerID)
-                    </th>
-                    <th>
                         @Html.DisplayNameFor(model => model.FirstOrDefault().CustomerIdentification)
                     </th>
                     <th>
                         @Html.DisplayNameFor(model => model.FirstOrDefault().CustomerName)
                     </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.FirstOrDefault().ServiceID)
-                    </th>
-                    <th>
+                   <th>
                         @Html.DisplayNameFor(model => model.FirstOrDefault().ServiceCode)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.FirstOrDefault().ServiceDescription)
                     </th>
                     <th>
                         @Html.DisplayNameFor(model => model.FirstOrDefault().NumberOfRequest)
@@ -98,22 +89,13 @@
                             @Html.DisplayFor(modelItem => item.DateOfRequest)
                         </td>
                         <td>
-                            @Html.DisplayFor(modelItem => item.CustomerID)
-                        </td>
-                        <td>
                             @Html.DisplayFor(modelItem => item.CustomerIdentification)
                         </td>
                         <td>
                             @Html.DisplayFor(modelItem => item.CustomerName)
                         </td>
                         <td>
-                            @Html.DisplayFor(modelItem => item.ServiceID)
-                        </td>
-                        <td>
                             @Html.DisplayFor(modelItem => item.ServiceCode)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.ServiceDescription)
                         </td>
                         <td>
                             @Html.DisplayFor(modelItem => item.NumberOfRequest)
@@ -144,9 +126,6 @@
                         </td>
                         <td>
                             @Html.DisplayFor(modelItem => item.BasicPriceWithVAT)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.TCActive)
                         </td>
                         @*<td>
                                 @Html.ActionLink("Edit", "Edit", new { id = item.ID }) |

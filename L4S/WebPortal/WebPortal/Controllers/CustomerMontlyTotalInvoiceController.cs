@@ -8,6 +8,7 @@ using PagedList;
 using Microsoft.Ajax.Utilities;
 using WebPortal.Models;
 using System.Net;
+using System.Web.UI.WebControls;
 
 namespace WebPortal.Controllers
 {
@@ -122,20 +123,42 @@ namespace WebPortal.Controllers
             }
            
             var dbAccess = _db.view_CustomerMontlyTotalInvoice;
+            
             DateTime.TryParse(billingPeriod, out var billDateTime);
             //_model = dbAccess.Where(p => p.InvoiceNumber.Contains(id.Substring(0, 4))).ToList();
             _model = dbAccess.Where(p => p.StartBillingPeriod == billDateTime).OrderBy(d => d.InvoiceNumber).ThenBy(p => p.CustomerID).ToList();
+            var inArray = _model.Select(p=>p.CustomerID).ToArray();
             if (_model == null)
             {
                 return HttpNotFound();
             }
-            ViewBag.BillingPeriod = billingPeriod;
+
+            ViewBag.BillingPeriod = billingPeriod.Trim();
             ViewBag.CustomerId = customerId;
-            _pager = new Pager(_model.Count(), page, 1);
-            _dataList = _model.Where(p=>p.CustomerID == customerId).ToList();
-            var pageList = new StaticPagedList<view_CustomerMontlyTotalInvoice>(_dataList, _pager.CurrentPage, _pager.PageSize, _pager.TotalItems);
-            return View("Details", pageList);
-            //return View(view_CustomerMontlyTotalInvoice);
+            var index = 0;
+            for (var i = 0; i < inArray.Length; i++)
+            {
+                if (inArray[i] == customerId)
+                {
+                    index = i;
+                } 
+            }
+
+            if ((index + 1) < inArray.Length)
+            {
+                ViewBag.NextCustomerId = inArray[index + 1];
+                if ((index -1) > 0 ) { ViewBag.PreviousCustomerId = inArray[index-1]; } else { ViewBag.PreviousCustomerId = inArray[index]; }
+            }
+            else
+            {
+                ViewBag.NextCustomerId = inArray[index];
+                if ((index - 1) < 0) { ViewBag.PreviousCustomerId = inArray[index]; } else { ViewBag.PreviousCustomerId = inArray[index-1]; }
+            }
+            //_pager = new Pager(_model.Count(), page, 1);
+            //_dataList = _model.Where(p=>p.CustomerID == customerId).ToList();
+            //var pageList = new StaticPagedList<view_CustomerMontlyTotalInvoice>(_dataList, _pager.CurrentPage, _pager.PageSize, _pager.TotalItems);
+            //return View("Details", pageList);
+            return View(dbAccess.FirstOrDefault(p => p.CustomerID == customerId));
         }
 
 

@@ -606,4 +606,112 @@
   <data name="SubMenu_Fakturacie" xml:space="preserve">
     <value>Fakturačné údaje</value>
   </data>
+  <data name="Btn_Next" xml:space="preserve">
+    <value>&gt;&gt;&gt;</value>
+  </data>
+  <data name="Btn_Previous" xml:space="preserve">
+    <value>&lt;&lt;&lt;</value>
+  </data>
+  <data name="TabHead_BasicPriceWithoutVAT" xml:space="preserve">
+    <value>Základná cena bez DPH €</value>
+  </data>
+  <data name="TabHead_BasicPriceWithVAT" xml:space="preserve">
+    <value>Základná cena s DPH €</value>
+  </data>
+  <data name="TabHead_BatchID" xml:space="preserve">
+    <value>ID Dávky</value>
+  </data>
+  <data name="TabHead_BytesSent" xml:space="preserve">
+    <value>Zaslané bytes</value>
+  </data>
+  <data name="TabHead_CustomerID" xml:space="preserve">
+    <value>ID zákazník</value>
+  </data>
+  <data name="TabHead_CustomerIdentification" xml:space="preserve">
+    <value>Identifikátor zákazníka</value>
+  </data>
+  <data name="TabHead_CustomerName" xml:space="preserve">
+    <value>Meno zákazníka</value>
+  </data>
+  <data name="TabHead_CustomerServiceCode" xml:space="preserve">
+    <value>Kód balíka služieb</value>
+  </data>
+  <data name="TabHead_CustomerServicename" xml:space="preserve">
+    <value>Balík služieb</value>
+  </data>
+  <data name="TabHead_DateOfRequest" xml:space="preserve">
+    <value>Dátum</value>
+  </data>
+  <data name="TabHead_DeliveryDate" xml:space="preserve">
+    <value>Dátum dodania</value>
+  </data>
+  <data name="TabHead_DueDate" xml:space="preserve">
+    <value>Dátum splatnosti</value>
+  </data>
+  <data name="TabHead_InvoiceNumber" xml:space="preserve">
+    <value>Číslo faktúry</value>
+  </data>
+  <data name="TabHead_MeasureOfUnits" xml:space="preserve">
+    <value>Merná jednotka</value>
+  </data>
+  <data name="TabHead_Monthdate" xml:space="preserve">
+    <value>Mesiac</value>
+  </data>
+  <data name="TabHead_NumberOfRequest" xml:space="preserve">
+    <value>Počet dotazov</value>
+  </data>
+  <data name="TabHead_ReceivedBytes" xml:space="preserve">
+    <value>Prenesené dáta</value>
+  </data>
+  <data name="TabHead_RecordID" xml:space="preserve">
+    <value>ID záznamu</value>
+  </data>
+  <data name="TabHead_RequestedTime" xml:space="preserve">
+    <value>Trvanie[s]</value>
+  </data>
+  <data name="TabHead_RequestedURL" xml:space="preserve">
+    <value>Dotazovaná služba</value>
+  </data>
+  <data name="TabHead_RequestStatus" xml:space="preserve">
+    <value>Návratový kód</value>
+  </data>
+  <data name="TabHead_RequestTime" xml:space="preserve">
+    <value>Trvanie</value>
+  </data>
+  <data name="TabHead_ServiceCode" xml:space="preserve">
+    <value>Kód služby</value>
+  </data>
+  <data name="TabHead_ServiceDescription" xml:space="preserve">
+    <value>Popis služby</value>
+  </data>
+  <data name="TabHead_ServiceID" xml:space="preserve">
+    <value>ID služby</value>
+  </data>
+  <data name="TabHead_StartBillingPeriod" xml:space="preserve">
+    <value>Obdobie Od</value>
+  </data>
+  <data name="TabHead_StopBillingPeriod" xml:space="preserve">
+    <value>Obdobie do</value>
+  </data>
+  <data name="TabHead_TotalPriceWithoutVAT" xml:space="preserve">
+    <value>Cena bez DPH €</value>
+  </data>
+  <data name="TabHead_TotalPriceWithVAT" xml:space="preserve">
+    <value>Cena s DPH €</value>
+  </data>
+  <data name="TabHead_UnitPrice" xml:space="preserve">
+    <value>Jenotková cena</value>
+  </data>
+  <data name="TabHead_UserAgent" xml:space="preserve">
+    <value>UserAgent</value>
+  </data>
+  <data name="TabHead_UserID" xml:space="preserve">
+    <value>ID užívateľa</value>
+  </data>
+  <data name="TabHead_UserIPAddress" xml:space="preserve">
+    <value>IPAdresa</value>
+  </data>
+  <data name="TabHead_VAT" xml:space="preserve">
+    <value>DPH €</value>
+  </data>
 </root>
