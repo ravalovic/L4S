@@ -118,12 +118,17 @@ BEGIN
 			EXEC(@myDelete);
 			SELECT @rowcountAll = @@ROWCOUNT;
 			if (@mydebug = 1 ) print 'Deleted rows from STLogImport '+ cast(@rowcountAll as varchar) +' lines';
-			
-			insert into [dbo].CATProcessStatus ([StepName], [BatchID], [BatchRecordNum], [NumberOfService] ,[NumberOfCustomer],[NumberOfUnknownService], [NumberOfPreprocessDelete])
-			values ('DataProcessing', @batchList, @rowcountAll,  @rowcountService, @rowcountCustomer, @rowcountUnknown, @rowcountPreprocess);
+			IF ( @batchList > 0 or @rowcountAll >0 or @rowcountService >0 or @rowcountCustomer >0 or @rowcountUnknown>0 or @rowcountPreprocess >0)
+			BEGIN
+				insert into [dbo].CATProcessStatus ([StepName], [BatchID], [BatchRecordNum], [NumberOfService] ,[NumberOfCustomer],[NumberOfUnknownService], [NumberOfPreprocessDelete])
+				values ('DataProcessing', @batchList, @rowcountAll,  @rowcountService, @rowcountCustomer, @rowcountUnknown, @rowcountPreprocess);
+			END
 		END
 		ELSE 
-  	        insert into [dbo].CATProcessStatus ([StepName], [BatchID], [BatchRecordNum], [NumberOfService] ,[NumberOfCustomer],[NumberOfUnknownService], [NumberOfPreprocessDelete])
-			values ('DataReprocessing', @batchList, @rowcountAll,  @rowcountService, @rowcountCustomer, @rowcountUnknown, @rowcountPreprocess);
+		    IF ( @batchList > 0 or @rowcountAll >0 or @rowcountService >0 or @rowcountCustomer >0 or @rowcountUnknown>0 or @rowcountPreprocess >0)
+			BEGIN
+  				insert into [dbo].CATProcessStatus ([StepName], [BatchID], [BatchRecordNum], [NumberOfService] ,[NumberOfCustomer],[NumberOfUnknownService], [NumberOfPreprocessDelete])
+				values ('DataReprocessing', @batchList, @rowcountAll,  @rowcountService, @rowcountCustomer, @rowcountUnknown, @rowcountPreprocess);
+			END
 	END
 END

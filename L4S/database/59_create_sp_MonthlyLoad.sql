@@ -44,8 +44,11 @@ BEGIN
 		EXEC(@myQuery);
 		SELECT @rowCount =  @@ROWCOUNT;
 		if (@mydebug = 1 ) print 'Insert Monthly table record: '+cast(@rowCount as varchar);
+		IF 	(@myBatchList != null)
+		BEGIN
 			insert into [dbo].CATProcessStatus ([StepName], [BatchID], [BatchRecordNum])
 			values ('MonthlyData Insert', @myBatchList, @rowCount);
+		END
 		IF (@rowCount >0)
 		BEGIN
 			SET @myQuery = 'UPDATE [dbo].[CATLogsOfService] 
@@ -86,8 +89,11 @@ SET @myQuery = 'UPDATE  [dbo].[CATCustomerMonthlyData]
 						 EXEC(@myQuery);
 						 SELECT @rowCount =  @@ROWCOUNT;
 							if (@mydebug = 1 ) print 'Update Monthly table record: '+cast(@rowCount as varchar);
+						IF 	(@myBatchList != null)
+						BEGIN	
 							insert into [dbo].CATProcessStatus ([StepName], [BatchID], [BatchRecordNum])
 							values ('MonthlyData Update', @myBatchList, @rowCount);
+						END
 						IF (@rowCount >0)
 						BEGIN
 							SET @myQuery = 'UPDATE [dbo].[CATLogsOfService] 
@@ -98,7 +104,6 @@ SET @myQuery = 'UPDATE  [dbo].[CATCustomerMonthlyData]
 									AND e.DateOfRequest = DATEADD(month, DATEDIFF(month, 0,convert(date,[CATLogsOfService].DateOfRequest)), 0)) 
 							AND	BatchID IN'+@myBatchList+'
 							AND CustomerID is not null AND TCActive = 1'
-							EXEC(@myQuery);
 							EXEC(@myQuery);
 							SELECT @rowCount =  @@ROWCOUNT;
 							if (@mydebug = 1 ) print 'After Update SET TCActive = 2 in CATLogsOfService. Number of  record: '+cast(@rowCount as varchar);

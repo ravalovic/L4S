@@ -45,8 +45,11 @@ BEGIN
 		EXEC(@myQuery);
 		SELECT @rowCount =  @@ROWCOUNT;
 		if (@mydebug = 1 ) print 'Insert Daily table record: '+cast(@rowCount as varchar);
+		IF 	(@myBatchList != null)
+		BEGIN	
 			insert into [dbo].CATProcessStatus ([StepName], [BatchID], [BatchRecordNum])
 			values ('DailyData Insert', @myBatchList, @rowCount);
+		END
 		IF (@rowCount >0)
 		BEGIN
 			SET @myQuery = 'UPDATE [dbo].[CATLogsOfService] 
@@ -87,8 +90,11 @@ SET @myQuery = 'UPDATE  [dbo].[CATCustomerDailyData]
 						 EXEC(@myQuery);
 						 SELECT @rowCount =  @@ROWCOUNT;
 							if (@mydebug = 1 ) print 'Update Daily table record: '+cast(@rowCount as varchar);
+						IF 	(@myBatchList != null)
+						BEGIN
 							insert into [dbo].CATProcessStatus ([StepName], [BatchID], [BatchRecordNum])
 							values ('DailyData Update', @myBatchList, @rowCount);
+						END
 						IF (@rowCount >0)
 						BEGIN
 							SET @myQuery = 'UPDATE [dbo].[CATLogsOfService] 

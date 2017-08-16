@@ -40,15 +40,22 @@ select  @UnknownServiceStoreDays = CONVERT(int, ParamValue) from [CONFGeneralSet
 select  @ProcessDataStoreDays = CONVERT(int, ParamValue) from [CONFGeneralSettings] where Paramname='ProcessDataStoreDays';
 
 -- Delete unknown services
-delete from CATUnknownService WHERE DATEDIFF( DAY, DateOfRequest, getdate()) > @UnknownServiceStoreDays;
-SET @rowCount = @@ROWCOUNT;
-insert into [dbo].CATProcessStatus ([StepName], [BatchRecordNum])
+    delete from CATUnknownService WHERE DATEDIFF( DAY, DateOfRequest, getdate()) > @UnknownServiceStoreDays;
+    SET @rowCount = @@ROWCOUNT;
+	IF (@rowCount > 0)
+	BEGIN
+		insert into [dbo].CATProcessStatus ([StepName], [BatchRecordNum])
 			values ('Delete CATUnknownService ',  @rowCount);
+	END
 --Delete processing data 
-delete from CATProcessStatus WHERE DATEDIFF( DAY, TCInsertTime, getdate()) > @ProcessDataStoreDays;
-SET @rowCount = @@ROWCOUNT;
-insert into [dbo].CATProcessStatus ([StepName], [BatchRecordNum])
-			values ('Delete CATProcessStatus ',  @rowCount);
+	
+	delete from CATProcessStatus WHERE DATEDIFF( DAY, TCInsertTime, getdate()) > @ProcessDataStoreDays;
+	SET @rowCount = @@ROWCOUNT;
+	IF (@rowCount > 0)
+	BEGIN
+		  insert into [dbo].CATProcessStatus ([StepName], [BatchRecordNum])
+		  values ('Delete CATProcessStatus ',  @rowCount);
+	END
 
 IF ( (DAY(getdate()) = @ArchivingDay) and (@LastArchiveRUN <> (CAST(FORMAT(YEAR(GETDATE()),'0000')AS VARCHAR) + CAST(FORMAT(MONTH(GETDATE()),'00') AS VARCHAR))))
 	BEGIN
@@ -65,8 +72,9 @@ IF ( (DAY(getdate()) = @ArchivingDay) and (@LastArchiveRUN <> (CAST(FORMAT(YEAR(
 		
 		DELETE FROM [dbo].[CATLogsOfService] WHERE DATEDIFF( MONTH, DateOfRequest, getdate()) > @ArchiveDetailDataMonth
 		SET @rowCount = @@ROWCOUNT;
-		insert into [dbo].CATProcessStatus ([StepName], [BatchRecordNum])
-		values ('Delete from CATLogsOfService',  @rowCount);
+		  insert into [dbo].CATProcessStatus ([StepName], [BatchRecordNum])
+		  values ('Delete from CATLogsOfService',  @rowCount);
+		
 		
 		IF (@ArchiveCumulativeDataMonth != -1) 
 		BEGIN
@@ -80,9 +88,10 @@ IF ( (DAY(getdate()) = @ArchivingDay) and (@LastArchiveRUN <> (CAST(FORMAT(YEAR(
 		
 		DELETE FROM [dbo].[CATCustomerDailyData] WHERE DATEDIFF( MONTH, [DateOfRequest], getdate()) > @ArchiveCumulativeDataMonth and TCActive = 1
 		SET @rowCount = @@ROWCOUNT;
-		insert into [dbo].CATProcessStatus ([StepName], [BatchRecordNum])
-		values ('Delete from CATCustomerDailyData',  @rowCount);
+			insert into [dbo].CATProcessStatus ([StepName], [BatchRecordNum])
+			values ('Delete from CATCustomerDailyData',  @rowCount);
 		
+
 		IF(@ArchiveCumulativeDataMonth != -1)
 		BEGIN
 			INSERT INTO [dbo].[ARCHCustomerMonthlyData]([DateOfRequest],[CustomerID],[ServiceID],[NumberOfRequest],[ReceivedBytes],[RequestedTime])
@@ -95,8 +104,9 @@ IF ( (DAY(getdate()) = @ArchivingDay) and (@LastArchiveRUN <> (CAST(FORMAT(YEAR(
 		
 		DELETE FROM [dbo].[CATCustomerMonthlyData] WHERE DATEDIFF( MONTH, [DateOfRequest], getdate()) > @ArchiveCumulativeDataMonth and TCActive = 1
 		SET @rowCount = @@ROWCOUNT;
-		insert into [dbo].CATProcessStatus ([StepName], [BatchRecordNum])
-		values ('Delete from CATCustomerMonthlyData',  @rowCount);    
+			insert into [dbo].CATProcessStatus ([StepName], [BatchRecordNum])
+			values ('Delete from CATCustomerMonthlyData',  @rowCount);    
+		
 
 		IF(@ArchiveCumulativeDataMonth != -1)
 		BEGIN
@@ -133,8 +143,6 @@ IF ( (DAY(getdate()) = @ArchivingDay) and (@LastArchiveRUN <> (CAST(FORMAT(YEAR(
 		SET @rowCount = @@ROWCOUNT;
 		insert into [dbo].CATProcessStatus ([StepName], [BatchRecordNum])
 		values ('Delete from STInputFileInfo',  @rowCount);    
-
-
 	END
 	ELSE
 	BEGIN
