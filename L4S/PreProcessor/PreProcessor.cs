@@ -33,7 +33,8 @@ namespace PreProcessor
         public string[] Patterns { get; set; }
         public string HeaderLine { get; set; }
         public long BatchId { get; set; }
-        
+        public bool SingleFileMode { get; set; }
+
         public MyApConfig()
         {
             var configManager = new AppConfigManager();
@@ -69,6 +70,10 @@ namespace PreProcessor
             long batchId;
             long.TryParse(configManager.ReadSetting("batchID"), out batchId);
             BatchId = batchId ;
+
+            bool oneFile;
+            bool.TryParse(configManager.ReadSetting("singleFileMode"), out oneFile);
+            SingleFileMode = oneFile;
         }
 
         public void UpdateBatchId(long batchId)
@@ -148,11 +153,12 @@ namespace PreProcessor
             var myStopWatch = Stopwatch.StartNew();
             //Read files from work exept Processed files
             var iFiles = Directory.GetFiles(configSettings.WorkDir, configSettings.InputFileName).Where(n => !n.Contains(configSettings.OutputFileMask) && !n.Contains(configSettings.WrongFileMask)).ToArray();
-
+            var toTake = iFiles.Length;
+            if (configSettings.SingleFileMode) { toTake = 1; }
             if (iFiles.Any())
             {
                 Log.Info(@"Processing files from: " + configSettings.WorkDir);
-                foreach (var file in iFiles)
+                foreach (var file in iFiles.Take(toTake))
                 {
                     if (File.Exists(file))
                     {

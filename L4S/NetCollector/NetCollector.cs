@@ -33,6 +33,7 @@ namespace NetCollector
         public string WorkDir { get; set; }
         public string BackupDir { get; set; }
         public string DateMask { get; set; }
+        public bool SingleFileMode { get; set; }
 
         public MyApConfig()
         {
@@ -59,7 +60,12 @@ namespace NetCollector
             OutputDir = configManager.ReadSetting("outputDir");
             WorkDir = configManager.ReadSetting("workDir");
             BackupDir = configManager.ReadSetting("backupDir");
-            
+
+
+            bool oneFile;
+            bool.TryParse(configManager.ReadSetting("singleFileMode"), out oneFile);
+            SingleFileMode = oneFile;
+
             // set up datetime mask
             int whichDay;
             int.TryParse(configManager.ReadSetting("whichDay"), out whichDay);
@@ -199,12 +205,14 @@ namespace NetCollector
             //Read files from NetCollector
             string sourceDir = string.Format(@"\\" + settingsConfig.RemoteServer + @"\" + settingsConfig.ShareName + settingsConfig.RemoteDir);
             string[] iFiles = Directory.GetFiles(sourceDir, settingsConfig.RemoteFileName);
+            var toTake = iFiles.Length;
+            if (settingsConfig.SingleFileMode) { toTake = 1; }
             if (iFiles.Any())
             {
                 Log.Info(@"Get new files from: " + sourceDir);
                 //Copy file from remote server to NetCollector Work directory
                
-                foreach (var file in iFiles)
+                foreach (var file in iFiles.Take(toTake))
                 {
                     myStopWatch.Restart();
                     Helper.ManageFile(Helper.Action.Copy, file, settingsConfig.WorkDir);

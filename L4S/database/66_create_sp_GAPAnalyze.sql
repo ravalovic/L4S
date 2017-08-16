@@ -38,13 +38,14 @@ BEGIN
 		   GenDate DATE
 		   , Number int
 		   , fileName varchar(2000)
-		);
+		 );
 		
 		DECLARE @CF TABLE
 		(
 		   GenDate DATE
 		   , Number int
 		   , fileName varchar(2000)
+		   , InserTime datetime
 		);
 		
 		INSERT INTO @DT (Number, GenDate) 
@@ -54,15 +55,15 @@ BEGIN
 		        ) nbrs
 		WHERE   nbr - 1 <= DATEDIFF(DAY, @StartDate, @EndDate);
 		
-		INSERT INTO @CF (Number, GenDate, FileName)  
-		 SELECT count(*), CAST(f.InsertDateTime as date) RDate, OriFileName  FROM STInputFileInfo f
+		INSERT INTO @CF (Number, GenDate, FileName, InserTime)  
+		 SELECT count(*), CAST(f.InsertDateTime as date) RDate, f.OriFileName, f.InsertDateTime  FROM STInputFileInfo f
 		   WHERE CAST(f.InsertDateTime as date) >=@StartDate and CAST(InsertDateTime as date) <=@EndDate
-		 GROUP BY CAST(InsertDateTime as date), OriFileName;
+		 GROUP BY CAST(InsertDateTime as date), f.OriFileName, f.InsertDateTime;
 
 		DBCC CHECKIDENT ('GAPAnalyze', RESEED, 0);
 		DELETE FROM GAPAnalyze;
 	
-		INSERT INTO GAPAnalyze (Day, FileNumber, FileName)
-		SELECT d.GenDate, c.Number, c.fileName FROM  @DT d 
-			left join @CF c on c.GenDate=d.GenDate;
+		INSERT INTO GAPAnalyze (Day, FileNumber, FileName, TCInsertTime)
+		SELECT d.GenDate, c.Number, c.fileName, InserTime FROM  @DT d 
+			left join @CF c on c.GenDate=d.GenDate order by InserTime;
 END

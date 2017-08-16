@@ -29,6 +29,7 @@ DECLARE
  @ArchiveDetailDataMonth int,
  @ArchiveCumulativeDataMonth int,
  @UnknownServiceStoreDays int,
+ @ProcessDataStoreDays int,
  @LastArchiveRUN varchar(50)
 BEGIN
 select  @ArchivingDay = CONVERT(int, ParamValue) from [CONFGeneralSettings] where Paramname='ArchivingDay';
@@ -36,12 +37,18 @@ select  @LastArchiveRUN = ParamValue from [CONFGeneralSettings] where Paramname=
 select  @ArchiveDetailDataMonth = CONVERT(int, ParamValue) from [CONFGeneralSettings] where Paramname='ArchiveDetailDataMonth';
 select  @ArchiveCumulativeDataMonth = CONVERT(int, ParamValue) from [CONFGeneralSettings] where Paramname='ArchiveCumulativeDataMonth';
 select  @UnknownServiceStoreDays = CONVERT(int, ParamValue) from [CONFGeneralSettings] where Paramname='UnknownServiceStoreDays';
+select  @ProcessDataStoreDays = CONVERT(int, ParamValue) from [CONFGeneralSettings] where Paramname='ProcessDataStoreDays';
 
 -- Delete unknown services
-delete from CATUnknownService WHERE DATEDIFF( DAY, DateOfRequest, getdate()) > @UnknownServiceStoreDays
+delete from CATUnknownService WHERE DATEDIFF( DAY, DateOfRequest, getdate()) > @UnknownServiceStoreDays;
 SET @rowCount = @@ROWCOUNT;
 insert into [dbo].CATProcessStatus ([StepName], [BatchRecordNum])
 			values ('Delete CATUnknownService ',  @rowCount);
+--Delete processing data 
+delete from CATProcessStatus WHERE DATEDIFF( DAY, TCInsertTime, getdate()) > @ProcessDataStoreDays;
+SET @rowCount = @@ROWCOUNT;
+insert into [dbo].CATProcessStatus ([StepName], [BatchRecordNum])
+			values ('Delete CATProcessStatus ',  @rowCount);
 
 IF ( (DAY(getdate()) = @ArchivingDay) and (@LastArchiveRUN <> (CAST(FORMAT(YEAR(GETDATE()),'0000')AS VARCHAR) + CAST(FORMAT(MONTH(GETDATE()),'00') AS VARCHAR))))
 	BEGIN
@@ -90,6 +97,43 @@ IF ( (DAY(getdate()) = @ArchivingDay) and (@LastArchiveRUN <> (CAST(FORMAT(YEAR(
 		SET @rowCount = @@ROWCOUNT;
 		insert into [dbo].CATProcessStatus ([StepName], [BatchRecordNum])
 		values ('Delete from CATCustomerMonthlyData',  @rowCount);    
+
+		IF(@ArchiveCumulativeDataMonth != -1)
+		BEGIN
+			INSERT INTO [dbo].[ARCHInputFileInfo] ([FileName] ,[Checksum], [LinesInFile], [InsertDateTime]
+							 ,[LoaderBatchID],[LoadedRecord] ,[OriFileName],[OriginalFileChecksum],[TCLastUpdate],[TCActive])
+			SELECT  [FileName] ,[Checksum], [LinesInFile], [InsertDateTime]
+					 ,[LoaderBatchID],[LoadedRecord] ,[OriFileName],[OriginalFileChecksum],[TCLastUpdate],[TCActive]
+			FROM [dbo].[STInputFileInfo] WHERE DATEDIFF( MONTH, [InsertDateTime], getdate()) > @ArchiveCumulativeDataMonth and TCActive = 1
+			SET @rowCount = @@ROWCOUNT;
+			insert into [dbo].CATProcessStatus ([StepName], [BatchRecordNum])
+			values ('Insert to ARCHInputFileInfo',  @rowCount);    
+		END
+		
+		DELETE FROM [dbo].[STInputFileInfo] WHERE DATEDIFF( MONTH, [InsertDateTime], getdate()) > @ArchiveCumulativeDataMonth and TCActive = 1
+		SET @rowCount = @@ROWCOUNT;
+		insert into [dbo].CATProcessStatus ([StepName], [BatchRecordNum])
+		values ('Delete from STInputFileInfo',  @rowCount);    
+
+		IF(@ArchiveCumulativeDataMonth != -1)
+		BEGIN
+			INSERT INTO [dbo].[ARCHInputFileDuplicity]([OriginalId]
+           ,[FileName],[LinesInFile],[Checksum],[LoadDateTime],[InsertDateTime],[OriFileName]
+           ,[OriginalFileChecksum],[LoaderBatchID],[TCLastUpdate],[TCActive])
+			SELECT [OriginalId]
+           ,[FileName],[LinesInFile],[Checksum],[LoadDateTime],[InsertDateTime],[OriFileName]
+           ,[OriginalFileChecksum],[LoaderBatchID],[TCLastUpdate],[TCActive]
+			FROM [dbo].[STInputFileDuplicity]WHERE DATEDIFF( MONTH, [InsertDateTime], getdate()) > @ArchiveCumulativeDataMonth and TCActive = 1
+			SET @rowCount = @@ROWCOUNT;
+			insert into [dbo].CATProcessStatus ([StepName], [BatchRecordNum])
+			values ('Insert to [ARCHInputFileDuplicity]',  @rowCount);    
+		END
+		
+		DELETE FROM [dbo].[STInputFileDuplicity] WHERE DATEDIFF( MONTH, [InsertDateTime], getdate()) > @ArchiveCumulativeDataMonth and TCActive = 1
+		SET @rowCount = @@ROWCOUNT;
+		insert into [dbo].CATProcessStatus ([StepName], [BatchRecordNum])
+		values ('Delete from STInputFileInfo',  @rowCount);    
+
 
 	END
 	ELSE

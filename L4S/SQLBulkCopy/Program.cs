@@ -38,7 +38,7 @@ namespace SQLBulkCopy
         public string LoaderMode { get; set; }
         public int BatchSize { get; set; }
         public int BatchTimeout { get; set; }
-        public bool OnlyOneFileFromList { get; set; }
+        public bool SingleFileMode { get; set; }
 
 
         public MyApConfig()
@@ -68,8 +68,8 @@ namespace SQLBulkCopy
             DbPassword = configManager.ReadSetting("dbpassword");
             LoaderMode = configManager.ReadSetting("loaderMode").ToLower();
             bool oneFile;
-            bool.TryParse(configManager.ReadSetting("onlyOneFile"), out oneFile);
-            OnlyOneFileFromList = oneFile;
+            bool.TryParse(configManager.ReadSetting("singleFileMode"), out oneFile);
+            SingleFileMode = oneFile;
             int batchSize;
             int.TryParse(configManager.ReadSetting("batchSize"), out batchSize);
             BatchSize = batchSize != 0 ? batchSize : 10000;
@@ -146,7 +146,7 @@ namespace SQLBulkCopy
                 
                 var iFiles = Directory.GetFiles(appSettings.WorkDir, appSettings.InputFileName);
                 var toTake = iFiles.Length;
-                if (appSettings.OnlyOneFileFromList) {toTake = 1;}
+                if (appSettings.SingleFileMode) {toTake = 1;}
                 if (iFiles.Any())
                 {
                     foreach (var iFile in iFiles.Take(toTake))
