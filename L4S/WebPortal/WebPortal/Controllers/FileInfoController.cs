@@ -3,10 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Web.Mvc;
+using DoddleReport.Web;
 using WebPortal.DataContexts;
 using WebPortal.Models;
 using PagedList;
 using Microsoft.Ajax.Utilities;
+using DoddleReport;
+using DoddleReport.iTextSharp;
+using DoddleReport.Writers;
 
 namespace WebPortal.Controllers
 {
@@ -128,6 +132,96 @@ namespace WebPortal.Controllers
             _db.SaveChanges();
             }
             return RedirectToAction("Index");
+        }
+        // HTTP GET /productreport.pdf - will serve a PDF report
+        public ReportResult FileReport(string insertDateFrom, string insertDateTo, string searchText, string currentFilter, string currentFrom, string currentTo)
+        {
+            var dbAccess = _db.STInputFileInfo;
+            if (searchText.IsNullOrWhiteSpace())
+            {
+                searchText = currentFilter;
+            }
+            if (insertDateFrom.IsNullOrWhiteSpace())
+            {
+                insertDateFrom = currentFrom;
+            }
+            if (insertDateTo.IsNullOrWhiteSpace())
+            {
+                insertDateTo = currentTo;
+            }
+
+            // set actual filter to ViewBag
+            ViewBag.CurrentFilter = searchText;
+            ViewBag.CurrentFrom = insertDateFrom;
+            ViewBag.CurrentTo = insertDateTo;
+
+            bool datCondition = false;
+            bool textCondition = false;
+
+            int.TryParse(searchText, out int searchId);
+            if (!insertDateFrom.IsNullOrWhiteSpace() || !insertDateTo.IsNullOrWhiteSpace()) datCondition = true;
+            if (!searchText.IsNullOrWhiteSpace()) textCondition = true;
+
+            DateTime.TryParse(insertDateFrom, out DateTime fromDate);
+            if (!DateTime.TryParse(insertDateTo, out DateTime toDate))
+            {
+                toDate = DateTime.Now;
+            }
+            if (fromDate == toDate) toDate = toDate.AddDays(1).AddTicks(-1);
+
+            if (datCondition && !textCondition)
+            {
+                _model = dbAccess.Where(p => p.InsertDateTime >= fromDate && p.InsertDateTime <= toDate)
+                    .OrderBy(d => d.InsertDateTime).ToList();
+
+            }
+            if (textCondition && !datCondition)
+            {
+                _model = dbAccess
+                    .Where(p => p.LoaderBatchID == searchId ||
+                                p.FileName.ToUpper().Contains(searchText.ToUpper()) ||
+                                p.OriFileName.ToUpper().Contains(searchText.ToUpper()))
+                    .OrderByDescending(d => d.InsertDateTime).ToList();
+
+            }
+            if (textCondition && datCondition)
+            {
+                _model = dbAccess
+                    .Where(p => (p.InsertDateTime >= fromDate && p.InsertDateTime <= toDate) &&
+                                (p.LoaderBatchID == searchId ||
+                                 p.FileName.ToUpper().Contains(searchText.ToUpper()) ||
+                                 p.OriFileName.ToUpper().Contains(searchText.ToUpper())))
+                    .OrderByDescending(d => d.InsertDateTime).ToList();
+
+            }
+
+            if (_model == null || _model.Count == 0)
+            {
+                _model = dbAccess.OrderByDescending(d => d.InsertDateTime).ToList();
+            }
+
+
+
+            // Create the report and turn our query into a ReportSource
+            var report = new Report(_model.ToReportSource());
+
+
+            // Customize the Text Fields
+            report.TextFields.Title = "Zoznam stiahnutých súborov";
+            report.RenderHints.BooleanCheckboxes = true;
+
+            report.DataFields["Id"].Hidden = true;
+            report.DataFields["LoaderBatchID"].DataFormatString = "{0:d}";
+            report.DataFields["FileName"].Hidden = true;
+            report.DataFields["LinesInFile"].DataFormatString = "{0:d}";
+            report.DataFields["LoadedRecord"].DataFormatString = "{0:d}";
+            report.DataFields["OriFileName"].DataFormatString = "[Null]";
+            report.DataFields["InsertDateTime"].DataFormatString = "{0:d}";
+
+            // Return the ReportResult
+            // the type of report that is rendered will be determined by the extension in the URL (.pdf, .xls, .html, etc)
+            var writer = new PdfReportWriter();
+            return new ReportResult(report,writer,"pdf");
         }
 
         protected override void Dispose(bool disposing)
