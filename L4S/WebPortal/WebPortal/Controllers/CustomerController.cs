@@ -8,6 +8,7 @@ using System.Net;
 using System.Web.Mvc;
 using WebPortal.DataContexts;
 using WebPortal.Models;
+using WebPortal.Common;
 
 namespace WebPortal.Controllers
 {

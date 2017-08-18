@@ -9,7 +9,7 @@ namespace WebPortal
         public static void RegisterRoutes(RouteCollection routes)
         {
             // DoddleReport can automatically determine which IReportWriter to use based on the file extension of the route.  
-            routes.MapReportingRoute();
+            //routes.MapReportingRoute();
 
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
 

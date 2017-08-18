@@ -7,6 +7,7 @@ using WebPortal.DataContexts;
 using WebPortal.Models;
 using PagedList;
 using Microsoft.Ajax.Utilities;
+using WebPortal.Common;
 
 namespace WebPortal.Controllers
 {

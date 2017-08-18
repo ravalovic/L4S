@@ -4,7 +4,7 @@ using System.Linq;
 using System.Web.Mvc;
 using WebPortal.DataContexts;
 using PagedList;
-using WebPortal.Models;
+using WebPortal.Common;
 using Microsoft.Ajax.Utilities;
 
 namespace WebPortal.Controllers
