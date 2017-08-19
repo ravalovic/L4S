@@ -6,11 +6,17 @@ using System.Web.Mvc;
 using DoddleReport.Web;
 using WebPortal.DataContexts;
 using WebPortal.Models;
+using WebPortal.Common;
 using PagedList;
 using Microsoft.Ajax.Utilities;
 using DoddleReport;
+using DoddleReport.AbcPdf;
 using DoddleReport.iTextSharp;
+using DoddleReport.OpenXml;
 using DoddleReport.Writers;
+using ExcelReportWriter = DoddleReport.OpenXml.ExcelReportWriter;
+using PdfReportWriter = DoddleReport.AbcPdf.PdfReportWriter;
+
 
 namespace WebPortal.Controllers
 {
@@ -134,7 +140,7 @@ namespace WebPortal.Controllers
             return RedirectToAction("Index");
         }
         // HTTP GET /productreport.pdf - will serve a PDF report
-        public ReportResult FileReport(string insertDateFrom, string insertDateTo, string searchText, string currentFilter, string currentFrom, string currentTo)
+        public Common.ReportResult FileReport(string insertDateFrom, string insertDateTo, string searchText, string currentFilter, string currentFrom, string currentTo)
         {
             var dbAccess = _db.STInputFileInfo;
             if (searchText.IsNullOrWhiteSpace())
@@ -220,10 +226,39 @@ namespace WebPortal.Controllers
 
             // Return the ReportResult
             // the type of report that is rendered will be determined by the extension in the URL (.pdf, .xls, .html, etc)
-            var writer = new PdfReportWriter();
-            return new ReportResult(report,writer,"pdf");
+            //var writer = new PdfReportWriter();
+
+            
+            return new Common.ReportResult(report);
         }
 
+        public Common.ReportResult FileReport2(string extension)
+        {
+            var dbAccess = _db.STInputFileInfo;
+            _model = dbAccess.OrderByDescending(d => d.InsertDateTime).ToList();
+            // Create the report and turn our query into a ReportSource
+            var report = new Report(_model.ToReportSource());
+
+
+            // Customize the Text Fields
+            report.TextFields.Title = "Zoznam stiahnutých súborov";
+            report.RenderHints.BooleanCheckboxes = true;
+
+            report.DataFields["Id"].Hidden = true;
+            report.DataFields["LoaderBatchID"].DataFormatString = "{0:d}";
+            report.DataFields["FileName"].Hidden = true;
+            report.DataFields["LinesInFile"].DataFormatString = "{0:d}";
+            report.DataFields["LoadedRecord"].DataFormatString = "{0:d}";
+            report.DataFields["OriFileName"].DataFormatString = "[Null]";
+            report.DataFields["InsertDateTime"].DataFormatString = "{0:d}";
+
+            // Return the ReportResult
+            // the type of report that is rendered will be determined by the extension in the URL (.pdf, .xls, .html, etc)
+            //var writer = new PdfReportWriter();
+
+
+            return new Common.ReportResult(report);
+        }
         protected override void Dispose(bool disposing)
         {
             if (disposing)
