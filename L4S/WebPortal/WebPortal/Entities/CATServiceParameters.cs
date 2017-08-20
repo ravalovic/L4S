@@ -31,6 +31,7 @@ namespace WebPortal
         public string ServiceDescription { get; set; }
 
         [Display(Name = "Service_BasicPrice", ResourceType = typeof(Labels))]
+        [DisplayFormat(DataFormatString = "{0:0.000}", ApplyFormatInEditMode = true)]
         public decimal ServiceBasicPrice { get; set; }
 
         [Display(Name = "Service_InsertTime", ResourceType = typeof(Labels))]
