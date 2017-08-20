@@ -6,7 +6,7 @@ using System.Web.Mvc;
 using WebPortal.DataContexts;
 using PagedList;
 using Microsoft.Ajax.Utilities;
-using WebPortal.Models;
+using WebPortal.Common;
 using System.Net;
 using System.Web.UI.WebControls;
 

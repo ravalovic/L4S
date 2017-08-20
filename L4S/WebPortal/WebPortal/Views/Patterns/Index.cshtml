@@ -10,7 +10,7 @@
         <p>@Resources.Labels.Patterns_PageSubtitle</p>
         <br />
         <p>
-            <a style="margin-left:2.5em" class="btn btn-success pull-left" href="/Service/Index/"><span class="glyphicon glyphicon-share-alt" aria-hidden="true"></span> Späť na @Resources.Labels.Menu_Sluzby </a>
+            <a style="margin-left:2.5em" class="btn btn-success pull-left" href="~/Service/Index/"><span class="glyphicon glyphicon-share-alt" aria-hidden="true"></span> Späť na @Resources.Labels.Menu_Sluzby </a>
         </p>
         <br />
         <hr />
@@ -20,7 +20,7 @@
                 <br />
                 <div class="input-group text-right">
                 <div class="input-group-btn">
-                    <a class="btn btn-success modal-link-medium" href="/Patterns/Create/@ViewBag.FKServiceID"><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span> @Resources.Labels.Btn_Add </a>
+                    <a class="btn btn-success modal-link-medium" href="~/Patterns/Create/@ViewBag.FKServiceID"><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span> @Resources.Labels.Btn_Add </a>
                 </div>
             </div>
             </div>
@@ -78,8 +78,8 @@
                             </td>
                       
                             <td>
-                                <a class="modal-link-medium btn btn-success" href="/Patterns/Edit/@item.PKServicePatternID"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span> @Resources.Labels.Btn_Edit </a>
-                                <a class="modal-link-small btn btn-danger" href="/Patterns/Delete/@item.PKServicePatternID"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span> @Resources.Labels.Btn_Delete </a>
+                                <a class="modal-link-medium btn btn-success" href="~/Patterns/Edit/@item.PKServicePatternID"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span> @Resources.Labels.Btn_Edit </a>
+                                <a class="modal-link-small btn btn-danger" href="~/Patterns/Delete/@item.PKServicePatternID"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span> @Resources.Labels.Btn_Delete </a>
 
                                 @*@Html.ActionLink("Edit", "Edit", new { id = item.PKServicePatternID }) |
                                 @Html.ActionLink("Details", "Details", new { id = item.PKServicePatternID }) |
@@ -93,7 +93,7 @@
         </div>
         <hr />
         <p>
-              <a class="btn btn-success pull-left" href="/Service/Index/"><span class="glyphicon glyphicon-share-alt" aria-hidden="true"></span> Späť na @Resources.Labels.Menu_Sluzby </a>
+              <a class="btn btn-success pull-left" href="~/Service/Index/"><span class="glyphicon glyphicon-share-alt" aria-hidden="true"></span> Späť na @Resources.Labels.Menu_Sluzby </a>
         </p>
     </div>
 
