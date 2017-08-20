@@ -66,6 +66,16 @@ namespace WebPortal.Models
     {
         [Required]
         [EmailAddress]
+        [Display(Name = "Customer_IndividualFirstName")]
+        public string FirstName { get; set; }
+
+        [Required]
+        [EmailAddress]
+        [Display(Name = "Customer_IndividualLastsName")]
+        public string LastName { get; set; }
+
+        [Required]
+        [EmailAddress]
         [Display(Name = "Email")]
         public string Email { get; set; }
 

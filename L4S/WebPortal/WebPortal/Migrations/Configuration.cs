@@ -61,6 +61,8 @@ namespace WebPortal.Migrations
                 {
                     UserName = "admin",
                     Email = "admin@admin.sk",
+                    FirstName="Admin",
+                    LastName="Admin"
                 };
                 userManager.Create(newAdmin, "123456"); //password is 123456
                 userManager.AddToRole(newAdmin.Id, WebRoles.Admin);
