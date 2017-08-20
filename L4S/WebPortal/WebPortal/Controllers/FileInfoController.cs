@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Web.Mvc;
+using DocumentFormat.OpenXml.Office2010.Excel;
 using DocumentFormat.OpenXml.Presentation;
 using DoddleReport.Web;
 using WebPortal.DataContexts;
@@ -140,100 +141,8 @@ namespace WebPortal.Controllers
             }
             return RedirectToAction("Index");
         }
-        // HTTP GET /productreport.pdf - will serve a PDF report
-        public Common.ReportResult FileReport(string insertDateFrom, string insertDateTo, string searchText, string currentFilter, string currentFrom, string currentTo)
-        {
-            var dbAccess = _db.STInputFileInfo;
-            if (searchText.IsNullOrWhiteSpace())
-            {
-                searchText = currentFilter;
-            }
-            if (insertDateFrom.IsNullOrWhiteSpace())
-            {
-                insertDateFrom = currentFrom;
-            }
-            if (insertDateTo.IsNullOrWhiteSpace())
-            {
-                insertDateTo = currentTo;
-            }
-
-            // set actual filter to ViewBag
-            ViewBag.CurrentFilter = searchText;
-            ViewBag.CurrentFrom = insertDateFrom;
-            ViewBag.CurrentTo = insertDateTo;
-
-            bool datCondition = false;
-            bool textCondition = false;
-
-            int.TryParse(searchText, out int searchId);
-            if (!insertDateFrom.IsNullOrWhiteSpace() || !insertDateTo.IsNullOrWhiteSpace()) datCondition = true;
-            if (!searchText.IsNullOrWhiteSpace()) textCondition = true;
-
-            DateTime.TryParse(insertDateFrom, out DateTime fromDate);
-            if (!DateTime.TryParse(insertDateTo, out DateTime toDate))
-            {
-                toDate = DateTime.Now;
-            }
-            if (fromDate == toDate) toDate = toDate.AddDays(1).AddTicks(-1);
-
-            if (datCondition && !textCondition)
-            {
-                _model = dbAccess.Where(p => p.InsertDateTime >= fromDate && p.InsertDateTime <= toDate)
-                    .OrderBy(d => d.InsertDateTime).ToList();
-
-            }
-            if (textCondition && !datCondition)
-            {
-                _model = dbAccess
-                    .Where(p => p.LoaderBatchID == searchId ||
-                                p.FileName.ToUpper().Contains(searchText.ToUpper()) ||
-                                p.OriFileName.ToUpper().Contains(searchText.ToUpper()))
-                    .OrderByDescending(d => d.InsertDateTime).ToList();
-
-            }
-            if (textCondition && datCondition)
-            {
-                _model = dbAccess
-                    .Where(p => (p.InsertDateTime >= fromDate && p.InsertDateTime <= toDate) &&
-                                (p.LoaderBatchID == searchId ||
-                                 p.FileName.ToUpper().Contains(searchText.ToUpper()) ||
-                                 p.OriFileName.ToUpper().Contains(searchText.ToUpper())))
-                    .OrderByDescending(d => d.InsertDateTime).ToList();
-
-            }
-
-            if (_model == null || _model.Count == 0)
-            {
-                _model = dbAccess.OrderByDescending(d => d.InsertDateTime).ToList();
-            }
-
-
-
-            // Create the report and turn our query into a ReportSource
-            var report = new Report(_model.ToReportSource());
-
-
-            // Customize the Text Fields
-            report.TextFields.Title = "Zoznam stiahnutých súborov";
-            report.RenderHints.BooleanCheckboxes = true;
-
-            report.DataFields["Id"].Hidden = true;
-            report.DataFields["LoaderBatchID"].DataFormatString = "{0:d}";
-            report.DataFields["FileName"].Hidden = true;
-            report.DataFields["LinesInFile"].DataFormatString = "{0:d}";
-            report.DataFields["LoadedRecord"].DataFormatString = "{0:d}";
-            report.DataFields["OriFileName"].DataFormatString = "[Null]";
-            report.DataFields["InsertDateTime"].DataFormatString = "{0:d}";
-
-            // Return the ReportResult
-            // the type of report that is rendered will be determined by the extension in the URL (.pdf, .xls, .html, etc)
-            //var writer = new PdfReportWriter();
-
-            
-            return new Common.ReportResult(report);
-        }
-
-        public Common.ReportResult FileReport2(string extension)
+        
+        public Common.ReportResult FileReport(string extension)
         {
             var dbAccess = _db.STInputFileInfo;
             _model = dbAccess.OrderByDescending(d => d.InsertDateTime).ToList();
@@ -241,33 +150,36 @@ namespace WebPortal.Controllers
             var report = new Report(_model.ToReportSource());
 
 
-            // Customize the Text Fields
-            report.TextFields.Title = "Zoznam stiahnutých súborov";
-            report.RenderHints.BooleanCheckboxes = true;
-            //report.DataFields["Id"].Hidden = true;
-            //report.DataFields["LoaderBatchID"].DataFormatString = "{0:d}";
-            //report.DataFields["FileName"].Hidden = true;
-            //report.DataFields["LinesInFile"].DataFormatString = "{0:d}";
-            //report.DataFields["LoadedRecord"].DataFormatString = "{0:d}";
-            //report.DataFields["OriFileName"].Hidden=true;
-            //report.DataFields["InsertDateTime"].DataFormatString = "{0:d}";
-            report.DataFields["Id"].Hidden=true;
-            report.DataFields["FileName"].DataFormatString = "{[Null]}";
-            report.DataFields["Checksum"].DataFormatString = "{[Null]}";
-            report.DataFields["LinesInFile"].DataFormatString = "{[Null]}";
-            report.DataFields["InsertDateTime"].DataFormatString = "{[Null]}";
-            report.DataFields["LoaderBatchID"].DataFormatString = "{[Null]}";
-            report.DataFields["LoadedRecord"].DataFormatString = "{[Null]}";
-            report.DataFields["OriFileName"].DataFormatString = "{[Null]}";
-            report.DataFields["OriginalFileChecksum"].DataFormatString = "{[Null]}";
-            report.DataFields["TCLastUpdate"].DataFormatString = "{[Null]}";
-            report.DataFields["TCActive"].DataFormatString = "{[Null]}";
+            report.TextFields.Title = "File Report";
+            report.TextFields.SubTitle = "This is a sample report showing how Doddle Report works";
+            report.TextFields.Footer = "Copyright 2011 (c) The Doddle Project";
+            report.TextFields.Header = string.Format(@"
+                Report Generated: {0}
+                Pocet suborov: {1}
+                ", DateTime.Now, _model.Count);
 
+
+            // Render hints allow you to pass additional hints to the reports as they are being rendered
+            report.RenderHints.BooleanCheckboxes = true;
+            report.RenderHints.BooleansAsYesNo = true;
+
+
+
+            report.DataFields["Id"].Hidden = true; ;
+            //report.DataFields["FileName"];
+            report.DataFields["Checksum"].Hidden = true; ;
+            //report.DataFields["LinesInFile"];
+            //report.DataFields["InsertDateTime"];
+            //report.DataFields["LoaderBatchID"];
+            //report.DataFields["LoadedRecord"];
+            //report.DataFields["OriFileName"];
+            report.DataFields["OriginalFileChecksum"].Hidden = true; ;
+            report.DataFields["TCLastUpdate"].Hidden = true; ;
+            report.DataFields["TCActive"].Hidden = true; ;
             // Return the ReportResult
             // the type of report that is rendered will be determined by the extension in the URL (.pdf, .xls, .html, etc)
             //var writer = new PdfReportWriter();
-
-
+            
             return new Common.ReportResult(report);
         }
         protected override void Dispose(bool disposing)
@@ -278,5 +190,6 @@ namespace WebPortal.Controllers
             }
             base.Dispose(disposing);
         }
+        
     }
 }

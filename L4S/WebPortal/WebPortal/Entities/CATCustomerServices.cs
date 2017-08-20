@@ -34,6 +34,7 @@ namespace WebPortal
         public string ServiceCode { get; set; }
 
         [Display(Name = "Service_Discount", ResourceType = typeof(Labels))]
+        [DisplayFormat(DataFormatString = "{0:0.000}", ApplyFormatInEditMode = true)]
         public decimal ServicePriceDiscount { get; set; }
 
         [StringLength(100)]
