@@ -898,7 +898,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Prehľad dát.
+        ///   Looks up a localized string similar to Vstupné dáta.
         /// </summary>
         public static string Menu_MonthlyData {
             get {
@@ -1447,7 +1447,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Stránka na správu servisov.
+        ///   Looks up a localized string similar to Stránka na správu služieb katastra.
         /// </summary>
         public static string Service_PageSubtitle {
             get {
@@ -1456,7 +1456,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Servisy.
+        ///   Looks up a localized string similar to Služby katastra.
         /// </summary>
         public static string Service_PageTitle {
             get {
@@ -1465,7 +1465,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Parametre servisu.
+        ///   Looks up a localized string similar to Parametre služby.
         /// </summary>
         public static string Service_Parameters {
             get {
@@ -1474,16 +1474,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Vzory.
-        /// </summary>
-        public static string Service_Paterns {
-            get {
-                return ResourceManager.GetString("Service_Paterns", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Vzory.
+        ///   Looks up a localized string similar to Výberové Vzory.
         /// </summary>
         public static string Service_Patterns {
             get {
@@ -1492,7 +1483,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Zoznam servisov.
+        ///   Looks up a localized string similar to Zoznam služieb.
         /// </summary>
         public static string Service_TableTitle {
             get {
@@ -1627,6 +1618,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Prenesené dáta.
+        /// </summary>
+        public static string TabHead_InvoiceReceivedBytes {
+            get {
+                return ResourceManager.GetString("TabHead_InvoiceReceivedBytes", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Merná jednotka.
         /// </summary>
         public static string TabHead_MeasureOfUnits {
@@ -1654,7 +1654,34 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Prenesené dáta.
+        ///   Looks up a localized string similar to Meno parametra.
+        /// </summary>
+        public static string TabHead_ParamName {
+            get {
+                return ResourceManager.GetString("TabHead_ParamName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Popis parametra.
+        /// </summary>
+        public static string TabHead_ParamNote {
+            get {
+                return ResourceManager.GetString("TabHead_ParamNote", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Hodnota parametra.
+        /// </summary>
+        public static string TabHead_ParamValue {
+            get {
+                return ResourceManager.GetString("TabHead_ParamValue", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Prenesené dáta [byte].
         /// </summary>
         public static string TabHead_ReceivedBytes {
             get {

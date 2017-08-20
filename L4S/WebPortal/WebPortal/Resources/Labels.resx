@@ -433,16 +433,16 @@
     <value>Posledná zmena</value>
   </data>
   <data name="Service_PageSubtitle" xml:space="preserve">
-    <value>Stránka na správu servisov</value>
+    <value>Stránka na správu služieb katastra</value>
   </data>
   <data name="Service_PageTitle" xml:space="preserve">
-    <value>Servisy</value>
+    <value>Služby katastra</value>
   </data>
   <data name="Service_Patterns" xml:space="preserve">
-    <value>Vzory</value>
+    <value>Výberové Vzory</value>
   </data>
   <data name="Service_TableTitle" xml:space="preserve">
-    <value>Zoznam servisov</value>
+    <value>Zoznam služieb</value>
   </data>
   <data name="UserList_PageSubtitle_" xml:space="preserve">
     <value>Zoznam oprávnených používateľov</value>
@@ -472,10 +472,7 @@
     <value>Poznámka</value>
   </data>
   <data name="Service_Parameters" xml:space="preserve">
-    <value>Parametre servisu</value>
-  </data>
-  <data name="Service_Paterns" xml:space="preserve">
-    <value>Vzory</value>
+    <value>Parametre služby</value>
   </data>
   <data name="Pattern_DatSelectMethod" xml:space="preserve">
     <value>Metóda selekcie</value>
@@ -562,7 +559,7 @@
     <value>Spoločnosti</value>
   </data>
   <data name="Menu_MonthlyData" xml:space="preserve">
-    <value>Prehľad dát</value>
+    <value>Vstupné dáta</value>
   </data>
   <data name="ProcessTab_UnknownService" xml:space="preserve">
     <value>Neidentifikované služby</value>
@@ -661,7 +658,7 @@
     <value>Počet dotazov</value>
   </data>
   <data name="TabHead_ReceivedBytes" xml:space="preserve">
-    <value>Prenesené dáta</value>
+    <value>Prenesené dáta [byte]</value>
   </data>
   <data name="TabHead_RecordID" xml:space="preserve">
     <value>ID záznamu</value>
@@ -713,5 +710,17 @@
   </data>
   <data name="TabHead_VAT" xml:space="preserve">
     <value>DPH €</value>
+  </data>
+  <data name="TabHead_InvoiceReceivedBytes" xml:space="preserve">
+    <value>Prenesené dáta</value>
+  </data>
+  <data name="TabHead_ParamName" xml:space="preserve">
+    <value>Meno parametra</value>
+  </data>
+  <data name="TabHead_ParamNote" xml:space="preserve">
+    <value>Popis parametra</value>
+  </data>
+  <data name="TabHead_ParamValue" xml:space="preserve">
+    <value>Hodnota parametra</value>
   </data>
 </root>

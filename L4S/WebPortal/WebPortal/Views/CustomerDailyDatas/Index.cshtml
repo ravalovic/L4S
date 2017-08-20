@@ -1,5 +1,4 @@
 ﻿@model PagedList.IPagedList<view_DailyData>
-@using PagedList
 @using PagedList.Mvc;
 <link href="~/Content/PagedList.css" rel="stylesheet" type="text/css" />
 @{
@@ -23,7 +22,7 @@
                 <label class="control-label col-md-1" for="date1">Od</label>
                 <input class="form-control col-md-3 datefield" id="date1" name="date" placeholder="DD.MM.YYYY" type="text" value="@ViewBag.CurrentFrom" />
                 <label class="control-label col-md-1" for="date2">Do</label>
-                <input class="form-control col-md-3 datefield" id="date2" name="date" placeholder="DD.MM.YYYY" type="text" value="@ViewBag.CurrentTo" />
+                <input class="form-control col-md-3  datefield" id="date2" name="date" placeholder="DD.MM.YYYY" type="text" value="@ViewBag.CurrentTo" />
                 <label class="control-label col-md-1" for="date2">Filter</label>
                 <input class="form-control col-md-3 textfield" id="searchText" name="searchtext" type="text" value="@ViewBag.CurrentFilter" />
                 <div class="input-group-btn col-md-3 text-right">
@@ -43,7 +42,16 @@
                         @Html.DisplayNameFor(model => model.FirstOrDefault().CustomerID)
                     </th>
                     <th>
+                        @Html.DisplayNameFor(model => model.FirstOrDefault().CustomerIdentification)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.FirstOrDefault().CustomerName)
+                    </th>
+                    <th>
                         @Html.DisplayNameFor(model => model.FirstOrDefault().ServiceID)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.FirstOrDefault().ServiceCode)
                     </th>
                     <th>
                         @Html.DisplayNameFor(model => model.FirstOrDefault().NumberOfRequest)
@@ -65,7 +73,16 @@
                             @Html.DisplayFor(modelItem => item.CustomerID)
                         </td>
                         <td>
+                            @Html.DisplayFor(modelItem => item.CustomerIdentification)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.CustomerName)
+                        </td>
+                        <td>
                             @Html.DisplayFor(modelItem => item.ServiceID)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.ServiceCode)
                         </td>
                         <td>
                             @Html.DisplayFor(modelItem => item.NumberOfRequest)

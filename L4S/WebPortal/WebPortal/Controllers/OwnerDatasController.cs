@@ -20,6 +20,11 @@ namespace WebPortal.Controllers
                 if (item.ID == id) item.TCActive = 1;
                 else item.TCActive = 0;
             }
+            if (actualList.Count == 1)
+            {
+                var firstOrDefault = actualList.FirstOrDefault();
+                if (firstOrDefault != null) firstOrDefault.TCActive = 1;
+            }
             db.SaveChanges();
             return RedirectToAction("Index");
         }

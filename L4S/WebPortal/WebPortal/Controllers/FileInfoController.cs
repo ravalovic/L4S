@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Web.Mvc;
+using DocumentFormat.OpenXml.Presentation;
 using DoddleReport.Web;
 using WebPortal.DataContexts;
 using WebPortal.Models;
@@ -243,14 +244,24 @@ namespace WebPortal.Controllers
             // Customize the Text Fields
             report.TextFields.Title = "Zoznam stiahnutých súborov";
             report.RenderHints.BooleanCheckboxes = true;
-
-            report.DataFields["Id"].Hidden = true;
-            report.DataFields["LoaderBatchID"].DataFormatString = "{0:d}";
-            report.DataFields["FileName"].Hidden = true;
-            report.DataFields["LinesInFile"].DataFormatString = "{0:d}";
-            report.DataFields["LoadedRecord"].DataFormatString = "{0:d}";
-            report.DataFields["OriFileName"].DataFormatString = "[Null]";
-            report.DataFields["InsertDateTime"].DataFormatString = "{0:d}";
+            //report.DataFields["Id"].Hidden = true;
+            //report.DataFields["LoaderBatchID"].DataFormatString = "{0:d}";
+            //report.DataFields["FileName"].Hidden = true;
+            //report.DataFields["LinesInFile"].DataFormatString = "{0:d}";
+            //report.DataFields["LoadedRecord"].DataFormatString = "{0:d}";
+            //report.DataFields["OriFileName"].Hidden=true;
+            //report.DataFields["InsertDateTime"].DataFormatString = "{0:d}";
+            report.DataFields["Id"].Hidden=true;
+            report.DataFields["FileName"].DataFormatString = "{[Null]}";
+            report.DataFields["Checksum"].DataFormatString = "{[Null]}";
+            report.DataFields["LinesInFile"].DataFormatString = "{[Null]}";
+            report.DataFields["InsertDateTime"].DataFormatString = "{[Null]}";
+            report.DataFields["LoaderBatchID"].DataFormatString = "{[Null]}";
+            report.DataFields["LoadedRecord"].DataFormatString = "{[Null]}";
+            report.DataFields["OriFileName"].DataFormatString = "{[Null]}";
+            report.DataFields["OriginalFileChecksum"].DataFormatString = "{[Null]}";
+            report.DataFields["TCLastUpdate"].DataFormatString = "{[Null]}";
+            report.DataFields["TCActive"].DataFormatString = "{[Null]}";
 
             // Return the ReportResult
             // the type of report that is rendered will be determined by the extension in the URL (.pdf, .xls, .html, etc)

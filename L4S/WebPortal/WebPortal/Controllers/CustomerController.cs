@@ -102,45 +102,59 @@ namespace WebPortal.Controllers
 
 
         // GET: Customer/IndividualList/
-        public ActionResult Search(int? page, string searchText, string currentFilter)
+        public ActionResult Search(int? page, string customerType, string searchText, string currentFilter)
         {
             StaticPagedList<CATCustomerData> pageList;
             if (searchText.IsNullOrWhiteSpace())
             {
                 searchText = currentFilter;
             }
+
             // set actual filter to ViewBag
             ViewBag.CurrentFilter = searchText;
 
             List<CATCustomerData> model = _db.CATCustomerData.ToList();
             List<CATCustomerData> dataList;
-            dataList = model.Where(p => p.CustomerType.Equals("PO") 
-                                    && (p.CompanyName.ToUpper().Contains(searchText.ToUpper())
-                                    || p.Address.ToUpper().Contains(searchText.ToUpper()))).ToList();
-            
+
+
+            if (customerType.Equals("PO"))
+            {
+                dataList = model.Where(p => p.CustomerType.ToUpper().Equals(customerType.ToUpper())
+                                            && (p.CompanyName.ToUpper().Contains(searchText.ToUpper())
+                                                || p.CompanyID.ToUpper().Contains(searchText.ToUpper())
+                                                || p.Address.ToUpper().Contains(searchText.ToUpper()))).ToList();
+            }
+            else
+            {
+                dataList = model.Where(p => p.CustomerType.ToUpper().Equals(customerType.ToUpper())
+                                            && (p.IndividualFirstName.ToUpper().Contains(searchText.ToUpper())
+                                            || p.IndividualLastName.ToUpper().Contains(searchText.ToUpper())
+                                            || p.IndividualID.ToUpper().Contains(searchText.ToUpper())
+                                                || p.Address.ToUpper().Contains(searchText.ToUpper()))).ToList();
+            }
+
             if (dataList.Count > 0)
             {
                 _pager = new Pager(dataList.Count, page);
-                pageList = new StaticPagedList<CATCustomerData>(dataList, _pager.CurrentPage, _pager.PageSize, _pager.TotalItems);
-                return View("CompanyList", pageList);
-            }
-
-            dataList = model.Where(p => p.CustomerType.Equals("FO")
-                                        && (p.FullName.ToUpper().Contains(searchText.ToUpper())
-                                            || p.Address.ToUpper().Contains(searchText.ToUpper()))).ToList();
-            if (dataList.Count > 0)
-            {
-                _pager = new Pager(dataList.Count, page);
-                 pageList = new StaticPagedList<CATCustomerData>(dataList, _pager.CurrentPage, _pager.PageSize, _pager.TotalItems);
-                return View("IndividualList", pageList);
-            }
-
-           dataList = model.Where(p => p.CustomerType.Equals("PO")).ToList();
-                _pager = new Pager(model.Count, page);
                 pageList = new StaticPagedList<CATCustomerData>(dataList, _pager.CurrentPage, _pager.PageSize,
                     _pager.TotalItems);
+                if (customerType.Contains("FO"))
+                {
+                    return View("IndividualList", pageList);
+                }
                 return View("CompanyList", pageList);
-           
+            }
+            
+            dataList = model.Where(p => p.CustomerType.Equals(customerType)).ToList();
+            _pager = new Pager(model.Count, page);
+            pageList = new StaticPagedList<CATCustomerData>(dataList, _pager.CurrentPage, _pager.PageSize,
+                _pager.TotalItems);
+            if (customerType.Contains("FO"))
+            {
+                return View("IndividualList", pageList);
+            }
+            return View("CompanyList", pageList);
+
         }
 
         // GET: Customer/IndividualList/
