@@ -18,11 +18,25 @@
 
         </div>
     </div>
+
+    
+</div>
+
+@{var errors = ViewData.ModelState.Where(n => n.Value.Errors.Count > 0).ToList();
+    if (errors.Count > 0)
+    {
+        <div class="alert alert-danger col-lg-10" role="alert">
+
+
+            @{foreach (var item in errors)
+                { <p><span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"> </span> @item.Value.Errors[0].ErrorMessage</p>}}
+        </div>
+                }
+}
+
+<div class="row col-md-offset-1">
+    <div class="col-md-6 col-md-offset-1">
+        @Html.Partial("_LoginPartial")
     </div>
 
-<div class="row">
-    <div class="col-md-6">
-       @Html.Partial("_LoginPartial")
-    </div>
-  
 </div>

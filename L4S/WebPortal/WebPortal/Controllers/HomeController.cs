@@ -4,8 +4,10 @@ namespace WebPortal.Controllers
 {
     public class HomeController : Controller
     {
-        public ActionResult Index()
+        public ActionResult Index(bool? LoginError)
         {
+            if (LoginError==true) ModelState.AddModelError("", "Nespravne meno alebo Heslo.");
+            DataContexts.L4SDb _db = new DataContexts.L4SDb();
             return View();
         }
 
