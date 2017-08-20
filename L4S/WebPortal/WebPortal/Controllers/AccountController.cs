@@ -38,8 +38,7 @@ namespace WebPortal.Controllers
         {
         }
 
-        //change to only Admin !!!  [Authorize]
-        [AllowAnonymous]
+        //change to only Admin !!!  [Authorize]       
         public ActionResult UserList()
         {
             L4SDb db = new L4SDb();
@@ -172,7 +171,6 @@ namespace WebPortal.Controllers
 
         //
         // GET: /Account/Register
-        [AllowAnonymous]
         public ActionResult Register()
         {
             return View();
@@ -181,13 +179,12 @@ namespace WebPortal.Controllers
         //
         // POST: /Account/Register
         [HttpPost]
-        [AllowAnonymous]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Register(RegisterViewModel model)
         {
             if (ModelState.IsValid)
             {
-                var user = new ApplicationUser { UserName = model.UserName, Email = model.Email };
+                var user = new ApplicationUser { UserName = model.UserName, Email = model.Email, FirstName=model.FirstName, LastName=model.LastName };
                 var result = await UserManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {

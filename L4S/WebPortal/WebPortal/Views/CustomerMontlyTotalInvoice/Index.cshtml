@@ -143,12 +143,22 @@
     @*@Styles.Render("~/Content/css")*@
     <script type="text/javascript">
 
-        $(document).ready(function () {
-            $('.datefield').datepicker({
-                dateFormat: "mm.yy",
+        $(document).ready(function () {            
+            $('.datefield').datepicker({ 
+                //language: 'sk',
                 changeMonth: true,
                 changeYear: true,
-                yearRange: "-60:+0"
+                showButtonPanel: true,
+                yearRange: "-60:+0",
+                dateFormat: 'mm.yy'
+            }).focus(function () {
+                var thisCalendar = $(this);
+                $('.ui-datepicker-calendar').detach();
+                $('.ui-datepicker-close').click(function () {
+                    var month = $("#ui-datepicker-div .ui-datepicker-month :selected").val();
+                    var year = $("#ui-datepicker-div .ui-datepicker-year :selected").val();
+                    thisCalendar.datepicker('setDate', new Date(year, month, 1));
+                });
             });
         });
     </script>

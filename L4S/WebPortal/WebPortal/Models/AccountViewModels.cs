@@ -1,6 +1,8 @@
 ﻿using Resources;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using Microsoft.AspNet.Identity.EntityFramework;
+using Microsoft.AspNet.Identity;
 
 
 namespace WebPortal.Models
@@ -66,17 +68,17 @@ namespace WebPortal.Models
     {
         [Required]
         [EmailAddress]
-        [Display(Name = "Customer_IndividualFirstName")]
+        [Display(Name = "Customer_IndividualFirstName", ResourceType = typeof(Labels))]
         public string FirstName { get; set; }
 
         [Required]
         [EmailAddress]
-        [Display(Name = "Customer_IndividualLastsName")]
+        [Display(Name = "Customer_IndividualLastsName", ResourceType = typeof(Labels))]
         public string LastName { get; set; }
 
         [Required]
         [EmailAddress]
-        [Display(Name = "Email")]
+        [Display(Name = "Email", ResourceType = typeof(Labels))]
         public string Email { get; set; }
 
         [Required]
@@ -93,6 +95,38 @@ namespace WebPortal.Models
         [Display(Name = "PasswordConfirm", ResourceType = typeof(Labels))]
         [Compare("Password", ErrorMessage = "Heslo a potvrdené heslo musí byť rovnaké.")]
         public string ConfirmPassword { get; set; }
+
+        public Dictionary<string,bool> UserRoles { get; set; }
+        
+        
+        public void ReadRoles()
+        {
+            DataContexts.L4SDb _db = new DataContexts.L4SDb();
+            Dictionary<string, bool> list = new Dictionary<string, bool>();
+
+            var userStore = new UserStore<ApplicationUser>(_db);
+            var userManager = new UserManager<ApplicationUser>(userStore);
+            var user = userManager.FindByName(this.UserName);
+
+            var roleStore = new RoleStore<IdentityRole>(_db);
+            var roleManager = new RoleManager<IdentityRole>(roleStore);
+
+            if (user == null)
+            {
+                foreach (var item in roleManager.Roles)
+                {
+                    list.Add(item.Name, false);
+                }
+            }
+            else
+            {
+                foreach (var item in roleManager.Roles)
+                {
+                    list.Add(item.Name, userManager.IsInRole(user.Id, item.Name));
+                }
+            }
+            UserRoles= list;
+        }
     }
 
     public class ResetPasswordViewModel
