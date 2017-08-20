@@ -714,4 +714,13 @@
   <data name="TabHead_VAT" xml:space="preserve">
     <value>DPH €</value>
   </data>
+  <data name="Btn_Login" xml:space="preserve">
+    <value>Prihlásiť</value>
+  </data>
+  <data name="LoginName" xml:space="preserve">
+    <value>Prihlasovacie meno</value>
+  </data>
+  <data name="PasswordConfirm" xml:space="preserve">
+    <value>Potvrdenie hesla</value>
+  </data>
 </root>

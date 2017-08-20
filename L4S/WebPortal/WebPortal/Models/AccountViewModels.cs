@@ -51,9 +51,8 @@ namespace WebPortal.Models
     public class LoginViewModel
     {
         [Required]
-        [Display(Name = "Email", ResourceType = typeof(Labels))]
-        [EmailAddress]
-        public string Email { get; set; }
+        [Display(Name = "LoginName", ResourceType = typeof(Labels))]
+        public string UserName { get; set; }
 
         [Required]
         [Display(Name = "Password", ResourceType = typeof(Labels))]
@@ -71,14 +70,18 @@ namespace WebPortal.Models
         public string Email { get; set; }
 
         [Required]
-        [StringLength(100, ErrorMessage = "The {0} must be at least {2} characters long.", MinimumLength = 6)]
+        [Display(Name = "LoginName", ResourceType = typeof(Labels))]
+        public string UserName { get; set; }
+
+        [Required]
+        [StringLength(100, ErrorMessage = "{0} musí mať aspoň {2} znaky", MinimumLength = 6)]
         [DataType(DataType.Password)]
-        [Display(Name = "Password")]
+        [Display(Name = "Password", ResourceType = typeof(Labels))]
         public string Password { get; set; }
 
         [DataType(DataType.Password)]
-        [Display(Name = "Confirm password")]
-        [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
+        [Display(Name = "PasswordConfirm", ResourceType = typeof(Labels))]
+        [Compare("Password", ErrorMessage = "Heslo a potvrdené heslo musí byť rovnaké.")]
         public string ConfirmPassword { get; set; }
     }
 

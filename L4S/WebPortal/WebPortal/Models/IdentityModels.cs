@@ -15,7 +15,7 @@ namespace WebPortal.Models
             // Add custom user claims here
             return userIdentity;
         }
-    }
-
+    } 
     
+
 }
