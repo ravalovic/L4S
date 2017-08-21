@@ -22,20 +22,42 @@
         <div class="panel-heading clearfix">
             <h4 class="panel-title pull-left"><strong>@Resources.Labels.Filter</strong></h4>
             <br />
-            <div class="form-group form-horizontal col-md-12">
-                <!-- Date input -->
-                <label class="control-label col-md-1" for="date1">Od</label>
-                <input class="form-control col-md-3 datefield" id="date1" name="date" placeholder="DD.MM.YYYY" type="text" value="@ViewBag.CurrentFrom" />
-                <label class="control-label col-md-1" for="date2">Do</label>
-                <input class="form-control col-md-3 datefield" id="date2" name="date" placeholder="DD.MM.YYYY" type="text" value="@ViewBag.CurrentTo" />
-                <label class="control-label col-md-1" for="date2">Filter</label>
-                <input class="form-control col-md-3 textfield" id="searchText" name="searchtext" type="text" value="@ViewBag.CurrentFilter" />
-                <div class="input-group-btn col-md-3 text-right">
-                    <button class="btn btn-success text-right" aria-hidden="true" onclick="location.href = '@Url.Action("Index", "ProcessStatus")?insertDateFrom=' + document.getElementById('date1').value+'&'+'insertDateTo=' + document.getElementById('date2').value+'&'+'searchText=' + document.getElementById('searchText').value +'&'+'currentFilter='+ '@ViewBag.CurrentFilter' +'&'+'currentFrom='+ '@ViewBag.CurrentFrom'+'&'+'currentTo='+ '@ViewBag.CurrentTo'"><span class="glyphicon glyphicon-search" aria-hidden="true"></span> Hľadať </button>
-                    <span style="margin: 10px"></span>
-                    <button class="btn btn-danger text-right" aria-hidden="true" onclick="location.href = '@Url.Action("Index", "ProcessStatus")'"><span class="glyphicon glyphicon-search" aria-hidden="true"></span> Reset </button>
+            <form class="form-horizontal col-md-12" role="form">
+                <div class="row">
+                    <!-- Date input -->
+                    <div class="form-inline">
+
+                        <div class="form-group">
+                            <label class="control-label col-md-1" for="date1">Od</label>
+                            <div class="col-md-2 col-sm-10">
+                                <input class="form-control datefield" id="date1" name="date" placeholder="DD.MM.YYYY" type="text" value="@ViewBag.CurrentFrom" />
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="control-label col-md-1" for="date2">Do</label>
+                            <div class="col-md-2 col-sm-10">
+                                <input class="form-control datefield" id="date2" name="date" placeholder="DD.MM.YYYY" type="text" value="@ViewBag.CurrentTo" />
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="control-label col-md-2" for="date2">Filter</label>
+                            <div class="col-md-2 col-sm-10">
+                                <input class="form-control textfield" id="searchText" name="searchtext" type="text" value="@ViewBag.CurrentFilter" />
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class=" input-group-btn  col-md-2 col-sm-10">
+                                <button class="btn btn-success text-right" aria-hidden="true" onclick="location.href = '@Url.Action("Index", "ProcessStatus")?insertDateFrom=' + document.getElementById('date1').value+'&'+'insertDateTo=' + document.getElementById('date2').value+'&'+'searchText=' + document.getElementById('searchText').value +'&'+'currentFilter='+ '@ViewBag.CurrentFilter' +'&'+'currentFrom='+ '@ViewBag.CurrentFrom'+'&'+'currentTo='+ '@ViewBag.CurrentTo'"><span class="glyphicon glyphicon-search" aria-hidden="true"></span> Hľadať </button>
+                                <span style="margin: 10px"></span>
+                                <button class="btn btn-danger text-right" aria-hidden="true" onclick="location.href = '@Url.Action("Index", "ProcessStatus")'"><span class="glyphicon glyphicon-search" aria-hidden="true"></span> Reset </button>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-            </div>
+            </form>
         </div>
 
         <div class="panel-body">

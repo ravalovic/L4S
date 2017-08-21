@@ -39,67 +39,81 @@
 
         <div class="panel-body">
             <table class="table table-striped table-bordered table-hover table-condensed">
-                <tr>
-                    <th>
-                        @Html.DisplayNameFor(model => model.FirstOrDefault().IndividualTitle)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.FirstOrDefault().IndividualFirstName)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.FirstOrDefault().IndividualLastName)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.FirstOrDefault().IndividualID)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.FirstOrDefault().Address)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.FirstOrDefault().ContactEmail)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.FirstOrDefault().ContactMobile)
-                    </th>
-                    <th></th>
-                </tr>
-
-                @foreach (var item in Model)
-                {
+                <thead>
                     <tr>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.IndividualTitle)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.IndividualFirstName)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.IndividualLastName)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.IndividualID)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Address)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.ContactEmail)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.ContactMobile)
-                        </td>
-                        <td>
-                            <div>
-                                <a class="btn btn-primary" href="~/Customer/Services/@item.PKCustomerDataID"><span class="glyphicon glyphicon-cog" aria-hidden="true"></span> @Resources.Labels.Btn_Settings </a>
-                                <a class="modal-link-medium btn btn-success" href="~/Customer/Edit/@item.PKCustomerDataID"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span> @Resources.Labels.Btn_Edit </a>
-                                <a class="modal-link-small btn btn-danger" href="~/Customer/Delete/@item.PKCustomerDataID"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span> @Resources.Labels.Btn_Delete </a>
-
-                            </div>
-                        </td>
+                        <th>
+                            @Html.DisplayNameFor(model => model.FirstOrDefault().IndividualTitle)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.FirstOrDefault().IndividualFirstName)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.FirstOrDefault().IndividualLastName)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.FirstOrDefault().IndividualID)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.FirstOrDefault().Address)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.FirstOrDefault().ContactEmail)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.FirstOrDefault().ContactMobile)
+                        </th>
+                        <th></th>
                     </tr>
-                }
+                </thead>
+                @{ int rowNumber = -1; }
+                    @foreach (var item in Model)
+                    {
+                        rowNumber++;
+                        string odkaz = "rowNumber" + rowNumber;
+                        <tr data-toggle="collapse" data-target="#@odkaz" class="info accordion-toggle">
+                            <td>
+                                @Html.DisplayFor(modelItem => item.IndividualTitle)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.IndividualFirstName)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.IndividualLastName)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.IndividualID)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Address)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.ContactEmail)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.ContactMobile)
+                            </td>
+                            <td>
+                                <div>
+                                    <a class="btn btn-primary" href="#"><span class="glyphicon glyphicon-menu-hamburger" aria-hidden="true"></span> </a>
+                                </div>
+                            </td>
+                        </tr>
 
-            </table>
+                        <tr>
+                            <td colspan="12" class="hiddenRow default">
+                                <div class="accordian-body collapse .col-md-offset-1 col-lg-offset-1 col-md-10 col-lg-10" id="@odkaz">
+
+                                    <a class="btn btn-primary" href="~/Customer/Services/@item.PKCustomerDataID"><span class="glyphicon glyphicon-cog" aria-hidden="true"></span> @Resources.Labels.Btn_Settings </a>
+                                    <a class="btn btn-primary" href="~/Customer/Identifiers/@item.PKCustomerDataID"><span class="glyphicon glyphicon-cog" aria-hidden="true"></span> @Resources.Labels.Customer_IdentifierName </a>
+
+                                    <a class="modal-link-medium btn btn-success" href="~/Customer/Edit/@item.PKCustomerDataID"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span> @Resources.Labels.Btn_Edit </a>
+                                    <a class="modal-link-small btn btn-danger" href="~/Customer/Delete/@item.PKCustomerDataID"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span> @Resources.Labels.Btn_Delete </a>
+                                </div>
+                            </td>
+                        </tr>
+                    }
+
+</table>
 
         </div>
     </div>

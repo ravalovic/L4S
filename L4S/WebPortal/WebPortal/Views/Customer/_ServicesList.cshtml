@@ -40,7 +40,7 @@
                                             </td>
                                             <td>
                                                 <div class="">
-                                                    @Html.EditorFor(model => model[i].ServiceName, new { htmlAttributes = new { @class = "form-control " } })
+                                                    @Html.EditorFor(model => model[i].ServiceName, new { htmlAttributes = new { @class = "form-control maxLengthStyle" } })
                                                     @Html.ValidationMessageFor(model => model[i].ServiceName, "", new { @class = "text-danger" })
                                                 </div>
                                             </td>

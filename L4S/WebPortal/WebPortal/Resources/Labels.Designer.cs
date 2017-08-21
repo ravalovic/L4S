@@ -169,7 +169,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Nastavenia.
+        ///   Looks up a localized string similar to Nastavenia služieb.
         /// </summary>
         public static string Btn_Settings {
             get {
@@ -412,7 +412,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Identifikátor.
+        ///   Looks up a localized string similar to Identifikátory služieb.
         /// </summary>
         public static string Customer_IdentifierName {
             get {

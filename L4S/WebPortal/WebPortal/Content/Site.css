@@ -20,9 +20,12 @@
 input,
 select,
 textarea {
-    max-width: 600px;
+    max-width: 280px;
 }
 
+.maxLengthStyle {
+    max-width: 600px !IMPORTANT;
+}
 
 
 #leftMenu .accordion-inner {
@@ -145,4 +148,13 @@ hr {
     margin-bottom: 20px;
     border: 0;
     border-top: 1px solid #eee;
+}
+
+td {
+    word-break: break-word;
+}
+
+.datepicker {
+    background-color: #fff;
+    color: #333;
 }

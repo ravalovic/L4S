@@ -151,7 +151,7 @@
     <value>Parametre</value>
   </data>
   <data name="Btn_Settings" xml:space="preserve">
-    <value>Nastavenia</value>
+    <value>Nastavenia služieb</value>
   </data>
   <data name="CustomerTab_Company" xml:space="preserve">
     <value>PO - Právnická osoba</value>
@@ -460,7 +460,7 @@
     <value>Opis identifikátora</value>
   </data>
   <data name="Customer_IdentifierName" xml:space="preserve">
-    <value>Identifikátor</value>
+    <value>Identifikátory služieb</value>
   </data>
   <data name="Service_Discount" xml:space="preserve">
     <value>Zľava (Pr: 0,9 = 10%)</value>
