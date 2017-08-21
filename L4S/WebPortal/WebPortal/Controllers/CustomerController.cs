@@ -84,6 +84,28 @@ namespace WebPortal.Controllers
             return View("Details", model);
         }
 
+        // GET: Customer/Services/5
+        public ActionResult Identifiers(int? id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+
+            CATCustomerData cAtCustomerData = _db.CATCustomerData.Where(l => l.PKCustomerDataID == id).Include(p => p.CATCustomerIdentifiers).FirstOrDefault();
+
+            if (cAtCustomerData == null)
+            {
+                return HttpNotFound();
+            }
+
+            CustomerViewModel model = new CustomerViewModel(cAtCustomerData);
+            if (cAtCustomerData.CustomerType == "PO") ViewBag.CustomerType = 1;
+            else ViewBag.CustomerType = 2;
+
+            model.Services = null; //show only identifier
+            return View("Details", model);
+        }
 
         // POST: Customer/EditServices
         [HttpPost]

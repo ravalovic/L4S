@@ -8,17 +8,20 @@
     <title>@ViewBag.Title - VOSK</title>
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
-    @Styles.Render("~/Content/css/bootstrap")
+    @*@Styles.Render("~/Content/css/bootstrap")*@
 
     <!-- jQuery UI CSS Reference -->
     <link href="~/Content/themes/base/jquery-ui.min.css" rel="stylesheet" />
-    <!-- Required jQuery and jQuery UI Javascript references -->
-    <script src="~/Scripts/jquery-3.1.1.min.js"></script>
-    <script src="~/Scripts/jquery-ui-1.12.1.min.js"></script>
+    @*<!-- Required jQuery and jQuery UI Javascript references -->*@
+    @*<script src="~/Scripts/jquery-3.1.1.min.js"></script>*@
+    @*<script src="~/Scripts/jquery-ui-1.12.1.min.js"></script>*@
 
-    @* pre calendare, odstranene lebo nefunguje Menu rozbalenie/zbalenie*@
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")
+    @Scripts.Render("~/bundles/datetime")
+
+    @RenderSection("scripts", required: false)
+
     <link rel="icon" href="~/Resources/Images/favicon.jpg">
 </head>
 <body>
@@ -152,10 +155,7 @@
 
 
 
-    @Scripts.Render("~/bundles/jquery")
-    @Scripts.Render("~/bundles/bootstrap")
-    @Scripts.Render("~/bundles/datetime")
-    @RenderSection("scripts", required: false)
+
 
     <div class="modal fade" id="modal-small" data-backdrop="static" tabindex="-1" role="dialog" aria-hidden="true">
         <div class="modal-dialog modal-sm">
