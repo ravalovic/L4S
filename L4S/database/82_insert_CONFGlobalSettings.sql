@@ -95,3 +95,11 @@ INSERT INTO [dbo].[CONFGeneralSettings]
            ('ProcessDataStoreDays'
            ,'60', 'Počet dní počas ktorých sa uchovávajú logy spracovania.');
 GO
+
+INSERT INTO [dbo].[CONFGeneralSettings]
+           ([ParamName]
+           ,[ParamValue],[Note])
+     VALUES
+           ('CSVDElimiter'
+           ,';', 'Oddeľovač stĺpcov v csv exporte');
+GO

@@ -172,9 +172,15 @@ namespace WebPortal.Controllers
             // Return the ReportResult
             // the type of report that is rendered will be determined by the extension in the URL (.pdf, .xls, .html, etc)
             //var writer = new PdfReportWriter();
+            string delimiter = ";";
+            var confGeneralSettings = _db.CONFGeneralSettings.FirstOrDefault(p => p.ParamName.Equals("CSVDelimiter"));
+            if (confGeneralSettings != null)
+            {
+                delimiter = confGeneralSettings.ParamValue;
+            }
             var repname = "FileReport_" + DateTime.Now.ToString("MMyyyy");
             if (extension.Equals("csv")) { 
-                DelimitedTextReportWriter.DefaultDelimiter = ";";   //DelimitedTextReportWriter.CommaDelimiter;
+                DelimitedTextReportWriter.DefaultDelimiter = delimiter;   //DelimitedTextReportWriter.CommaDelimiter;
             }
             return new Common.ReportResult(report) { FileName = repname};
             
