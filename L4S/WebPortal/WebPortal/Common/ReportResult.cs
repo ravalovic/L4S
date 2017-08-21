@@ -10,8 +10,7 @@ namespace WebPortal.Common
 {
     //change default routing from Doodle to 
     //http://localhost/Area/Controller/Action?extension={extension}
-    //http://anthonyvscode.com/2015/01/21/doddlereport-export-type-by-parameter/
-
+    
     public class ReportResult : DoddleReport.Web.ReportResult
     {
         private readonly Report report;

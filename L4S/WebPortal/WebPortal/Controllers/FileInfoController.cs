@@ -3,8 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Web.Mvc;
-using DocumentFormat.OpenXml.Office2010.Excel;
-using DocumentFormat.OpenXml.Presentation;
 using DoddleReport.Web;
 using WebPortal.DataContexts;
 using WebPortal.Models;
@@ -12,12 +10,7 @@ using WebPortal.Common;
 using PagedList;
 using Microsoft.Ajax.Utilities;
 using DoddleReport;
-using DoddleReport.AbcPdf;
-using DoddleReport.iTextSharp;
-using DoddleReport.OpenXml;
 using DoddleReport.Writers;
-using ExcelReportWriter = DoddleReport.OpenXml.ExcelReportWriter;
-using PdfReportWriter = DoddleReport.AbcPdf.PdfReportWriter;
 
 
 namespace WebPortal.Controllers
@@ -179,8 +172,12 @@ namespace WebPortal.Controllers
             // Return the ReportResult
             // the type of report that is rendered will be determined by the extension in the URL (.pdf, .xls, .html, etc)
             //var writer = new PdfReportWriter();
+            var repname = "FileReport_" + DateTime.Now.ToString("MMyyyy");
+            if (extension.Equals("csv")) { 
+                DelimitedTextReportWriter.DefaultDelimiter = ";";   //DelimitedTextReportWriter.CommaDelimiter;
+            }
+            return new Common.ReportResult(report) { FileName = repname};
             
-            return new Common.ReportResult(report);
         }
         protected override void Dispose(bool disposing)
         {

@@ -124,7 +124,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Prihlásiť.
+        ///   Looks up a localized string similar to Prihlásenie.
         /// </summary>
         public static string Btn_Login {
             get {
@@ -660,6 +660,15 @@ namespace Resources {
         public static string File_FirstlLoadTime {
             get {
                 return ResourceManager.GetString("File_FirstlLoadTime", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Počet riadkov v súbore.
+        /// </summary>
+        public static string File_LineInFile {
+            get {
+                return ResourceManager.GetString("File_LineInFile", resourceCulture);
             }
         }
         
@@ -1218,15 +1227,6 @@ namespace Resources {
         public static string Password {
             get {
                 return ResourceManager.GetString("Password", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Potvrdenie hesla.
-        /// </summary>
-        public static string PasswordConfirm {
-            get {
-                return ResourceManager.GetString("PasswordConfirm", resourceCulture);
             }
         }
         

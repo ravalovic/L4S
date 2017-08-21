@@ -723,4 +723,13 @@
   <data name="TabHead_ParamValue" xml:space="preserve">
     <value>Hodnota parametra</value>
   </data>
+  <data name="Btn_Login" xml:space="preserve">
+    <value>Prihlásenie</value>
+  </data>
+  <data name="File_LineInFile" xml:space="preserve">
+    <value>Počet riadkov v súbore</value>
+  </data>
+  <data name="LoginName" xml:space="preserve">
+    <value>Prihlasovacie meno</value>
+  </data>
 </root>
