@@ -732,4 +732,16 @@
   <data name="LoginName" xml:space="preserve">
     <value>Prihlasovacie meno</value>
   </data>
+  <data name="Btn_CSV" xml:space="preserve">
+    <value>CSV</value>
+  </data>
+  <data name="Btn_HTML" xml:space="preserve">
+    <value>HTML</value>
+  </data>
+  <data name="Btn_PDF" xml:space="preserve">
+    <value>PDF</value>
+  </data>
+  <data name="Btn_XLSX" xml:space="preserve">
+    <value>XLSX</value>
+  </data>
 </root>

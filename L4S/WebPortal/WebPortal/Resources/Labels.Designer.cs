@@ -97,6 +97,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to CSV.
+        /// </summary>
+        public static string Btn_CSV {
+            get {
+                return ResourceManager.GetString("Btn_CSV", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Zmazať.
         /// </summary>
         public static string Btn_Delete {
@@ -120,6 +129,15 @@ namespace Resources {
         public static string Btn_Edit {
             get {
                 return ResourceManager.GetString("Btn_Edit", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to HTML.
+        /// </summary>
+        public static string Btn_HTML {
+            get {
+                return ResourceManager.GetString("Btn_HTML", resourceCulture);
             }
         }
         
@@ -151,6 +169,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to PDF.
+        /// </summary>
+        public static string Btn_PDF {
+            get {
+                return ResourceManager.GetString("Btn_PDF", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to &lt;&lt;&lt;.
         /// </summary>
         public static string Btn_Previous {
@@ -174,6 +201,15 @@ namespace Resources {
         public static string Btn_Settings {
             get {
                 return ResourceManager.GetString("Btn_Settings", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to XLSX.
+        /// </summary>
+        public static string Btn_XLSX {
+            get {
+                return ResourceManager.GetString("Btn_XLSX", resourceCulture);
             }
         }
         

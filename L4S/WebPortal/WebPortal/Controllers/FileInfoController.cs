@@ -11,7 +11,9 @@ using PagedList;
 using Microsoft.Ajax.Utilities;
 using DoddleReport;
 using DoddleReport.Writers;
-
+using DoddleReport.iTextSharp;
+using iTextSharp.text;
+using iTextSharp.text.pdf;
 
 namespace WebPortal.Controllers
 {
@@ -111,17 +113,7 @@ namespace WebPortal.Controllers
             DeleteModel model = new DeleteModel(sTInputFileInfo.Id, sTInputFileInfo.OriFileName);
             return PartialView("_deleteModal", model);
 
-            //if (id == null)
-            //{
-            //    return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            //}
-            //STInputFileInfo sTInputFileInfo = db.STInputFileInfo.Find(id);
-            //if (sTInputFileInfo == null)
-            //{
-            //    return HttpNotFound();
-            //}
-            //return View(sTInputFileInfo);
-        }
+         }
 
         // POST: FileInfo/Delete/5
         [HttpPost, ActionName("Delete")]
@@ -139,25 +131,38 @@ namespace WebPortal.Controllers
         {
             var dbAccess = _db.STInputFileInfo;
             _model = dbAccess.OrderByDescending(d => d.InsertDateTime).ToList();
+
+            var reportName = "InputFileReport_" + DateTime.Now.ToString("ddMMyyyy");
+
+            if (extension.Equals("csv"))
+            {
+                string delimiter = ";";
+                var confGeneralSettings = _db.CONFGeneralSettings.FirstOrDefault(p => p.ParamName.Equals("CSVDelimiter"));
+                if (confGeneralSettings != null)
+                {
+                    delimiter = confGeneralSettings.ParamValue;
+                }
+                DelimitedTextReportWriter.DefaultDelimiter = delimiter;  
+            }
+            var fromDate = _model.Min(p => p.InsertDateTime).ToString("dd.MM.yyyy");
+            var toDate = _model.Max(p => p.InsertDateTime).ToString("dd.MM.yyyy");
             // Create the report and turn our query into a ReportSource
             var report = new Report(_model.ToReportSource());
 
-
-            report.TextFields.Title = "File Report";
-            report.TextFields.SubTitle = "This is a sample report showing how Doddle Report works";
-            report.TextFields.Footer = "Copyright 2011 (c) The Doddle Project";
+            //Header report
+            report.TextFields.Title = "Zoznam spracovaných súborov";
+            report.TextFields.SubTitle = "Obdobie od: " + fromDate +" do: "+toDate;
+            //report.TextFields.Footer = "Copyright 2017 (c) BlueZ, s.r.o.";
             report.TextFields.Header = string.Format(@"
-                Report Generated: {0}
-                Pocet suborov: {1}
+                Report vytvorený: {0}
+                Počet súborov: {1}
                 ", DateTime.Now, _model.Count);
-
 
             // Render hints allow you to pass additional hints to the reports as they are being rendered
             report.RenderHints.BooleanCheckboxes = true;
             report.RenderHints.BooleansAsYesNo = true;
 
-
-
+            //Data fields
             report.DataFields["Id"].Hidden = true; ;
             //report.DataFields["FileName"];
             report.DataFields["Checksum"].Hidden = true; ;
@@ -171,18 +176,11 @@ namespace WebPortal.Controllers
             report.DataFields["TCActive"].Hidden = true; ;
             // Return the ReportResult
             // the type of report that is rendered will be determined by the extension in the URL (.pdf, .xls, .html, etc)
-            //var writer = new PdfReportWriter();
-            string delimiter = ";";
-            var confGeneralSettings = _db.CONFGeneralSettings.FirstOrDefault(p => p.ParamName.Equals("CSVDelimiter"));
-            if (confGeneralSettings != null)
-            {
-                delimiter = confGeneralSettings.ParamValue;
-            }
-            var repname = "FileReport_" + DateTime.Now.ToString("MMyyyy");
-            if (extension.Equals("csv")) { 
-                DelimitedTextReportWriter.DefaultDelimiter = delimiter;   //DelimitedTextReportWriter.CommaDelimiter;
-            }
-            return new Common.ReportResult(report) { FileName = repname};
+            BaseFont bf = BaseFont.CreateFont(BaseFont.COURIER, BaseFont.CP1250, BaseFont.NOT_EMBEDDED);
+            iTextSharp.text.Font font = new iTextSharp.text.Font(bf, 10, iTextSharp.text.Font.NORMAL);
+            
+
+            return new Common.ReportResult(report) { FileName = reportName };
             
         }
         protected override void Dispose(bool disposing)
