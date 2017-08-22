@@ -68,7 +68,7 @@
                     <th>
                         @Html.DisplayNameFor(model => model.FirstOrDefault().CustomerName)
                     </th>
-                   <th>
+                    <th>
                         @Html.DisplayNameFor(model => model.FirstOrDefault().ServiceCode)
                     </th>
                     <th>
@@ -159,6 +159,13 @@
                 }
             </table>
         </div>
+    </div>
+    <br/>
+    <div>
+        <a class="btn btn-info" href="~/InvoiceByDay/Report/?extension=csv"><span class="glyphicon glyphicon-save" aria-hidden="true"></span> @Resources.Labels.Btn_CSV </a>
+        @* <a class="btn btn-info" href="~/InvoiceByDay/Report/?extension=pdf"><span class="glyphicon glyphicon-save" aria-hidden="true"></span> @Resources.Labels.Btn_PDF </a>*@
+        @* <a class="btn btn-info" href="~/InvoiceByDay/Report/?extension=xlsx"><span class="glyphicon glyphicon-save" aria-hidden="true"></span> @Resources.Labels.Btn_XLSX </a>*@
+        <a class="btn btn-info" href="~/InvoiceByDay/Report/?extension=html"><span class="glyphicon glyphicon-save" aria-hidden="true"></span> @Resources.Labels.Btn_HTML </a>
     </div>
     <br />
     Strana @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) z @Model.PageCount Počet záznamov @Model.TotalItemCount

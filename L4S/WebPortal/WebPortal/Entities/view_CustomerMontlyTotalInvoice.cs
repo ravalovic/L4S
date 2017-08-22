@@ -35,7 +35,7 @@ namespace WebPortal
         [Display(Name = "TabHead_NumberOfRequest", ResourceType = typeof(Labels))]
         public long NumberOfRequest { get; set; }
         [DataType("decimal(18,5)")]
-        [Display(Name = "TabHead_ReceivedBytes", ResourceType = typeof(Labels))]
+        [Display(Name = "TabHead_InvoiceReceivedBytes", ResourceType = typeof(Labels))]
         public decimal ReceivedBytes { get; set; }
         [DataType("decimal(18,5)")]
         [Display(Name = "TabHead_RequestedTime", ResourceType = typeof(Labels))]
