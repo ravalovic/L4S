@@ -34,8 +34,11 @@ namespace WebPortal.Models
         {
             L4SDb db = new L4SDb();
             this.Services = new List<ServicesViewModel>();
+            
+            //get all active services
             List<CATServiceParameters> allServices = db.CATServiceParameters.Where(p=>p.TCActive!=99).ToList();
-            List<CATCustomerServices> customerServces = Customer.CATCustomerServices.ToList();
+            //get actve services for customer
+            List<CATCustomerServices> customerServces = Customer.CATCustomerServices.Where(p => p.TCActive != 99).ToList();
 
             foreach(CATServiceParameters service in allServices)
             {
@@ -43,12 +46,12 @@ namespace WebPortal.Models
 
                 if (foundRecords.Count == 0) //not present in customer services, than add it as unchecked
                 {
-                    this.Services.Add(new ServicesViewModel { Checked = false, FKCustomerDataID = -1, FKServiceID = service.PKServiceID, ServiceCode = service.ServiceCode, ServiceName = service.ServiceDescription, ServiceNote = "", ServicePriceDiscount = 1 });
+                    this.Services.Add(new ServicesViewModel { Checked = false,PKServiceCustomerIdentifiersID=-1, FKCustomerDataID = Customer.PKCustomerDataID, FKServiceID = service.PKServiceID, ServiceCode = service.ServiceCode, ServiceName = service.ServiceDescription, ServiceNote = "", ServicePriceDiscount = 1, TCActive=0 });
                 }
                 else if (foundRecords.Count == 1) //present in customer services, than add it as checked
                 {
                     CATCustomerServices foundRecord = foundRecords.SingleOrDefault();
-                    this.Services.Add(new ServicesViewModel { Checked = true, FKCustomerDataID = foundRecord.FKCustomerDataID, FKServiceID = foundRecord.FKServiceID, ServiceCode = foundRecord.ServiceCode, ServiceName = foundRecord.ServiceName, ServiceNote = foundRecord.ServiceNote, ServicePriceDiscount = foundRecord.ServicePriceDiscount, PKServiceCustomerIdentifiersID= foundRecord.PKServiceCustomerIdentifiersID });
+                    this.Services.Add(new ServicesViewModel { Checked = true, FKCustomerDataID = foundRecord.FKCustomerDataID, FKServiceID = foundRecord.FKServiceID, ServiceCode = foundRecord.ServiceCode, ServiceName = foundRecord.ServiceName, ServiceNote = foundRecord.ServiceNote, ServicePriceDiscount = foundRecord.ServicePriceDiscount, PKServiceCustomerIdentifiersID= foundRecord.PKServiceCustomerIdentifiersID, TCActive=1});
                 }
                 else //found more active servicess with same code, error
                 { return false; }              
