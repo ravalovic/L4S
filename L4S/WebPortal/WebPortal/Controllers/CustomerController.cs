@@ -52,8 +52,8 @@ namespace WebPortal.Controllers
                 return HttpNotFound();
             }
 
-            if (model.CustomerType == "PO") ViewBag.CustomerType = 1;
-            else ViewBag.CustomerType = 2;
+            //if (model.CustomerType == "PO") ViewBag.CustomerType = 1;
+            //else ViewBag.CustomerType = 2;
 
             _pager = new Pager(1, page);
             var pageList = new StaticPagedList<CATCustomerData>(dataList, _pager.CurrentPage, _pager.PageSize, _pager.TotalItems);
@@ -70,16 +70,17 @@ namespace WebPortal.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
 
-            CATCustomerData cAtCustomerData = _db.CATCustomerData.Where(l => l.PKCustomerDataID == id).Include(p => p.CATCustomerIdentifiers).FirstOrDefault();
+            CATCustomerData customer = _db.CATCustomerData.Find(id); //.Where(l => l.PKCustomerDataID == id).Include(p => p.CATCustomerIdentifiers).FirstOrDefault();
 
-            if (cAtCustomerData == null)
+            if (customer == null)
             {
                 return HttpNotFound();
             }
 
-            CustomerViewModel model = new CustomerViewModel(cAtCustomerData);
-            if (cAtCustomerData.CustomerType == "PO") ViewBag.CustomerType = 1;
-            else ViewBag.CustomerType = 2;
+            //get list of all services checked, unchecked for customer
+            CustomerViewModel model = new CustomerViewModel(customer); 
+            //if (customer.CustomerType == "PO") ViewBag.CustomerType = 1;
+            //else ViewBag.CustomerType = 2;
 
             return View("Details", model);
         }
@@ -100,8 +101,8 @@ namespace WebPortal.Controllers
             }
 
             CustomerViewModel model = new CustomerViewModel(cAtCustomerData);
-            if (cAtCustomerData.CustomerType == "PO") ViewBag.CustomerType = 1;
-            else ViewBag.CustomerType = 2;
+            //if (cAtCustomerData.CustomerType == "PO") ViewBag.CustomerType = 1;
+            //else ViewBag.CustomerType = 2;
 
             model.Services = null; //show only identifier
             return View("Details", model);
@@ -112,14 +113,66 @@ namespace WebPortal.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult SaveServices(List<ServicesViewModel> data)
         {
-            if (ModelState.IsValid)
+           // if (ModelState.IsValid)
+            if (ModelState.IsValid && data.Count > 0)
             {
-                //  db.CATCustomerData.Add(cATCustomerData);
-                //   db.SaveChanges();
-            }
+                CATCustomerData customer = _db.CATCustomerData.Find(data[0].FKCustomerDataID);
 
-            // if (cATCustomerData.CustomerType == "PO") return RedirectToAction("CompanyList");
-            return RedirectToAction("IndividualList");
+                foreach (ServicesViewModel item in data)
+                {
+
+                    if (item.Checked && item.TCActive == 1) //edit customer already assigned service
+                    {
+                        CATCustomerServices service = customer.CATCustomerServices.Where(p => p.PKServiceCustomerIdentifiersID == item.PKServiceCustomerIdentifiersID).FirstOrDefault();
+                        service.ServiceCode = item.ServiceCode;
+                        service.ServiceName = item.ServiceName;
+                        service.ServiceNote = item.ServiceNote;
+                        service.ServicePriceDiscount = item.ServicePriceDiscount;
+                        service.TCLastUpdate = DateTime.Now;
+                    }
+                    else if (!item.Checked && item.TCActive == 1) //remove customer already assigned service
+                    {
+                        CATCustomerServices service = customer.CATCustomerServices.Where(p => p.PKServiceCustomerIdentifiersID == item.PKServiceCustomerIdentifiersID).FirstOrDefault();
+                        service.TCLastUpdate = DateTime.Now;
+                        service.TCActive = 99;
+                    }
+                    else if (item.Checked && item.TCActive == 0) //add new service to customer
+                    {
+                        CATCustomerServices service = new CATCustomerServices();
+                        service.ServiceCode = item.ServiceCode;
+                        service.ServiceName = item.ServiceName;
+                        service.ServiceNote = item.ServiceNote;
+                        service.ServicePriceDiscount = item.ServicePriceDiscount;
+                        service.FKCustomerDataID = item.FKCustomerDataID;
+                        service.FKServiceID = item.FKServiceID;
+                        service.TCActive = 1;
+                        service.TCInsertTime = DateTime.Now;
+                        service.TCLastUpdate = DateTime.Now;
+
+                        customer.CATCustomerServices.Add(service); //add to customer new service
+                    }
+                }
+
+                _db.SaveChanges();
+
+
+                if (customer.CustomerType == "PO") return RedirectToAction("CompanyList");
+                return RedirectToAction("IndividualList");
+            }
+            else
+            {
+                var message = string.Join(" | ", ModelState.Values
+                                        .SelectMany(v => v.Errors)
+                                        .Select(e => e.ErrorMessage));
+
+                //Log This exception to ELMAH:
+                Exception exception = new Exception(message.ToString());
+               
+
+                //Return Status Code:
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest, message);
+            }
+            return RedirectToAction("CompanyList");
         }
 
 
