@@ -664,6 +664,24 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Pozor chyba!.
+        /// </summary>
+        public static string Error {
+            get {
+                return ResourceManager.GetString("Error", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Chybná IP adresa.
+        /// </summary>
+        public static string Error_IP {
+            get {
+                return ResourceManager.GetString("Error_IP", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Číslo Dávky.
         /// </summary>
         public static string File_BatchID {

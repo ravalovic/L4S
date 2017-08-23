@@ -1,0 +1,28 @@
+﻿@model WebPortal.Models.ErrorModel
+
+<div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal">×</button>
+    <h4 class="text-center"><b>@Resources.Labels.Error</b> &nbsp; <i class="glyphicon glyphicon-trash" style="font-size:30px;"></i></h4>
+</div>
+
+  @using (Html.BeginForm())
+  {
+    @Html.AntiForgeryToken()
+
+<div class="modal-body">
+
+    <div class="row">
+
+        <div class="form-horizontal text-center">
+
+            <h4> @Model.Message</h4>
+            <br />
+            <button class="btn btn-primary" data-dismiss="modal" aria-hidden="true"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span> @Resources.Labels.Btn_Back</button>&nbsp; &nbsp;
+           @* <button type="submit" class="btn btn-danger"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span> @Resources.Labels.Btn_Delete</button>*@
+        
+        </div>
+    </div>
+</div>
+  }
+
+

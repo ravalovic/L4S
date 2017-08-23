@@ -88,11 +88,11 @@ namespace WebPortal.Controllers
         // GET: Customer/Services/5
         public ActionResult Identifiers(int? id)
         {
-            if (id == null)
+          if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-
+            
             CATCustomerData cAtCustomerData = _db.CATCustomerData.Where(l => l.PKCustomerDataID == id).Include(p => p.CATCustomerIdentifiers).FirstOrDefault();
 
             if (cAtCustomerData == null)
@@ -396,11 +396,14 @@ namespace WebPortal.Controllers
                 cAtCustomerIdent.TCLastUpdate = DateTime.Now;
                 cAtCustomerIdent.TCInsertTime = DateTime.Now;
                 cAtCustomerIdent.TCActive = 0;
-
                 _db.CATCustomerIdentifiers.Add(cAtCustomerIdent);
                 _db.SaveChanges();
             }
-            return RedirectToAction("Services", new { id = cAtCustomerIdent.FKCustomerID });
+            else
+            {
+                ViewBag.Error = Resources.Labels.Error_IP;
+            }
+            return RedirectToAction("Identifiers", new { id = cAtCustomerIdent.FKCustomerID });
         }
 
 

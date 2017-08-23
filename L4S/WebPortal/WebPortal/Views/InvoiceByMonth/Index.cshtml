@@ -1,5 +1,6 @@
 ﻿@model PagedList.IPagedList<WebPortal.view_InvoiceByMonth>
 @using PagedList.Mvc;
+
 <link href="~/Content/PagedList.css" rel="stylesheet" type="text/css" />
 @{
     ViewBag.Title = "Index";
@@ -18,7 +19,7 @@
         <div class="panel-heading clearfix">
             <h4 class="panel-title pull-left"><strong>@Resources.Labels.InvoiceMonthlyDataTab</strong></h4>
             <br />
-
+           
             <form class="form-horizontal col-md-12" role="form">
                 <div class="row">
                     <!-- Date input -->
@@ -45,12 +46,13 @@
                                 <input class="form-control textfield" id="searchText" name="searchtext" type="text" value="@ViewBag.CurrentFilter" />
                             </div>
                         </div>
-
+                        
                         <div class="form-group">
-                            <div class=" input-group-btn  col-md-2 col-sm-10">
-                                <button class="btn btn-success text-right" aria-hidden="true" onclick="location.href = '@Url.Action("Index", "InvoiceByMonth")?insertDateFrom=' + document.getElementById('date1').value+'&'+'insertDateTo=' + document.getElementById('date2').value+'&'+'searchText=' + document.getElementById('searchText').value +'&'+'currentFilter='+ '@ViewBag.CurrentFilter' +'&'+'currentFrom='+ '@ViewBag.CurrentFrom'+'&'+'currentTo='+ '@ViewBag.CurrentTo'"><span class="glyphicon glyphicon-search" aria-hidden="true"></span> Hľadať </button>
-                                <span style="margin: 10px"></span>
-                                <button class="btn btn-danger text-right" aria-hidden="true" onclick="location.href = '~/InvoiceByMonth/Index'"><span class="glyphicon glyphicon-search" aria-hidden="true"></span> Reset </button>
+                            <div class="input-group-btn  col-md-2 col-sm-10">
+                                <button id="Search" class="btn btn-success text-right" aria-hidden="true" location.href = '@Url.Action("Index", "InvoiceByMonth")?insertDateFrom=' + document.getElementById('date1').value+'&'+'insertDateTo=' + document.getElementById('date2').value+'&'+'searchText=' + document.getElementById('searchText').value +'&'+'currentFilter='+ '@ViewBag.CurrentFilter' +'&'+'currentFrom='+ '@ViewBag.CurrentFrom'+'&'+'currentTo='+ '@ViewBag.CurrentTo'><span class="glyphicon glyphicon-search" aria-hidden="true"></span> Hľadať </button>
+                                <span style="margin: 5px"></span>
+                                @*<button id="Reset" class="btn btn-danger text-right" aria-hidden="true" location.href = '~/InvoiceByMonth/Index'><span class="glyphicon glyphicon-search" aria-hidden="true"></span> Reset </button>*@
+                                <a class="btn btn-danger" href="@Url.Action("Index", "InvoiceByMonth")"><span class="glyphicon glyphicon-search" aria-hidden="true"></span> Reset</a>
                             </div>
                         </div>
                     </div>
@@ -105,7 +107,7 @@
 
                 @foreach (var item in Model)
                 {
-                    <tr onclick="location.href = '@(Url.Action("Index", "InvoiceByDay", new { searchText = item.CustomerIdentification, insertDateFrom = item.DateOfRequest, insertDateTo = string.Empty }))'">
+                    <tr onclick="location.href = '@(Url.Action("Index", "InvoiceByDay", new { searchText = item.CustomerIdentification, insertDateFrom = item.DateOfRequest.ToString("MM.yyyy"), insertDateTo = string.Empty }))'">
                         <td>
                             @Html.DisplayFor(modelItem => item.DateOfRequest)
                         </td>
@@ -154,7 +156,7 @@
     <br />
     <div>
         <a class="btn btn-info" href="~/InvoiceByMonth/Report/?extension=csv&page=@Model.PageNumber&insertDateFrom=@ViewBag.CurrentFrom&insertDateTo=@ViewBag.CurrentTo&searchText=@ViewBag.CurrentFilter"><span class="glyphicon glyphicon-save" aria-hidden="true"></span> @Resources.Labels.Btn_CSV </a>
-        @* <a class="btn btn-info" href="~/InvoiceByMonth/Report/?extension=pdf"><span class="glyphicon glyphicon-save" aria-hidden="true"></span> @Resources.Labels.Btn_PDF </a>*@
+        <a class="btn btn-info" href="~/InvoiceByMonth/Report/?extension=pdf"><span class="glyphicon glyphicon-save" aria-hidden="true"></span> @Resources.Labels.Btn_PDF </a>
         @* <a class="btn btn-info" href="~/InvoiceByMonth/Report/?extension=xlsx"><span class="glyphicon glyphicon-save" aria-hidden="true"></span> @Resources.Labels.Btn_XLSX </a>*@
         <a class="btn btn-info" href="~/InvoiceByMonth/Report/?extension=html&amp;page=@Model.PageNumber&amp;insertDateFrom=@ViewBag.CurrentFrom&amp;insertDateTo=@ViewBag.CurrentTo&amp;searchText=@ViewBag.CurrentFilter"><span class="glyphicon glyphicon-save" aria-hidden="true"></span> @Resources.Labels.Btn_HTML </a>
     </div>
@@ -169,11 +171,11 @@
         $(function () {
             $('#date1').datetimepicker({
                 viewMode: 'years',
-                format: 'MM/YYYY'
+                format: 'MM.YYYY'
             });
             $('#date2').datetimepicker({
                 viewMode: 'years',
-                format: 'MM/YYYY'
+                format: 'MM.YYYY'
             });
         });
     </script>
