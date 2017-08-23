@@ -54,7 +54,7 @@ namespace WebPortal.Controllers
                 cATOwnerData.TCInsertTime = DateTime.Now;
                 db.CATOwnerData.Add(cATOwnerData);
                 db.SaveChanges();
-                return RedirectToAction("Index");
+                return RedirectToAction("SetActive", new{cATOwnerData.ID});
             }
 
             return View(cATOwnerData);
@@ -89,7 +89,7 @@ namespace WebPortal.Controllers
                 cATOwnerData.TCInsertTime = DateTime.Now;
                 db.Entry(cATOwnerData).State = EntityState.Modified;
                 db.SaveChanges();
-                return RedirectToAction("Index");
+                return RedirectToAction("SetActive", new { cATOwnerData.ID });
             }
             return RedirectToAction("Index"); ;
         }
@@ -130,7 +130,7 @@ namespace WebPortal.Controllers
             CATOwnerData catOwnerData = db.CATOwnerData.Find(id);
             catOwnerData.TCActive = 99;
             db.SaveChanges();
-            return RedirectToAction("Index");
+            return RedirectToAction("SetActive", new{catOwnerData.ID});
         }
         protected override void Dispose(bool disposing)
         {

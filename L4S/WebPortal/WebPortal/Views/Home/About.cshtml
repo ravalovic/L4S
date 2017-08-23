@@ -1,4 +1,6 @@
 ﻿@using System.Data.Entity
+@using System.Diagnostics
+@using System.Reflection
 @using System.Text.RegularExpressions
 @using WebPortal.DataContexts
 @{
@@ -13,6 +15,6 @@
     Regex r = new Regex(@"Password=[^;]*");
     String newString = r.Replace(connectionString, "Password=XXXXXX");
     ViewBag.DBname = newString;}
-
-
-<h5>Databáza: @ViewBag.DBName</h5>
+<h4>Databáza: @ViewBag.DBName</h4>
+<h4>Aplikácia verzia:1.2.0 </h4>
+<h4>Zo dňa: 23.08.2017</h4>

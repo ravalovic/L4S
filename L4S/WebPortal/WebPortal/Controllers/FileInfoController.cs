@@ -9,6 +9,7 @@ using WebPortal.Common;
 using PagedList;
 using Microsoft.Ajax.Utilities;
 using DoddleReport;
+using DoddleReport.iTextSharp;
 using DoddleReport.Writers;
 
 
@@ -131,6 +132,12 @@ namespace WebPortal.Controllers
 
             var reportName = "InputFileReport_" + DateTime.Now.ToString("ddMMyyyy");
 
+            
+            var fromDate = _model.Min(p => p.InsertDateTime).ToString("dd.MM.yyyy");
+            var toDate = _model.Max(p => p.InsertDateTime).ToString("dd.MM.yyyy");
+            // Create the report and turn our query into a ReportSource
+            var report = new Report(_model.ToReportSource());
+
             if (extension.Equals("csv"))
             {
                 string delimiter = ";";
@@ -139,12 +146,18 @@ namespace WebPortal.Controllers
                 {
                     delimiter = confGeneralSettings.ParamValue;
                 }
-                DelimitedTextReportWriter.DefaultDelimiter = delimiter;  
+                DelimitedTextReportWriter.DefaultDelimiter = delimiter;
             }
-            var fromDate = _model.Min(p => p.InsertDateTime).ToString("dd.MM.yyyy");
-            var toDate = _model.Max(p => p.InsertDateTime).ToString("dd.MM.yyyy");
-            // Create the report and turn our query into a ReportSource
-            var report = new Report(_model.ToReportSource());
+            if (extension.Equals("pdf"))
+            {
+                var confGeneralSettings = _db.CONFGeneralSettings.FirstOrDefault(p => p.ParamName.Equals("ReportOrientation"));
+                if (confGeneralSettings != null)
+                {
+                    if (confGeneralSettings.ParamValue.Equals("Landscape")) { 
+                    report.RenderHints.Orientation = ReportOrientation.Landscape;
+                    }
+                }
+            }
 
             //Header report
             report.TextFields.Title = "Zoznam spracovaných súborov";
@@ -173,6 +186,7 @@ namespace WebPortal.Controllers
             report.DataFields["TCActive"].Hidden = true; ;
             // Return the ReportResult
             // the type of report that is rendered will be determined by the extension in the URL (.pdf, .xls, .html, etc)
+
             
             
             return new Common.ReportResult(report) { FileName = reportName };

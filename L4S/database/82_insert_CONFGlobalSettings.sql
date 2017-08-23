@@ -103,3 +103,10 @@ INSERT INTO [dbo].[CONFGeneralSettings]
            ('CSVDElimiter'
            ,';', 'Oddeľovač stĺpcov v csv exporte');
 GO
+INSERT INTO [dbo].[CONFGeneralSettings]
+           ([ParamName]
+           ,[ParamValue],[Note])
+     VALUES
+           ('ReportOrientation'
+           ,'Landscape', 'Zmena orientácie PDF reportu');
+GO

@@ -258,6 +258,10 @@ namespace WebPortal.Controllers
             #region ********************* Report  *******************************
             var reportName = "FakturacneUdajeSumarne_" + DateTime.Now.ToString("MMyyyy");
 
+            var reportFromDate = _model.Min(p => p.StartBillingPeriod).ToString("dd.MM.yyyy");
+            var reportToDate = _model.Max(p => p.StopBillingPeriod).ToString("dd.MM.yyyy");
+            // Create the report and turn our query into a ReportSource
+            var report = new Report(_model.ToReportSource());
             if (extension.Equals("csv"))
             {
                 string delimiter = ";";
@@ -268,10 +272,17 @@ namespace WebPortal.Controllers
                 }
                 DelimitedTextReportWriter.DefaultDelimiter = delimiter;
             }
-            var reportFromDate = _model.Min(p => p.StartBillingPeriod).ToString("dd.MM.yyyy");
-            var reportToDate = _model.Max(p => p.StopBillingPeriod).ToString("dd.MM.yyyy");
-            // Create the report and turn our query into a ReportSource
-            var report = new Report(_model.ToReportSource());
+            if (extension.Equals("pdf"))
+            {
+                var confGeneralSettings = _db.CONFGeneralSettings.FirstOrDefault(p => p.ParamName.Equals("ReportOrientation"));
+                if (confGeneralSettings != null)
+                {
+                    if (confGeneralSettings.ParamValue.Equals("Landscape"))
+                    {
+                        report.RenderHints.Orientation = ReportOrientation.Landscape;
+                    }
+                }
+            }
 
             //Header report
             report.TextFields.Title = "Sumárne fakturačné údaje";
@@ -319,6 +330,11 @@ namespace WebPortal.Controllers
 
             var reportName = _model.FirstOrDefault().CustomerIdentification+"_FakturacneUdaje_" + DateTime.Now.ToString("MMyyyy");
 
+            
+            var reportFromDate = _model.Min(p => p.StartBillingPeriod).ToString("dd.MM.yyyy");
+            var reportToDate = _model.Max(p => p.StopBillingPeriod).ToString("dd.MM.yyyy");
+            // Create the report and turn our query into a ReportSource
+            var report = new Report(_model.ToReportSource());
             if (extension.Equals("csv"))
             {
                 string delimiter = ";";
@@ -329,11 +345,17 @@ namespace WebPortal.Controllers
                 }
                 DelimitedTextReportWriter.DefaultDelimiter = delimiter;
             }
-            var reportFromDate = _model.Min(p => p.StartBillingPeriod).ToString("dd.MM.yyyy");
-            var reportToDate = _model.Max(p => p.StopBillingPeriod).ToString("dd.MM.yyyy");
-            // Create the report and turn our query into a ReportSource
-            var report = new Report(_model.ToReportSource());
-
+            if (extension.Equals("pdf"))
+            {
+                var confGeneralSettings = _db.CONFGeneralSettings.FirstOrDefault(p => p.ParamName.Equals("ReportOrientation"));
+                if (confGeneralSettings != null)
+                {
+                    if (confGeneralSettings.ParamValue.Equals("Landscape"))
+                    {
+                        report.RenderHints.Orientation = ReportOrientation.Landscape;
+                    }
+                }
+            }
             //Header report
             report.TextFields.Title = "Fakturačné údaje zákazníka: " + _model.FirstOrDefault().CustomerName+ " ID Zákazníka: "+ _model.FirstOrDefault().CustomerIdentification;
             report.TextFields.SubTitle = "Obdobie od: " + reportFromDate + " do: " + reportToDate;

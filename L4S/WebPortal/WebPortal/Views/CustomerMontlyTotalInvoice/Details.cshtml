@@ -127,8 +127,8 @@
 <br />
 <div>
     <a class="btn btn-info" href="~/CustomerMontlyTotalInvoice/DetailReport/?extension=csv&customerId=@Model.CustomerID&billingPeriod=@ViewBag.BillingPeriod"><span class="glyphicon glyphicon-save" aria-hidden="true"></span> @Resources.Labels.Btn_CSV </a>
-     <a class="btn btn-info" href="~/CustomerMontlyTotalInvoice/DetailReport/?extension=pdf"><span class="glyphicon glyphicon-save" aria-hidden="true"></span> @Resources.Labels.Btn_PDF </a>
-    @* <a class="btn btn-info" href="~/CustomerMontlyTotalInvoice/DetailReport/?extension=xlsx"><span class="glyphicon glyphicon-save" aria-hidden="true"></span> @Resources.Labels.Btn_XLSX </a>*@
+    <a class="btn btn-info" href="~/CustomerMontlyTotalInvoice/DetailReport/?extension=pdf&customerId=@Model.CustomerID&billingPeriod=@ViewBag.BillingPeriod"><span class="glyphicon glyphicon-save" aria-hidden="true"></span> @Resources.Labels.Btn_PDF </a>
+    <a class="btn btn-info" href="~/CustomerMontlyTotalInvoice/DetailReport/?extension=xlsx&customerId=@Model.CustomerID&billingPeriod=@ViewBag.BillingPeriod"><span class="glyphicon glyphicon-save" aria-hidden="true"></span> @Resources.Labels.Btn_XLSX </a>
     <a class="btn btn-info" href="~/CustomerMontlyTotalInvoice/DetailReport/?extension=html&customerId=@Model.CustomerID&billingPeriod=@ViewBag.BillingPeriod"><span class="glyphicon glyphicon-save" aria-hidden="true"></span> @Resources.Labels.Btn_HTML </a>
 </div>
 <br />
