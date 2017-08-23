@@ -1,5 +1,5 @@
 ﻿@model List<WebPortal.Models.ServicesViewModel>
-
+<script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
 
 @using (Html.BeginForm("SaveServices", "Customer"))
 {
@@ -110,22 +110,20 @@
 }
 
 
-@section Scripts {
-    @Scripts.Render("~/bundles/jqueryval")
-}
 <script>
     $(document).ready(function () {
         $("#mytable #checkall").click(function () {
-            if ($("#mytable #checkall").is(':checked')) {
-                $("#mytable input[type=checkbox]").each(function () {
-                    $(this).prop("checked", true);
-                });
+            //if ($("#mytable #checkall").is(':checked')) {
+            //    $("#mytable input[type=checkbox]").each(function () {
+            //        $(this).prop("checked", true);
+            //    });
 
-            } else {
-                $("#mytable input[type=checkbox]").each(function () {
-                    $(this).prop("checked", false);
-                });
-            }
+            //} else {
+            //    $("#mytable input[type=checkbox]").each(function () {
+            //        $(this).prop("checked", false);
+            //    });
+            //}
+            all();
         });
 
         $("[data-toggle=tooltip]").tooltip();
@@ -133,8 +131,19 @@
 
     });
 
-    function display(row) {
-        //  if ($("[name='[" + row + "].Checked']").checked == "checked")
+    function all()
+    {
+        for (i = 0; i < @Model.Count(); i++)
+        {
+            if (document.getElementById("checkall").checked) {
+                document.getElementById("checkb" + i).checked = true;
+            }
+            else { document.getElementById("checkb" + i).checked = false;}
+            display(i);
+        }
+    }
+
+    function display(row) {       
         if (document.getElementById("checkb" + row).checked) {
             $("[name='[" + row + "].ServiceCode']").prop("readonly", false);
             $("[name='[" + row + "].ServiceName']").prop("readonly", false);

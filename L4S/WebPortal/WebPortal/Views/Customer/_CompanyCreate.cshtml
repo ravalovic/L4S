@@ -1,11 +1,11 @@
 ﻿@model WebPortal.CATCustomerData
-
+<script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
 <div class="modal-header">
     <button type="button" class="close" data-dismiss="modal">×</button>
     <h4><b>@Resources.Labels.Customer_CompanyCreateDialogTitle</b></h4>
 </div>
 
-@using (Html.BeginForm("create", "Customer"))
+@using (Html.BeginForm("create", "Customer", new { }, FormMethod.Post, new { Id = "registerfrm" }))
 {
     @Html.AntiForgeryToken()
     @Html.HiddenFor(model => model.CustomerType)
@@ -178,6 +178,38 @@
 }
 
 
-@section Scripts {
+@*@section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
-}
+    <script type="text/javascript">
+        $.validator.unobtrusive.parse($("form"));
+        $(function () {
+           // $(this).validator.unobtrusive.parse($("form"));
+            $('#modal-small').on('show.bs.modal', function () {
+              //  $(this).validator.unobtrusive.parse($("form"));
+                //$.validator.unobtrusive.parse($("form"));
+                //$("registerfrm").removeData("validator");
+                //$("registerfrm").removeData("unobtrusiveValidation");
+                //document.getElementById("registerfrm").removeData("validator");
+                //document.getElementById("registerfrm").removeData("unobtrusiveValidation");
+                //$.validator.unobtrusive.parse($("registerfrm"));
+                //$.validator.unobtrusive.parse("registerfrm");
+                //$("registerfrm").val;
+                alert("ahav");
+            })
+
+            $(document).ready(function () {
+                //$(this).validator.unobtrusive.parse($("form"));
+                //// Handler for .ready() called. Put your logic here.
+                //$.validator.unobtrusive.parse($("form"));
+                //$("registerfrm").removeData("validator");
+                //$("registerfrm").removeData("unobtrusiveValidation");
+                //document.getElementById("registerfrm").removeData("validator");
+                //document.getElementById("registerfrm").removeData("unobtrusiveValidation");
+                //$.validator.unobtrusive.parse($("registerfrm"));
+                //$.validator.unobtrusive.parse("registerfrm");
+                //$("registerfrm").val;
+                alert("ahacc");
+            });
+        })
+</script>
+}*@

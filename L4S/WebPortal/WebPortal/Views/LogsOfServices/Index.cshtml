@@ -156,16 +156,15 @@
 </div>
 
 @section Scripts {
-    @Scripts.Render("~/bundles/jqueryui")
-    @*@Styles.Render("~/Content/css")*@
     <script type="text/javascript">
-
-        $(document).ready(function () {
-            $('.datefield').datepicker({
-                dateFormat: "dd.mm.yy",
-                changeMonth: true,
-                changeYear: true,
-                yearRange: "-60:+0"
+        $(function () {
+            $('#date1').datetimepicker({
+                viewMode: 'days',
+                format: 'DD.MM.YYYY'
+            });
+            $('#date2').datetimepicker({
+                viewMode: 'days',
+                format: 'DD.MM.YYYY'
             });
         });
     </script>

@@ -14,7 +14,7 @@ namespace WebPortal
 
         [Required]
         [StringLength(200)]
-        [RegularExpression(@"^(?:[0-9]{1,3}\.){3}[0-9]{1,3}$")]
+        [RegularExpression(@"^(?:[0-9]{1,3}\.){3}[0-9]{1,3}$", ErrorMessage = "Musí mať tvar IP adresy")]
         [Display(Name = "Customer_IdentifierName", ResourceType = typeof(Labels))]
         public string CustomerIdentifier { get; set; }
 

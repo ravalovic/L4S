@@ -130,22 +130,18 @@
     @Html.PagedListPager(Model, page => Url.Action("Index", new { page, currentFilter = ViewBag.CurrentFilter, currentFrom = ViewBag.CurrentFrom, currentTo = ViewBag.CurrentTo, currentCustId = ViewBag.CurrentCustId, currentServId = ViewBag.CurrentServId, currentDate = ViewBag.CurrentReqDate }))
 
 </div>
-@section Scripts {
 
-    @Scripts.Render("~/bundles/jqueryval")
-    @Scripts.Render("~/bundles/jqueryui")
-    @Styles.Render("~/Content/cssjqryUi")
-    @Styles.Render("~/Content/css")
+@section Scripts {
     <script type="text/javascript">
-        $(document).ready(function () {
-            $('.datefield').datepicker({
-                dateFormat: "dd.mm.yy",
-                changeMonth: true,
-                changeYear: true,
-                yearRange: "-60:+0"
+        $(function () {
+            $('#date1').datetimepicker({
+                viewMode: 'days',
+                format: 'DD.MM.YYYY'
+            });
+            $('#date2').datetimepicker({
+                viewMode: 'days',
+                format: 'DD.MM.YYYY'
             });
         });
-
-
     </script>
 }

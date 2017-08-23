@@ -20,7 +20,7 @@
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")
     @Scripts.Render("~/bundles/datetime")
-
+    @Scripts.Render("~/bundles/jqueryval")
     @RenderSection("scripts", required: false)
 
     <link rel="icon" href="~/Resources/Images/favicon.jpg">
@@ -173,8 +173,7 @@
     </div>
 
     <script type="text/javascript">
-
-
+      
         //modal window
         $(function () {
 
@@ -184,7 +183,7 @@
             $('body').on('click', '.modal-link-small', function (e) {
                 e.preventDefault();
                 $(this).attr('data-target', '#modal-small');
-                $(this).attr('data-toggle', 'modal');
+                $(this).attr('data-toggle', 'modal');               
             });
 
             // Attach listener to .modal-close-btn's so that when the button is pressed the modal dialog disappears
@@ -198,8 +197,7 @@
             $('#CancelModal').on('click', function () {
                 return false;
             });
-
-
+          
 
             // Initialize modal Medium dialog
             // attach modal-container bootstrap attributes to links with .modal-link class.
@@ -207,7 +205,7 @@
             $('body').on('click', '.modal-link-medium', function (e) {
                 e.preventDefault();
                 $(this).attr('data-target', '#modal-medium');
-                $(this).attr('data-toggle', 'modal');
+                $(this).attr('data-toggle', 'modal');               
             });
 
             // Attach listener to .modal-close-btn's so that when the button is pressed the modal dialog disappears
@@ -218,7 +216,7 @@
             $('#modal-medium').on('hidden.bs.modal', function () {
                 $(this).removeData('bs.modal');
             });
-
+           
         });
 
     </script>
