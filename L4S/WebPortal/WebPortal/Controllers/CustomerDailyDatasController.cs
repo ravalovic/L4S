@@ -66,25 +66,28 @@ namespace WebPortal.Controllers
                 }
                 if (textCondition && !datCondition)
                 {
-                    if (searchId != 0)
-                    {
-                        _model = dbAccess.Where(p => p.CustomerID == searchId || p.ServiceID == searchId).OrderByDescending(d => d.DateOfRequest).ToList();
-                    }
-                    else
-                    {
-                        _model = dbAccess.Where(p => p.CustomerIdentification.Contains(searchText) || p.CustomerName.Contains(searchText) || p.ServiceCode.Contains(searchText)).OrderByDescending(d => d.DateOfRequest).ToList();
-                    }
+                    _model = dbAccess
+                        .Where(p => p.CustomerID == searchId || p.ServiceID == searchId ||
+                                    p.CustomerName.ToUpper().Contains(searchText.ToUpper()) ||
+                                    p.CustomerIdentification.ToUpper().Contains(searchText.ToUpper()) ||
+                                    p.ServiceCode.ToUpper().Contains(searchText.ToUpper()) ||
+                                    p.CustomerName.ToUpper().Contains(searchText.ToUpper())
+                        )
+                        .OrderByDescending(d => d.DateOfRequest).ThenBy(p => p.CustomerID).ThenBy(p => p.ServiceID).ToList();
+
                 }
                 if (textCondition && datCondition)
                 {
-                    if (searchId != 0)
-                    {
-                        _model = dbAccess.Where(p => (p.DateOfRequest >= fromDate && p.DateOfRequest <= toDate) && (p.ServiceID == searchId || p.CustomerID == searchId)).OrderByDescending(d => d.DateOfRequest).ToList();
-                    }
-                    else
-                    {
-                        _model =  dbAccess.Where(p => (p.DateOfRequest >= fromDate && p.DateOfRequest <= toDate) && (p.CustomerIdentification.Contains(searchText) || p.CustomerName.Contains(searchText) || p.ServiceCode.Contains(searchText))).OrderByDescending(d => d.DateOfRequest).ToList();
-                    }
+                    _model = dbAccess
+                        .Where(p => (p.DateOfRequest >= fromDate && p.DateOfRequest <= toDate) &&
+                                    (p.CustomerID == searchId || p.ServiceID == searchId ||
+                                     p.CustomerName.ToUpper().Contains(searchText.ToUpper()) ||
+                                     p.CustomerIdentification.ToUpper().Contains(searchText.ToUpper()) ||
+                                     p.ServiceCode.ToUpper().Contains(searchText.ToUpper()) ||
+                                     p.CustomerName.ToUpper().Contains(searchText.ToUpper())
+                                    ))
+                        .OrderByDescending(d => d.DateOfRequest).ThenBy(p => p.CustomerID).ThenBy(p => p.ServiceID).ToList();
+
                 }
             }
             if ( _model == null || _model.Count == 0)
@@ -98,28 +101,6 @@ namespace WebPortal.Controllers
             //ViewBag.PageList = pageList;
             //return View(model.ToPagedList(pageNumber: _pager.CurrentPage, pageSize: _pager.PageSize));
             return View("Index",pageList);
-        }
-
-       public ActionResult Details(int? page, int custId, int servId, DateTime reqDate)
-        {
-            var dbAccess = _db.view_DailyData;
-            var startDate = new DateTime(reqDate.Year, reqDate.Month, reqDate.Day);
-            var endDate = startDate.AddMonths(1).AddTicks(-1);
-            ViewBag.CurrentCustId = custId;
-            ViewBag.CurrentServId = servId;
-            ViewBag.CurrentReqDate = reqDate;
-            _model = dbAccess
-                .Where(p => p.DateOfRequest >= startDate.Date && p.DateOfRequest <= endDate && p.CustomerID == custId && p.ServiceID == servId)
-                .OrderByDescending(d => d.DateOfRequest).ToList();
-            if (_model == null || _model.Count == 0)
-            {
-                _model = dbAccess.OrderByDescending(p => p.DateOfRequest).ToList();
-            }
-            _pager = new Pager(_model.Count(), page);
-            _dataList = _model.Skip(_pager.ToSkip).Take(_pager.ToTake).ToList();
-            var pageList = new StaticPagedList<view_DailyData>(_dataList, _pager.CurrentPage, _pager.PageSize, _pager.TotalItems);
-            //return View("CustomerDaily", _dataList.ToPagedList(pageNumber: _pager.CurrentPage, pageSize: _pager.PageSize));
-            return View("Index", pageList);
         }
 
         protected override void Dispose(bool disposing)

@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Web.Mvc;
-using DoddleReport.Web;
 using WebPortal.DataContexts;
 using WebPortal.Models;
 using WebPortal.Common;
@@ -11,9 +10,7 @@ using PagedList;
 using Microsoft.Ajax.Utilities;
 using DoddleReport;
 using DoddleReport.Writers;
-using DoddleReport.iTextSharp;
-using iTextSharp.text;
-using iTextSharp.text.pdf;
+
 
 namespace WebPortal.Controllers
 {
@@ -127,7 +124,7 @@ namespace WebPortal.Controllers
             return RedirectToAction("Index");
         }
         
-        public Common.ReportResult FileReport(string extension)
+        public Common.ReportResult Report(string extension)
         {
             var dbAccess = _db.STInputFileInfo;
             _model = dbAccess.OrderByDescending(d => d.InsertDateTime).ToList();
@@ -163,7 +160,7 @@ namespace WebPortal.Controllers
             report.RenderHints.BooleansAsYesNo = true;
 
             //Data fields
-            report.DataFields["Id"].Hidden = true; ;
+            report.DataFields[nameof(STInputFileInfo.Id)].Hidden = true; ;
             //report.DataFields["FileName"];
             report.DataFields["Checksum"].Hidden = true; ;
             //report.DataFields["LinesInFile"];
@@ -176,10 +173,8 @@ namespace WebPortal.Controllers
             report.DataFields["TCActive"].Hidden = true; ;
             // Return the ReportResult
             // the type of report that is rendered will be determined by the extension in the URL (.pdf, .xls, .html, etc)
-            BaseFont bf = BaseFont.CreateFont(BaseFont.COURIER, BaseFont.CP1250, BaseFont.NOT_EMBEDDED);
-            iTextSharp.text.Font font = new iTextSharp.text.Font(bf, 10, iTextSharp.text.Font.NORMAL);
             
-
+            
             return new Common.ReportResult(report) { FileName = reportName };
             
         }

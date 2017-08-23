@@ -11,123 +11,131 @@
 <h4>Obdobie: @Model.StartBillingPeriod.ToString("MM.yyyy")</h4>
 <h4><b>@Model.CustomerName - @Model.CustomerIdentification</b></h4>
 
-    <div class="row">
-        <div class="form-horizontal">
-            <hr />
-            <div class="col-md-5">
-                <div class="form-group">
-                    @Html.LabelFor(model => model.StartBillingPeriod, htmlAttributes: new { @class = "control-label col-md-3" })
-                    <div class="col-md-9">
-                        @Html.EditorFor(model => model.StartBillingPeriod, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
-                    </div>
-                </div>
-
-                <div class="form-group">
-                    @Html.LabelFor(model => model.StopBillingPeriod, htmlAttributes: new { @class = "control-label col-md-3" })
-                    <div class="col-md-9">
-                        @Html.EditorFor(model => model.StopBillingPeriod, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
-                    </div>
-                </div>
-
-                <div class="form-group">
-                    @Html.LabelFor(model => model.DeliveryDate, htmlAttributes: new { @class = "control-label col-md-3" })
-                    <div class="col-md-9">
-                        @Html.EditorFor(model => model.DeliveryDate, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
-                    </div>
-                </div>
-
-                <div class="form-group">
-                    @Html.LabelFor(model => model.DueDate, htmlAttributes: new { @class = "control-label col-md-3" })
-                    <div class="col-md-9">
-                        @Html.EditorFor(model => model.DueDate, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
-                    </div>
-                </div>
-
-                <div class="form-group">
-                    @Html.LabelFor(model => model.CustomerID, htmlAttributes: new { @class = "control-label col-md-3" })
-                    <div class="col-md-9">
-                        @Html.EditorFor(model => model.CustomerID, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
-                    </div>
-                </div>
-
-                <div class="form-group">
-                        @Html.LabelFor(model => model.CustomerIdentification, htmlAttributes: new { @class = "control-label col-md-3" })
-
-                        <div class="col-md-9">
-                            @Html.EditorFor(model => model.CustomerIdentification, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
-                        </div>
-                    </div>
-
-                <div class="form-group">
-                    @Html.LabelFor(model => model.CustomerName, htmlAttributes: new { @class = "control-label col-md-3" })
-                    <div class="col-md-9">
-                        @Html.EditorFor(model => model.CustomerName, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
-                    </div>
-                </div>
-
-                <div class="form-group">
-                    @Html.LabelFor(model => model.NumberOfRequest, htmlAttributes: new { @class = "control-label col-md-3" })
-                    <div class="col-md-9">
-                        @Html.EditorFor(model => model.NumberOfRequest, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
-                    </div>
-                </div>
-
-                <div class="form-group">
-                    @Html.LabelFor(model => model.ReceivedBytes, htmlAttributes: new { @class = "control-label col-md-3" })
-                    <div class="col-md-9">
-                        @Html.EditorFor(model => model.ReceivedBytes, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
-                    </div>
-                </div>
-
-                <div class="form-group">
-                    @Html.LabelFor(model => model.RequestedTime, htmlAttributes: new { @class = "control-label col-md-3" })
-                    <div class="col-md-9">
-                        @Html.EditorFor(model => model.RequestedTime, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
-                    </div>
-                </div>
-
-                <div class="form-group">
-                    @Html.LabelFor(model => model.MeasureOfUnits, htmlAttributes: new { @class = "control-label col-md-3" })
-                    <div class="col-md-9">
-                        @Html.EditorFor(model => model.MeasureOfUnits, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
-                    </div>
-                </div>
-
-                <div class="form-group">
-                    @Html.LabelFor(model => model.TotalPriceWithoutVAT, htmlAttributes: new { @class = "control-label col-md-3" })
-                    <div class="col-md-9">
-                        @Html.EditorFor(model => model.TotalPriceWithoutVAT, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
-                    </div>
-                </div>
-
-                <div class="form-group">
-                    @Html.LabelFor(model => model.VAT, htmlAttributes: new { @class = "control-label col-md-3" })
-                    <div class="col-md-9">
-                        @Html.EditorFor(model => model.VAT, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
-                    </div>
-                </div>
-
-                <div class="form-group">
-                    @Html.LabelFor(model => model.TotalPriceWithVAT, htmlAttributes: new { @class = "control-label col-md-3" })
-                    <div class="col-md-9">
-                        @Html.EditorFor(model => model.TotalPriceWithVAT, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
-                    </div>
-                </div>
-
-
+<div class="row">
+    <div class="form-horizontal">
+        <hr />
+        <div class="col-md-5">
+            <div class="form-group">
+                @Html.LabelFor(model => model.StartBillingPeriod, htmlAttributes: new { @class = "control-label col-md-3" })
+                <div class="col-md-9">
+                    @Html.EditorFor(model => model.StartBillingPeriod, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
                 </div>
             </div>
-        </div>
-        <div class="form-group row">
-            <div class="col-md-12">
-                <a class="btn btn-primary btn-sm" href="~/CustomerMontlyTotalInvoice/Details/?billingPeriod=@ViewBag.BillingPeriod&customerId=@ViewBag.PreviousCustomerId"> @Resources.Labels.Btn_Previous</a>
-                <a class="btn btn-primary btn-sm" href="~/CustomerMontlyTotalInvoice/Details/?billingPeriod=@ViewBag.BillingPeriod&customerId=@ViewBag.NextCustomerId">@Resources.Labels.Btn_Next</a>
-            </div>
-        </div>
-        <br />
 
-        <div class="form-group row">
-            <div class="col-md-12">
-                <a class="btn btn-primary text-center" href="~/CustomerMontlyTotalInvoice/Index/"><span class="glyphicon glyphicon-remove" aria-hidiven="true"></span> @Resources.Labels.Btn_Back </a>
+            <div class="form-group">
+                @Html.LabelFor(model => model.StopBillingPeriod, htmlAttributes: new { @class = "control-label col-md-3" })
+                <div class="col-md-9">
+                    @Html.EditorFor(model => model.StopBillingPeriod, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                </div>
             </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.DeliveryDate, htmlAttributes: new { @class = "control-label col-md-3" })
+                <div class="col-md-9">
+                    @Html.EditorFor(model => model.DeliveryDate, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.DueDate, htmlAttributes: new { @class = "control-label col-md-3" })
+                <div class="col-md-9">
+                    @Html.EditorFor(model => model.DueDate, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.CustomerID, htmlAttributes: new { @class = "control-label col-md-3" })
+                <div class="col-md-9">
+                    @Html.EditorFor(model => model.CustomerID, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.CustomerIdentification, htmlAttributes: new { @class = "control-label col-md-3" })
+
+                <div class="col-md-9">
+                    @Html.EditorFor(model => model.CustomerIdentification, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.CustomerName, htmlAttributes: new { @class = "control-label col-md-3" })
+                <div class="col-md-9">
+                    @Html.EditorFor(model => model.CustomerName, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.NumberOfRequest, htmlAttributes: new { @class = "control-label col-md-3" })
+                <div class="col-md-9">
+                    @Html.EditorFor(model => model.NumberOfRequest, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.ReceivedBytes, htmlAttributes: new { @class = "control-label col-md-3" })
+                <div class="col-md-9">
+                    @Html.EditorFor(model => model.ReceivedBytes, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.RequestedTime, htmlAttributes: new { @class = "control-label col-md-3" })
+                <div class="col-md-9">
+                    @Html.EditorFor(model => model.RequestedTime, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.MeasureOfUnits, htmlAttributes: new { @class = "control-label col-md-3" })
+                <div class="col-md-9">
+                    @Html.EditorFor(model => model.MeasureOfUnits, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.TotalPriceWithoutVAT, htmlAttributes: new { @class = "control-label col-md-3" })
+                <div class="col-md-9">
+                    @Html.EditorFor(model => model.TotalPriceWithoutVAT, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.VAT, htmlAttributes: new { @class = "control-label col-md-3" })
+                <div class="col-md-9">
+                    @Html.EditorFor(model => model.VAT, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.TotalPriceWithVAT, htmlAttributes: new { @class = "control-label col-md-3" })
+                <div class="col-md-9">
+                    @Html.EditorFor(model => model.TotalPriceWithVAT, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                </div>
+            </div>
+
+
         </div>
+    </div>
+</div>
+<div class="form-group row">
+    <div class="col-md-12">
+        <a class="btn btn-primary btn-sm" href="~/CustomerMontlyTotalInvoice/Details/?billingPeriod=@ViewBag.BillingPeriod&customerId=@ViewBag.PreviousCustomerId"> @Resources.Labels.Btn_Previous</a>
+        <a class="btn btn-primary btn-sm" href="~/CustomerMontlyTotalInvoice/Details/?billingPeriod=@ViewBag.BillingPeriod&customerId=@ViewBag.NextCustomerId">@Resources.Labels.Btn_Next</a>
+    </div>
+</div>
+<br />
+<div>
+    <a class="btn btn-info" href="~/CustomerMontlyTotalInvoice/DetailReport/?extension=csv&customerId=@Model.CustomerID&billingPeriod=@ViewBag.BillingPeriod"><span class="glyphicon glyphicon-save" aria-hidden="true"></span> @Resources.Labels.Btn_CSV </a>
+     <a class="btn btn-info" href="~/CustomerMontlyTotalInvoice/DetailReport/?extension=pdf"><span class="glyphicon glyphicon-save" aria-hidden="true"></span> @Resources.Labels.Btn_PDF </a>
+    @* <a class="btn btn-info" href="~/CustomerMontlyTotalInvoice/DetailReport/?extension=xlsx"><span class="glyphicon glyphicon-save" aria-hidden="true"></span> @Resources.Labels.Btn_XLSX </a>*@
+    <a class="btn btn-info" href="~/CustomerMontlyTotalInvoice/DetailReport/?extension=html&customerId=@Model.CustomerID&billingPeriod=@ViewBag.BillingPeriod"><span class="glyphicon glyphicon-save" aria-hidden="true"></span> @Resources.Labels.Btn_HTML </a>
+</div>
+<br />
+<div class="form-group row">
+    <div class="col-md-12">
+        <a class="btn btn-primary text-center" href="~/CustomerMontlyTotalInvoice/Index/"><span class="glyphicon glyphicon-remove" aria-hidiven="true"></span> @Resources.Labels.Btn_Back </a>
+    </div>
+</div>
+
+custId = item.CustomerID, servId = 0, reqDate = item.StartBillingPeriod

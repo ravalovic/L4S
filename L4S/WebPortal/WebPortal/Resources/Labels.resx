@@ -744,4 +744,10 @@
   <data name="Btn_XLSX" xml:space="preserve">
     <value>XLSX</value>
   </data>
+  <data name="Error" xml:space="preserve">
+    <value>Pozor chyba!</value>
+  </data>
+  <data name="Error_IP" xml:space="preserve">
+    <value>Chybná IP adresa</value>
+  </data>
 </root>

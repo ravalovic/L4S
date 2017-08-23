@@ -50,8 +50,8 @@
                         <div class="form-group">
                             <div class=" input-group-btn  col-md-2 col-sm-10">
                                 <button class="btn btn-success text-right" aria-hidden="true" onclick="location.href = '@Url.Action("Index", "FileInfo")?insertDateFrom=' + document.getElementById('date1').value+'&'+'insertDateTo=' + document.getElementById('date2').value+'&'+'searchText=' + document.getElementById('searchText').value +'&'+'currentFilter='+ '@ViewBag.CurrentFilter' +'&'+'currentFrom='+ '@ViewBag.CurrentFrom'+'&'+'currentTo='+ '@ViewBag.CurrentTo'"><span class="glyphicon glyphicon-search" aria-hidden="true"></span>Hľadať</button>
-                                <span style="margin: 10px"></span>
-                                <button class="btn btn-danger text-right" aria-hidden="true" onclick="location.href = '@Url.Action("Index", "FileInfo")'"><span class="glyphicon glyphicon-search" aria-hidden="true"></span> Reset </button>
+                                <span style="margin: 5px"></span>
+                                <a class="btn btn-danger" href="@Url.Action("Index", "FileInfo")"><span class="glyphicon glyphicon-search" aria-hidden="true"></span> Reset</a>
                             </div>
                         </div>
                     </div>
@@ -132,10 +132,10 @@
     </div>
     <br />
     <div>
-        <a class="btn btn-info" href="~/FileInfo/FileReport/?extension=csv"><span class="glyphicon glyphicon-save" aria-hidden="true"></span> @Resources.Labels.Btn_CSV </a>
+        <a class="btn btn-info" href="~/FileInfo/Report/?extension=csv"><span class="glyphicon glyphicon-save" aria-hidden="true"></span> @Resources.Labels.Btn_CSV </a>
         <a class="btn btn-info" href="~/FileInfo/FileReport/?extension=pdf"><span class="glyphicon glyphicon-save" aria-hidden="true"></span> @Resources.Labels.Btn_PDF </a>
-        <a class="btn btn-info" href="~/FileInfo/FileReport/?extension=xlsx"><span class="glyphicon glyphicon-save" aria-hidden="true"></span> @Resources.Labels.Btn_XLSX </a>
-        <a class="btn btn-info" href="~/FileInfo/FileReport/?extension=html"><span class="glyphicon glyphicon-save" aria-hidden="true"></span> @Resources.Labels.Btn_HTML </a>
+       @* <a class="btn btn-info" href="~/FileInfo/FileReport/?extension=xlsx"><span class="glyphicon glyphicon-save" aria-hidden="true"></span> @Resources.Labels.Btn_XLSX </a>*@
+        <a class="btn btn-info" href="~/FileInfo/Report/?extension=html"><span class="glyphicon glyphicon-save" aria-hidden="true"></span> @Resources.Labels.Btn_HTML </a>
     </div>
     <br/>
     Strana @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) z @Model.PageCount Počet záznamov @Model.TotalItemCount Počet záznamov @Model.TotalItemCount
