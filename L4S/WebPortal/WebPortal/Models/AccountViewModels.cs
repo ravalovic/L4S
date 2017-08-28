@@ -11,6 +11,7 @@ namespace WebPortal.Models
     {
         [Required]
         [Display(Name = "Email")]
+        [EmailAddress(ErrorMessageResourceName = "ErrorMessage_Email", ErrorMessageResourceType = typeof(Labels))]
         public string Email { get; set; }
     }
 
@@ -47,6 +48,7 @@ namespace WebPortal.Models
     {
         [Required]
         [Display(Name = "Email")]
+        [EmailAddress(ErrorMessageResourceName = "ErrorMessage_Email", ErrorMessageResourceType = typeof(Labels))]
         public string Email { get; set; }
     }
 
@@ -66,31 +68,47 @@ namespace WebPortal.Models
 
     public class RegisterViewModel
     {
-        [Required]
-        [EmailAddress]
+        public RegisterViewModel() { }
+        public RegisterViewModel(ApplicationUser user)
+        {
+            this.Id = user.Id;
+            this.FirstName = user.FirstName;
+            this.LastName = user.LastName;
+            this.UserName = user.UserName;
+            this.Email = user.Email;
+            this.PhoneNumber = user.PhoneNumber;
+            ReadRoles();
+        }
+
+        public string Id { get; set; }
+
+        [Required(ErrorMessageResourceName = "ErrorMessage_Required", ErrorMessageResourceType = typeof(Labels))]
         [Display(Name = "Customer_IndividualFirstName", ResourceType = typeof(Labels))]
         public string FirstName { get; set; }
 
-        [Required]
-        [EmailAddress]
-        [Display(Name = "Customer_IndividualLastsName", ResourceType = typeof(Labels))]
+        [Required(ErrorMessageResourceName = "ErrorMessage_Required", ErrorMessageResourceType = typeof(Labels))]      
+        [Display(Name = "Customer_IndividualLastName", ResourceType = typeof(Labels))]
         public string LastName { get; set; }
 
-        [Required]
-        [EmailAddress]
+        [Required(ErrorMessageResourceName = "ErrorMessage_Required", ErrorMessageResourceType = typeof(Labels))]
+        [EmailAddress(ErrorMessageResourceName = "ErrorMessage_Email", ErrorMessageResourceType = typeof(Labels))]        
         [Display(Name = "Email", ResourceType = typeof(Labels))]
         public string Email { get; set; }
 
-        [Required]
+        [Required(ErrorMessageResourceName = "ErrorMessage_Required", ErrorMessageResourceType = typeof(Labels))]
         [Display(Name = "LoginName", ResourceType = typeof(Labels))]
         public string UserName { get; set; }
+        
+        [Display(Name = "OwnerContactPhone", ResourceType = typeof(Labels))]
+        public string PhoneNumber { get; set; }
 
-        [Required]
+        [Required(ErrorMessageResourceName = "ErrorMessage_Required", ErrorMessageResourceType = typeof(Labels))]
         [StringLength(100, ErrorMessage = "{0} musí mať aspoň {2} znaky", MinimumLength = 6)]
         [DataType(DataType.Password)]
         [Display(Name = "Password", ResourceType = typeof(Labels))]
         public string Password { get; set; }
 
+        [Required(ErrorMessageResourceName = "ErrorMessage_Required", ErrorMessageResourceType = typeof(Labels))]
         [DataType(DataType.Password)]
         [Display(Name = "PasswordConfirm", ResourceType = typeof(Labels))]
         [Compare("Password", ErrorMessage = "Heslo a potvrdené heslo musí byť rovnaké.")]
@@ -106,45 +124,55 @@ namespace WebPortal.Models
 
             var userStore = new UserStore<ApplicationUser>(_db);
             var userManager = new UserManager<ApplicationUser>(userStore);
-            var user = userManager.FindByName(this.UserName);
-
             var roleStore = new RoleStore<IdentityRole>(_db);
             var roleManager = new RoleManager<IdentityRole>(roleStore);
 
-            if (user == null)
+            if (this.UserName != null)
+            {
+                var user = userManager.FindByName(this.UserName);
+
+                if (user == null)
+                {
+                    foreach (var item in roleManager.Roles)
+                    {
+                        list.Add(item.Name, false);
+                    }
+                }
+                else
+                {
+                    foreach (var item in roleManager.Roles)
+                    {
+                        list.Add(item.Name, userManager.IsInRole(user.Id, item.Name));
+                    }
+                }
+              
+            }
+            else
             {
                 foreach (var item in roleManager.Roles)
                 {
                     list.Add(item.Name, false);
                 }
             }
-            else
-            {
-                foreach (var item in roleManager.Roles)
-                {
-                    list.Add(item.Name, userManager.IsInRole(user.Id, item.Name));
-                }
-            }
-            UserRoles= list;
+            UserRoles = list;
         }
     }
 
     public class ResetPasswordViewModel
     {
-        [Required]
-        [EmailAddress]
-        [Display(Name = "Email")]
-        public string Email { get; set; }
 
-        [Required]
-        [StringLength(100, ErrorMessage = "The {0} must be at least {2} characters long.", MinimumLength = 6)]
+        public string Id { get; set; }
+
+        [Required(ErrorMessageResourceName = "ErrorMessage_Required", ErrorMessageResourceType = typeof(Labels))]
+        [StringLength(100, ErrorMessage = "{0} musí mať aspoň {2} znaky", MinimumLength = 6)]
         [DataType(DataType.Password)]
-        [Display(Name = "Password")]
+        [Display(Name = "Password", ResourceType = typeof(Labels))]
         public string Password { get; set; }
 
+        [Required(ErrorMessageResourceName = "ErrorMessage_Required", ErrorMessageResourceType = typeof(Labels))]
         [DataType(DataType.Password)]
-        [Display(Name = "Confirm password")]
-        [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
+        [Display(Name = "PasswordConfirm", ResourceType = typeof(Labels))]
+        [Compare("Password", ErrorMessage = "Heslo a potvrdené heslo musí byť rovnaké.")]
         public string ConfirmPassword { get; set; }
 
         public string Code { get; set; }
@@ -153,7 +181,7 @@ namespace WebPortal.Models
     public class ForgotPasswordViewModel
     {
         [Required]
-        [EmailAddress]
+        [EmailAddress(ErrorMessageResourceName = "ErrorMessage_Email", ErrorMessageResourceType = typeof(Labels))]
         [Display(Name = "Email")]
         public string Email { get; set; }
     }

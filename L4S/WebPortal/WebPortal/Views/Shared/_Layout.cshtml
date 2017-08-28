@@ -1,4 +1,5 @@
 ﻿@using Microsoft.AspNet.Identity
+@using WebPortal.Models
 
 <!DOCTYPE html>
 <html>
@@ -62,20 +63,26 @@
 
 
     @*@if (User.IsInRole("admin"))*@
-    @*if (Request.IsAuthenticated)*@
-    @if ("a" == "a")
-            {
+   @*@if (Request.IsAuthenticated)*@
+
         <div class="container-fluid">
             <div class="row">
+                
                 <div class="col-xs-12 col-sm-4 col-md-2">
                     <div class="accordion" id="leftMenu">
+                        
+                    @if (Request.IsAuthenticated)
+                    {
                         @*Nastavenia menu*@
+                        if (User.IsInRole(WebRoles.Admin))
+                        {
                         <div class="accordion-group">
                             <div class="accordion-heading">
                                 <a class="accordion-toggle" data-toggle="collapse" data-parent="#leftMenu" href="#collapseTwo">
                                     <i class="glyphicon glyphicon-cog"></i> @Resources.Labels.Menu_Nastavenia &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;@*<span class="badge pull-right">12</span>*@
                                 </a>
                             </div>
+                           
                             <div id="collapseTwo" class="accordion-body collapse" style="height: 0px;">
                                 <div class="accordion-inner">
                                     <ul class="nav nav-pills nav-stacked">
@@ -87,9 +94,13 @@
                                         <li class="active"><a href="~/Account/UserList"><i class="glyphicon glyphicon-user"></i> @Resources.Labels.Menu_Pouzivatelia</a></li>
                                     </ul>
                                 </div>
-                            </div>
+                            </div>                            
                         </div>
+                        }
+
                         @*Prehľad menu*@
+                        if (User.IsInRole(WebRoles.User))
+                        {
                         <div class="accordion-group">
                             <div class="accordion-heading">
                                 <a class="accordion-toggle" data-toggle="collapse" data-parent="#leftMenu" href="#collapseThree">
@@ -104,7 +115,11 @@
                                 </div>
                             </div>
                         </div>
+                        }
+
                         @*Fakturácie menu*@
+                        if (User.IsInRole(WebRoles.Ekonom))
+                        {
                         <div class="accordion-group">
                             <div class="accordion-heading">
                                 <a class="accordion-toggle" data-toggle="collapse" data-parent="#leftMenu" href="#collapseFour">
@@ -120,8 +135,12 @@
                                 </div>
                             </div>
                         </div>
-                    </div>
+                          }
+                       }
+                    </div>                    
                 </div>
+               
+
                 <div class="col-xs-12 col-md-10 ">
                     @RenderSection("featured", required: false)
                     @RenderBody()
@@ -134,10 +153,9 @@
                     <p class="text-center">&copy; @DateTime.Now.Year - Výskumný ústav geodézie a kartografie v Bratislave - developed by BlueZ s.r.o</p>
 
                 </footer>
-    }
-    else
-    {
-        <div class="container">
+    
+   
+        @*<div class="container">
             <div class="page-header">
                 <img src="@Url.Content("~/Images/home.png")" alt="IMAGES" />
                 <h1 class="text-center">NADPIS <small>podnadpis</small></h1>
@@ -151,8 +169,8 @@
         <hr />
                     <footer>
                         <p class="text-center">&copy; @DateTime.Now.Year - Footer</p>
-                    </footer>
-    }
+                    </footer>*@
+   
 
 
 

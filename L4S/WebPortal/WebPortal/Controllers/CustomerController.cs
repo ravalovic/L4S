@@ -113,67 +113,69 @@ namespace WebPortal.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult SaveServices(List<ServicesViewModel> data)
         {
-           // if (ModelState.IsValid)
-            if (ModelState.IsValid && data.Count > 0)
+            CATCustomerData customer = _db.CATCustomerData.Find(data[0].FKCustomerDataID);
+
+            if (ModelState.IsValid)
             {
-                CATCustomerData customer = _db.CATCustomerData.Find(data[0].FKCustomerDataID);
-
-                foreach (ServicesViewModel item in data)
-                {
-
-                    if (item.Checked && item.TCActive == 1) //edit customer already assigned service
+                if (ModelState.IsValid && data.Count > 0)
+                {    
+                    foreach (ServicesViewModel item in data)
                     {
-                        CATCustomerServices service = customer.CATCustomerServices.Where(p => p.PKServiceCustomerIdentifiersID == item.PKServiceCustomerIdentifiersID).FirstOrDefault();
-                        service.ServiceCode = item.ServiceCode;
-                        service.ServiceName = item.ServiceName;
-                        service.ServiceNote = item.ServiceNote;
-                        service.ServicePriceDiscount = item.ServicePriceDiscount;
-                        service.TCLastUpdate = DateTime.Now;
-                    }
-                    else if (!item.Checked && item.TCActive == 1) //remove customer already assigned service
-                    {
-                        CATCustomerServices service = customer.CATCustomerServices.Where(p => p.PKServiceCustomerIdentifiersID == item.PKServiceCustomerIdentifiersID).FirstOrDefault();
-                        service.TCLastUpdate = DateTime.Now;
-                        service.TCActive = 99;
-                    }
-                    else if (item.Checked && item.TCActive == 0) //add new service to customer
-                    {
-                        CATCustomerServices service = new CATCustomerServices();
-                        service.ServiceCode = item.ServiceCode;
-                        service.ServiceName = item.ServiceName;
-                        service.ServiceNote = item.ServiceNote;
-                        service.ServicePriceDiscount = item.ServicePriceDiscount;
-                        service.FKCustomerDataID = item.FKCustomerDataID;
-                        service.FKServiceID = item.FKServiceID;
-                        service.TCActive = 1;
-                        service.TCInsertTime = DateTime.Now;
-                        service.TCLastUpdate = DateTime.Now;
+                        if (item.Checked && item.TCActive == 1) //edit customer already assigned service
+                        {
+                            CATCustomerServices service = customer.CATCustomerServices.Where(p => p.PKServiceCustomerIdentifiersID == item.PKServiceCustomerIdentifiersID).FirstOrDefault();
+                            service.ServiceCode = item.ServiceCode;
+                            service.ServiceName = item.ServiceName;
+                            service.ServiceNote = item.ServiceNote;
+                            service.ServicePriceDiscount = item.ServicePriceDiscount;
+                            service.TCLastUpdate = DateTime.Now;
+                        }
+                        else if (!item.Checked && item.TCActive == 1) //remove customer already assigned service
+                        {
+                            CATCustomerServices service = customer.CATCustomerServices.Where(p => p.PKServiceCustomerIdentifiersID == item.PKServiceCustomerIdentifiersID).FirstOrDefault();
+                            service.TCLastUpdate = DateTime.Now;
+                            service.TCActive = 99;
+                        }
+                        else if (item.Checked && item.TCActive == 0) //add new service to customer
+                        {
+                            CATCustomerServices service = new CATCustomerServices();
+                            service.ServiceCode = item.ServiceCode;
+                            service.ServiceName = item.ServiceName;
+                            service.ServiceNote = item.ServiceNote;
+                            service.ServicePriceDiscount = item.ServicePriceDiscount;
+                            service.FKCustomerDataID = item.FKCustomerDataID;
+                            service.FKServiceID = item.FKServiceID;
+                            service.TCActive = 1;
+                            service.TCInsertTime = DateTime.Now;
+                            service.TCLastUpdate = DateTime.Now;
 
-                        customer.CATCustomerServices.Add(service); //add to customer new service
+                            customer.CATCustomerServices.Add(service); //add to customer new service
+                        }
                     }
+
+                    _db.SaveChanges();
+
+
+                    if (customer.CustomerType == "PO") return RedirectToAction("CompanyList");
+                    return RedirectToAction("IndividualList");
                 }
+                else
+                {
+                    var message = string.Join(" | ", ModelState.Values
+                                            .SelectMany(v => v.Errors)
+                                            .Select(e => e.ErrorMessage));
 
-                _db.SaveChanges();
+                    //Log This exception to ELMAH:
+                    Exception exception = new Exception(message.ToString());
 
-
-                if (customer.CustomerType == "PO") return RedirectToAction("CompanyList");
-                return RedirectToAction("IndividualList");
+                    //Return Status Code:
+                    return new HttpStatusCodeResult(HttpStatusCode.BadRequest, message);
+                }
             }
-            else
-            {
-                var message = string.Join(" | ", ModelState.Values
-                                        .SelectMany(v => v.Errors)
-                                        .Select(e => e.ErrorMessage));
-
-                //Log This exception to ELMAH:
-                Exception exception = new Exception(message.ToString());
-               
-
-                //Return Status Code:
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest, message);
-            }
-            return RedirectToAction("CompanyList");
+            if (customer.CustomerType == "PO") return RedirectToAction("CompanyList");
+            return RedirectToAction("IndividualList");
         }
+        
 
 
         // GET: Customer/IndividualList/

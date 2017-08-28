@@ -88,6 +88,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Zmena hesla.
+        /// </summary>
+        public static string Btn_ChangePassword {
+            get {
+                return ResourceManager.GetString("Btn_ChangePassword", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Vytvoriť.
         /// </summary>
         public static string Btn_Create {
@@ -678,6 +687,24 @@ namespace Resources {
         public static string Error_IP {
             get {
                 return ResourceManager.GetString("Error_IP", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Neplatná emailová adresa.
+        /// </summary>
+        public static string ErrorMessage_Email {
+            get {
+                return ResourceManager.GetString("ErrorMessage_Email", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Povinný údaj.
+        /// </summary>
+        public static string ErrorMessage_Required {
+            get {
+                return ResourceManager.GetString("ErrorMessage_Required", resourceCulture);
             }
         }
         
@@ -1285,6 +1312,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Potvrdenie hesla.
+        /// </summary>
+        public static string PasswordConfirm {
+            get {
+                return ResourceManager.GetString("PasswordConfirm", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Metóda selekcie.
         /// </summary>
         public static string Pattern_DatSelectMethod {
@@ -1434,6 +1470,24 @@ namespace Resources {
         public static string ProcessTap_GAP {
             get {
                 return ResourceManager.GetString("ProcessTap_GAP", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Vytvorenie nového používateľa.
+        /// </summary>
+        public static string RegisterPage_SubTitle {
+            get {
+                return ResourceManager.GetString("RegisterPage_SubTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Registrácia.
+        /// </summary>
+        public static string RegisterPage_Title {
+            get {
+                return ResourceManager.GetString("RegisterPage_Title", resourceCulture);
             }
         }
         
