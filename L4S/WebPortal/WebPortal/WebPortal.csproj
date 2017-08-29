@@ -767,6 +767,7 @@
     <Content Include="Views\Account\_ChangePassword.cshtml" />
     <Content Include="Views\Account\_Edit.cshtml" />
     <Content Include="Views\Account\_Register.cshtml" />
+    <Content Include="Views\Account\_LoginDetail.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

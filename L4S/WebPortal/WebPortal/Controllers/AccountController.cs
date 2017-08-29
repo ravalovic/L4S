@@ -54,9 +54,16 @@ namespace WebPortal.Controllers
             LoginViewModel model = new LoginViewModel();
             return PartialView("_LoginForm", model);
         }
-   
+
         
-        
+       public ActionResult LoginDetail()
+        {
+            string id = User.Identity.GetUserId();
+            ApplicationUser user = UserManager.Users.Where(p => p.Id == id).FirstOrDefault();
+            RegisterViewModel model = new RegisterViewModel(user);
+            return PartialView("_LoginDetail", model);
+        }
+
         // GET: /Account/Login
         [AllowAnonymous]
         public ActionResult Login(string returnUrl)
@@ -65,33 +72,34 @@ namespace WebPortal.Controllers
             return View();
         }
 
-      
+
         // POST: /Account/Login
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Login(LoginViewModel model, string returnUrl)
+        public ActionResult Login(LoginViewModel model, string returnUrl)
         {
-            if (!ModelState.IsValid)
+            if (ModelState.IsValid)
             {
-                return View(model);
-            }
 
-            // This doesn't count login failures towards account lockout
-            // To enable password failures to trigger account lockout, change to shouldLockout: true
-            var result = await SignInManager.PasswordSignInAsync(model.UserName, model.Password, model.RememberMe, shouldLockout: false);
-            switch (result)
-            {
-                case SignInStatus.Success:
-                    return RedirectToLocal(returnUrl);
-                case SignInStatus.LockedOut:
-                    return View("Lockout");               
-                case SignInStatus.Failure:
-                default:
-                   // ModelState.AddModelError("", "Invalid login attempt.");
-                    // return View(model); 
-                    return RedirectToAction("Index", "Home", new { LoginError=true });
+                // This doesn't count login failures towards account lockout
+                // To enable password failures to trigger account lockout, change to shouldLockout: true
+                var result = SignInManager.PasswordSignIn(model.UserName, model.Password, model.RememberMe, shouldLockout: false);
+                switch (result)
+                {
+                    case SignInStatus.Success:
+                        return RedirectToLocal(returnUrl);
+                    case SignInStatus.LockedOut:
+                        ModelState.AddModelError("", "Neplatné prihlásenie. Účet je zablokovaný."); break;
+                    case SignInStatus.Failure: ModelState.AddModelError("", "Neplatné prihlásenie. Nesprávne meno alebo heslo."); break;
+                    default:
+                        ModelState.AddModelError("", "Neplatné prihlásenie"); break;
+                        // return View(model);                   
+
+                }
             }
+            TempData["ModelState"] = ModelState;
+            return RedirectToAction("Index", "Home", new { LoginError = true });
         }
 
         
@@ -144,6 +152,10 @@ namespace WebPortal.Controllers
             {
                 TempData["ModelState"] = ModelState;
             }
+            if (User.Identity.GetUserId() == model.Id) // return to Home/Index ...pravdepodobne volane z uvodnej stranky
+            {
+                return RedirectToAction("Index","Home");
+            }
             return RedirectToAction("UserList");
         }
 
@@ -176,10 +188,28 @@ namespace WebPortal.Controllers
                 }
             }
 
-            TempData["ModelState"] = ModelState;            
+            TempData["ModelState"] = ModelState;
+
+            if (User.Identity.GetUserId() == model.Id) // return to Home/Index ...pravdepodobne volane z uvodnej stranky
+            {
+                return RedirectToAction("Index", "Home");
+            }
             return RedirectToAction("UserList");
         }
 
+        
+        public ActionResult UserEdit()
+        {
+            string id = User.Identity.GetUserId();
+            ApplicationUser user = _db.Users.Find(id);
+            RegisterViewModel model = new RegisterViewModel(user);
+            model.UserRoles = new Dictionary<string, bool>();
+            //fake password to be sure ModelState is valid
+            model.Password = "fake123";
+            model.ConfirmPassword = "fake123";
+
+            return PartialView("_Edit", model);
+        }
         public ActionResult Edit(string id)
         {
             ApplicationUser user = _db.Users.Find(id);
@@ -212,7 +242,7 @@ namespace WebPortal.Controllers
                 var userStore = new UserStore<ApplicationUser>(_db);
                 var userManager = new UserManager<ApplicationUser>(userStore);
 
-                if (result.Succeeded) //if user details OK than update roles
+                if (result.Succeeded && model.UserRoles!=null) //if user details OK than update roles
                 {
                     foreach (var rola in model.UserRoles)
                     {
@@ -249,6 +279,10 @@ namespace WebPortal.Controllers
             
             TempData["ModelState"] = ModelState;
 
+            if (model.UserRoles==null) // return to Home/Index ...pravdepodobne volane z uvodnej stranky
+            {
+                return RedirectToAction("Index", "Home");
+            }
             return RedirectToAction("UserList");
         }
 

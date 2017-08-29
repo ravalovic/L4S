@@ -4,10 +4,14 @@ namespace WebPortal.Controllers
 {
     public class HomeController : Controller
     {
-        public ActionResult Index(bool? LoginError)
+        public ActionResult Index()
         {
-            if (LoginError==true) ModelState.AddModelError("", "Nespravne meno alebo Heslo.");
-            DataContexts.L4SDb _db = new DataContexts.L4SDb();
+            //show errors
+            if (TempData["ModelState"] != null && !ModelState.Equals(TempData["ModelState"]))
+                ModelState.Merge((ModelStateDictionary)TempData["ModelState"]);
+            //show ok message
+            if (TempData["ModelStateOk"] != null) ViewBag.message = TempData["ModelStateOk"];
+
             return View();
         }
 

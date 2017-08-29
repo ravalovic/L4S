@@ -160,6 +160,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Odhlásiť.
+        /// </summary>
+        public static string Btn_Logout {
+            get {
+                return ResourceManager.GetString("Btn_Logout", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to &gt;&gt;&gt;.
         /// </summary>
         public static string Btn_Next {
