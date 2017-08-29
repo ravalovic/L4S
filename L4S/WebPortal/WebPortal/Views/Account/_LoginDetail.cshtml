@@ -20,6 +20,7 @@
             </div>
         </div>
       </div>
+
     <div class="row">
         <div class="form-group">
             @Html.LabelFor(model => model.LastName, htmlAttributes: new { @class = "control-label col-md-4" })
@@ -51,14 +52,8 @@
        <a class="modal-link-medium btn btn-primary" href="~/Account/Password/@Model.Id"><span class="glyphicon glyphicon-lock" aria-hidden="true"></span> @Resources.Labels.Btn_ChangePassword</a>
        <a class="modal-link-medium btn btn-success" href="~/Account/UserEdit/"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span> @Resources.Labels.Btn_Edit </a>
     </div>
-
+</div>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
+<p>&nbsp;</p>
 
-
-
-
-@*@section Scripts {
-    @Scripts.Render("~/bundles/jqueryval")    
-}*@
-  

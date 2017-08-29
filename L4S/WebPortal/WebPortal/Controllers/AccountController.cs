@@ -11,6 +11,7 @@ using System.Collections.Generic;
 using Microsoft.AspNet.Identity.EntityFramework;
 using System.Data.Entity.Validation;
 using System.Net;
+using System;
 
 namespace WebPortal.Controllers
 {
@@ -323,6 +324,8 @@ namespace WebPortal.Controllers
         {
             var user = UserManager.Users.Where(p => p.Id == id).FirstOrDefault();
             user.TCActive = 99;
+            user.LockoutEnabled = true;
+            user.LockoutEndDateUtc = DateTime.UtcNow.AddYears(100); //lock user for next 100 years
             IdentityResult result = UserManager.Update(user);
 
             if (!result.Succeeded)
