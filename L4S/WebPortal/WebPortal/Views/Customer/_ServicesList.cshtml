@@ -12,102 +12,103 @@
         </div>
 
         <div class="panel-body">
+            <div class="table-responsive">
+                <div class="table table-striped table-bordered table-hover table-condensed">
+                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
 
-            <div class="table table-responsive table-striped table-bordered table-hover table-condensed">
-                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-
-                <table style="" class="table table-bordered table-hover table-striped" id="mytable">
-                    <thead>
-                        <tr>
-                            <th class="col-md-1 text-center"><input type="checkbox" id="checkall" style="zoom:1.5" /> Všetky</th>
-                            <th class="col-md-1">@Html.LabelFor(model => model[0].ServiceCode)</th>
-                            <th class="col-md-5">@Html.LabelFor(model => model[0].ServiceName)</th>
-                            <th class="col-md-2">@Html.LabelFor(model => model[0].ServiceNote)</th>
-                            <th class="col-md-1">@Html.LabelFor(model => model[0].ServicePriceDiscount)</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @for (int i = 0; i < Model.Count; i++)
-                        {
-                            @Html.HiddenFor(model => model[i].FKCustomerDataID)
-                            @Html.HiddenFor(model => model[i].FKServiceID)
-                            @Html.HiddenFor(model => model[i].PKServiceCustomerIdentifiersID)
-                            @Html.HiddenFor(model => model[i].TCActive)
-
+                    <table style="" class="table table-bordered table-hover table-striped" id="mytable">
+                        <thead>
                             <tr>
-                                <td class="text-center">@Html.EditorFor(model => model[i].Checked, new { htmlAttributes = new { @class = "checkthis", @style = "zoom:1.5", @id = "checkb" + i, OnClick = "display(" + i + ");" } })</td>
-                                <td>
-                                    <div class="input-group">
-                                        @if (!Model[i].Checked)
-                                        {
-                                            @Html.EditorFor(model => model[i].ServiceCode, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
-                                        }
-                                        else
-                                        {
-                                            @Html.EditorFor(model => model[i].ServiceCode, new { htmlAttributes = new { @class = "form-control" } })
-                                        }
-                                        @Html.ValidationMessageFor(model => model[i].ServiceCode, "", new { @class = "text-danger" })
-                                    </div>
-                                </td>
-                                <td>
-                                    <div class="">
-                                        @if (!Model[i].Checked)
-                                        {
-                                            @Html.EditorFor(model => model[i].ServiceName, new { htmlAttributes = new { @class = "form-control maxLengthStyle", @readonly = "readonly" } })
-                                        }
-                                        else
-                                        {
-                                            @Html.EditorFor(model => model[i].ServiceName, new { htmlAttributes = new { @class = "form-control maxLengthStyle" } })
-                                        }
-                                        @Html.ValidationMessageFor(model => model[i].ServiceName, "", new { @class = "text-danger" })
-                                    </div>
-                                </td>
-                                <td>
-                                    <div class="">
-                                        @if (!Model[i].Checked)
-                                        {
-                                            @Html.EditorFor(model => model[i].ServiceNote, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
-                                        }
-                                        else
-                                        {
-                                            @Html.EditorFor(model => model[i].ServiceNote, new { htmlAttributes = new { @class = "form-control" } })
-                                        }
-                                        @Html.ValidationMessageFor(model => model[i].ServiceNote, "", new { @class = "text-danger" })
-                                    </div>
-                                </td>
-                                <td>
-                                    <div class="">
-                                        @if (!Model[i].Checked)
-                                        {
-                                            @Html.EditorFor(model => model[i].ServicePriceDiscount, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
-                                        }
-                                        else
-                                        {
-                                            @Html.EditorFor(model => model[i].ServicePriceDiscount, new { htmlAttributes = new { @class = "form-control" } })
-                                        }
-                                        @Html.ValidationMessageFor(model => model[i].ServicePriceDiscount, "", new { @class = "text-danger" })
-                                    </div>
-                                </td>
+                                <th class="col-md-1 text-center"><input type="checkbox" id="checkall" style="zoom:1.5" /> Všetky</th>
+                                <th class="col-md-1">@Html.LabelFor(model => model[0].ServiceCode)</th>
+                                <th class="col-md-5">@Html.LabelFor(model => model[0].ServiceName)</th>
+                                <th class="col-md-2">@Html.LabelFor(model => model[0].ServiceNote)</th>
+                                <th class="col-md-1">@Html.LabelFor(model => model[0].ServicePriceDiscount)</th>
                             </tr>
-                        }
-                    </tbody>
-                </table>
+                        </thead>
+                        <tbody>
+                            @for (int i = 0; i < Model.Count; i++)
+                            {
+                                @Html.HiddenFor(model => model[i].FKCustomerDataID)
+                                @Html.HiddenFor(model => model[i].FKServiceID)
+                                @Html.HiddenFor(model => model[i].PKServiceCustomerIdentifiersID)
+                                @Html.HiddenFor(model => model[i].TCActive)
+
+                                <tr>
+                                    <td class="text-center">@Html.EditorFor(model => model[i].Checked, new { htmlAttributes = new { @class = "checkthis", @style = "zoom:1.5", @id = "checkb" + i, OnClick = "display(" + i + ");" } })</td>
+                                    <td>
+                                        <div class="input-group">
+                                            @if (!Model[i].Checked)
+                                            {
+                                                @Html.EditorFor(model => model[i].ServiceCode, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                                            }
+                                            else
+                                            {
+                                                @Html.EditorFor(model => model[i].ServiceCode, new { htmlAttributes = new { @class = "form-control" } })
+                                            }
+                                            @Html.ValidationMessageFor(model => model[i].ServiceCode, "", new { @class = "text-danger" })
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="">
+                                            @if (!Model[i].Checked)
+                                            {
+                                                @Html.EditorFor(model => model[i].ServiceName, new { htmlAttributes = new { @class = "form-control maxLengthStyle", @readonly = "readonly" } })
+                                            }
+                                            else
+                                            {
+                                                @Html.EditorFor(model => model[i].ServiceName, new { htmlAttributes = new { @class = "form-control maxLengthStyle" } })
+                                            }
+                                            @Html.ValidationMessageFor(model => model[i].ServiceName, "", new { @class = "text-danger" })
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="">
+                                            @if (!Model[i].Checked)
+                                            {
+                                                @Html.EditorFor(model => model[i].ServiceNote, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                                            }
+                                            else
+                                            {
+                                                @Html.EditorFor(model => model[i].ServiceNote, new { htmlAttributes = new { @class = "form-control" } })
+                                            }
+                                            @Html.ValidationMessageFor(model => model[i].ServiceNote, "", new { @class = "text-danger" })
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="">
+                                            @if (!Model[i].Checked)
+                                            {
+                                                @Html.EditorFor(model => model[i].ServicePriceDiscount, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                                            }
+                                            else
+                                            {
+                                                @Html.EditorFor(model => model[i].ServicePriceDiscount, new { htmlAttributes = new { @class = "form-control" } })
+                                            }
+                                            @Html.ValidationMessageFor(model => model[i].ServicePriceDiscount, "", new { @class = "text-danger" })
+                                        </div>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
 
 
-                <div class="form-group">
-                    <div class="col-md-offset-10 col-md-1">
-                        <div class="form-group">
-                            <button type="submit" class="btn btn-primary">
-                                <span class="glyphicon glyphicon-floppy-disk"></span>
-                                <span class="submit-text"> @Resources.Labels.Btn_Save</span>
-                            </button>
+                    <div class="form-group">
+                        <div class="col-md-offset-10 col-md-1">
+                            <div class="form-group">
+                                <button type="submit" class="btn btn-primary">
+                                    <span class="glyphicon glyphicon-floppy-disk"></span>
+                                    <span class="submit-text"> @Resources.Labels.Btn_Save</span>
+                                </button>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-}
+    }
 
 
 <script>
@@ -143,7 +144,7 @@
         }
     }
 
-    function display(row) {       
+    function display(row) {
         if (document.getElementById("checkb" + row).checked) {
             $("[name='[" + row + "].ServiceCode']").prop("readonly", false);
             $("[name='[" + row + "].ServiceName']").prop("readonly", false);
@@ -156,7 +157,5 @@
             $("[name='[" + row + "].ServiceNote']").prop("readonly", true);
             $("[name='[" + row + "].ServicePriceDiscount']").prop("readonly", true);
         }
-
-
     }
 </script>

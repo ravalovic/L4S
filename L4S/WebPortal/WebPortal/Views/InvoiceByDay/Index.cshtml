@@ -58,121 +58,123 @@
         </div>
 
         <div class="panel-body">
-            <table class="table table-striped table-bordered table-hover table-condensed">
-                <tr>
-                    <th>
-                        @Html.DisplayNameFor(model => model.FirstOrDefault().DateOfRequest)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.FirstOrDefault().CustomerIdentification)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.FirstOrDefault().CustomerName)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.FirstOrDefault().ServiceCode)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.FirstOrDefault().NumberOfRequest)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.FirstOrDefault().ReceivedBytes)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.FirstOrDefault().RequestedTime)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.FirstOrDefault().CustomerServiceCode)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.FirstOrDefault().CustomerServicename)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.FirstOrDefault().UnitPrice)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.FirstOrDefault().MeasureOfUnits)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.FirstOrDefault().BasicPriceWithoutVAT)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.FirstOrDefault().VAT)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.FirstOrDefault().BasicPriceWithVAT)
-                    </th>
-                    
-                    @*<th></th>*@
-                </tr>
-
-                @foreach (var item in Model)
-                {
+            <div class="table-responsive">
+                <table class="table table-striped table-bordered table-hover table-condensed">
                     <tr>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.DateOfRequest)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.CustomerIdentification)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.CustomerName)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.ServiceCode)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.NumberOfRequest)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.ReceivedBytes)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.RequestedTime)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.CustomerServiceCode)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.CustomerServicename)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.UnitPrice)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.MeasureOfUnits)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.BasicPriceWithoutVAT)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.VAT)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.BasicPriceWithVAT)
-                        </td>
-                        @*<td>
-                                @Html.ActionLink("Edit", "Edit", new { id = item.ID }) |
-                                @Html.ActionLink("Details", "Details", new { id = item.ID }) |
+                        <th>
+                            @Html.DisplayNameFor(model => model.FirstOrDefault().DateOfRequest)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.FirstOrDefault().CustomerIdentification)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.FirstOrDefault().CustomerName)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.FirstOrDefault().ServiceCode)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.FirstOrDefault().NumberOfRequest)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.FirstOrDefault().ReceivedBytes)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.FirstOrDefault().RequestedTime)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.FirstOrDefault().CustomerServiceCode)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.FirstOrDefault().CustomerServicename)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.FirstOrDefault().UnitPrice)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.FirstOrDefault().MeasureOfUnits)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.FirstOrDefault().BasicPriceWithoutVAT)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.FirstOrDefault().VAT)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.FirstOrDefault().BasicPriceWithVAT)
+                        </th>
 
-                            </td>*@
+                        @*<th></th>*@
                     </tr>
-                }
-            </table>
+
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.DateOfRequest)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.CustomerIdentification)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.CustomerName)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.ServiceCode)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.NumberOfRequest)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.ReceivedBytes)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.RequestedTime)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.CustomerServiceCode)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.CustomerServicename)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.UnitPrice)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.MeasureOfUnits)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.BasicPriceWithoutVAT)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.VAT)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.BasicPriceWithVAT)
+                            </td>
+                            @*<td>
+                                    @Html.ActionLink("Edit", "Edit", new { id = item.ID }) |
+                                    @Html.ActionLink("Details", "Details", new { id = item.ID }) |
+
+                                </td>*@
+                        </tr>
+                    }
+                </table>
+            </div>
         </div>
     </div>
-    <br/>
-    <div>
-        <a class="btn btn-info" href="~/InvoiceByDay/Report/?extension=csv&page=@Model.PageNumber&insertDateFrom=@ViewBag.CurrentFrom&insertDateTo=@ViewBag.CurrentTo&searchText=@ViewBag.CurrentFilter"><span class="glyphicon glyphicon-save" aria-hidden="true"></span> @Resources.Labels.Btn_CSV </a>
-        <a class="btn btn-info" href="~/InvoiceByDay/Report/?extension=pdf&page=@Model.PageNumber&insertDateFrom=@ViewBag.CurrentFrom&insertDateTo=@ViewBag.CurrentTo&searchText=@ViewBag.CurrentFilter"><span class="glyphicon glyphicon-save" aria-hidden="true"></span> @Resources.Labels.Btn_PDF </a>
-        <a class="btn btn-info" href="~/InvoiceByDay/Report/?extension=xlsx&page=@Model.PageNumber&insertDateFrom=@ViewBag.CurrentFrom&insertDateTo=@ViewBag.CurrentTo&searchText=@ViewBag.CurrentFilter"><span class="glyphicon glyphicon-save" aria-hidden="true"></span> @Resources.Labels.Btn_XLSX </a>
-        <a class="btn btn-info" href="~/InvoiceByDay/Report/?extension=html&amp;page=@Model.PageNumber&amp;insertDateFrom=@ViewBag.CurrentFrom&amp;insertDateTo=@ViewBag.CurrentTo&amp;searchText=@ViewBag.CurrentFilter"><span class="glyphicon glyphicon-save" aria-hidden="true"></span> @Resources.Labels.Btn_HTML </a>
+        <br />
+        <div>
+            <a class="btn btn-info" href="~/InvoiceByDay/Report/?extension=csv&page=@Model.PageNumber&insertDateFrom=@ViewBag.CurrentFrom&insertDateTo=@ViewBag.CurrentTo&searchText=@ViewBag.CurrentFilter"><span class="glyphicon glyphicon-save" aria-hidden="true"></span> @Resources.Labels.Btn_CSV </a>
+            <a class="btn btn-info" href="~/InvoiceByDay/Report/?extension=pdf&page=@Model.PageNumber&insertDateFrom=@ViewBag.CurrentFrom&insertDateTo=@ViewBag.CurrentTo&searchText=@ViewBag.CurrentFilter"><span class="glyphicon glyphicon-save" aria-hidden="true"></span> @Resources.Labels.Btn_PDF </a>
+            <a class="btn btn-info" href="~/InvoiceByDay/Report/?extension=xlsx&page=@Model.PageNumber&insertDateFrom=@ViewBag.CurrentFrom&insertDateTo=@ViewBag.CurrentTo&searchText=@ViewBag.CurrentFilter"><span class="glyphicon glyphicon-save" aria-hidden="true"></span> @Resources.Labels.Btn_XLSX </a>
+            <a class="btn btn-info" href="~/InvoiceByDay/Report/?extension=html&amp;page=@Model.PageNumber&amp;insertDateFrom=@ViewBag.CurrentFrom&amp;insertDateTo=@ViewBag.CurrentTo&amp;searchText=@ViewBag.CurrentFilter"><span class="glyphicon glyphicon-save" aria-hidden="true"></span> @Resources.Labels.Btn_HTML </a>
+        </div>
+        <br />
+        Strana @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) z @Model.PageCount Počet záznamov @Model.TotalItemCount
+        @*@Html.PagedListPager(Model, page => Url.Action("Index", new { page, currentFilter = ViewBag.CurrentFilter, currentFrom = ViewBag.CurrentFrom, currentTo = ViewBag.CurrentTo }))*@
+        @Html.PagedListPager(Model, page => Url.Action("Index", new { page, currentFilter = ViewBag.CurrentFilter, currentFrom = ViewBag.CurrentFrom, currentTo = ViewBag.CurrentTo, currentCustId = ViewBag.CurrentCustId, currentServId = ViewBag.CurrentServId, currentDate = ViewBag.CurrentReqDate }))
     </div>
-    <br />
-    Strana @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) z @Model.PageCount Počet záznamov @Model.TotalItemCount
-    @*@Html.PagedListPager(Model, page => Url.Action("Index", new { page, currentFilter = ViewBag.CurrentFilter, currentFrom = ViewBag.CurrentFrom, currentTo = ViewBag.CurrentTo }))*@
-    @Html.PagedListPager(Model, page => Url.Action("Index", new { page, currentFilter = ViewBag.CurrentFilter, currentFrom = ViewBag.CurrentFrom, currentTo = ViewBag.CurrentTo, currentCustId = ViewBag.CurrentCustId, currentServId = ViewBag.CurrentServId, currentDate = ViewBag.CurrentReqDate }))
-</div>
 
 @section Scripts {
     <script type="text/javascript">
