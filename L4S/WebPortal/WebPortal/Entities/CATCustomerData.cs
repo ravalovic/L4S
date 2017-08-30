@@ -30,18 +30,24 @@ namespace WebPortal
         public string CompanyName { get; set; }
 
         [StringLength(50)]
+        [Required(ErrorMessage = "Právna forma je povinná")]
         [Display(Name = "Customer_CompanyType", ResourceType = typeof(Labels))]
         public string CompanyType { get; set; }
 
         [StringLength(20)]
+        [Required(ErrorMessage = "IČO je povinné")]
+        [RegularExpression(@"^\d{6}(\d{2})?$", ErrorMessage = "Musí byť 6 alebo 8 číslic")]
         [Display(Name = "Customer_CompanyID", ResourceType = typeof(Labels))]
         public string CompanyID { get; set; }
 
         [StringLength(20)]
+        [Required(ErrorMessage = "DIČ je povinné")]
+        [RegularExpression(@"^\d{10}$", ErrorMessage = "Musí byť 10 číslic")]
         [Display(Name = "Customer_CompanyTAXID", ResourceType = typeof(Labels))]
         public string CompanyTAXID { get; set; }
 
         [StringLength(20)]
+        [RegularExpression(@"^[A-Z][A-Z]\d{10}$", ErrorMessage = "Musí byť Kód krajiny a 10 číslic")]
         [Display(Name = "Customer_CompanyVATID", ResourceType = typeof(Labels))]
         public string CompanyVATID { get; set; }
 
@@ -63,32 +69,39 @@ namespace WebPortal
         public string IndividualID { get; set; }
 
         [StringLength(20)]
+        [Required(ErrorMessage = "DIČ je povinné")]
+        [RegularExpression(@"^\d{10}$", ErrorMessage = "Musí byť 10 číslic")]
         [Display(Name = "Customer_IndividualTAXID", ResourceType = typeof(Labels))]
         public string IndividualTAXID { get; set; }
 
         [StringLength(20)]
+        [RegularExpression(@"^[A-Z][A-Z]\d{10}$", ErrorMessage = "Musí byť Kód krajiny a 10 číslic")]
         [Display(Name = "Customer_IndividualVATID", ResourceType = typeof(Labels))]
         public string IndividualVATID { get; set; }
 
         [StringLength(50)]
+        [RegularExpression(@"^[A-Z][A-Z]\d{2}[ ]\d{4}[ ]\d{4}[ ]\d{4}[ ]\d{4}[ ]\d{4}|[A-Z][A-Z]\d{22}$", ErrorMessage = "IBAN v celku alebo s medzerami po 4 znakoch")]
         [Display(Name = "Customer_BankAccountIBAN", ResourceType = typeof(Labels))]
         public string BankAccountIBAN { get; set; }
 
         [StringLength(50)]
+        [Required(ErrorMessage = "Adresa je povinná")]
         [Display(Name = "Customer_AddressStreet", ResourceType = typeof(Labels))]
         public string AddressStreet { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "Číslo je povinné")]
         [StringLength(20)]
         [Display(Name = "Customer_AddressBuildingNumber", ResourceType = typeof(Labels))]
         public string AddressBuildingNumber { get; set; }
 
-        [Required]
+       
         [StringLength(50)]
+        [Required(ErrorMessage = "Mesto je povinné")]
         [Display(Name = "Customer_AddressCity", ResourceType = typeof(Labels))]
         public string AddressCity { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "PSČ je povinné")]
+        [RegularExpression(@"^\d{5}$|^\d{3}(\s\d{2})?$", ErrorMessage = "Format XXXXXX alebo XXX XX")]
         [StringLength(6)]
         [Display(Name = "Customer_AddressZipCode", ResourceType = typeof(Labels))]
         public string AddressZipCode { get; set; }
@@ -100,6 +113,7 @@ namespace WebPortal
         
         [StringLength(50)]
         [Display(Name = "Customer_ContactEmail", ResourceType = typeof(Labels))]
+        [RegularExpression(@"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,22}$", ErrorMessage = "Chybný email")]
         public string ContactEmail { get; set; }
 
         [StringLength(50)]

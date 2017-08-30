@@ -20,6 +20,7 @@
                         <thead>
                             <tr>
                                 <th class="col-md-1 text-center"><input type="checkbox" id="checkall" style="zoom:1.5" /> Všetky</th>
+                                <th class="col-md-1">@Html.LabelFor(model => model[0].BasicServiceCode)</th>
                                 <th class="col-md-1">@Html.LabelFor(model => model[0].ServiceCode)</th>
                                 <th class="col-md-5">@Html.LabelFor(model => model[0].ServiceName)</th>
                                 <th class="col-md-2">@Html.LabelFor(model => model[0].ServiceNote)</th>
@@ -38,13 +39,19 @@
                                     <td class="text-center">@Html.EditorFor(model => model[i].Checked, new { htmlAttributes = new { @class = "checkthis", @style = "zoom:1.5", @id = "checkb" + i, OnClick = "display(" + i + ");" } })</td>
                                     <td>
                                         <div class="input-group">
+                                            @Html.EditorFor(model => model[i].BasicServiceCode, new { htmlAttributes = new { @class = "form-control maxLengthStyle", @readonly = "readonly" } })
+                                            @Html.ValidationMessageFor(model => model[i].ServiceCode, "", new { @class = "text-danger" })
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="input-group">
                                             @if (!Model[i].Checked)
                                             {
-                                                @Html.EditorFor(model => model[i].ServiceCode, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                                                @Html.EditorFor(model => model[i].ServiceCode, new { htmlAttributes = new { @class = "form-control maxLengthStyle", @readonly = "readonly" } })
                                             }
                                             else
                                             {
-                                                @Html.EditorFor(model => model[i].ServiceCode, new { htmlAttributes = new { @class = "form-control" } })
+                                                @Html.EditorFor(model => model[i].ServiceCode, new { htmlAttributes = new { @class = "form-control maxLengthStyle" } })
                                             }
                                             @Html.ValidationMessageFor(model => model[i].ServiceCode, "", new { @class = "text-danger" })
                                         </div>
@@ -79,11 +86,11 @@
                                         <div class="">
                                             @if (!Model[i].Checked)
                                             {
-                                                @Html.EditorFor(model => model[i].ServicePriceDiscount, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                                                @Html.EditorFor(model => model[i].ServicePriceDiscount, new { htmlAttributes = new { @class = "form-control maxLengthStyle", @readonly = "readonly" } })
                                             }
                                             else
                                             {
-                                                @Html.EditorFor(model => model[i].ServicePriceDiscount, new { htmlAttributes = new { @class = "form-control" } })
+                                                @Html.EditorFor(model => model[i].ServicePriceDiscount, new { htmlAttributes = new { @class = "form-control maxLengthStyle" } })
                                             }
                                             @Html.ValidationMessageFor(model => model[i].ServicePriceDiscount, "", new { @class = "text-danger" })
                                         </div>

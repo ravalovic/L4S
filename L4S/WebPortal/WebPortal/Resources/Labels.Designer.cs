@@ -466,7 +466,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Identifikátory služieb.
+        ///   Looks up a localized string similar to Identifikátory zákazníka.
         /// </summary>
         public static string Customer_IdentifierName {
             get {
@@ -552,6 +552,24 @@ namespace Resources {
         public static string Customer_IndividualVATID {
             get {
                 return ResourceManager.GetString("Customer_IndividualVATID", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Zákaznícky kód služby.
+        /// </summary>
+        public static string Customer_Service_Code {
+            get {
+                return ResourceManager.GetString("Customer_Service_Code", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Názov zákazníckej služby.
+        /// </summary>
+        public static string Customer_Service_Name {
+            get {
+                return ResourceManager.GetString("Customer_Service_Name", resourceCulture);
             }
         }
         
@@ -1528,7 +1546,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Kód.
+        ///   Looks up a localized string similar to Kód služby.
         /// </summary>
         public static string Service_Code {
             get {
@@ -1573,7 +1591,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Názov.
+        ///   Looks up a localized string similar to Názov služby.
         /// </summary>
         public static string Service_Name {
             get {

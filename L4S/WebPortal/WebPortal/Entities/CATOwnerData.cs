@@ -18,15 +18,23 @@ namespace WebPortal
         [StringLength(100)]
         public string OwnerCompanyType { get; set; }
         [Required(ErrorMessage = "IČO je povinné")]
+        [RegularExpression(@"^\d{6}(\d{2})?$", ErrorMessage = "Musí byť 6 alebo 8 číslic")]
         [StringLength(100)]
         public string OwnerCompanyID { get; set; }
+
         [Required(ErrorMessage = "DIČ je povinné")]
+        [RegularExpression(@"^\d{10}$", ErrorMessage = "Musí byť 10 číslic")]
         [StringLength(100)]
         public string OwnerCompanyTAXID { get; set; }
+
+        [RegularExpression(@"^SK\d{10}$", ErrorMessage = "Musí byť SK a 10 číslic")]
         [StringLength(100)]
         public string OwnerCompanyVATID { get; set; }
+
+        [RegularExpression(@"^[A-Z][A-Z]\d{2}[ ]\d{4}[ ]\d{4}[ ]\d{4}[ ]\d{4}[ ]\d{4}|[A-Z][A-Z]\d{22}$", ErrorMessage = "IBAN v celku alebo s medzerami po 4 znakoch")]
         [StringLength(50)]
         public string OwnerBankAccountIban { get; set; }
+
         [StringLength(100)]
         [Required(ErrorMessage = "Adresa je povinná")]
         public string OwnerAddressStreet { get; set; }
@@ -36,7 +44,9 @@ namespace WebPortal
         [Required(ErrorMessage = "Mesto je povinné")]
         [StringLength(100)]
         public string OwnerAddressCity { get; set; }
+
         [Required(ErrorMessage = "PSČ je povinné")]
+        [RegularExpression(@"^\d{5}$|^\d{3}(\s\d{2})?$", ErrorMessage = "Format XXXXXX alebo XXX XX")]
         [StringLength(12)]
         public string OwnerAddressZipCode { get; set; }
         [StringLength(100)]
@@ -45,6 +55,8 @@ namespace WebPortal
         public string OwnerResponsibleFirstName { get; set; }
         [StringLength(100)]
         public string OwnerResponsiblelastName { get; set; }
+        //[RegularExpression(@"^\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$", ErrorMessage = "Chybný email")]
+        [RegularExpression(@"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,22}$", ErrorMessage = "Chybný email")]
         [StringLength(100)]
         public string OwnerContactEmail { get; set; }
         [StringLength(100)]

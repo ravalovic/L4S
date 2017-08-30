@@ -421,7 +421,7 @@
     <value>Základná cena</value>
   </data>
   <data name="Service_Code" xml:space="preserve">
-    <value>Kód</value>
+    <value>Kód služby</value>
   </data>
   <data name="Service_Description" xml:space="preserve">
     <value>Opis</value>
@@ -460,13 +460,13 @@
     <value>Opis identifikátora</value>
   </data>
   <data name="Customer_IdentifierName" xml:space="preserve">
-    <value>Identifikátory služieb</value>
+    <value>Identifikátory zákazníka</value>
   </data>
   <data name="Service_Discount" xml:space="preserve">
     <value>Zľava (Pr: 0,9 = 10%)</value>
   </data>
-  <data name="Service_Name" xml:space="preserve">
-    <value>Názov</value>
+  <data name="Customer_Service_Name" xml:space="preserve">
+    <value>Názov zákazníckej služby</value>
   </data>
   <data name="Service_Note" xml:space="preserve">
     <value>Poznámka</value>
@@ -770,5 +770,11 @@
   </data>
   <data name="Btn_Logout" xml:space="preserve">
     <value>Odhlásiť</value>
+  </data>
+  <data name="Customer_Service_Code" xml:space="preserve">
+    <value>Zákaznícky kód služby</value>
+  </data>
+  <data name="Service_Name" xml:space="preserve">
+    <value>Názov služby</value>
   </data>
 </root>

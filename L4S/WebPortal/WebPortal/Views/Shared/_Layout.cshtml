@@ -71,11 +71,11 @@
                 <div class="col-xs-12 col-sm-4 col-md-2">
                     <div class="accordion" id="leftMenu">
                         
-                    @if (Request.IsAuthenticated)
-                    {
-                        @*Nastavenia menu*@
+                    @*@if (Request.IsAuthenticated)
+                    {*@
+                        @*Nastavenia menu
                         if (User.IsInRole(WebRoles.Admin))
-                        {
+                        {*@
                         <div class="accordion-group">
                             <div class="accordion-heading">
                                 <a class="accordion-toggle" data-toggle="collapse" data-parent="#leftMenu" href="#collapseTwo">
@@ -96,11 +96,11 @@
                                 </div>
                             </div>                            
                         </div>
-                        }
+                        @*}*@
 
                         @*Prehľad menu*@
-                        if (User.IsInRole(WebRoles.User))
-                        {
+                        @*if (User.IsInRole(WebRoles.User))
+                        {*@
                         <div class="accordion-group">
                             <div class="accordion-heading">
                                 <a class="accordion-toggle" data-toggle="collapse" data-parent="#leftMenu" href="#collapseThree">
@@ -115,11 +115,11 @@
                                 </div>
                             </div>
                         </div>
-                        }
+                        @*}*@
 
                         @*Fakturácie menu*@
-                        if (User.IsInRole(WebRoles.Ekonom))
-                        {
+                        @*if (User.IsInRole(WebRoles.Ekonom))
+                        {*@
                         <div class="accordion-group">
                             <div class="accordion-heading">
                                 <a class="accordion-toggle" data-toggle="collapse" data-parent="#leftMenu" href="#collapseFour">
@@ -135,8 +135,8 @@
                                 </div>
                             </div>
                         </div>
-                          }
-                       }
+                          @*}
+                       }*@
                     </div>                    
                 </div>
                
