@@ -21,65 +21,67 @@
         </div>
 
         <div class="panel-body">
-            <table class="table table-striped table-bordered table-hover table-condensed">
-                <tr>
-                    <th>
-                        @Html.DisplayNameFor(model => model.ServiceCode)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.ServiceDescription)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.ServiceBasicPrice)
-                    </th>
-                    @*<th>
-                        @Html.DisplayNameFor(model => model.TCInsertTime)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.TCLastUpdate)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.TCActive)
-                    </th>*@
-                    <th>
-                        <label>@Resources.Labels.Service_Patterns </label>
-                    </th>
-                    <th>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</th>
-                </tr>
-
-                @foreach (var item in Model)
-                {
+            <div class="table-responsive">
+                <table class="table table-striped table-bordered table-hover table-condensed">
                     <tr>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.ServiceCode)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.ServiceDescription)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.ServiceBasicPrice)
-                        </td>
-                        @*<td>
-                            @Html.DisplayFor(modelItem => item.TCInsertTime)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.TCLastUpdate)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.TCActive)
-                        </td>*@
-                        <td>
-                            <a class="btn btn-primary" href="~/Patterns/Index/@item.PKServiceID"><span class="glyphicon glyphicon-tasks" aria-hidden="true"></span> @Resources.Labels.Service_Patterns </a>
-                        </td>
-                        <td>
-                            <div class="btn-group">
-                                <a class="modal-link-medium btn btn-success" href="~/Service/Edit/@item.PKServiceID"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span> Edit </a>
-                                <a class="modal-link-small btn btn-danger" href="~/Service/Delete/@item.PKServiceID"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span> Delete </a>
-                            </div>
-                        </td>
+                        <th>
+                            @Html.DisplayNameFor(model => model.ServiceCode)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.ServiceDescription)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.ServiceBasicPrice)
+                        </th>
+                        @*<th>
+                                @Html.DisplayNameFor(model => model.TCInsertTime)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.TCLastUpdate)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.TCActive)
+                            </th>*@
+                        <th>
+                            <label>@Resources.Labels.Service_Patterns </label>
+                        </th>
+                        <th>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</th>
                     </tr>
-                }
-            </table>
+
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.ServiceCode)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.ServiceDescription)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.ServiceBasicPrice)
+                            </td>
+                            @*<td>
+                                    @Html.DisplayFor(modelItem => item.TCInsertTime)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.TCLastUpdate)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.TCActive)
+                                </td>*@
+                            <td>
+                                <a class="btn btn-primary" href="~/Patterns/Index/@item.PKServiceID"><span class="glyphicon glyphicon-tasks" aria-hidden="true"></span> @Resources.Labels.Service_Patterns </a>
+                            </td>
+                            <td>
+                                <div class="btn-group">
+                                    <a class="modal-link-medium btn btn-success" href="~/Service/Edit/@item.PKServiceID"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span> Edit </a>
+                                    <a class="modal-link-small btn btn-danger" href="~/Service/Delete/@item.PKServiceID"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span> Delete </a>
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                </table>
+             </div>
         </div>
     </div>
 </div>

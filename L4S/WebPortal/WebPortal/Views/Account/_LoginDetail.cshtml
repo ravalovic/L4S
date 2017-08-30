@@ -1,0 +1,59 @@
+﻿@model WebPortal.Models.RegisterViewModel
+
+@using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm", @class = "navbar-right" }))
+{
+        @Html.AntiForgeryToken()
+        <p class="text-right"><a href="javascript:document.getElementById('logoutForm').submit()" class="btn btn-danger"><span class="glyphicon glyphicon-off" aria-hidden="true"></span> @Resources.Labels.Btn_Logout</a></p>
+}
+<br />
+
+<hgroup class="title">
+    <h2><span class="glyphicon glyphicon-user" aria-hidden="true"></span><strong> @User.Identity.Name</strong></h2>
+</hgroup>
+<hr />
+<div class="col-md-12">
+    <div class="row">
+        <div class="form-group">
+            @Html.LabelFor(model => model.FirstName, htmlAttributes: new { @class = "control-label col-md-4" })
+            <div class="col-md-8">
+                @Html.DisplayFor(model => model.FirstName, new { htmlAttributes = new { @class = "form-control" } })                
+            </div>
+        </div>
+      </div>
+
+    <div class="row">
+        <div class="form-group">
+            @Html.LabelFor(model => model.LastName, htmlAttributes: new { @class = "control-label col-md-4" })
+            <div class="col-md-8">
+                @Html.DisplayFor(model => model.LastName, new { htmlAttributes = new { @class = "form-control" } })
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="form-group">
+            @Html.LabelFor(model => model.Email, htmlAttributes: new { @class = "control-label col-md-4" })
+            <div class="col-md-8">
+                @Html.DisplayFor(model => model.Email, new { htmlAttributes = new { @class = "form-control" } })
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="form-group">
+                @Html.LabelFor(model => model.PhoneNumber, htmlAttributes: new { @class = "control-label col-md-4" })
+            <div class="col-md-8">
+                @Html.DisplayFor(model => model.PhoneNumber, new { htmlAttributes = new { @class = "form-control" } })
+            </div>
+        </div>
+    </div>
+    <hr />
+    <div class="row">
+       <a class="modal-link-medium btn btn-primary" href="~/Account/Password/@Model.Id"><span class="glyphicon glyphicon-lock" aria-hidden="true"></span> @Resources.Labels.Btn_ChangePassword</a>
+       <a class="modal-link-medium btn btn-success" href="~/Account/UserEdit/"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span> @Resources.Labels.Btn_Edit </a>
+    </div>
+</div>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+

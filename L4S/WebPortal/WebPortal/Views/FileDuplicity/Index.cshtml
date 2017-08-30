@@ -59,50 +59,52 @@
         </div>
 
         <div class="panel-body">
-            <table class="table table-striped table-bordered table-hover table-condensed">
-                <tr>
-                    <th>
-                        @Html.DisplayNameFor(model => model.FirstOrDefault().InsertDateTime)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.FirstOrDefault().OriFileName)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.FirstOrDefault().OriginalFileChecksum)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.FirstOrDefault().LoadDateTime)
-                    </th>
-                    <th></th>
-                </tr>
-
-                @foreach (var item in Model)
-                {
+            <div class="table-responsive">
+                <table class="table table-striped table-bordered table-hover table-condensed">
                     <tr>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.InsertDateTime)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.OriFileName)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.OriginalFileChecksum)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.LoadDateTime)
-                        </td>
-                        <td>
-                            <a class="modal-link-small btn btn-danger" href="~/FileDuplicity/Delete/@item.ID"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span> @Resources.Labels.Btn_Delete </a>
-                        </td>
+                        <th>
+                            @Html.DisplayNameFor(model => model.FirstOrDefault().InsertDateTime)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.FirstOrDefault().OriFileName)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.FirstOrDefault().OriginalFileChecksum)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.FirstOrDefault().LoadDateTime)
+                        </th>
+                        <th></th>
                     </tr>
-                }
 
-            </table>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.InsertDateTime)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.OriFileName)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.OriginalFileChecksum)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.LoadDateTime)
+                            </td>
+                            <td>
+                                <a class="modal-link-small btn btn-danger" href="~/FileDuplicity/Delete/@item.ID"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span> @Resources.Labels.Btn_Delete </a>
+                            </td>
+                        </tr>
+                    }
+
+                </table>
+            </div>
         </div>
     </div>
-    Strana @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) z @Model.PageCount Počet záznamov @Model.TotalItemCount
-    @*@Html.PagedListPager(Model, page => Url.Action("Index", new { page, currentFilter = ViewBag.CurrentFilter, currentFrom = ViewBag.CurrentFrom, currentTo = ViewBag.CurrentTo }))*@
-    @Html.PagedListPager(Model, page => Url.Action("Index", new { page, currentFilter = ViewBag.CurrentFilter, currentFrom = ViewBag.CurrentFrom, currentTo = ViewBag.CurrentTo, currentCustId = ViewBag.CurrentCustId, currentServId = ViewBag.CurrentServId, currentDate = ViewBag.CurrentReqDate }))
+        Strana @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) z @Model.PageCount Počet záznamov @Model.TotalItemCount
+        @*@Html.PagedListPager(Model, page => Url.Action("Index", new { page, currentFilter = ViewBag.CurrentFilter, currentFrom = ViewBag.CurrentFrom, currentTo = ViewBag.CurrentTo }))*@
+        @Html.PagedListPager(Model, page => Url.Action("Index", new { page, currentFilter = ViewBag.CurrentFilter, currentFrom = ViewBag.CurrentFrom, currentTo = ViewBag.CurrentTo, currentCustId = ViewBag.CurrentCustId, currentServId = ViewBag.CurrentServId, currentDate = ViewBag.CurrentReqDate }))
 
 </div>
 
