@@ -23,42 +23,43 @@
         <div class="panel-heading clearfix"> </div>
 
         <div class="panel-body">
-            <table id="mytable" class="table table-striped table-bordered table-hover table-condensed">
-                <tr>
-                    <th>
-                        @Html.DisplayNameFor(model => model.Day)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.FileNumber)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.FileName)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.TCInsertTime)
-                    </th>
-                </tr>
-
-                @foreach (var item in Model)
-                {
+            <div class="table-responsive">
+                <table id="mytable" class="table table-striped table-bordered table-hover table-condensed">
                     <tr>
-                        @Html.Raw((item.FileName == null) ? "<td class='wrong'>":"<td>")
+                        <th>
+                            @Html.DisplayNameFor(model => model.Day)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.FileNumber)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.FileName)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.TCInsertTime)
+                        </th>
+                    </tr>
+
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            @Html.Raw((item.FileName == null) ? "<td class='wrong'>" : "<td>")
                             @Html.DisplayFor(modelItem => item.Day)
-                        @Html.Raw("</td>")
-                        @Html.Raw((item.FileName == null) ? "<td class='wrong'>":"<td>")
+                            @Html.Raw("</td>")
+                            @Html.Raw((item.FileName == null) ? "<td class='wrong'>" : "<td>")
                             @Html.DisplayFor(modelItem => item.FileNumber)
-                        @Html.Raw("</td>")
-                        @Html.Raw((item.FileName == null) ? "<td class='wrong'>" : "<td>")
+                            @Html.Raw("</td>")
+                            @Html.Raw((item.FileName == null) ? "<td class='wrong'>" : "<td>")
                             @Html.DisplayFor(modelItem => item.FileName)
                             @Html.Raw("</td>")
-                        @Html.Raw((item.FileName == null) ? "<td class='wrong'>" : "<td>")
+                            @Html.Raw((item.FileName == null) ? "<td class='wrong'>" : "<td>")
                             @Html.DisplayFor(modelItem => item.TCInsertTime)
-                        @Html.Raw("</td>")
-                    </tr>
-                }
+                            @Html.Raw("</td>")
+                        </tr>
+                    }
 
-            </table>
+                </table>
+            </div>
         </div>
     </div>
 </div>
-

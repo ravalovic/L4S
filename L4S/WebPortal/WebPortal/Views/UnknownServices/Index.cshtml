@@ -62,75 +62,78 @@
         </div>
 
         <div class="panel-body">
-            <table class="table table-striped table-bordered table-hover table-condensed">
-                <tr>
-                    <th>
-                        @Html.DisplayNameFor(model => model.FirstOrDefault().BatchID)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.FirstOrDefault().RecordID)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.FirstOrDefault().CustomerID)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.FirstOrDefault().DateOfRequest)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.FirstOrDefault().RequestedURL)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.FirstOrDefault().RequestStatus)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.FirstOrDefault().BytesSent)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.FirstOrDefault().UserIPAddress)
-                    </th>
-                </tr>
-
-                @foreach (var item in Model)
-                {
-                 
-                <tr onclick="location.href = '@(Url.Action("Index", "UnknownServices", new { searchText = item.CustomerID, insertDateFrom = item.DateOfRequest.Value.ToString("MM.yyyy"), insertDateTo = string.Empty }))'">
-
-                        <td>
-                            @Html.DisplayFor(modelItem => item.BatchID)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.RecordID)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.CustomerID)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.DateOfRequest)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.RequestedURL)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.RequestStatus)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.BytesSent)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.UserIPAddress)
-                        </td>
+            <div class="table-responsive">
+                <table class="table table-striped table-bordered table-hover table-condensed">
+                    <tr>
+                        <th>
+                            @Html.DisplayNameFor(model => model.FirstOrDefault().BatchID)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.FirstOrDefault().RecordID)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.FirstOrDefault().CustomerID)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.FirstOrDefault().DateOfRequest)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.FirstOrDefault().RequestedURL)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.FirstOrDefault().RequestStatus)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.FirstOrDefault().BytesSent)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.FirstOrDefault().UserIPAddress)
+                        </th>
                     </tr>
-                }
 
-            </table>
+                    @foreach (var item in Model)
+                    {
+
+                        <tr onclick="location.href = '@(Url.Action("Index", "UnknownServices", new { searchText = item.CustomerID, insertDateFrom = item.DateOfRequest.Value.ToString("MM.yyyy"), insertDateTo = string.Empty }))'">
+
+                            <td>
+                                @Html.DisplayFor(modelItem => item.BatchID)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.RecordID)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.CustomerID)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.DateOfRequest)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.RequestedURL)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.RequestStatus)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.BytesSent)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.UserIPAddress)
+                            </td>
+                        </tr>
+                    }
+
+                </table>
+                </div>
         </div>
-    </div>
+     </div>
     <br />
     Strana @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) z @Model.PageCount Počet záznamov @Model.TotalItemCount
     @*@Html.PagedListPager(Model, page => Url.Action("Index", new { page, currentFilter = ViewBag.CurrentFilter, currentFrom = ViewBag.CurrentFrom, currentTo = ViewBag.CurrentTo }))*@
     @Html.PagedListPager(Model, page => Url.Action("Index", new { page, currentFilter = ViewBag.CurrentFilter, currentFrom = ViewBag.CurrentFrom, currentTo = ViewBag.CurrentTo, currentCustId = ViewBag.CurrentCustId, currentServId = ViewBag.CurrentServId, currentDate = ViewBag.CurrentReqDate }))
-
 </div>
+
+
 
 @section Scripts {
     <script type="text/javascript">
