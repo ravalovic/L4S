@@ -65,5 +65,5 @@ BEGIN
 	
 		INSERT INTO GAPAnalyze (Day, FileNumber, FileName, TCInsertTime)
 		SELECT d.GenDate, c.Number, c.fileName, InserTime FROM  @DT d 
-			left join @CF c on c.GenDate=d.GenDate order by InserTime;
+			left join @CF c on c.GenDate=d.GenDate order by d.GenDate;
 END
