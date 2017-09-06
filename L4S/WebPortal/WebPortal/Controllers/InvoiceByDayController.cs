@@ -27,7 +27,11 @@ namespace WebPortal.Controllers
             bool datCondition = false;
             bool textCondition = false;
             var dbAccess = _db.view_CustomerMontlyTotalInvoice;
-            var lastPeriod = dbAccess.Max(p => p.StartBillingPeriod);
+            var lastPeriod = DateTime.Today;
+            if (dbAccess.Any())
+            {
+                lastPeriod = dbAccess.Max(p => p.StartBillingPeriod);
+            }
             if (searchText.IsNullOrWhiteSpace() && insertDateFrom.IsNullOrWhiteSpace() &&
                 insertDateTo.IsNullOrWhiteSpace() && currentFilter.IsNullOrWhiteSpace() &&
                 currentFrom.IsNullOrWhiteSpace() && currentTo.IsNullOrWhiteSpace())

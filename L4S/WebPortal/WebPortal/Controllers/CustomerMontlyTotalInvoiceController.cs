@@ -28,7 +28,11 @@ namespace WebPortal.Controllers
             bool datCondition = false;
             bool textCondition = false;
             var dbAccess = _db.view_CustomerMontlyTotalInvoice;
-            var lastPeriod = dbAccess.Max(p => p.StartBillingPeriod);
+            var lastPeriod = DateTime.Today;
+            if (dbAccess.Any())
+            {
+                lastPeriod = dbAccess.Max(p => p.StartBillingPeriod);
+            }
             if (searchText.IsNullOrWhiteSpace() && insertDateFrom.IsNullOrWhiteSpace() &&
                 insertDateTo.IsNullOrWhiteSpace() && currentFilter.IsNullOrWhiteSpace() &&
                 currentFrom.IsNullOrWhiteSpace() && currentTo.IsNullOrWhiteSpace())
@@ -54,7 +58,7 @@ namespace WebPortal.Controllers
                 ViewBag.CurrentTo = string.Empty;
             }
 
-
+            
             _pager = new Pager(_model.Count(), page);
             _dataList = _model.Skip(_pager.ToSkip).Take(_pager.ToTake).ToList();
             var pageList = new StaticPagedList<view_CustomerMontlyTotalInvoice>(_dataList, _pager.CurrentPage, _pager.PageSize, _pager.TotalItems);

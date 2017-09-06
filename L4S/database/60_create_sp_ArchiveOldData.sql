@@ -30,7 +30,9 @@ DECLARE
  @ArchiveCumulativeDataMonth int,
  @UnknownServiceStoreDays int,
  @ProcessDataStoreDays int,
- @LastArchiveRUN varchar(50)
+ @LastArchiveRUN varchar(50),
+ @DeleteDaily int =0,
+ @DeleteMonthly int =0
 BEGIN
 select  @ArchivingDay = CONVERT(int, ParamValue) from [CONFGeneralSettings] where Paramname='ArchivingDay';
 select  @LastArchiveRUN = ParamValue from [CONFGeneralSettings] where Paramname='LastArchiveRUN';
@@ -38,6 +40,25 @@ select  @ArchiveDetailDataMonth = CONVERT(int, ParamValue) from [CONFGeneralSett
 select  @ArchiveCumulativeDataMonth = CONVERT(int, ParamValue) from [CONFGeneralSettings] where Paramname='ArchiveCumulativeDataMonth';
 select  @UnknownServiceStoreDays = CONVERT(int, ParamValue) from [CONFGeneralSettings] where Paramname='UnknownServiceStoreDays';
 select  @ProcessDataStoreDays = CONVERT(int, ParamValue) from [CONFGeneralSettings] where Paramname='ProcessDataStoreDays';
+
+if (@ArchiveDetailDataMonth = -1) OR (@ArchiveDetailDataMonth is null)
+ Begin
+  SET @DeleteDaily = 1;
+  SET @ArchiveDetailDataMonth = 120;
+ end
+if (@ArchiveCumulativeDataMonth = -1) OR (@ArchiveCumulativeDataMonth is null)
+ Begin
+  SET @DeleteMonthly = 1;
+  SET @ArchiveCumulativeDataMonth = 12;
+ end
+ if (@UnknownServiceStoreDays = -1) OR (@UnknownServiceStoreDays is null)
+ Begin
+    SET @UnknownServiceStoreDays = 30;
+ end
+ if (@ProcessDataStoreDays = -1) OR (@ProcessDataStoreDays is null)
+ Begin
+    SET @ProcessDataStoreDays = 30;
+ end
 
 -- Delete unknown services
     delete from CATUnknownService WHERE DATEDIFF( DAY, DateOfRequest, getdate()) > @UnknownServiceStoreDays;
@@ -59,7 +80,7 @@ select  @ProcessDataStoreDays = CONVERT(int, ParamValue) from [CONFGeneralSettin
 
 IF ( (DAY(getdate()) = @ArchivingDay) and (@LastArchiveRUN <> (CAST(FORMAT(YEAR(GETDATE()),'0000')AS VARCHAR) + CAST(FORMAT(MONTH(GETDATE()),'00') AS VARCHAR))))
 	BEGIN
-	    IF (@ArchiveDetailDataMonth != -1) 
+	    IF (@DeleteDaily = 0) 
 		BEGIN 
 			INSERT INTO [dbo].[ARCHLogsOfService]
 			           ([BatchID],[RecordID],[CustomerID],[ServiceID],[UserID],[DateOfRequest],[RequestedURL],[RequestStatus],[BytesSent],[RequestTime],[UserAgent],[UserIPAddress])
@@ -76,7 +97,7 @@ IF ( (DAY(getdate()) = @ArchivingDay) and (@LastArchiveRUN <> (CAST(FORMAT(YEAR(
 		  values ('Delete from CATLogsOfService',  @rowCount);
 		
 		
-		IF (@ArchiveCumulativeDataMonth != -1) 
+		IF (@DeleteMonthly = 0) 
 		BEGIN
 			INSERT INTO [dbo].[ARCHCustomerDailyData]([DateOfRequest],[CustomerID],[ServiceID],[NumberOfRequest],[ReceivedBytes],[RequestedTime])
 			SELECT [DateOfRequest],[CustomerID],[ServiceID],[NumberOfRequest],[ReceivedBytes],[RequestedTime] 
@@ -92,7 +113,7 @@ IF ( (DAY(getdate()) = @ArchivingDay) and (@LastArchiveRUN <> (CAST(FORMAT(YEAR(
 			values ('Delete from CATCustomerDailyData',  @rowCount);
 		
 
-		IF(@ArchiveCumulativeDataMonth != -1)
+		IF(@DeleteMonthly = 0)
 		BEGIN
 			INSERT INTO [dbo].[ARCHCustomerMonthlyData]([DateOfRequest],[CustomerID],[ServiceID],[NumberOfRequest],[ReceivedBytes],[RequestedTime])
 			SELECT [DateOfRequest],[CustomerID],[ServiceID],[NumberOfRequest],[ReceivedBytes],[RequestedTime] 
@@ -108,7 +129,7 @@ IF ( (DAY(getdate()) = @ArchivingDay) and (@LastArchiveRUN <> (CAST(FORMAT(YEAR(
 			values ('Delete from CATCustomerMonthlyData',  @rowCount);    
 		
 
-		IF(@ArchiveCumulativeDataMonth != -1)
+		IF(@DeleteMonthly = 0)
 		BEGIN
 			INSERT INTO [dbo].[ARCHInputFileInfo] ([FileName] ,[Checksum], [LinesInFile], [InsertDateTime]
 							 ,[LoaderBatchID],[LoadedRecord] ,[OriFileName],[OriginalFileChecksum],[TCLastUpdate],[TCActive])
@@ -125,7 +146,7 @@ IF ( (DAY(getdate()) = @ArchivingDay) and (@LastArchiveRUN <> (CAST(FORMAT(YEAR(
 		insert into [dbo].CATProcessStatus ([StepName], [BatchRecordNum])
 		values ('Delete from STInputFileInfo',  @rowCount);    
 
-		IF(@ArchiveCumulativeDataMonth != -1)
+		IF(@DeleteMonthly = 0)
 		BEGIN
 			INSERT INTO [dbo].[ARCHInputFileDuplicity]([OriginalId]
            ,[FileName],[LinesInFile],[Checksum],[LoadDateTime],[InsertDateTime],[OriFileName]

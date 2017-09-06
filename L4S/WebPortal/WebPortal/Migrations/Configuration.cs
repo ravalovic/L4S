@@ -12,7 +12,7 @@ namespace WebPortal.Migrations
     {
         public Configuration()
         {
-            AutomaticMigrationsEnabled = false;
+            AutomaticMigrationsEnabled = true;
         }
 
         protected override void Seed(WebPortal.DataContexts.L4SDb context)
@@ -64,7 +64,7 @@ namespace WebPortal.Migrations
                     FirstName="Admin",
                     LastName="Admin"
                 };
-                userManager.Create(newAdmin, "123456"); //password is 123456
+                userManager.Create(newAdmin, "ad1234min"); //password is ad1234min
                 userManager.AddToRole(newAdmin.Id, WebRoles.Admin);
             }          
         }
