@@ -130,6 +130,7 @@ namespace PreProcessor
         }
         static void Main()
         {
+            Console.WriteLine(Helper.Version("PreProcessor"));
             using (new SingleGlobalInstance(1000)) //1000ms timeout on global lock
             {
                 

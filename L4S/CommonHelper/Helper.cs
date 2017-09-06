@@ -2,7 +2,6 @@
 using System.IO;
 using System.IO.Compression;
 using System.Linq;
-using System.Runtime.InteropServices.WindowsRuntime;
 using System.Security.Cryptography;
 using System.Text.RegularExpressions;
 
@@ -53,6 +52,10 @@ namespace CommonHelper
             Zip
         };
 
+        public static string Version(string appName)
+        {
+            return appName+": "+@"Verzia 1.3.0 zo dňa 06.09.2017";
+        }
         public enum ParameterFromName
         {
             BatchId,
