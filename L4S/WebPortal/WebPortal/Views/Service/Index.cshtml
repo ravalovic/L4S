@@ -1,4 +1,5 @@
-﻿@model IEnumerable<CATServiceParameters>
+﻿@using WebPortal.Models
+@model IEnumerable<CATServiceParameters>
 
 @{
     ViewBag.Title = @Resources.Labels.Service_PageTitle;
@@ -59,12 +60,18 @@
                                     @Html.DisplayFor(modelItem => item.TCActive)
                                 </td>*@
                             <td>
-                                <a class="btn btn-primary" href="~/Patterns/Index/@item.PKServiceID"><span class="glyphicon glyphicon-tasks" aria-hidden="true"></span>&nbsp;@Resources.Labels.Service_Patterns</a>
+                                @if (HttpContext.Current.User.IsInRole(WebRoles.Admin))
+                                {
+                                    <a class="btn btn-primary" href="~/Patterns/Index/@item.PKServiceID"><span class="glyphicon glyphicon-tasks" aria-hidden="true"></span>&nbsp;@Resources.Labels.Service_Patterns</a>
+                                }
                             </td>
                             <td>
                                 <div class="group-btn text-center">
                                     <a class="modal-link-medium btn btn-primary-spacing btn-success" href="~/Service/Edit/@item.PKServiceID"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span>&nbsp;@Resources.Labels.Btn_Edit</a>
+                                @if (HttpContext.Current.User.IsInRole(WebRoles.Manager))
+                                {
                                     <a class="modal-link-small btn btn-primary-spacing btn-danger" href="~/Service/Delete/@item.PKServiceID"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span>&nbsp;@Resources.Labels.Btn_Delete</a>
+                                }
                                 </div>
                             </td>
                         </tr>

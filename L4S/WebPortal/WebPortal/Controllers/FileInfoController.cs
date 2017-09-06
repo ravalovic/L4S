@@ -9,7 +9,6 @@ using WebPortal.Common;
 using PagedList;
 using Microsoft.Ajax.Utilities;
 using DoddleReport;
-using DoddleReport.iTextSharp;
 using DoddleReport.Writers;
 
 
@@ -83,7 +82,7 @@ namespace WebPortal.Controllers
             return RedirectToAction("Index");
         }
         
-        public Common.ReportResult Report(string extension, int? page, string insertDateFrom, string insertDateTo, string searchText, string currentFilter, string currentFrom, string currentTo)
+        public ReportResult Report(string extension, int? page, string insertDateFrom, string insertDateTo, string searchText, string currentFilter, string currentFrom, string currentTo)
         {
             int searchId;
             DateTime fromDate;
@@ -146,23 +145,22 @@ namespace WebPortal.Controllers
             report.RenderHints.BooleansAsYesNo = true;
 
             //Data fields
-            report.DataFields[nameof(STInputFileInfo.Id)].Hidden = true; ;
+            report.DataFields[nameof(STInputFileInfo.Id)].Hidden = true; 
             //report.DataFields["FileName"];
-            report.DataFields["Checksum"].Hidden = true; ;
+            report.DataFields["Checksum"].Hidden = true; 
             //report.DataFields["LinesInFile"];
             //report.DataFields["InsertDateTime"];
             //report.DataFields["LoaderBatchID"];
             //report.DataFields["LoadedRecord"];
             //report.DataFields["OriFileName"];
-            report.DataFields["OriginalFileChecksum"].Hidden = true; ;
-            report.DataFields["TCLastUpdate"].Hidden = true; ;
-            report.DataFields["TCActive"].Hidden = true; ;
+            report.DataFields["OriginalFileChecksum"].Hidden = true; 
+            report.DataFields["TCLastUpdate"].Hidden = true; 
+            report.DataFields["TCActive"].Hidden = true; 
+
             // Return the ReportResult
             // the type of report that is rendered will be determined by the extension in the URL (.pdf, .xls, .html, etc)
 
-            
-            
-            return new Common.ReportResult(report) { FileName = reportName };
+            return new ReportResult(report) { FileName = reportName };
             
         }
 

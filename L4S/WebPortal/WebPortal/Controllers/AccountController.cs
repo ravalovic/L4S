@@ -9,9 +9,9 @@ using WebPortal.Models;
 using WebPortal.DataContexts;
 using System.Collections.Generic;
 using Microsoft.AspNet.Identity.EntityFramework;
-using System.Data.Entity.Validation;
 using System.Net;
 using System;
+using Resources;
 
 namespace WebPortal.Controllers
 {
@@ -91,10 +91,10 @@ namespace WebPortal.Controllers
                     case SignInStatus.Success:
                         return RedirectToLocal(returnUrl);
                     case SignInStatus.LockedOut:
-                        ModelState.AddModelError("", "Neplatné prihlásenie. Účet je zablokovaný."); break;
-                    case SignInStatus.Failure: ModelState.AddModelError("", "Neplatné prihlásenie. Nesprávne meno alebo heslo."); break;
+                        ModelState.AddModelError("", Labels.AccountController_Login_Locked); break;
+                    case SignInStatus.Failure: ModelState.AddModelError("", Labels.AccountController_Login_AuthentificationWrong); break;
                     default:
-                        ModelState.AddModelError("", "Neplatné prihlásenie"); break;
+                        ModelState.AddModelError("", Labels.AccountController_Login_AuthentificationWrong); break;
                         // return View(model);                   
 
                 }
@@ -129,7 +129,7 @@ namespace WebPortal.Controllers
 
                     foreach (var item in model.UserRoles)
                     {
-                        if (item.Value == true)
+                        if (item.Value)
                         {
                             result = userManager.AddToRole(user.Id, item.Key);
                             if (!result.Succeeded)
@@ -231,48 +231,51 @@ namespace WebPortal.Controllers
         {
             if (ModelState.IsValid)
             {
-                var user = UserManager.Users.Where(p => p.Id == model.Id).FirstOrDefault();
-                user.PhoneNumber = model.PhoneNumber;
-                user.UserName = model.UserName;
-                user.FirstName = model.FirstName;
-                user.LastName = model.LastName;
-                user.Email = model.Email;
-                
-                IdentityResult result = UserManager.Update(user);
-               
-                var userStore = new UserStore<ApplicationUser>(_db);
-                var userManager = new UserManager<ApplicationUser>(userStore);
-
-                if (result.Succeeded && model.UserRoles!=null) //if user details OK than update roles
+                var user = UserManager.Users.FirstOrDefault(p => p.Id == model.Id);
+                if (user != null)
                 {
-                    foreach (var rola in model.UserRoles)
+                    user.PhoneNumber = model.PhoneNumber;
+                    user.UserName = model.UserName;
+                    user.FirstName = model.FirstName;
+                    user.LastName = model.LastName;
+                    user.Email = model.Email;
+
+                    IdentityResult result = UserManager.Update(user);
+
+                    var userStore = new UserStore<ApplicationUser>(_db);
+                    var userManager = new UserManager<ApplicationUser>(userStore);
+
+                    if (result.Succeeded && model.UserRoles != null) //if user details OK than update roles
                     {
-                        result = new IdentityResult();
-                        if (rola.Value == true)
+                        foreach (var rola in model.UserRoles)
                         {
-                            //add to new role
-                            if (!userManager.IsInRole(user.Id, rola.Key))
+                            result = new IdentityResult();
+                            if (rola.Value)
                             {
-                                result = userManager.AddToRole(user.Id, rola.Key);
+                                //add to new role
+                                if (!userManager.IsInRole(user.Id, rola.Key))
+                                {
+                                    result = userManager.AddToRole(user.Id, rola.Key);
+                                }
                             }
-                        }
-                        else
-                        {
-                            //remove role
-                            if (userManager.IsInRole(user.Id, rola.Key))
+                            else
                             {
-                                result = userManager.RemoveFromRole(user.Id, rola.Key);
+                                //remove role
+                                if (userManager.IsInRole(user.Id, rola.Key))
+                                {
+                                    result = userManager.RemoveFromRole(user.Id, rola.Key);
+                                }
                             }
-                        }
-                        if (!result.Succeeded)
-                        {
-                            AddErrors(result);
+                            if (!result.Succeeded)
+                            {
+                                AddErrors(result);
+                            }
                         }
                     }
-                }
-                else // update user error
-                {
-                    AddErrors(result);
+                    else // update user error
+                    {
+                        AddErrors(result);
+                    }
                 }
             }
 
@@ -322,20 +325,25 @@ namespace WebPortal.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(string id)
         {
-            var user = UserManager.Users.Where(p => p.Id == id).FirstOrDefault();
-            user.TCActive = 99;
-            user.LockoutEnabled = true;
-            user.LockoutEndDateUtc = DateTime.UtcNow.AddYears(100); //lock user for next 100 years
-            IdentityResult result = UserManager.Update(user);
-
-            if (!result.Succeeded)
+            var user = UserManager.Users.FirstOrDefault(p => p.Id == id);
+            if (user != null)
             {
-                AddErrors(result);
-                TempData["ModelState"] = ModelState;
+                user.TCActive = 99;
+                user.LockoutEnabled = true;
+                user.LockoutEndDateUtc = DateTime.UtcNow.AddYears(100); //lock user for next 100 years
+                IdentityResult result = UserManager.Update(user);
+
+                if (!result.Succeeded)
+                {
+                    AddErrors(result);
+                    TempData["ModelState"] = ModelState;
+                }
+                else
+                {
+                    TempData["ModelStateOk"] = "Používateľ bol zrušený.";
+                } //return ok
             }
-            else
-            { TempData["ModelStateOk"] = "Používateľ bol zrušený."; } //return ok
-           
+
             return RedirectToAction("UserList");
         }
 

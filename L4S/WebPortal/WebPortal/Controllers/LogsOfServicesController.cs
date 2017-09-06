@@ -23,15 +23,11 @@ namespace WebPortal.Controllers
         public ActionResult Index(int? page, string insertDateFrom, string insertDateTo, string searchText, string currentFilter, string currentFrom, string currentTo)
 
         {
-            var dbAccess = _db.CATLogsOfService;
             int sid = 0;
             int cid = 0;
             int searchId;
             var pattern1 = @"cid=\d+";
             var pattern2 = @"sid=\d+";
-
-            
-
             DateTime fromDate;
             DateTime toDate;
             bool datCondition = false;

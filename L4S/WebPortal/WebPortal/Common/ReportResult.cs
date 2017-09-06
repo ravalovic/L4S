@@ -13,12 +13,12 @@ namespace WebPortal.Common
     
     public class ReportResult : DoddleReport.Web.ReportResult
     {
-        private readonly Report report;
+        private readonly Report _report;
 
         public ReportResult(Report report)
             : base(report)
         {
-            this.report = report;
+            _report = report;
         }
 
         protected override string GetDownloadFileExtension(HttpRequestBase request, string defaultExtension)
@@ -47,7 +47,7 @@ namespace WebPortal.Common
                 context.HttpContext.Response.AddHeader("content-disposition", string.Format("attachment; filename={0}{1}", FileName, extension));
             }
 
-            writer.WriteReport(report, response.OutputStream);
+            writer.WriteReport(_report, response.OutputStream);
         }
 
         private WriterElement GetWriterFromExtension(ControllerContext context, string defaultExtension)

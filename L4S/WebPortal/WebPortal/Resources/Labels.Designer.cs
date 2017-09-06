@@ -61,6 +61,24 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Neplatné prihlásenie. Nesprávne meno alebo heslo..
+        /// </summary>
+        public static string AccountController_Login_AuthentificationWrong {
+            get {
+                return ResourceManager.GetString("AccountController_Login_AuthentificationWrong", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Neplatné prihlásenie. Účet je zablokovaný..
+        /// </summary>
+        public static string AccountController_Login_Locked {
+            get {
+                return ResourceManager.GetString("AccountController_Login_Locked", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Pridať nové.
         /// </summary>
         public static string Btn_Add {
@@ -1024,11 +1042,29 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Prihlásený užívateľ.
+        /// </summary>
+        public static string LoggedUser {
+            get {
+                return ResourceManager.GetString("LoggedUser", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Prihlasovacie meno.
         /// </summary>
         public static string LoginName {
             get {
                 return ResourceManager.GetString("LoginName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Zákazníci a Služby.
+        /// </summary>
+        public static string Menu_CustomerSetup {
+            get {
+                return ResourceManager.GetString("Menu_CustomerSetup", resourceCulture);
             }
         }
         
@@ -1078,15 +1114,6 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Nastavenia.
-        /// </summary>
-        public static string Menu_Nastavenia {
-            get {
-                return ResourceManager.GetString("Menu_Nastavenia", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Používatelia.
         /// </summary>
         public static string Menu_Pouzivatelia {
@@ -1128,6 +1155,15 @@ namespace Resources {
         public static string Menu_Sluzby {
             get {
                 return ResourceManager.GetString("Menu_Sluzby", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Systémové Nastavenia.
+        /// </summary>
+        public static string Menu_SystemSetup {
+            get {
+                return ResourceManager.GetString("Menu_SystemSetup", resourceCulture);
             }
         }
         
@@ -2082,6 +2118,15 @@ namespace Resources {
         public static string UserList_TableTitle_ {
             get {
                 return ResourceManager.GetString("UserList_TableTitle_", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Vitaj! .
+        /// </summary>
+        public static string Welcome {
+            get {
+                return ResourceManager.GetString("Welcome", resourceCulture);
             }
         }
     }

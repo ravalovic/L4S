@@ -1,10 +1,6 @@
 ﻿using Microsoft.Ajax.Utilities;
 using System;
-using System.Collections.Generic;
-using System.Data.Entity;
-using System.Linq;
 using System.Text.RegularExpressions;
-using WebPortal.DataContexts;
 
 namespace WebPortal.Common
 {

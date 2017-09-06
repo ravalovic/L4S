@@ -309,8 +309,8 @@
   <data name="Menu_GeneralSetup" xml:space="preserve">
     <value>Parametre systému</value>
   </data>
-  <data name="Menu_Nastavenia" xml:space="preserve">
-    <value>Nastavenia</value>
+  <data name="Menu_SystemSetup" xml:space="preserve">
+    <value>Systémové Nastavenia</value>
   </data>
   <data name="Menu_Pouzivatelia" xml:space="preserve">
     <value>Používatelia</value>
@@ -791,5 +791,20 @@
   </data>
   <data name="Txt_Action" xml:space="preserve">
     <value>Akcia</value>
+  </data>
+  <data name="LoggedUser" xml:space="preserve">
+    <value>Prihlásený užívateľ</value>
+  </data>
+  <data name="Menu_CustomerSetup" xml:space="preserve">
+    <value>Zákazníci a Služby</value>
+  </data>
+  <data name="Welcome" xml:space="preserve">
+    <value>Vitaj! </value>
+  </data>
+  <data name="AccountController_Login_Locked" xml:space="preserve">
+    <value>Neplatné prihlásenie. Účet je zablokovaný.</value>
+  </data>
+  <data name="AccountController_Login_AuthentificationWrong" xml:space="preserve">
+    <value>Neplatné prihlásenie. Nesprávne meno alebo heslo.</value>
   </data>
 </root>

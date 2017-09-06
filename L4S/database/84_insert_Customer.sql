@@ -107,7 +107,7 @@ INSERT INTO [dbo].[CATCustomerData]
            ,'Ing.'
            ,'Lada'
            ,'Travnicek'
-           ,'735698123'
+           ,'735698122'
            ,'Vedlajsia'
            ,'48/236' 
            ,'Piestany'

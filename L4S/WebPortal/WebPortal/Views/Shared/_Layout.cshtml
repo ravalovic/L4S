@@ -43,138 +43,133 @@
                     <li>@Html.ActionLink("O aplikácii", "About", "Home")</li>
                     <li>@Html.ActionLink("Kontakt", "Contact", "Home")</li>
                 </ul>
-               @if (Request.IsAuthenticated)
-               {
-                   using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm", @class = "navbar-right" }))
-                   {
-                    @Html.AntiForgeryToken()
+                @if (Request.IsAuthenticated)
+                {
+                    using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm", @class = "navbar-right" }))
+                    {
+                        @Html.AntiForgeryToken()
 
-                    <ul class="nav navbar-nav navbar-right">
-                        <li>
-                            @Html.ActionLink("Vitaj " + User.Identity.GetUserName() + "!", "Index", "Home", routeValues: null, htmlAttributes: new { title = "Manage" })
-                        </li>
-                        <li><a href="javascript:document.getElementById('logoutForm').submit()"><span class="glyphicon glyphicon-off" aria-hidden="true"></span>&nbsp;@Resources.Labels.Btn_Logout</a></li>
-                    </ul>
-                   }
-               }
+                        <ul class="nav navbar-nav navbar-right">
+                            <li>
+                                @Html.ActionLink(Resources.Labels.Welcome+" " + User.Identity.GetUserName() + "!", "Index", "Home", routeValues: null, htmlAttributes: new { title = "Manage" })
+                            </li>
+                            <li><a href="javascript:document.getElementById('logoutForm').submit()"><span class="glyphicon glyphicon-off" aria-hidden="true"></span>&nbsp;@Resources.Labels.Btn_Logout</a></li>
+                        </ul>
+                    }
+                }
             </div>
         </div>
     </div>
 
 
-    @*@if (User.IsInRole("admin"))*@
-   @*@if (Request.IsAuthenticated)*@
+    @*@if (User.IsInRole("admin"))
+        @if (Request.IsAuthenticated)*@
 
-        <div class="container-fluid">
-            <div class="row">
-                
-                <div class="col-xs-12 col-sm-4 col-md-2">
-                    <div class="accordion" id="leftMenu">
-                        
-                    @*@if (Request.IsAuthenticated)
-                    {*@
-                        @*Nastavenia menu
-                        if (User.IsInRole(WebRoles.Admin))
-                        {*@
+    <div class="container-fluid">
+        <div class="row">
+
+            <div class="col-xs-12 col-sm-4 col-md-2">
+                <div class="accordion" id="leftMenu">
+
+                    @if (Request.IsAuthenticated)
+                    {
+                        @*Nastavenia menu*@
+                    if (HttpContext.Current.User.IsInRole(WebRoles.Admin))
+                    {
+                        <div class="accordion-group">
+                            <div class="accordion-heading">
+                                <a class="accordion-toggle" data-toggle="collapse" data-parent="#leftMenu" href="#collapseOne">
+                                    <i class="glyphicon glyphicon-cog"></i>&nbsp;@Resources.Labels.Menu_SystemSetup</a>
+                            </div>
+
+                            <div id="collapseOne" class="accordion-body collapse" style="height: 0px;">
+                                <div class="accordion-inner">
+                                    <ul class="nav nav-pills nav-stacked">
+                                        <li class="active"><a href="~/GeneralSettings/Index"><i class="glyphicon glyphicon-wrench"></i>&nbsp;@Resources.Labels.Menu_GeneralSetup</a></li>
+                                        <li class="active"><a href="~/GapAnalyzes/Index"><i class="glyphicon glyphicon-stats"></i>&nbsp;@Resources.Labels.Menu_Procesy</a></li>
+                                        <li class="active"><a href="~/Account/UserList"><i class="glyphicon glyphicon-user"></i>&nbsp;@Resources.Labels.Menu_Pouzivatelia</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                    @*Zakaznik sluzby*@
+                    if (HttpContext.Current.User.IsInRole(WebRoles.Ekonom))
+                    {
                         <div class="accordion-group">
                             <div class="accordion-heading">
                                 <a class="accordion-toggle" data-toggle="collapse" data-parent="#leftMenu" href="#collapseTwo">
-                                    <i class="glyphicon glyphicon-cog"></i> @Resources.Labels.Menu_Nastavenia &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;@*<span class="badge pull-right">12</span>*@
-                                </a>
+                                    <i class="glyphicon glyphicon-th-list"></i>&nbsp;@Resources.Labels.Menu_CustomerSetup</a>
                             </div>
-                           
+
                             <div id="collapseTwo" class="accordion-body collapse" style="height: 0px;">
                                 <div class="accordion-inner">
                                     <ul class="nav nav-pills nav-stacked">
-                                        <li class="active"><a href="~/OwnerDatas/Index"><i class="glyphicon glyphicon-pencil"></i> @Resources.Labels.Menu_FakturacneData</a></li>
-                                        <li class="active"><a href="~/GeneralSettings/Index"><i class="glyphicon glyphicon-wrench"></i> @Resources.Labels.Menu_GeneralSetup</a></li>
-                                        <li class="active"><a href="~/Customer/CompanyList"><i class="glyphicon glyphicon-globe"></i> @Resources.Labels.Menu_Zakaznici</a></li>
-                                        <li class="active"><a href="~/Service/Index"><i class="glyphicon glyphicon-tasks"></i> @Resources.Labels.Menu_Sluzby</a></li>
-                                        <li class="active"><a href="~/GapAnalyzes/Index"><i class="glyphicon glyphicon-stats"></i> @Resources.Labels.Menu_Procesy</a></li>
-                                        <li class="active"><a href="~/Account/UserList"><i class="glyphicon glyphicon-user"></i> @Resources.Labels.Menu_Pouzivatelia</a></li>
+                                        <li class="active"><a href="~/OwnerDatas/Index"><i class="glyphicon glyphicon-pencil"></i>&nbsp;@Resources.Labels.Menu_FakturacneData</a></li>
+                                        @if (HttpContext.Current.User.IsInRole(WebRoles.Manager))
+                                        {
+                                          <li class="active"><a href="~/Customer/CompanyList"><i class="glyphicon glyphicon-globe"></i>&nbsp;@Resources.Labels.Menu_Zakaznici</a></li>
+                                        } 
+                                        <li class="active"><a href="~/Service/Index"><i class="glyphicon glyphicon-tasks"></i>&nbsp;@Resources.Labels.Menu_Sluzby</a></li>
                                     </ul>
                                 </div>
-                            </div>                            
+                            </div>
                         </div>
-                        @*}*@
+                    }
 
-                        @*Prehľad menu*@
-                        @*if (User.IsInRole(WebRoles.User))
-                        {*@
+                    @*Prehľad menu*@
+                    if (HttpContext.Current.User.IsInRole(WebRoles.Ekonom))
+                    {
                         <div class="accordion-group">
                             <div class="accordion-heading">
                                 <a class="accordion-toggle" data-toggle="collapse" data-parent="#leftMenu" href="#collapseThree">
-                                    <i class="glyphicon glyphicon-eye-open"></i> @Resources.Labels.Menu_Prehlad &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;@*<span class="badge pull-right">12</span>*@
-                                </a>
+                                    <i class="glyphicon glyphicon-eye-open"></i>&nbsp;@Resources.Labels.Menu_Prehlad</a>
                             </div>
                             <div id="collapseThree" class="accordion-body collapse" style="height: 0px;">
                                 <div class="accordion-inner">
                                     <ul class="nav nav-pills nav-stacked">
-                                        <li class="active"><a href="~/CustomerMonthlyDatas/Index"><i class="glyphicon glyphicon-search"></i> @Resources.Labels.Menu_MonthlyData</a></li>
+                                        <li class="active"><a href="~/CustomerMonthlyDatas/Index"><i class="glyphicon glyphicon-search"></i>&nbsp; @Resources.Labels.Menu_MonthlyData</a></li>
                                     </ul>
                                 </div>
                             </div>
                         </div>
-                        @*}*@
+                    }
 
-                        @*Fakturácie menu*@
-                        @*if (User.IsInRole(WebRoles.Ekonom))
-                        {*@
+                    @*Fakturácie menu*@
+                    if (HttpContext.Current.User.IsInRole(WebRoles.Ekonom))
+                    {
                         <div class="accordion-group">
                             <div class="accordion-heading">
                                 <a class="accordion-toggle" data-toggle="collapse" data-parent="#leftMenu" href="#collapseFour">
-                                    <i class="glyphicon glyphicon-duplicate"></i> @Resources.Labels.Menu_Fakturacie &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;@*<span class="badge pull-right">12</span>*@
-                                </a>
+                                    <i class="glyphicon glyphicon-duplicate"></i>&nbsp;@Resources.Labels.Menu_Fakturacie</a>
                             </div>
                             <div id="collapseFour" class="accordion-body collapse" style="height: 0px;">
                                 <div class="accordion-inner">
                                     <ul class="nav nav-pills nav-stacked">
 
-                                        <li class="active"><a href="~/CustomerMontlyTotalInvoice/Index"><i class="glyphicon glyphicon-search"></i> @Resources.Labels.SubMenu_Fakturacie</a></li>
+                                        <li class="active"><a href="~/CustomerMontlyTotalInvoice/Index"><i class="glyphicon glyphicon-search"></i>&nbsp;@Resources.Labels.SubMenu_Fakturacie</a></li>
                                     </ul>
                                 </div>
                             </div>
                         </div>
-                          @*}
-                       }*@
-                    </div>                    
-                </div>
-               
-
-                <div class="col-xs-12 col-md-10 ">
-                    @RenderSection("featured", required: false)
-                    @RenderBody()
+                        }
+                    }
                 </div>
             </div>
-        </div>
-        <hr />
-                <footer>
 
-                    <p class="text-center">&copy; @DateTime.Now.Year - Výskumný ústav geodézie a kartografie v Bratislave - developed by BlueZ s.r.o</p>
 
-                </footer>
-    
-   
-        @*<div class="container">
-            <div class="page-header">
-                <img src="@Url.Content("~/Images/home.png")" alt="IMAGES" />
-                <h1 class="text-center">NADPIS <small>podnadpis</small></h1>
-            </div>
-
-            <div class="row">
+            <div class="col-xs-12 col-md-10 ">
                 @RenderSection("featured", required: false)
                 @RenderBody()
             </div>
         </div>
-        <hr />
-                    <footer>
-                        <p class="text-center">&copy; @DateTime.Now.Year - Footer</p>
-                    </footer>*@
-   
+    </div>
+    <hr />
+    <footer>
 
+        <p class="text-center">&copy; @DateTime.Now.Year - Výskumný ústav geodézie a kartografie v Bratislave - developed by BlueZ s.r.o</p>
 
-
-
+    </footer>
 
     <div class="modal fade" id="modal-small" data-backdrop="static" tabindex="-1" role="dialog" aria-hidden="true">
         <div class="modal-dialog modal-sm">
@@ -191,7 +186,7 @@
     </div>
 
     <script type="text/javascript">
-      
+
         //modal window
         $(function () {
 
@@ -201,7 +196,7 @@
             $('body').on('click', '.modal-link-small', function (e) {
                 e.preventDefault();
                 $(this).attr('data-target', '#modal-small');
-                $(this).attr('data-toggle', 'modal');               
+                $(this).attr('data-toggle', 'modal');
             });
 
             // Attach listener to .modal-close-btn's so that when the button is pressed the modal dialog disappears
@@ -215,7 +210,7 @@
             $('#CancelModal').on('click', function () {
                 return false;
             });
-          
+
 
             // Initialize modal Medium dialog
             // attach modal-container bootstrap attributes to links with .modal-link class.
@@ -223,7 +218,7 @@
             $('body').on('click', '.modal-link-medium', function (e) {
                 e.preventDefault();
                 $(this).attr('data-target', '#modal-medium');
-                $(this).attr('data-toggle', 'modal');               
+                $(this).attr('data-toggle', 'modal');
             });
 
             // Attach listener to .modal-close-btn's so that when the button is pressed the modal dialog disappears
@@ -234,7 +229,7 @@
             $('#modal-medium').on('hidden.bs.modal', function () {
                 $(this).removeData('bs.modal');
             });
-           
+
         });
 
     </script>
