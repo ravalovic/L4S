@@ -14,15 +14,19 @@ namespace WebPortal
         public string InvoiceNumber { get; set; }
         [DataType(DataType.Date)]
         [Display(Name = "TabHead_StartBillingPeriod", ResourceType = typeof(Labels))]
+        [DisplayFormat(DataFormatString = "{0:dd.MM.yyyy}", ApplyFormatInEditMode = true)]
         public DateTime StartBillingPeriod { get; set; }
         [DataType(DataType.Date)]
         [Display(Name = "TabHead_StopBillingPeriod", ResourceType = typeof(Labels))]
+        [DisplayFormat(DataFormatString = "{0:dd.MM.yyyy}", ApplyFormatInEditMode = true)]
         public DateTime StopBillingPeriod { get; set; }
         [DataType(DataType.Date)]
         [Display(Name = "TabHead_DeliveryDate", ResourceType = typeof(Labels))]
+        [DisplayFormat(DataFormatString = "{0:dd.MM.yyyy}", ApplyFormatInEditMode = true)]
         public DateTime DeliveryDate { get; set; }
         [DataType(DataType.Date)]
         [Display(Name = "TabHead_DueDate", ResourceType = typeof(Labels))]
+        [DisplayFormat(DataFormatString = "{0:dd.MM.yyyy}", ApplyFormatInEditMode = true)]
         public DateTime DueDate { get; set; }
         [Display(Name = "TabHead_CustomerID", ResourceType = typeof(Labels))]
         public int CustomerID { get; set; }

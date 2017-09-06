@@ -53,7 +53,7 @@
                         <li>
                             @Html.ActionLink("Vitaj " + User.Identity.GetUserName() + "!", "Index", "Home", routeValues: null, htmlAttributes: new { title = "Manage" })
                         </li>
-                        <li><a href="javascript:document.getElementById('logoutForm').submit()"><span class="glyphicon glyphicon-off" aria-hidden="true"></span> @Resources.Labels.Btn_Logout</a></li>
+                        <li><a href="javascript:document.getElementById('logoutForm').submit()"><span class="glyphicon glyphicon-off" aria-hidden="true"></span>&nbsp;@Resources.Labels.Btn_Logout</a></li>
                     </ul>
                    }
                }

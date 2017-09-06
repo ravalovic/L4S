@@ -22,38 +22,20 @@ namespace WebPortal.Controllers
         public ActionResult Index(int? page, string insertDateFrom, string insertDateTo, string searchText, string currentFilter, string currentFrom, string currentTo)
         {
             var dbAccess = _db.STInputFileDuplicity;
-            if (searchText.IsNullOrWhiteSpace())
-            {
-                searchText = currentFilter;
-            }
-            if (insertDateFrom.IsNullOrWhiteSpace())
-            {
-                insertDateFrom = currentFrom;
-            }
-            if (insertDateTo.IsNullOrWhiteSpace())
-            {
-                insertDateTo = currentTo;
-            }
-
+            int searchId;
+            DateTime fromDate;
+            DateTime toDate;
+            bool datCondition = false;
+            bool textCondition = false;
+            Helper.SetUpFilterValues(ref searchText, ref insertDateFrom, ref insertDateTo, currentFilter, currentFrom, currentTo, out searchId, out fromDate, out toDate, page);
+            if (!insertDateFrom.IsNullOrWhiteSpace() || !insertDateTo.IsNullOrWhiteSpace()) datCondition = true;
+            if (!searchText.IsNullOrWhiteSpace()) textCondition = true;
             // set actual filter to ViewBag
             ViewBag.CurrentFilter = searchText;
             ViewBag.CurrentFrom = insertDateFrom;
             ViewBag.CurrentTo = insertDateTo;
 
-            bool datCondition = false;
-            bool textCondition = false;
-
-            int.TryParse(searchText, out int searchId);
-            if (!insertDateFrom.IsNullOrWhiteSpace() || !insertDateTo.IsNullOrWhiteSpace()) datCondition = true;
-            if (!searchText.IsNullOrWhiteSpace()) textCondition = true;
-
-            DateTime.TryParse(insertDateFrom, out DateTime fromDate);
-            if (!DateTime.TryParse(insertDateTo, out DateTime toDate))
-            {
-                toDate = DateTime.Now;
-            }
-            if (fromDate == toDate) toDate = toDate.AddDays(1).AddTicks(-1);
-
+        
             if (datCondition && !textCondition)
             {
                 _model = dbAccess.Where(p => p.InsertDateTime >= fromDate && p.InsertDateTime <= toDate)
@@ -107,17 +89,7 @@ namespace WebPortal.Controllers
             DeleteModel model = new DeleteModel(sTInputFileDuplicity.ID, sTInputFileDuplicity.OriFileName);
             return PartialView("_deleteModal", model);
 
-            //if (id == null)
-            //{
-            //    return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            //}
-            //STInputFileDuplicity sTInputFileDuplicity = db.STInputFileDuplicity.Find(id);
-            //if (sTInputFileDuplicity == null)
-            //{
-            //    return HttpNotFound();
-            //}
-            //return View(sTInputFileDuplicity);
-        }
+          }
 
         // POST: FileDuplicity/Delete/5
         [HttpPost, ActionName("Delete")]

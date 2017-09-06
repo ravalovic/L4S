@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Web.Mvc;
 using Microsoft.Ajax.Utilities;
 using WebPortal.DataContexts;
@@ -19,189 +20,160 @@ namespace WebPortal.Controllers
 
 
         // GET: LogsOfServices
-        public ActionResult Index(int? page, string insertDateFrom, string insertDateTo, string searchText, string currentFilter, string currentFrom, string currentTo, int? currentCustId, int? currentServId, DateTime? currentDate)
+        public ActionResult Index(int? page, string insertDateFrom, string insertDateTo, string searchText, string currentFilter, string currentFrom, string currentTo)
+
         {
             var dbAccess = _db.CATLogsOfService;
-            var takeLimit = 1000;
-            var count = 0;
-            if (currentCustId != 0 && currentServId != 0 && currentDate.HasValue)
+            int sid = 0;
+            int cid = 0;
+            int searchId;
+            var pattern1 = @"cid=\d+";
+            var pattern2 = @"sid=\d+";
+
+            
+
+            DateTime fromDate;
+            DateTime toDate;
+            bool datCondition = false;
+            bool textCondition = false;
+            Helper.SetUpFilterValues(ref searchText, ref insertDateFrom, ref insertDateTo, currentFilter, currentFrom, currentTo, out searchId, out fromDate, out toDate, page);
+            if (!insertDateFrom.IsNullOrWhiteSpace() || !insertDateTo.IsNullOrWhiteSpace()) datCondition = true;
+            if (!searchText.IsNullOrWhiteSpace()) textCondition = true;
+            if (!searchText.IsNullOrWhiteSpace())
             {
-                ViewBag.CurrentCustId = currentCustId;
-                ViewBag.CurrentServId = currentServId;
-                ViewBag.CurrentReqDate = currentDate;
-                var startDate = new DateTime(currentDate.Value.Year, currentDate.Value.Month, currentDate.Value.Day);
-                var endDate = startDate.AddDays(1).AddTicks(-1);
-                _model = dbAccess
-                    .Where(p => p.DateOfRequest >= startDate && p.DateOfRequest <= endDate &&
-                                p.CustomerID == currentCustId && p.ServiceID == currentServId)
-                    .OrderBy(d => d.DateOfRequest).ToList();
-                //return View(_dataList.ToPagedList(pageNumber: pager.CurrentPage, pageSize: pager.PageSize));
+                cid = Int32.Parse(Regex.Match(Regex.Match(searchText, pattern1).Value, @"\d+").Value);
+                sid = Int32.Parse(Regex.Match(Regex.Match(searchText, pattern2).Value, @"\d+").Value);
             }
-            else
-            {
-                if (searchText.IsNullOrWhiteSpace()) { searchText = currentFilter; }
-                if (insertDateFrom.IsNullOrWhiteSpace()) { insertDateFrom = currentFrom; }
-                if (insertDateTo.IsNullOrWhiteSpace()) { insertDateTo = currentTo; }
-                // set actual filter to VieBag
-                ViewBag.CurrentFilter = searchText;
-                ViewBag.CurrentFrom = insertDateFrom;
-                ViewBag.CurrentTo = insertDateTo;
-
-                bool datCondition = false;
-                bool textCondition = false;
-
-                int.TryParse(searchText, out int searchId);
-                if (!insertDateFrom.IsNullOrWhiteSpace() || !insertDateTo.IsNullOrWhiteSpace()) datCondition = true;
-                if (searchText != null) textCondition = true;
-
-                DateTime.TryParse(insertDateFrom, out DateTime fromDate);
-                if (!DateTime.TryParse(insertDateTo, out DateTime toDate))
-                {
-                    toDate = DateTime.Now;
-                }
-                if (fromDate == toDate) toDate = toDate.AddDays(1).AddTicks(-1);
-
-                if (datCondition && !textCondition)
-                {
-                    count = dbAccess.Count(p => p.DateOfRequest >= fromDate && p.DateOfRequest <= toDate);
-                    if (count > takeLimit)
-                    {
-                        _model = dbAccess.Where(p => p.DateOfRequest >= fromDate && p.DateOfRequest <= toDate)
-                            .OrderByDescending(d => d.DateOfRequest).Take(takeLimit).ToList();
-                    }
-                    else
-                    {
-                        _model = dbAccess.Where(p => p.DateOfRequest >= fromDate && p.DateOfRequest <= toDate)
-                            .OrderByDescending(d => d.DateOfRequest).ToList();
-                    }
-                }
-                if (textCondition && !datCondition)
-                {
-                    if (searchId != 0)
-                    {
-                        count = dbAccess.Count(p => p.BatchID == searchId || p.CustomerID == searchId);
-                        if (count > takeLimit)
-                        {
-                            _model = dbAccess.Where(p => p.BatchID == searchId || p.CustomerID == searchId)
-                                .OrderByDescending(d => d.DateOfRequest).Take(takeLimit).ToList();
-                        }
-                        else
-                        {
-                            _model = dbAccess.Where(p => p.BatchID == searchId || p.CustomerID == searchId)
-                                .OrderByDescending(d => d.DateOfRequest).ToList();
-                        }
-                    }
-                    else
-                    {
-                        count = dbAccess.Count(p => p.RequestedURL.Contains(searchText) ||
-                                                    p.UserAgent.Contains(searchText) ||
-                                                    p.UserIPAddress.Contains(searchText));
-                        if (count > takeLimit)
-                        {
-                            _model = dbAccess
-                                .Where(p => p.RequestedURL.Contains(searchText) || p.UserAgent.Contains(searchText) ||
-                                            p.UserIPAddress.Contains(searchText))
-                                .OrderByDescending(d => d.DateOfRequest).Take(takeLimit).ToList();
-                        }
-                        else
-                        {
-                            _model = dbAccess
-                                .Where(p => p.RequestedURL.Contains(searchText) || p.UserAgent.Contains(searchText) ||
-                                            p.UserIPAddress.Contains(searchText))
-                                .OrderByDescending(d => d.DateOfRequest).ToList();
-                        }
-                    }
-                }
-                if (textCondition && datCondition)
-                {
-                    if (searchId != 0)
-                    {
-                        count = dbAccess.Count(p => (p.DateOfRequest >= fromDate && p.DateOfRequest <= toDate) &&
-                                                    (p.BatchID == searchId || p.CustomerID == searchId));
-                        if (count > takeLimit)
-                        {
-                            _model = dbAccess
-                                .Where(p => (p.DateOfRequest >= fromDate && p.DateOfRequest <= toDate) &&
-                                            (p.BatchID == searchId || p.CustomerID == searchId))
-                                .OrderByDescending(d => d.DateOfRequest).Take(takeLimit).ToList();
-                        }
-                        else
-                        {
-                            _model = dbAccess
-                                .Where(p => (p.DateOfRequest >= fromDate && p.DateOfRequest <= toDate) &&
-                                            (p.BatchID == searchId || p.CustomerID == searchId))
-                                .OrderByDescending(d => d.DateOfRequest).ToList();
-                        }
-
-                    }
-                    else
-                    {
-                        count = dbAccess
-                            .Count(p => (p.DateOfRequest >= fromDate && p.DateOfRequest <= toDate) &&
-                                        (p.RequestedURL.Contains(searchText) || p.UserAgent.Contains(searchText) ||
-                                         p.UserIPAddress.Contains(searchText)));
-                        if (count > takeLimit)
-                        {
-                            _model = dbAccess
-                                .Where(p => (p.DateOfRequest >= fromDate && p.DateOfRequest <= toDate) &&
-                                            (p.RequestedURL.Contains(searchText) || p.UserAgent.Contains(searchText) ||
-                                             p.UserIPAddress.Contains(searchText)))
-                                .OrderByDescending(d => d.DateOfRequest).Take(takeLimit)
-                                .ToList();
-                        }
-                        else
-                        {
-                            _model = dbAccess
-                                .Where(p => (p.DateOfRequest >= fromDate && p.DateOfRequest <= toDate) &&
-                                            (p.RequestedURL.Contains(searchText) || p.UserAgent.Contains(searchText) ||
-                                             p.UserIPAddress.Contains(searchText)))
-                                .OrderByDescending(d => d.DateOfRequest)
-                                .ToList();
-                        }
-                    }
-                }
+            if (cid !=0 && sid != 0) { datCondition = false;
+                textCondition = false; 
             }
-            if (_model == null || _model.Count == 0)
+
+            // set actual filter to VieBag
+            ViewBag.CurrentFilter = searchText;
+            ViewBag.CurrentFrom = insertDateFrom;
+            ViewBag.CurrentTo = insertDateTo;
+
+            _model = ApplyFilter(searchText, searchId, fromDate, toDate, textCondition, datCondition, out bool aFilter, cid, sid);
+            if (!aFilter)
             {
-                count = dbAccess.Count();
-                if (count > takeLimit) { 
-                _model = dbAccess.OrderByDescending(d => d.DateOfRequest).Take(takeLimit).ToList();
+                ViewBag.CurrentFilter = string.Empty;
+                ViewBag.CurrentFrom = string.Empty;
+                ViewBag.CurrentTo = string.Empty;
+            }
+
+            _pager = new Pager(_model.Count(), page);
+            _dataList = _model.Skip(_pager.ToSkip).Take(_pager.ToTake).ToList();
+            var pageList = new StaticPagedList<CATLogsOfService>(_dataList, _pager.CurrentPage, _pager.PageSize, _pager.TotalItems);
+            return View("Index", pageList);
+        }
+
+
+       private List<CATLogsOfService> ApplyFilter(string search, int searchId, DateTime fromDate, DateTime toDate, bool txtCon, bool datCon, out bool filter, int custId, int servId)
+        {
+            filter = true;
+            int takeLimit = 9999;
+            var dbAccess = _db.CATLogsOfService;
+            List<CATLogsOfService> model = new List<CATLogsOfService>();
+
+            if (datCon && !txtCon)
+            {
+                if (dbAccess.Count(p => p.DateOfRequest.Value >= fromDate && p.DateOfRequest.Value <= toDate) > takeLimit)
+                {
+                    model = dbAccess.Where(p => p.DateOfRequest >= fromDate && p.DateOfRequest <= toDate)
+                        .OrderByDescending(d => d.DateOfRequest).Take(takeLimit).ToList();
                 }
                 else
                 {
-                    _model = dbAccess.OrderByDescending(d => d.DateOfRequest).ToList();
+                    model = dbAccess.Where(p => p.DateOfRequest >= fromDate && p.DateOfRequest <= toDate)
+                        .OrderByDescending(d => d.DateOfRequest).ToList();
                 }
             }
 
-            _pager = new Pager(_model.Count(), page);
-            _dataList = _model.Skip(_pager.ToSkip).Take(_pager.ToTake).ToList();
-            var pageList = new StaticPagedList<CATLogsOfService>(_dataList, _pager.CurrentPage, _pager.PageSize, _pager.TotalItems);
-            //ViewBag.PageList = pageList;
-            //return View(model.ToPagedList(pageNumber: _pager.CurrentPage, pageSize: _pager.PageSize));
-            return View("Index", pageList);
-        }
-        
-
-        public ActionResult Details(int? page, int custId, int servId, DateTime reqDate)
-        {
-            var dbAccess = _db.CATLogsOfService;
-            var startDate = new DateTime(reqDate.Year, reqDate.Month, reqDate.Day);
-            var endDate = startDate.AddDays(1).AddTicks(-1);
-            ViewBag.CurrentCustId = custId;
-            ViewBag.CurrentServId = servId;
-            ViewBag.CurrentReqDate = reqDate;
-            _model = dbAccess
-                .Where(p => p.DateOfRequest >= startDate.Date && p.DateOfRequest <= endDate && p.CustomerID == custId && p.ServiceID == servId)
-                .OrderByDescending(d => d.DateOfRequest).ToList();
-            if (_model == null || _model.Count == 0)
+            if (txtCon && !datCon)
             {
-                _model = dbAccess.OrderByDescending(p => p.DateOfRequest).ToList();
+                if (dbAccess.Count(p => p.BatchID == searchId ||
+                                        p.CustomerID == searchId ||
+                                        p.RequestedURL.Contains(search) ||
+                                        p.UserAgent.Contains(search) ||
+                                        p.UserIPAddress.Contains(search))
+                    > takeLimit)
+                {
+                    model = dbAccess
+                        .Where(p => p.BatchID == searchId ||
+                                    p.CustomerID == searchId ||
+                                    p.RequestedURL.Contains(search) ||
+                                    p.UserAgent.Contains(search) ||
+                                    p.UserIPAddress.Contains(search))
+                        .OrderByDescending(d => d.DateOfRequest).Take(takeLimit).ToList();
+                }
+                else
+                {
+                    model = dbAccess
+                        .Where(p => p.BatchID == searchId ||
+                                    p.CustomerID == searchId ||
+                                    p.RequestedURL.Contains(search) ||
+                                    p.UserAgent.Contains(search) ||
+                                    p.UserIPAddress.Contains(search))
+                        .OrderByDescending(d => d.DateOfRequest).ToList();
+                }
             }
-            _pager = new Pager(_model.Count(), page);
-            _dataList = _model.Skip(_pager.ToSkip).Take(_pager.ToTake).ToList();
-            var pageList = new StaticPagedList<CATLogsOfService>(_dataList, _pager.CurrentPage, _pager.PageSize, _pager.TotalItems);
-            //return View("CustomerDaily", _dataList.ToPagedList(pageNumber: _pager.CurrentPage, pageSize: _pager.PageSize));
-            return View("Index", pageList);
+
+            if (txtCon && datCon)
+            {
+                if (dbAccess.Count(p => (p.DateOfRequest >= fromDate && p.DateOfRequest <= toDate) &&
+                                                               (p.BatchID == searchId ||
+                                                               p.CustomerID == searchId ||
+                                                               p.RequestedURL.Contains(search) ||
+                                                               p.UserAgent.Contains(search) ||
+                                                               p.UserIPAddress.Contains(search))) > takeLimit)
+                {
+                    model = dbAccess
+                        .Where(p => (p.DateOfRequest >= fromDate && p.DateOfRequest <= toDate) &&
+                                    (p.BatchID == searchId ||
+                                     p.CustomerID == searchId ||
+                                     p.RequestedURL.Contains(search) ||
+                                     p.UserAgent.Contains(search) ||
+                                     p.UserIPAddress.Contains(search)))
+                        .OrderByDescending(d => d.DateOfRequest).Take(takeLimit)
+                        .ToList();
+                }
+                else
+                {
+                    model = dbAccess
+                        .Where(p => (p.DateOfRequest >= fromDate && p.DateOfRequest <= toDate) &&
+                                    (p.BatchID == searchId ||
+                                     p.CustomerID == searchId ||
+                                     p.RequestedURL.Contains(search) ||
+                                     p.UserAgent.Contains(search) ||
+                                     p.UserIPAddress.Contains(search)))
+                        .OrderByDescending(d => d.DateOfRequest)
+                        .ToList();
+                }
+            }
+
+            if (!datCon && !txtCon)
+            {
+                model = dbAccess.Where(p => (p.DateOfRequest >= fromDate && p.DateOfRequest <= toDate) &&
+                                              (p.CustomerID == custId &&
+                                               p.ServiceID == servId
+                                               ))
+                    .OrderByDescending(d => d.DateOfRequest)
+                    .ToList();
+            }
+
+            if (model.Count == 0)
+            {
+                if (dbAccess.Count() > takeLimit)
+                {
+                    model = dbAccess.OrderByDescending(d => d.DateOfRequest).Take(takeLimit).ToList();
+                }
+                else
+                {
+                    model = dbAccess.OrderByDescending(d => d.DateOfRequest).ToList();
+                }
+                filter = false;
+            }
+            return model;
         }
 
         protected override void Dispose(bool disposing)

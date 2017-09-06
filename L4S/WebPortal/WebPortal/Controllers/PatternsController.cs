@@ -51,8 +51,7 @@ namespace WebPortal.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            CATServicePatterns model = new CATServicePatterns();
-            model.FKServiceID = id.Value;
+            CATServicePatterns model = new CATServicePatterns {FKServiceID = id.Value};
             return PartialView("_Create", model);
         }
 

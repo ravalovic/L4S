@@ -28,14 +28,14 @@
                     <div class="form-inline">
 
                         <div class="form-group">
-                            <label class="control-label col-md-1" for="date1">Od</label>
+                            <label class="control-label col-md-1" for="date1">@Resources.Labels.Lbl_From</label>
                             <div class="col-md-2 col-sm-10">
                                 <input class="form-control datefield" id="date1" name="date" placeholder="DD.MM.YYYY" type="text" value="@ViewBag.CurrentFrom" />
                             </div>
                         </div>
 
                         <div class="form-group">
-                            <label class="control-label col-md-1" for="date2">Do</label>
+                            <label class="control-label col-md-1" for="date2">@Resources.Labels.Lbl_To</label>
                             <div class="col-md-2 col-sm-10">
                                 <input class="form-control datefield" id="date2" name="date" placeholder="DD.MM.YYYY" type="text" value="@ViewBag.CurrentTo" />
                             </div>
@@ -49,10 +49,11 @@
                         </div>
 
                         <div class="form-group">
-                            <div class=" input-group-btn  col-md-2 col-sm-10">
-                                <button class="btn btn-success text-right" aria-hidden="true" onclick="location.href = '@Url.Action("Index", "ProcessStatus")?insertDateFrom=' + document.getElementById('date1').value+'&'+'insertDateTo=' + document.getElementById('date2').value+'&'+'searchText=' + document.getElementById('searchText').value +'&'+'currentFilter='+ '@ViewBag.CurrentFilter' +'&'+'currentFrom='+ '@ViewBag.CurrentFrom'+'&'+'currentTo='+ '@ViewBag.CurrentTo'"><span class="glyphicon glyphicon-search" aria-hidden="true"></span> Hľadať </button>
-                                <span style="margin: 5px"></span>
-                                <a class="btn btn-danger" href="@Url.Action("Index", "ProcessStatus")"><span class="glyphicon glyphicon-search" aria-hidden="true"></span> Reset</a>
+                            <div class=" group-btn  text-right">
+                                
+                                @*<button class="btn btn-primary-spacing btn-success text-right" aria-hidden="true" onclick="location.href = '@Url.Action("Index", "ProcessStatus")?insertDateFrom=' + document.getElementById('date1').value+'&'+'insertDateTo=' + document.getElementById('date2').value+'&'+'searchText=' + document.getElementById('searchText').value +'&'+'currentFilter='+ '@ViewBag.CurrentFilter' +'&'+'currentFrom='+ '@ViewBag.CurrentFrom'+'&'+'currentTo='+ '@ViewBag.CurrentTo'"><span class="glyphicon glyphicon-search" aria-hidden="true"></span>&nbsp;@Resources.Labels.Btn_Search</button>*@
+                                <a class="btn btn-primary-spacing btn-success" aria-hidden="true" onclick="location.href = '@Url.Action("Index", "ProcessStatus")?insertDateFrom=' + document.getElementById('date1').value+'&'+'insertDateTo=' + document.getElementById('date2').value+'&'+'searchText=' + document.getElementById('searchText').value +'&'+'currentFilter='+ '@ViewBag.CurrentFilter' +'&'+'currentFrom='+ '@ViewBag.CurrentFrom'+'&'+'currentTo='+ '@ViewBag.CurrentTo'"><span class="glyphicon glyphicon-search" aria-hidden="true"></span>&nbsp;@Resources.Labels.Btn_Search</a>
+                                <a class="btn btn-primary-spacing btn-danger" aria-hidden="true" onclick="location.href = '@Url.Action("Index", "ProcessStatus")'"><span class="glyphicon glyphicon-search" aria-hidden="true"></span>&nbsp;@Resources.Labels.Btn_Reset</a>
                             </div>
                         </div>
                     </div>

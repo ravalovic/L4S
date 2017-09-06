@@ -25,14 +25,14 @@
                     <div class="form-inline">
 
                         <div class="form-group">
-                            <label class="control-label col-md-1" for="date1">Od</label>
+                            <label class="control-label col-md-1" for="date1">@Resources.Labels.Lbl_From</label>
                             <div class="col-md-2 col-sm-10">
                                 <input class="form-control datefield" id="date1" name="date" placeholder="MM.YYYY" type="text" value="@ViewBag.CurrentFrom" />
                             </div>
                         </div>
 
                         <div class="form-group">
-                            <label class="control-label col-md-1" for="date2">Do</label>
+                            <label class="control-label col-md-1" for="date2">@Resources.Labels.Lbl_To</label>
                             <div class="col-md-2 col-sm-10">
                                 <input class="form-control datefield" id="date2" name="date" placeholder="MM.YYYY" type="text" value="@ViewBag.CurrentTo" />
                             </div>
@@ -46,11 +46,9 @@
                         </div>
 
                         <div class="form-group">
-                            <div class=" input-group-btn  col-md-2 col-sm-10">
-                                <button class="btn btn-success text-right" aria-hidden="true" onclick="location.href = '@Url.Action("Index", "CustomerMontlyTotalInvoice")?insertDateFrom=' + document.getElementById('date1').value+'&'+'insertDateTo=' + document.getElementById('date2').value+'&'+'searchText=' + document.getElementById('searchText').value +'&'+'currentFilter='+ '@ViewBag.CurrentFilter' +'&'+'currentFrom='+ '@ViewBag.CurrentFrom'+'&'+'currentTo='+ '@ViewBag.CurrentTo'"><span class="glyphicon glyphicon-search" aria-hidden="true"></span> Hľadať </button>
-                                <span style="margin: 10px"></span>
-                                @*<button class="btn btn-danger text-right" aria-hidden="true" onclick="location.href = '@Url.Action("Index", "CustomerMontlyTotalInvoice")'"><span class="glyphicon glyphicon-search" aria-hidden="true"></span> Reset </button>*@
-                                <a class="btn btn-danger" href="@Url.Action("Index", "CustomerMontlyTotalInvoice")"><span class="glyphicon glyphicon-search" aria-hidden="true"></span> Reset</a>
+                            <div class=" group-btn  text-right">
+                                <a class="btn btn-primary-spacing btn-success" aria-hidden="true" onclick="location.href = '@Url.Action("Index", "CustomerMontlyTotalInvoice")?insertDateFrom=' + document.getElementById('date1').value+'&'+'insertDateTo=' + document.getElementById('date2').value+'&'+'searchText=' + document.getElementById('searchText').value +'&'+'currentFilter='+ '@ViewBag.CurrentFilter' +'&'+'currentFrom='+ '@ViewBag.CurrentFrom'+'&'+'currentTo='+ '@ViewBag.CurrentTo'"><span class="glyphicon glyphicon-search" aria-hidden="true"></span>&nbsp;@Resources.Labels.Btn_Search</a> 
+                                <a class="btn btn-primary-spacing btn-danger" aria-hidden="true" onclick="location.href = '@Url.Action("Index", "CustomerMontlyTotalInvoice")'"><span class="glyphicon glyphicon-search" aria-hidden="true"></span>&nbsp;@Resources.Labels.Btn_Reset</a>
                             </div>
                         </div>
                     </div>
@@ -106,7 +104,7 @@
 
                     @foreach (var item in Model)
                     {
-                        <tr onclick="location.href = '@(Url.Action("Index", "InvoiceByMonth", new { searchText = item.CustomerIdentification, insertDateFrom = item.StartBillingPeriod.ToString("MM.yyyy"), insertDateTo = item.StopBillingPeriod.ToString("MM.yyyy") }))'">
+                        <tr onclick="location.href = '@Url.Action("Index", "InvoiceByMonth", new { searchText = item.CustomerIdentification, insertDateFrom = item.StartBillingPeriod.ToString("MM.yyyy"), insertDateTo = item.StartBillingPeriod.AddMonths(1).AddTicks(-1).ToString("MM.yyyy") })'">
                             <td>
                                 @Html.DisplayFor(modelItem => item.InvoiceNumber)
                             </td>
@@ -148,7 +146,7 @@
                             </td>
                             <td>
                                 <div>
-                                    <a class="btn btn-success" href="~/CustomerMontlyTotalInvoice/Details/?billingPeriod=@item.StartBillingPeriod.ToString("dd.MM.yyyy")&customerId=@item.CustomerID"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span> @Resources.Labels.Btn_Detail </a>
+                                    <a class="btn btn-success" href="~/CustomerMontlyTotalInvoice/Details/?billingPeriod=@item.StartBillingPeriod.ToString("dd.MM.yyyy")&customerId=@item.CustomerID"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span>&nbsp;@Resources.Labels.Btn_Detail </a>
                                 </div>
                             </td>
                         </tr>
@@ -160,10 +158,10 @@
     </div>
         <br />
     <div>
-        <a class="btn btn-info" href="~/CustomerMontlyTotalInvoice/Report/?extension=csv&page=@Model.PageNumber&insertDateFrom=@ViewBag.CurrentFrom&insertDateTo=@ViewBag.CurrentTo&searchText=@ViewBag.CurrentFilter"><span class="glyphicon glyphicon-save" aria-hidden="true"></span> @Resources.Labels.Btn_CSV </a>
-        <a class="btn btn-info" href="~/CustomerMontlyTotalInvoice/Report/?extension=pdf&page=@Model.PageNumber&insertDateFrom=@ViewBag.CurrentFrom&insertDateTo=@ViewBag.CurrentTo&searchText=@ViewBag.CurrentFilter"><span class="glyphicon glyphicon-save" aria-hidden="true"></span> @Resources.Labels.Btn_PDF </a>
-        <a class="btn btn-info" href="~/CustomerMontlyTotalInvoice/Report/?extension=xlsx&page=@Model.PageNumber&insertDateFrom=@ViewBag.CurrentFrom&insertDateTo=@ViewBag.CurrentTo&searchText=@ViewBag.CurrentFilter"><span class="glyphicon glyphicon-save" aria-hidden="true"></span> @Resources.Labels.Btn_XLSX </a>
-        <a class="btn btn-info" href="~/CustomerMontlyTotalInvoice/Report/?extension=html&amp;page=@Model.PageNumber&amp;insertDateFrom=@ViewBag.CurrentFrom&amp;insertDateTo=@ViewBag.CurrentTo&amp;searchText=@ViewBag.CurrentFilter"><span class="glyphicon glyphicon-save" aria-hidden="true"></span> @Resources.Labels.Btn_HTML </a>
+        <a class="btn btn-info" href="~/CustomerMontlyTotalInvoice/Report/?extension=csv&page=@Model.PageNumber&insertDateFrom=@ViewBag.CurrentFrom&insertDateTo=@ViewBag.CurrentTo&searchText=@ViewBag.CurrentFilter"><span class="glyphicon glyphicon-save" aria-hidden="true"></span>&nbsp;@Resources.Labels.Btn_CSV </a>
+        <a class="btn btn-info" href="~/CustomerMontlyTotalInvoice/Report/?extension=pdf&page=@Model.PageNumber&insertDateFrom=@ViewBag.CurrentFrom&insertDateTo=@ViewBag.CurrentTo&searchText=@ViewBag.CurrentFilter"><span class="glyphicon glyphicon-save" aria-hidden="true"></span>&nbsp;@Resources.Labels.Btn_PDF </a>
+        <a class="btn btn-info" href="~/CustomerMontlyTotalInvoice/Report/?extension=xlsx&page=@Model.PageNumber&insertDateFrom=@ViewBag.CurrentFrom&insertDateTo=@ViewBag.CurrentTo&searchText=@ViewBag.CurrentFilter"><span class="glyphicon glyphicon-save" aria-hidden="true"></span>&nbsp;@Resources.Labels.Btn_XLSX </a>
+        <a class="btn btn-info" href="~/CustomerMontlyTotalInvoice/Report/?extension=html&amp;page=@Model.PageNumber&amp;insertDateFrom=@ViewBag.CurrentFrom&amp;insertDateTo=@ViewBag.CurrentTo&amp;searchText=@ViewBag.CurrentFilter"><span class="glyphicon glyphicon-save" aria-hidden="true"></span>&nbsp;@Resources.Labels.Btn_HTML </a>
     </div>
         <br />
         Strana @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) z @Model.PageCount Počet záznamov @Model.TotalItemCount
@@ -179,11 +177,11 @@
         $(function () {
             $('#date1').datetimepicker({
                 viewMode: 'years',
-                format: 'MM/YYYY'
+                format: 'MM.YYYY'
             });
             $('#date2').datetimepicker({
                 viewMode: 'years',
-                format: 'MM/YYYY'
+                format: 'MM.YYYY'
             });
         });
         //$(document).ready(function () {            

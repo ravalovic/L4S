@@ -17,95 +17,81 @@ namespace WebPortal.Controllers
         private Pager _pager;
 
         // GET: CATCustomerMonthlyDatas
-        public ActionResult Index(int? page, string insertDateFrom, string insertDateTo, string searchText, string currentFilter, string currentFrom, string currentTo,
-            int? currentCustId, int? currentServId, DateTime? currentDate)
+        public ActionResult Index(int? page, string insertDateFrom, string insertDateTo, string searchText, string currentFilter, string currentFrom, string currentTo)
         {
-            var dbAccess = _db.view_MonthlyData;
-            if (currentCustId != 0 && currentServId != 0 && currentDate.HasValue)
+            int searchId;
+            DateTime fromDate;
+            DateTime toDate;
+            bool datCondition = false;
+            bool textCondition = false;
+            Helper.SetUpFilterValues(ref searchText, ref insertDateFrom, ref insertDateTo, currentFilter, currentFrom, currentTo, out searchId, out fromDate, out toDate, page);
+            if (!insertDateFrom.IsNullOrWhiteSpace() || !insertDateTo.IsNullOrWhiteSpace()) datCondition = true;
+            if (!searchText.IsNullOrWhiteSpace()) textCondition = true;
+
+            // set actual filter to VieBag
+            ViewBag.CurrentFilter = searchText;
+            ViewBag.CurrentFrom = insertDateFrom;
+            ViewBag.CurrentTo = insertDateTo;
+
+            _model = ApplyFilter(searchText, searchId, fromDate, toDate, textCondition, datCondition, out bool aFilter);
+            if (!aFilter)
             {
-                ViewBag.CurrentCustId = currentCustId;
-                ViewBag.CurrentServId = currentServId;
-                ViewBag.CurrentReqDate = currentDate;
-                var startDate = new DateTime(currentDate.Value.Year, currentDate.Value.Month, currentDate.Value.Day);
-                var endDate = startDate.AddDays(1).AddTicks(-1);
-                _model = dbAccess
-                    .Where(p => p.DateOfRequest >= startDate && p.DateOfRequest <= endDate &&
-                                p.CustomerID == currentCustId && p.ServiceID == currentServId)
-                    .OrderBy(d => d.DateOfRequest).ToList();
-                //return View(_dataList.ToPagedList(pageNumber: pager.CurrentPage, pageSize: pager.PageSize));
+                ViewBag.CurrentFilter = string.Empty;
+                ViewBag.CurrentFrom = string.Empty;
+                ViewBag.CurrentTo = string.Empty;
             }
-            else
-            {
-                if (searchText.IsNullOrWhiteSpace())
-                {
-                    searchText = currentFilter;
-                }
-                if (insertDateFrom.IsNullOrWhiteSpace())
-                {
-                    insertDateFrom = currentFrom;
-                }
-                if (insertDateTo.IsNullOrWhiteSpace())
-                {
-                    insertDateTo = currentTo;
-                }
-                // set actual filter to VieBag
-                ViewBag.CurrentFilter = searchText;
-                ViewBag.CurrentFrom = insertDateFrom;
-                ViewBag.CurrentTo = insertDateTo;
 
-                bool datCondition = false;
-                bool textCondition = false;
-
-                int.TryParse(searchText, out int searchId);
-                if (!insertDateFrom.IsNullOrWhiteSpace() || !insertDateTo.IsNullOrWhiteSpace()) datCondition = true;
-                if (searchText != null) textCondition = true;
-
-                DateTime.TryParse(insertDateFrom, out DateTime fromDate);
-                if (!DateTime.TryParse(insertDateTo, out DateTime toDate))
-                {
-                    toDate = DateTime.Now;
-                }
-                if (fromDate == toDate) toDate = toDate.AddDays(1).AddTicks(-1);
-
-                if (textCondition && !datCondition)
-                {
-                    _model = dbAccess
-                        .Where(p => p.CustomerID == searchId || p.ServiceID == searchId ||
-                                    p.CustomerName.ToUpper().Contains(searchText.ToUpper()) ||
-                                    p.CustomerIdentification.ToUpper().Contains(searchText.ToUpper()) ||
-                                    p.ServiceCode.ToUpper().Contains(searchText.ToUpper()) ||
-                                    p.CustomerName.ToUpper().Contains(searchText.ToUpper())
-                        )
-                        .OrderByDescending(d => d.DateOfRequest).ThenBy(p => p.CustomerID).ThenBy(p => p.ServiceID).ToList();
-
-                }
-                if (textCondition && datCondition)
-                {
-                    _model = dbAccess
-                        .Where(p => (p.DateOfRequest >= fromDate && p.DateOfRequest <= toDate) &&
-                                    (p.CustomerID == searchId || p.ServiceID == searchId ||
-                                     p.CustomerName.ToUpper().Contains(searchText.ToUpper()) ||
-                                     p.CustomerIdentification.ToUpper().Contains(searchText.ToUpper()) ||
-                                     p.ServiceCode.ToUpper().Contains(searchText.ToUpper()) ||
-                                     p.CustomerName.ToUpper().Contains(searchText.ToUpper())
-                                    ))
-                        .OrderByDescending(d => d.DateOfRequest).ThenBy(p => p.CustomerID).ThenBy(p => p.ServiceID).ToList();
-
-                }
-                if (_model == null || _model.Count == 0)
-                {
-                    _model = dbAccess.OrderByDescending(d => d.DateOfRequest).ToList();
-                }
-            }
             _pager = new Pager(_model.Count(), page);
             _dataList = _model.Skip(_pager.ToSkip).Take(_pager.ToTake).ToList();
             var pageList = new StaticPagedList<view_MonthlyData>(_dataList, _pager.CurrentPage, _pager.PageSize, _pager.TotalItems);
-            //ViewBag.PageList = pageList;
-            //return View(model.ToPagedList(pageNumber: _pager.CurrentPage, pageSize: _pager.PageSize));
             return View("Index", pageList);
 
         }
 
+        private List<view_MonthlyData> ApplyFilter(string search, int searchId, DateTime fromDate, DateTime toDate, bool txtCon, bool datCon, out bool filter)
+        {
+            filter = true;
+            var dbAccess = _db.view_MonthlyData;
+            List<view_MonthlyData> model = new List<view_MonthlyData>();
+
+            if (datCon && !txtCon)
+            {
+                model = dbAccess.Where(p => p.DateOfRequest.Value >= fromDate && p.DateOfRequest.Value <= toDate).OrderByDescending(d => d.DateOfRequest).ToList();
+
+            }
+            if (txtCon && !datCon)
+            {
+                model = dbAccess
+                    .Where(p => p.CustomerID == searchId || p.ServiceID == searchId ||
+                                p.CustomerName.ToUpper().Contains(search.ToUpper()) ||
+                                p.CustomerIdentification.ToUpper().Contains(search.ToUpper()) ||
+                                p.ServiceCode.ToUpper().Contains(search.ToUpper()) ||
+                                p.CustomerName.ToUpper().Contains(search.ToUpper())
+                    )
+                    .OrderByDescending(d => d.DateOfRequest).ThenBy(p => p.CustomerID).ThenBy(p => p.ServiceID).ToList();
+
+            }
+            if (txtCon && datCon)
+            {
+                model = dbAccess
+                    .Where(p => (p.DateOfRequest.Value >= fromDate && p.DateOfRequest.Value <= toDate) &&
+                                (p.CustomerID == searchId || p.ServiceID == searchId ||
+                                 p.CustomerName.ToUpper().Contains(search.ToUpper()) ||
+                                 p.CustomerIdentification.ToUpper().Contains(search.ToUpper()) ||
+                                 p.ServiceCode.ToUpper().Contains(search.ToUpper()) ||
+                                 p.CustomerName.ToUpper().Contains(search.ToUpper())
+                                ))
+                    .OrderByDescending(d => d.DateOfRequest).ThenBy(p => p.CustomerID).ThenBy(p => p.ServiceID).ToList();
+
+            }
+
+            if (model.Count == 0)
+            {
+                model = dbAccess.OrderByDescending(d => d.DateOfRequest).ToList();
+                filter = false;
+            }
+            return model;
+        }
 
         protected override void Dispose(bool disposing)
         {

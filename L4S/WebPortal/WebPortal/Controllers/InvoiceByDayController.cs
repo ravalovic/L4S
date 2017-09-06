@@ -1,10 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net;
 using System.Web.Mvc;
 using WebPortal.DataContexts;
-using WebPortal.Models;
 using WebPortal.Common;
 using PagedList;
 using Microsoft.Ajax.Utilities;
@@ -23,94 +21,36 @@ namespace WebPortal.Controllers
         // GET: InvoiceByDay
         public ActionResult Index(int? page, string insertDateFrom, string insertDateTo, string searchText, string currentFilter, string currentFrom, string currentTo, int? currentCustId, int? currentServId, DateTime? currentDate)
         {
-            var dbAccess = _db.view_InvoiceByDay;
-
-            if (currentCustId != 0 && currentServId != 0 && currentDate.HasValue)
+            int searchId;
+            DateTime fromDate;
+            DateTime toDate;
+            bool datCondition = false;
+            bool textCondition = false;
+            var dbAccess = _db.view_CustomerMontlyTotalInvoice;
+            var lastPeriod = dbAccess.Max(p => p.StartBillingPeriod);
+            if (searchText.IsNullOrWhiteSpace() && insertDateFrom.IsNullOrWhiteSpace() &&
+                insertDateTo.IsNullOrWhiteSpace() && currentFilter.IsNullOrWhiteSpace() &&
+                currentFrom.IsNullOrWhiteSpace() && currentTo.IsNullOrWhiteSpace())
             {
-                ViewBag.CurrentCustId = currentCustId;
-                ViewBag.CurrentServId = currentServId;
-                ViewBag.CurrentReqDate = currentDate;
-                var startDate = new DateTime(currentDate.Value.Year, currentDate.Value.Month, currentDate.Value.Day);
-                var endDate = startDate.AddDays(1).AddTicks(-1);
-                _model = dbAccess
-                    .Where(p => p.DateOfRequest >= startDate && p.DateOfRequest <= endDate &&
-                                p.CustomerID == currentCustId && p.ServiceID == currentServId)
-                    .OrderBy(d => d.DateOfRequest).ToList();
-                //return View(_dataList.ToPagedList(pageNumber: pager.CurrentPage, pageSize: pager.PageSize));
+                insertDateFrom = lastPeriod.ToString("dd.MM.yyyy");
             }
-            else
+
+            Helper.SetUpFilterValues(ref searchText, ref insertDateFrom, ref insertDateTo, currentFilter, currentFrom, currentTo, out searchId, out fromDate, out toDate, page);
+            if (!insertDateFrom.IsNullOrWhiteSpace() || !insertDateTo.IsNullOrWhiteSpace()) datCondition = true;
+            if (!searchText.IsNullOrWhiteSpace()) textCondition = true;
+
+
+            // set actual filter to ViewBag
+            ViewBag.CurrentFilter = searchText;
+            ViewBag.CurrentFrom = insertDateFrom;
+            ViewBag.CurrentTo = insertDateTo;
+
+            _model = ApplyFilter(searchText, searchId, fromDate, toDate, textCondition, datCondition, out bool aFilter);
+            if (!aFilter)
             {
-                if (searchText.IsNullOrWhiteSpace()) { searchText = currentFilter; }
-                if (insertDateFrom.IsNullOrWhiteSpace()) { insertDateFrom = currentFrom; }
-                if (insertDateTo.IsNullOrWhiteSpace()) { insertDateTo = currentTo; }
-                // set actual filter to VieBag
-                ViewBag.CurrentFilter = searchText;
-                ViewBag.CurrentFrom = insertDateFrom;
-                ViewBag.CurrentTo = insertDateTo;
-                if (searchText.IsNullOrWhiteSpace() && insertDateFrom.IsNullOrWhiteSpace() &&
-                    insertDateTo.IsNullOrWhiteSpace())
-                {
-                    _model = dbAccess.OrderByDescending(d => d.DateOfRequest).ThenBy(p => p.CustomerID).ToList();
-                    if (_model.FirstOrDefault() != null)
-                    {
-                        var actualdate = _model.FirstOrDefault().DateOfRequest;
-
-                        insertDateFrom = actualdate.Date.AddDays(1-actualdate.Day).ToString("dd.MM.yyyy");
-                        insertDateTo = actualdate.Date.AddDays(1 - actualdate.Day).AddMonths(1).AddTicks(-1).ToString("dd.MM.yyyy");
-                    }
-                    else
-                    {
-                        insertDateFrom = DateTime.Now.AddDays(1-DateTime.Now.Day).ToString("dd.MM.yyyy");
-                        insertDateTo = DateTime.Now.AddDays(1 - DateTime.Now.Day).AddMonths(1).AddTicks(-1).ToString("dd.MM.yyyy");
-                        
-                    }
-                    ViewBag.CurrentFrom = insertDateFrom;
-                    ViewBag.CurrentTo = insertDateTo;
-                }
-                bool datCondition = false;
-                bool textCondition = false;
-
-                int.TryParse(searchText, out int searchId);
-                if (!insertDateFrom.IsNullOrWhiteSpace() || !insertDateTo.IsNullOrWhiteSpace()) datCondition = true;
-                if (searchText != null) textCondition = true;
-
-                DateTime.TryParse(insertDateFrom, out DateTime fromDate);
-                if (!DateTime.TryParse(insertDateTo, out DateTime toDate))
-                {
-                    toDate = DateTime.Now;
-                }
-                toDate = toDate.AddDays(1).AddTicks(-1);
-
-                if (datCondition && !textCondition)
-                {
-                    _model = dbAccess.Where(p => p.DateOfRequest >= fromDate && p.DateOfRequest <= toDate)
-                        .OrderByDescending(d => d.DateOfRequest).ThenBy(p => p.CustomerID).ThenBy(p => p.ServiceID).ToList();
-                }
-                if (textCondition && !datCondition)
-                {
-                    _model = dbAccess
-                            .Where(p => p.CustomerID == searchId || p.ServiceID == searchId|| 
-                                        p.CustomerIdentification.Contains(searchText) ||
-                                        p.CustomerName.Contains(searchText) || p.ServiceCode.Contains(searchText))
-                        .OrderByDescending(d => d.DateOfRequest).ThenBy(p => p.CustomerID).ThenBy(p => p.ServiceID).ToList();
-
-                }
-                if (textCondition && datCondition)
-                {
-                    
-                        _model = dbAccess
-                            .Where(p => (p.DateOfRequest >= fromDate && p.DateOfRequest <= toDate) &&
-                                        (p.CustomerID == searchId || p.ServiceID == searchId||
-                                         p.CustomerIdentification.Contains(searchText) ||
-                                         p.CustomerName.Contains(searchText) || p.ServiceCode.Contains(searchText)))
-                            .OrderByDescending(d => d.DateOfRequest).ThenBy(p => p.CustomerID).ThenBy(p => p.ServiceID).ToList();
-
-                }
-            }
-            if (_model == null || _model.Count == 0)
-            {
-                _model = dbAccess.OrderByDescending(d => d.DateOfRequest)
-                    .ThenBy(p => p.CustomerID).ThenBy(p => p.ServiceID).ToList();
+                ViewBag.CurrentFilter = string.Empty;
+                ViewBag.CurrentFrom = string.Empty;
+                ViewBag.CurrentTo = string.Empty;
             }
 
             _pager = new Pager(_model.Count(), page);
@@ -120,145 +60,43 @@ namespace WebPortal.Controllers
             //return View(model.ToPagedList(pageNumber: _pager.CurrentPage, pageSize: _pager.PageSize));
             return View("Index", pageList);
         }
-        public ActionResult Details(int? page, int? custId, int? servId, DateTime? reqDate)
-        {
-            var dbAccess = _db.view_InvoiceByDay;
-
-            if (reqDate != null)
-            {
-                var startDate = new DateTime(reqDate.Value.Year, reqDate.Value.Month, reqDate.Value.Day);
-                var endDate = startDate.AddMonths(1).AddTicks(-1);
         
-                ViewBag.CurrentCustId = custId;
-                ViewBag.CurrentServId = servId;
-                ViewBag.CurrentReqDate = reqDate;
-                _model = dbAccess
-                    .Where(p => p.DateOfRequest >= startDate.Date && p.DateOfRequest <= endDate && p.CustomerID == custId && p.ServiceID == servId)
-                    .OrderByDescending(d => d.DateOfRequest).ThenBy(p => p.ServiceID).ToList();
-            }
-            if (_model == null || _model.Count == 0)
-            {
-                _model = dbAccess.OrderByDescending(p => p.DateOfRequest).ToList();
-            }
-            //ViewBag.CurrentFilter = _model.FirstOrDefault().CustomerIdentification;
-            //ViewBag.CurrentFrom = _model.FirstOrDefault().DateOfRequest;
-            //ViewBag.CurrentTo = _model.FirstOrDefault().DateOfRequest;
-            _pager = new Pager(_model.Count(), page);
-            _dataList = _model.Skip(_pager.ToSkip).Take(_pager.ToTake).ToList();
-            var pageList = new StaticPagedList<view_InvoiceByDay>(_dataList, _pager.CurrentPage, _pager.PageSize, _pager.TotalItems);
-            //return View("CustomerDaily", _dataList.ToPagedList(pageNumber: _pager.CurrentPage, pageSize: _pager.PageSize));
-            return View("Index", pageList);
-        }
-
         public ActionResult Report(string extension, int? page, string insertDateFrom, string insertDateTo,
             string searchText, string currentFilter, string currentFrom, string currentTo, int? currentCustId,
             int? currentServId, DateTime? currentDate)
 
         {
-            var dbAccess = _db.view_InvoiceByDay;
-
-            if (currentCustId != 0 && currentServId != 0 && currentDate.HasValue)
+            int searchId;
+            DateTime fromDate;
+            DateTime toDate;
+            bool datCondition = false;
+            bool textCondition = false;
+            var dbAccess = _db.view_CustomerMontlyTotalInvoice;
+            var lastPeriod = dbAccess.Max(p => p.StartBillingPeriod);
+            if (searchText.IsNullOrWhiteSpace() && insertDateFrom.IsNullOrWhiteSpace() &&
+                insertDateTo.IsNullOrWhiteSpace() && currentFilter.IsNullOrWhiteSpace() &&
+                currentFrom.IsNullOrWhiteSpace() && currentTo.IsNullOrWhiteSpace())
             {
-                ViewBag.CurrentCustId = currentCustId;
-                ViewBag.CurrentServId = currentServId;
-                ViewBag.CurrentReqDate = currentDate;
-                var startDate = new DateTime(currentDate.Value.Year, currentDate.Value.Month, currentDate.Value.Day);
-                var endDate = startDate.AddDays(1).AddTicks(-1);
-                _model = dbAccess
-                    .Where(p => p.DateOfRequest >= startDate && p.DateOfRequest <= endDate &&
-                                p.CustomerID == currentCustId && p.ServiceID == currentServId)
-                    .OrderBy(d => d.DateOfRequest).ToList();
-                //return View(_dataList.ToPagedList(pageNumber: pager.CurrentPage, pageSize: pager.PageSize));
-            }
-            else
-            {
-                if (searchText.IsNullOrWhiteSpace())
-                {
-                    searchText = currentFilter;
-                }
-                if (insertDateFrom.IsNullOrWhiteSpace())
-                {
-                    insertDateFrom = currentFrom;
-                }
-                if (insertDateTo.IsNullOrWhiteSpace())
-                {
-                    insertDateTo = currentTo;
-                }
-                // set actual filter to VieBag
-                ViewBag.CurrentFilter = searchText;
-                ViewBag.CurrentFrom = insertDateFrom;
-                ViewBag.CurrentTo = insertDateTo;
-                if (searchText.IsNullOrWhiteSpace() && insertDateFrom.IsNullOrWhiteSpace() &&
-                    insertDateTo.IsNullOrWhiteSpace())
-                {
-                    _model = dbAccess.OrderByDescending(d => d.DateOfRequest).ThenBy(p => p.CustomerID).ToList();
-                    if (_model.FirstOrDefault() != null)
-                    {
-                        var actualdate = _model.FirstOrDefault().DateOfRequest;
-
-                        insertDateFrom = actualdate.Date.AddDays(1 - actualdate.Day).ToString("dd.MM.yyyy");
-                        insertDateTo = actualdate.Date.AddDays(1 - actualdate.Day).AddMonths(1).AddTicks(-1)
-                            .ToString("dd.MM.yyyy");
-                    }
-                    else
-                    {
-                        insertDateFrom = DateTime.Now.AddDays(1 - DateTime.Now.Day).ToString("dd.MM.yyyy");
-                        insertDateTo = DateTime.Now.AddDays(1 - DateTime.Now.Day).AddMonths(1).AddTicks(-1)
-                            .ToString("dd.MM.yyyy");
-
-                    }
-                    ViewBag.CurrentFrom = insertDateFrom;
-                    ViewBag.CurrentTo = insertDateTo;
-                }
-                bool datCondition = false;
-                bool textCondition = false;
-
-                int.TryParse(searchText, out int searchId);
-                if (!insertDateFrom.IsNullOrWhiteSpace() || !insertDateTo.IsNullOrWhiteSpace()) datCondition = true;
-                if (searchText != null) textCondition = true;
-
-                DateTime.TryParse(insertDateFrom, out DateTime fromDate);
-                if (!DateTime.TryParse(insertDateTo, out DateTime toDate))
-                {
-                    toDate = DateTime.Now;
-                }
-                toDate = toDate.AddDays(1).AddTicks(-1);
-
-                if (datCondition && !textCondition)
-                {
-                    _model = dbAccess.Where(p => p.DateOfRequest >= fromDate && p.DateOfRequest <= toDate)
-                        .OrderByDescending(d => d.DateOfRequest).ThenBy(p => p.CustomerID).ThenBy(p => p.ServiceID)
-                        .ToList();
-                }
-                if (textCondition && !datCondition)
-                {
-                    _model = dbAccess
-                        .Where(p => p.CustomerID == searchId || p.ServiceID == searchId ||
-                                    p.CustomerIdentification.Contains(searchText) ||
-                                    p.CustomerName.Contains(searchText) || p.ServiceCode.Contains(searchText))
-                        .OrderByDescending(d => d.DateOfRequest).ThenBy(p => p.CustomerID).ThenBy(p => p.ServiceID)
-                        .ToList();
-
-                }
-                if (textCondition && datCondition)
-                {
-
-                    _model = dbAccess
-                        .Where(p => (p.DateOfRequest >= fromDate && p.DateOfRequest <= toDate) &&
-                                    (p.CustomerID == searchId || p.ServiceID == searchId ||
-                                     p.CustomerIdentification.Contains(searchText) ||
-                                     p.CustomerName.Contains(searchText) || p.ServiceCode.Contains(searchText)))
-                        .OrderByDescending(d => d.DateOfRequest).ThenBy(p => p.CustomerID).ThenBy(p => p.ServiceID)
-                        .ToList();
-
-                }
-            }
-            if (_model == null || _model.Count == 0)
-            {
-                _model = dbAccess.OrderByDescending(d => d.DateOfRequest)
-                    .ThenBy(p => p.CustomerID).ThenBy(p => p.ServiceID).ToList();
+                insertDateFrom = lastPeriod.ToString("dd.MM.yyyy");
             }
 
+            Helper.SetUpFilterValues(ref searchText, ref insertDateFrom, ref insertDateTo, currentFilter, currentFrom, currentTo, out searchId, out fromDate, out toDate, page);
+            if (!insertDateFrom.IsNullOrWhiteSpace() || !insertDateTo.IsNullOrWhiteSpace()) datCondition = true;
+            if (!searchText.IsNullOrWhiteSpace()) textCondition = true;
+
+
+            // set actual filter to ViewBag
+            ViewBag.CurrentFilter = searchText;
+            ViewBag.CurrentFrom = insertDateFrom;
+            ViewBag.CurrentTo = insertDateTo;
+
+            _model = ApplyFilter(searchText, searchId, fromDate, toDate, textCondition, datCondition, out bool aFilter);
+            if (!aFilter)
+            {
+                ViewBag.CurrentFilter = string.Empty;
+                ViewBag.CurrentFrom = string.Empty;
+                ViewBag.CurrentTo = string.Empty;
+            }
             _pager = new Pager(_model.Count(), page);
             _dataList = _model.Skip(_pager.ToSkip).Take(_pager.ToTake).ToList();
 
@@ -316,11 +154,52 @@ namespace WebPortal.Controllers
             //report.DataFields[nameof(view_InvoiceByMonth.BasicPriceWithVAT)].Hidden = true;
             report.DataFields[nameof(view_InvoiceByMonth.TCActive)].Hidden = true;
 
-            return new Common.ReportResult(report) {FileName = reportName};
+            return new ReportResult(report) {FileName = reportName};
         }
 
         #endregion
+        private List<view_InvoiceByDay> ApplyFilter(string search, int searchId, DateTime fromDate, DateTime toDate, bool txtCon, bool datCon, out bool filter)
+        {
+            filter = true;
+            var dbAccess = _db.view_InvoiceByDay;
+            List<view_InvoiceByDay> model = new List<view_InvoiceByDay>();
+            if (datCon && !txtCon)
+            {
+                model = dbAccess.Where(p => p.DateOfRequest >= fromDate && p.DateOfRequest <= toDate)
+                    .OrderBy(d => d.DateOfRequest).ThenBy(p => p.CustomerID).ToList();
 
+            }
+            if (txtCon && !datCon)
+            {
+                model = dbAccess
+                    .Where(p => p.CustomerID == searchId ||
+                                p.CustomerName.ToUpper().Contains(search.ToUpper()) ||
+                                p.CustomerIdentification.ToUpper().Contains(search.ToUpper())
+                    )
+                    .OrderByDescending(d => d.DateOfRequest).ThenBy(p => p.CustomerID).ToList();
+
+            }
+            if (txtCon && datCon)
+            {
+                model = dbAccess
+                    .Where(p => (p.DateOfRequest >= fromDate && p.DateOfRequest <= toDate) &&
+                                (p.CustomerID == searchId ||
+                                 p.CustomerName.ToUpper().Contains(search.ToUpper()) ||
+                                 p.CustomerIdentification.ToUpper().Contains(search.ToUpper())))
+                    .OrderByDescending(d => d.DateOfRequest).ThenBy(p => p.CustomerID).ToList();
+
+            }
+
+            if (model.Count == 0)
+            {
+                model = dbAccess.OrderByDescending(d => d.DateOfRequest)
+                    .ThenBy(p => p.CustomerID).ToList();
+                filter = false;
+            }
+
+            return model;
+
+        }
 
         protected override void Dispose(bool disposing)
         {

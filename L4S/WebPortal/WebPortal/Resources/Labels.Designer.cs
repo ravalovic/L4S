@@ -205,11 +205,29 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Reset.
+        /// </summary>
+        public static string Btn_Reset {
+            get {
+                return ResourceManager.GetString("Btn_Reset", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Uložiť.
         /// </summary>
         public static string Btn_Save {
             get {
                 return ResourceManager.GetString("Btn_Save", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Hľadať.
+        /// </summary>
+        public static string Btn_Search {
+            get {
+                return ResourceManager.GetString("Btn_Search", resourceCulture);
             }
         }
         
@@ -984,6 +1002,24 @@ namespace Resources {
         public static string InvoiceTotalDataTab {
             get {
                 return ResourceManager.GetString("InvoiceTotalDataTab", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Od:.
+        /// </summary>
+        public static string Lbl_From {
+            get {
+                return ResourceManager.GetString("Lbl_From", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Do:.
+        /// </summary>
+        public static string Lbl_To {
+            get {
+                return ResourceManager.GetString("Lbl_To", resourceCulture);
             }
         }
         
@@ -2001,6 +2037,15 @@ namespace Resources {
         public static string TabHead_VAT {
             get {
                 return ResourceManager.GetString("TabHead_VAT", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Akcia.
+        /// </summary>
+        public static string Txt_Action {
+            get {
+                return ResourceManager.GetString("Txt_Action", resourceCulture);
             }
         }
         

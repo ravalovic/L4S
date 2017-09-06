@@ -9,7 +9,7 @@ using Microsoft.Ajax.Utilities;
 
 namespace WebPortal.Controllers
 {
-   
+
     public class ProcessStatusController : Controller
     {
         private readonly L4SDb _db = new L4SDb();
@@ -19,75 +19,74 @@ namespace WebPortal.Controllers
         // GET: ProcessStatus
         public ActionResult Index(int? page, string insertDateFrom, string insertDateTo, string searchText, string currentFilter, string currentFrom, string currentTo)
         {
-            var dbAccess = _db.CATProcessStatus;
-            if (searchText.IsNullOrWhiteSpace())
-            {
-                searchText = currentFilter;
-            }
-            if (insertDateFrom.IsNullOrWhiteSpace())
-            {
-                insertDateFrom = currentFrom;
-            }
-            if (insertDateTo.IsNullOrWhiteSpace())
-            {
-                insertDateTo = currentTo;
-            }
+            int searchId;
+            DateTime fromDate;
+            DateTime toDate;
+            bool datCondition = false;
+            bool textCondition = false;
+            Helper.SetUpFilterValues(ref searchText, ref insertDateFrom, ref insertDateTo, currentFilter, currentFrom, currentTo, out searchId, out fromDate, out toDate, page);
+            if (!insertDateFrom.IsNullOrWhiteSpace() || !insertDateTo.IsNullOrWhiteSpace()) datCondition = true;
+            if (!searchText.IsNullOrWhiteSpace()) textCondition = true;
 
             // set actual filter to ViewBag
             ViewBag.CurrentFilter = searchText;
             ViewBag.CurrentFrom = insertDateFrom;
             ViewBag.CurrentTo = insertDateTo;
 
-            bool datCondition = false;
-            bool textCondition = false;
-
-            int.TryParse(searchText, out int searchId);
-            if (!insertDateFrom.IsNullOrWhiteSpace() || !insertDateTo.IsNullOrWhiteSpace()) datCondition = true;
-            if (!searchText.IsNullOrWhiteSpace()) textCondition = true;
-
-            DateTime.TryParse(insertDateFrom, out DateTime fromDate);
-            if (!DateTime.TryParse(insertDateTo, out DateTime toDate))
+            _model = ApplyFilter(searchText, searchId, fromDate, toDate, textCondition, datCondition, out bool aFilter);
+            if (!aFilter)
             {
-                toDate = DateTime.Now;
-            }
-            if (fromDate == toDate) toDate = toDate.AddDays(1).AddTicks(-1);
-
-            if (datCondition && !textCondition)
-            {
-                _model = dbAccess.Where(p => p.TCInsertTime >= fromDate && p.TCInsertTime <= toDate)
-                    .OrderBy(d => d.TCInsertTime).ToList();
-
-            }
-            if (textCondition && !datCondition)
-            {
-                _model = dbAccess
-                    .Where(p => p.BatchID.ToUpper().Contains(searchText.ToUpper()) ||
-                                p.StepName.ToUpper().Contains(searchText.ToUpper()) ||
-                                p.BatchID.ToUpper().Contains(searchText.ToUpper()))
-                    .OrderByDescending(d => d.TCInsertTime).ToList();
-
-            }
-            if (textCondition && datCondition)
-            {
-                _model = dbAccess
-                    .Where(p => (p.BatchID.ToUpper().Contains(searchText.ToUpper()) || 
-                                p.TCInsertTime >= fromDate && p.TCInsertTime <= toDate) &&
-                                (p.StepName.ToUpper().Contains(searchText.ToUpper()) ||
-                                 p.BatchID.ToUpper().Contains(searchText.ToUpper()))).OrderByDescending(d => d.TCInsertTime).ToList();
-
+                ViewBag.CurrentFilter = string.Empty;
+                ViewBag.CurrentFrom = string.Empty;
+                ViewBag.CurrentTo = string.Empty;
             }
 
-            if (_model == null || _model.Count == 0)
-            {
-                _model = dbAccess.OrderByDescending(d => d.TCInsertTime).ToList();
-            }
             _pager = new Pager(_model.Count(), page);
             _dataList = _model.Skip(_pager.ToSkip).Take(_pager.ToTake).ToList();
             var pageList = new StaticPagedList<CATProcessStatus>(_dataList, _pager.CurrentPage, _pager.PageSize, _pager.TotalItems);
             return View("Index", pageList);
         }
+        private List<CATProcessStatus> ApplyFilter(string search, int searchId, DateTime fromDate, DateTime toDate, bool txtCon, bool datCon, out bool filter)
+        {
+            filter = true;
+            var dbAccess = _db.CATProcessStatus;
+            List<CATProcessStatus> model = new List<CATProcessStatus>();
 
-    protected override void Dispose(bool disposing)
+            if (datCon && !txtCon)
+            {
+                model = dbAccess.Where(p => p.TCInsertTime.Value >= fromDate && p.TCInsertTime.Value <= toDate)
+                    .OrderBy(d => d.TCInsertTime).ToList();
+
+            }
+            if (txtCon && !datCon)
+            {
+                model = dbAccess
+                    .Where(p => p.BatchID.ToUpper().Contains(search.ToUpper()) ||
+                                p.StepName.ToUpper().Contains(search.ToUpper()) ||
+                                p.BatchID.ToUpper().Contains(search.ToUpper()))
+                    .OrderByDescending(d => d.TCInsertTime.Value).ToList();
+
+            }
+            if (txtCon && datCon)
+            {
+                model = dbAccess
+                    .Where(p => (p.TCInsertTime.Value >= fromDate && p.TCInsertTime.Value <= toDate) &&
+                                (
+                                    p.BatchID.ToUpper().Contains(search.ToUpper()) ||
+                                    p.StepName.ToUpper().Contains(search.ToUpper()) ||
+                                    p.BatchID.ToUpper().Contains(search.ToUpper())))
+                    .OrderByDescending(d => d.TCInsertTime).ToList();
+
+            }
+
+            if (model.Count == 0)
+            {
+                model = dbAccess.OrderByDescending(d => d.TCInsertTime).ToList();
+                filter = false;
+            }
+            return model;
+        }
+        protected override void Dispose(bool disposing)
         {
             if (disposing)
             {

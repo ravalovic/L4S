@@ -4,7 +4,6 @@ using System.Linq;
 using System.Net;
 using System.Web.Mvc;
 using WebPortal.DataContexts;
-using WebPortal.Models;
 using WebPortal.Common;
 using PagedList;
 using Microsoft.Ajax.Utilities;
@@ -23,92 +22,39 @@ namespace WebPortal.Controllers
         // GET: CustomerMontlyTotalInvoice
         public ActionResult Index(int? page, string insertDateFrom, string insertDateTo, string searchText, string currentFilter, string currentFrom, string currentTo)
         {
+            int searchId;
+            DateTime fromDate;
+            DateTime toDate;
+            bool datCondition = false;
+            bool textCondition = false;
             var dbAccess = _db.view_CustomerMontlyTotalInvoice;
-            if (searchText.IsNullOrWhiteSpace())
+            var lastPeriod = dbAccess.Max(p => p.StartBillingPeriod);
+            if (searchText.IsNullOrWhiteSpace() && insertDateFrom.IsNullOrWhiteSpace() &&
+                insertDateTo.IsNullOrWhiteSpace() && currentFilter.IsNullOrWhiteSpace() &&
+                currentFrom.IsNullOrWhiteSpace() && currentTo.IsNullOrWhiteSpace())
             {
-                searchText = currentFilter;
-            }
-            if (insertDateFrom.IsNullOrWhiteSpace())
-            {
-                insertDateFrom = currentFrom;
-            }
-            if (insertDateTo.IsNullOrWhiteSpace())
-            {
-                insertDateTo = currentTo;
+                insertDateFrom = lastPeriod.ToString("MM.yyyy");
             }
 
+            Helper.SetUpFilterValues(ref searchText, ref insertDateFrom, ref insertDateTo, currentFilter, currentFrom, currentTo, out searchId, out fromDate, out toDate, page);
+            if (!insertDateFrom.IsNullOrWhiteSpace() || !insertDateTo.IsNullOrWhiteSpace()) datCondition = true;
+            if (!searchText.IsNullOrWhiteSpace()) textCondition = true;
+
+            
             // set actual filter to ViewBag
             ViewBag.CurrentFilter = searchText;
             ViewBag.CurrentFrom = insertDateFrom;
             ViewBag.CurrentTo = insertDateTo;
-
-            if (searchText.IsNullOrWhiteSpace() && insertDateFrom.IsNullOrWhiteSpace() &&
-                insertDateTo.IsNullOrWhiteSpace())
-            {
-                _model = dbAccess.OrderByDescending(d => d.StartBillingPeriod).ThenBy(p => p.CustomerID).ToList();
-                if (_model.FirstOrDefault() != null) { 
-                    insertDateFrom = _model.FirstOrDefault().StartBillingPeriod.ToString("dd.MM.yyyy");
-                    ViewBag.CurrentFrom = _model.FirstOrDefault().StartBillingPeriod.ToString("MM.yyyy");
-                    ViewBag.CurrentTo = ViewBag.CurrentFrom;
-                }
-                else
-                {
-                    insertDateFrom = DateTime.Now.AddDays(1 - DateTime.Now.Day).ToString("dd.MM.yyyy");
-                    ViewBag.CurrentFrom = DateTime.Now.AddDays(1 - DateTime.Now.Day).ToString("MM.yyyy");
-                    ViewBag.CurrentTo = ViewBag.CurrentFrom;
-                }
-                insertDateTo = insertDateFrom;
-            }
-
             
-
-            bool datCondition = false;
-            bool textCondition = false;
-
-            int.TryParse(searchText, out int searchId);
-            if (!insertDateFrom.IsNullOrWhiteSpace() || !insertDateTo.IsNullOrWhiteSpace()) datCondition = true;
-            if (!searchText.IsNullOrWhiteSpace()) textCondition = true;
-
-            DateTime.TryParse(insertDateFrom, out DateTime fromDate);
-            if (!DateTime.TryParse(insertDateTo, out DateTime toDate))
+            _model = ApplyFilter(searchText, searchId, fromDate, toDate, textCondition, datCondition, out bool aFilter);
+            if (!aFilter)
             {
-                toDate = DateTime.Now;
-            }
-            if (fromDate == toDate) toDate = toDate.AddMonths(1).AddTicks(-1);
-
-            if (datCondition && !textCondition)
-            {
-                _model = dbAccess.Where(p => p.StartBillingPeriod >= fromDate && p.StopBillingPeriod <= toDate)
-                    .OrderBy(d => d.InvoiceNumber).ThenBy(p => p.CustomerID).ToList();
-
-            }
-            if (textCondition && !datCondition)
-            {
-                _model = dbAccess
-                    .Where(p => p.CustomerID == searchId || 
-                                p.CustomerName.ToUpper().Contains(searchText.ToUpper()) ||
-                                p.CustomerIdentification.ToUpper().Contains(searchText.ToUpper()) ||
-                                p.InvoiceNumber.ToUpper().Contains(searchText.ToUpper()))
-                    .OrderByDescending(d => d.InvoiceNumber).ThenBy(p => p.CustomerID).ToList();
-
-            }
-            if (textCondition && datCondition)
-            {
-                _model = dbAccess
-                    .Where(p => (p.StartBillingPeriod >= fromDate && p.StopBillingPeriod <= toDate) &&
-                                (p.CustomerID == searchId || 
-                                 p.CustomerName.ToUpper().Contains(searchText.ToUpper()) ||
-                                 p.CustomerIdentification.ToUpper().Contains(searchText.ToUpper()) ||
-                                 p.InvoiceNumber.ToUpper().Contains(searchText.ToUpper())))
-                    .OrderByDescending(d => d.InvoiceNumber).ThenBy(p => p.CustomerID).ToList();
-
+                ViewBag.CurrentFilter = string.Empty;
+                ViewBag.CurrentFrom = string.Empty;
+                ViewBag.CurrentTo = string.Empty;
             }
 
-            if (_model == null || _model.Count == 0)
-            {
-                _model = dbAccess.OrderByDescending(d => d.InvoiceNumber)
-                    .ThenBy(p => p.CustomerID).ToList();
-            }
+
             _pager = new Pager(_model.Count(), page);
             _dataList = _model.Skip(_pager.ToSkip).Take(_pager.ToTake).ToList();
             var pageList = new StaticPagedList<view_CustomerMontlyTotalInvoice>(_dataList, _pager.CurrentPage, _pager.PageSize, _pager.TotalItems);
@@ -159,98 +105,43 @@ namespace WebPortal.Controllers
             //_dataList = _model.Where(p=>p.CustomerID == customerId).ToList();
             //var pageList = new StaticPagedList<view_CustomerMontlyTotalInvoice>(_dataList, _pager.CurrentPage, _pager.PageSize, _pager.TotalItems);
             //return View("Details", pageList);
-            return View(dbAccess.FirstOrDefault(p => p.CustomerID == customerId));
+            return View(dbAccess.FirstOrDefault(p => p.CustomerID == customerId && p.StartBillingPeriod == billDateTime));
         }
 
-        public Common.ReportResult Report(string extension, int? page, string insertDateFrom, string insertDateTo, string searchText, string currentFilter, string currentFrom, string currentTo)
+        public ReportResult Report(string extension, int? page, string insertDateFrom, string insertDateTo, string searchText, string currentFilter, string currentFrom, string currentTo)
         {
-            var dbAccess = _db.view_CustomerMontlyTotalInvoice;
-            if (searchText.IsNullOrWhiteSpace())
-            {
-                searchText = currentFilter;
-            }
-            if (insertDateFrom.IsNullOrWhiteSpace())
-            {
-                insertDateFrom = currentFrom;
-            }
-            if (insertDateTo.IsNullOrWhiteSpace())
-            {
-                insertDateTo = currentTo;
-            }
 
-            // set actual filter to ViewBag
+            int searchId;
+            DateTime fromDate;
+            DateTime toDate;
+            bool datCondition = false;
+            bool textCondition = false;
+            var dbAccess = _db.view_CustomerMontlyTotalInvoice;
+            var lastPeriod = dbAccess.Max(p => p.StartBillingPeriod);
+            if (searchText.IsNullOrWhiteSpace() && insertDateFrom.IsNullOrWhiteSpace() &&
+                insertDateTo.IsNullOrWhiteSpace() && currentFilter.IsNullOrWhiteSpace() &&
+                currentFrom.IsNullOrWhiteSpace() && currentTo.IsNullOrWhiteSpace())
+            {
+                insertDateFrom = lastPeriod.ToString("MM.yyyy");
+            }
+            Helper.SetUpFilterValues(ref searchText, ref insertDateFrom, ref insertDateTo, currentFilter, currentFrom, currentTo, out searchId, out fromDate, out toDate, page);
+            if (!insertDateFrom.IsNullOrWhiteSpace() || !insertDateTo.IsNullOrWhiteSpace()) datCondition = true;
+            if (!searchText.IsNullOrWhiteSpace()) textCondition = true;
+
+    // set actual filter to ViewBag
             ViewBag.CurrentFilter = searchText;
             ViewBag.CurrentFrom = insertDateFrom;
             ViewBag.CurrentTo = insertDateTo;
 
-            if (searchText.IsNullOrWhiteSpace() && insertDateFrom.IsNullOrWhiteSpace() &&
-                insertDateTo.IsNullOrWhiteSpace())
+            _model = ApplyFilter(searchText, searchId, fromDate, toDate, textCondition, datCondition, out bool aFilter);
+            if (!aFilter)
             {
-                _model = dbAccess.OrderByDescending(d => d.StartBillingPeriod).ThenBy(p => p.CustomerID).ToList();
-                if (_model.FirstOrDefault() != null)
-                {
-                    insertDateFrom = _model.FirstOrDefault().StartBillingPeriod.ToString("dd.MM.yyyy");
-                    ViewBag.CurrentFrom = _model.FirstOrDefault().StartBillingPeriod.ToString("MM.yyyy");
-                    ViewBag.CurrentTo = ViewBag.CurrentFrom;
-                }
-                else
-                {
-                    insertDateFrom = DateTime.Now.AddDays(1 - DateTime.Now.Day).ToString("dd.MM.yyyy");
-                    ViewBag.CurrentFrom = DateTime.Now.AddDays(1 - DateTime.Now.Day).ToString("MM.yyyy");
-                    ViewBag.CurrentTo = ViewBag.CurrentFrom;
-                }
-                insertDateTo = insertDateFrom;
+                ViewBag.CurrentFilter = string.Empty;
+                ViewBag.CurrentFrom = string.Empty;
+                ViewBag.CurrentTo = string.Empty;
             }
 
 
-
-            bool datCondition = false;
-            bool textCondition = false;
-
-            int.TryParse(searchText, out int searchId);
-            if (!insertDateFrom.IsNullOrWhiteSpace() || !insertDateTo.IsNullOrWhiteSpace()) datCondition = true;
-            if (!searchText.IsNullOrWhiteSpace()) textCondition = true;
-
-            DateTime.TryParse(insertDateFrom, out DateTime fromDate);
-            if (!DateTime.TryParse(insertDateTo, out DateTime toDate))
-            {
-                toDate = DateTime.Now;
-            }
-            if (fromDate == toDate) toDate = toDate.AddMonths(1).AddTicks(-1);
-
-            if (datCondition && !textCondition)
-            {
-                _model = dbAccess.Where(p => p.StartBillingPeriod >= fromDate && p.StopBillingPeriod <= toDate)
-                    .OrderBy(d => d.InvoiceNumber).ThenBy(p => p.CustomerID).ToList();
-
-            }
-            if (textCondition && !datCondition)
-            {
-                _model = dbAccess
-                    .Where(p => p.CustomerID == searchId ||
-                                p.CustomerName.ToUpper().Contains(searchText.ToUpper()) ||
-                                p.CustomerIdentification.ToUpper().Contains(searchText.ToUpper()) ||
-                                p.InvoiceNumber.ToUpper().Contains(searchText.ToUpper()))
-                    .OrderByDescending(d => d.InvoiceNumber).ThenBy(p => p.CustomerID).ToList();
-
-            }
-            if (textCondition && datCondition)
-            {
-                _model = dbAccess
-                    .Where(p => (p.StartBillingPeriod >= fromDate && p.StopBillingPeriod <= toDate) &&
-                                (p.CustomerID == searchId ||
-                                 p.CustomerName.ToUpper().Contains(searchText.ToUpper()) ||
-                                 p.CustomerIdentification.ToUpper().Contains(searchText.ToUpper()) ||
-                                 p.InvoiceNumber.ToUpper().Contains(searchText.ToUpper())))
-                    .OrderByDescending(d => d.InvoiceNumber).ThenBy(p => p.CustomerID).ToList();
-
-            }
-
-            if (_model == null || _model.Count == 0)
-            {
-                _model = dbAccess.OrderByDescending(d => d.InvoiceNumber)
-                    .ThenBy(p => p.CustomerID).ToList();
-            }
             _pager = new Pager(_model.Count(), page);
             _dataList = _model.Skip(_pager.ToSkip).Take(_pager.ToTake).ToList();
 
@@ -315,26 +206,56 @@ namespace WebPortal.Controllers
             //report.DataFields[nameof(view_CustomerMontlyTotalInvoice.TotalPriceWithVAT)].Hidden = true;
 
 
-            return new Common.ReportResult(report) { FileName = reportName };
+            return new ReportResult(report) { FileName = reportName };
 #endregion
         }
 
 
-        public Common.ReportResult DetailReport(string extension, int? page, string billingPeriod, int? customerId)
+        public ReportResult DetailReport(string extension, int? page, string billingPeriod, int? customerId)
         {
             var dbAccess = _db.view_CustomerMontlyTotalInvoice;
+
             DateTime.TryParse(billingPeriod, out var billDateTime);
-            _model = dbAccess.Where(p => p.CustomerID == customerId).ToList();
+            //_model = dbAccess.Where(p => p.InvoiceNumber.Contains(id.Substring(0, 4))).ToList();
+            _model = dbAccess.Where(p => p.StartBillingPeriod == billDateTime).OrderBy(d => d.InvoiceNumber).ThenBy(p => p.CustomerID).ToList();
+            
+            var inArray = _model.Select(p => p.CustomerID).ToArray();
+            List<view_CustomerMontlyTotalInvoice> reportList = new List<view_CustomerMontlyTotalInvoice>();
+            ViewBag.BillingPeriod = billingPeriod.Trim();
+            ViewBag.CustomerId = customerId;
+            var index = 0;
+
+            for (var i = 0; i < inArray.Length; i++)
+            {
+                if (inArray[i] == customerId)
+                {
+                    index = i;
+                    var element = _model.Skip(index).First();
+                    reportList.Add(element);
+                }
+            }
+
+            if ((index + 1) < inArray.Length)
+            {
+                ViewBag.NextCustomerId = inArray[index + 1];
+                if ((index - 1) > 0) { ViewBag.PreviousCustomerId = inArray[index - 1]; } else { ViewBag.PreviousCustomerId = inArray[index]; }
+            }
+            else
+            {
+                ViewBag.NextCustomerId = inArray[index];
+                if ((index - 1) < 0) { ViewBag.PreviousCustomerId = inArray[index]; } else { ViewBag.PreviousCustomerId = inArray[index - 1]; }
+            }
+            
             
             #region ******************************** Report ************************************
 
-            var reportName = _model.FirstOrDefault().CustomerIdentification+"_FakturacneUdaje_" + DateTime.Now.ToString("MMyyyy");
+            var reportName = _model.FirstOrDefault()?.CustomerIdentification+"_FakturacneUdaje_" + DateTime.Now.ToString("MMyyyy");
 
             
             var reportFromDate = _model.Min(p => p.StartBillingPeriod).ToString("dd.MM.yyyy");
             var reportToDate = _model.Max(p => p.StopBillingPeriod).ToString("dd.MM.yyyy");
             // Create the report and turn our query into a ReportSource
-            var report = new Report(_model.ToReportSource());
+            var report = new Report(reportList.ToReportSource());
             if (extension.Equals("csv"))
             {
                 string delimiter = ";";
@@ -357,7 +278,7 @@ namespace WebPortal.Controllers
                 }
             }
             //Header report
-            report.TextFields.Title = "Fakturačné údaje zákazníka: " + _model.FirstOrDefault().CustomerName+ " ID Zákazníka: "+ _model.FirstOrDefault().CustomerIdentification;
+            report.TextFields.Title = "Fakturačné údaje zákazníka: " + _model.FirstOrDefault()?.CustomerName+ " ID Zákazníka: "+ _model.FirstOrDefault()?.CustomerIdentification;
             report.TextFields.SubTitle = "Obdobie od: " + reportFromDate + " do: " + reportToDate;
             //report.TextFields.Footer = "Copyright 2017 (c) BlueZ, s.r.o.";
             report.TextFields.Header = string.Format(@"
@@ -387,9 +308,54 @@ namespace WebPortal.Controllers
             //report.DataFields[nameof(view_CustomerMontlyTotalInvoice.TotalPriceWithVAT)].Hidden = true;
 
 
-            return new Common.ReportResult(report) { FileName = reportName };
+            return new ReportResult(report) { FileName = reportName };
             #endregion
         }
+
+        private List<view_CustomerMontlyTotalInvoice> ApplyFilter(string search, int searchId, DateTime fromDate, DateTime toDate, bool txtCon, bool datCon, out bool filter)
+        {
+            filter = true;
+            var dbAccess = _db.view_CustomerMontlyTotalInvoice;
+            List<view_CustomerMontlyTotalInvoice> model = new List<view_CustomerMontlyTotalInvoice>();
+            if (datCon && !txtCon)
+            {
+                model = dbAccess.Where(p => p.StartBillingPeriod >= fromDate && p.StopBillingPeriod <= toDate)
+                    .OrderBy(d => d.InvoiceNumber).ThenBy(p => p.CustomerID).ToList();
+
+            }
+            if (txtCon && !datCon)
+            {
+                model = dbAccess
+                    .Where(p => p.CustomerID == searchId ||
+                                p.CustomerName.ToUpper().Contains(search.ToUpper()) ||
+                                p.CustomerIdentification.ToUpper().Contains(search.ToUpper()) ||
+                                p.InvoiceNumber.ToUpper().Contains(search.ToUpper()))
+                    .OrderByDescending(d => d.InvoiceNumber).ThenBy(p => p.CustomerID).ToList();
+
+            }
+            if (txtCon && datCon)
+            {
+                model = dbAccess
+                    .Where(p => (p.StartBillingPeriod >= fromDate && p.StopBillingPeriod <= toDate) &&
+                                (p.CustomerID == searchId ||
+                                 p.CustomerName.ToUpper().Contains(search.ToUpper()) ||
+                                 p.CustomerIdentification.ToUpper().Contains(search.ToUpper()) ||
+                                 p.InvoiceNumber.ToUpper().Contains(search.ToUpper())))
+                    .OrderByDescending(d => d.InvoiceNumber).ThenBy(p => p.CustomerID).ToList();
+
+            }
+
+            if (model.Count == 0)
+            {
+                model = dbAccess.OrderByDescending(d => d.InvoiceNumber)
+                    .ThenBy(p => p.CustomerID).ToList();
+                filter = false;
+            }
+
+            return model;
+           
+        }
+
         protected override void Dispose(bool disposing)
         {
             if (disposing)
