@@ -793,7 +793,7 @@
     <value>Zákazníci a Služby</value>
   </data>
   <data name="Welcome" xml:space="preserve">
-    <value>Vitaj! </value>
+    <value>Vitaj </value>
   </data>
   <data name="AccountController_Login_Locked" xml:space="preserve">
     <value>Neplatné prihlásenie. Účet je zablokovaný.</value>
@@ -806,5 +806,14 @@
   </data>
   <data name="Customer_UpdateDialogTitle" xml:space="preserve">
     <value>Uloženie údajov</value>
+  </data>
+  <data name="AccountController_Unautorized" xml:space="preserve">
+    <value>Pre prácu z aplikáciou je potrebné prihlásenie.</value>
+  </data>
+  <data name="Message_CofirmDelete" xml:space="preserve">
+    <value>Naozaj vymazať</value>
+  </data>
+  <data name="Message_ConfirmSave" xml:space="preserve">
+    <value>Naozaj chcete uložiť zmeny?</value>
   </data>
 </root>

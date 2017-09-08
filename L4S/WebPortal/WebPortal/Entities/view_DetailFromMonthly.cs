@@ -22,7 +22,6 @@ namespace WebPortal
         public int RecordID { get; set; }
 
         public DateTime? DateOfRequest { get; set; }
-        [DataType(DataType.Date)]
         [Display(Name = "TabHead_Monthdate", ResourceType = typeof(Labels))]
         [DisplayFormat(DataFormatString = "{0:dd.MM.yyyy}", ApplyFormatInEditMode = true)]
         public DateTime? Monthdate { get; set; }

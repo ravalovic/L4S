@@ -127,7 +127,7 @@ namespace SQLBulkCopy
 
         static void Main()
         {
-            Console.WriteLine(Helper.Version("SQLBulkCopy"));
+            Log.InfoFormat(Helper.Version("SQLBulkCopy"));
             using (new SingleGlobalInstance(1000)) //1000ms timeout on global lock
             {
                 string missing;

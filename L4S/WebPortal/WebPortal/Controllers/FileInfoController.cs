@@ -14,6 +14,7 @@ using DoddleReport.Writers;
 
 namespace WebPortal.Controllers
 {
+    [Authorize] //!!! important only Authorize users can call this controller
     public class FileInfoController : Controller
     {
         private readonly L4SDb _db = new L4SDb();

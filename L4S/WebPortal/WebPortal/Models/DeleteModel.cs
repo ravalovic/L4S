@@ -5,7 +5,7 @@
         public string Id { get; set; }
         public string Name { get; set; }
         public string Message { 
-            get { return "Naozaj vymazať " + Name + "?"; }
+            get { return Resources.Labels.Message_CofirmDelete + Name + "?"; }
         }
         public DeleteModel(string Id, string Name)
         {

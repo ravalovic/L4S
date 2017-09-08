@@ -9,6 +9,7 @@ using PagedList;
 
 namespace WebPortal.Controllers
 {
+    [Authorize] //!!! important only Authorize users can call this controller
     public class CustomerMonthlyDatasController : Controller
     {
         private readonly L4SDb _db = new L4SDb();

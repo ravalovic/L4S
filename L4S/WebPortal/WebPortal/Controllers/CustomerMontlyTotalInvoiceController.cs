@@ -12,6 +12,7 @@ using DoddleReport.Writers;
 
 namespace WebPortal.Controllers
 {
+    [Authorize] //!!! important only Authorize users can call this controller
     public class CustomerMontlyTotalInvoiceController : Controller
     {
         private readonly L4SDb _db = new L4SDb();
@@ -74,7 +75,6 @@ namespace WebPortal.Controllers
             }
            
             var dbAccess = _db.view_CustomerMontlyTotalInvoice;
-            
             DateTime.TryParse(billingPeriod, out var billDateTime);
             //_model = dbAccess.Where(p => p.InvoiceNumber.Contains(id.Substring(0, 4))).ToList();
             _model = dbAccess.Where(p => p.StartBillingPeriod == billDateTime).OrderBy(d => d.InvoiceNumber).ThenBy(p => p.CustomerID).ToList();

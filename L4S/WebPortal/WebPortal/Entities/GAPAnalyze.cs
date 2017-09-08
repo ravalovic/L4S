@@ -13,8 +13,7 @@ namespace WebPortal
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
         [Column(TypeName = "Date")]
-        [DataType(DataType.Date)]
-        [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}", ApplyFormatInEditMode = true)]
+       [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}", ApplyFormatInEditMode = true)]
         [Display(Name = "GAP_DayOfProcess", ResourceType = typeof(Labels))]
         public DateTime Day { get; set; }
         [Display(Name = "GAP_FileNumber", ResourceType = typeof(Labels))]

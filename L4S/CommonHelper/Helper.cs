@@ -55,7 +55,7 @@ namespace CommonHelper
 
         public static string Version(string appName)
         {
-            return appName+": "+@"Verzia 1.3.0 zo dňa 06.09.2017";
+            return appName+": "+@"Verzia 1.3.1 zo dňa 08.09.2017";
         }
         public enum ParameterFromName
         {

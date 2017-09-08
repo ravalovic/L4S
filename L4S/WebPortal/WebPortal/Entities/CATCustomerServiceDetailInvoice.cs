@@ -9,12 +9,13 @@ namespace WebPortal
         public int ID { get; set; }
         [StringLength(50)]
         public string InvoiceNumber { get; set; }
+        [DisplayFormat(DataFormatString = "{0:dd.MM.yyyy}", ApplyFormatInEditMode = true)]
         public DateTime StartBillingPeriod { get; set; }
-        [DataType(DataType.Date)]
+        [DisplayFormat(DataFormatString = "{0:dd.MM.yyyy}", ApplyFormatInEditMode = true)]
         public DateTime StopBillingPeriod { get; set; }
-        [DataType(DataType.Date)]
+        [DisplayFormat(DataFormatString = "{0:dd.MM.yyyy}", ApplyFormatInEditMode = true)]
         public DateTime DeliveryDate { get; set; }
-        [DataType(DataType.Date)]
+        [DisplayFormat(DataFormatString = "{0:dd.MM.yyyy}", ApplyFormatInEditMode = true)]
         public DateTime DueDate { get; set; }
         public int CustomerID { get; set; }
         [StringLength(20)]

@@ -79,6 +79,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Pre prácu z aplikáciou je potrebné prihlásenie..
+        /// </summary>
+        public static string AccountController_Unautorized {
+            get {
+                return ResourceManager.GetString("AccountController_Unautorized", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Pridať nové.
         /// </summary>
         public static string Btn_Add {
@@ -1177,6 +1186,24 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Naozaj vymazať.
+        /// </summary>
+        public static string Message_CofirmDelete {
+            get {
+                return ResourceManager.GetString("Message_CofirmDelete", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Naozaj chcete uložiť zmeny?.
+        /// </summary>
+        public static string Message_ConfirmSave {
+            get {
+                return ResourceManager.GetString("Message_ConfirmSave", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Mesačný sumár.
         /// </summary>
         public static string MonthlyData_PageHeader {
@@ -2122,7 +2149,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Vitaj! .
+        ///   Looks up a localized string similar to Vitaj .
         /// </summary>
         public static string Welcome {
             get {

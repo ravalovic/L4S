@@ -12,6 +12,7 @@ using WebPortal.Common;
 
 namespace WebPortal.Controllers
 {
+    [Authorize] //!!! important only Authorize users can call this controller
     public class CustomerController : Controller
     {
         private L4SDb _db = new L4SDb();
@@ -468,14 +469,14 @@ namespace WebPortal.Controllers
         {
             if (ModelState.IsValid)
             {
-                CATCustomerIdentifiers cAtCustomerIdent = _db.CATCustomerIdentifiers.Find(model.Id);
+                CATCustomerIdentifiers cAtCustomerIdent = _db.CATCustomerIdentifiers.Find(int.Parse(model.Id));
                 if (cAtCustomerIdent != null)
                 {
                     cAtCustomerIdent.TCLastUpdate = DateTime.Now;
                     cAtCustomerIdent.TCActive = 99;
                     _db.Entry(cAtCustomerIdent).State = EntityState.Modified;
                     _db.SaveChanges();
-                    return RedirectToAction("Services", new { id = cAtCustomerIdent.FKCustomerID });
+                    return RedirectToAction("Identifiers", new { id = cAtCustomerIdent.FKCustomerID });
                 }
             }
 

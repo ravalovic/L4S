@@ -4,6 +4,7 @@ using WebPortal.DataContexts;
 
 namespace WebPortal.Controllers
 {
+    [Authorize] //!!! important only Authorize users can call this controller
     public class GAPAnalyzesController : Controller
     {
         private L4SDb db = new L4SDb();

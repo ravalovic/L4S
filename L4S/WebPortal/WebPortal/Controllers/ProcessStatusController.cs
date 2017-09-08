@@ -9,7 +9,7 @@ using Microsoft.Ajax.Utilities;
 
 namespace WebPortal.Controllers
 {
-
+    [Authorize] //!!! important only Authorize users can call this controller
     public class ProcessStatusController : Controller
     {
         private readonly L4SDb _db = new L4SDb();

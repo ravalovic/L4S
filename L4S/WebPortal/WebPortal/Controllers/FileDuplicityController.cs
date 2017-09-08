@@ -11,6 +11,7 @@ using WebPortal.Common;
 
 namespace WebPortal.Controllers
 {
+    [Authorize] //!!! important only Authorize users can call this controller
     public class FileDuplicityController : Controller
     {
         private readonly L4SDb _db = new L4SDb();

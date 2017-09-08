@@ -43,6 +43,40 @@ BEGIN
 			--select DATEADD(MONTH, DATEDIFF(MONTH, -1, GETDATE())-1, -1) --Last Day of previous month
 
 		--Insert new InvoiceData 
+
+		INSERT INTO [dbo].[CATInvoiceByDay]
+           ([ID], [DateOfRequest],[CustomerID] ,[CustomerIdentification],[CustomerName]
+		   ,[ServiceID],[ServiceCode],[ServiceDescription]
+           ,[NumberOfRequest],[ReceivedBytes],[RequestedTime]
+           ,[CustomerServiceCode],[CustomerServicename]
+           ,[UnitPrice],[MeasureofUnits]
+           ,[BasicPriceWithoutVAT],[VAT],[BasicPriceWithVAT]
+           )
+		SELECT      [ID], [DateOfRequest],[CustomerID] ,[CustomerIdentification],[CustomerName]
+		   ,[ServiceID],[ServiceCode],[ServiceDescription]
+           ,[NumberOfRequest],[ReceivedBytes],[RequestedTime]
+           ,[CustomerServiceCode],[CustomerServicename]
+           ,[UnitPrice],[MeasureofUnits]
+           ,[BasicPriceWithoutVAT],[VAT],[BasicPriceWithVAT]
+		FROM [dbo].[view_CATInvoiceByDay] WHERE TCActive = 0;
+
+
+		INSERT INTO [dbo].[CATInvoiceByMonth]
+           ([ID], [DateOfRequest],[CustomerID] ,[CustomerIdentification],[CustomerName]
+		   ,[ServiceID],[ServiceCode],[ServiceDescription]
+           ,[NumberOfRequest],[ReceivedBytes],[RequestedTime]
+           ,[CustomerServiceCode],[CustomerServicename]
+           ,[UnitPrice],[MeasureofUnits]
+           ,[BasicPriceWithoutVAT],[VAT],[BasicPriceWithVAT]
+           )
+		SELECT      [ID], [DateOfRequest],[CustomerID] ,[CustomerIdentification],[CustomerName]
+		   ,[ServiceID],[ServiceCode],[ServiceDescription]
+           ,[NumberOfRequest],[ReceivedBytes],[RequestedTime]
+           ,[CustomerServiceCode],[CustomerServicename]
+           ,[UnitPrice],[MeasureofUnits]
+           ,[BasicPriceWithoutVAT],[VAT],[BasicPriceWithVAT]
+		FROM [dbo].[view_CATInvoiceByMonth] WHERE TCActive = 0;
+
 		INSERT INTO [dbo].[CATCustomerServiceDetailInvoice]
            ([InvoiceNumber]
            ,[StartBillingPeriod]

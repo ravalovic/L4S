@@ -9,7 +9,7 @@ using WebPortal.Models;
 
 namespace WebPortal.Controllers
 {
-    [Authorize]
+    [Authorize] //!!! important only Authorize users can call this controller
     public class ManageController : Controller
     {
         private ApplicationSignInManager _signInManager;

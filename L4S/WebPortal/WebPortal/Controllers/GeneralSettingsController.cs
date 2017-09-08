@@ -8,6 +8,7 @@ using WebPortal.Models;
 
 namespace WebPortal.Controllers
 {
+    [Authorize] //!!! important only Authorize users can call this controller
     public class GeneralSettingsController : Controller
     {
         private L4SDb db = new L4SDb();

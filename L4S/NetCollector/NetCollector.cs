@@ -129,69 +129,7 @@ namespace NetCollector
            Directory.CreateDirectory(appApConfig.WorkDir);
            Directory.CreateDirectory(appApConfig.OutputDir);
         }
-        static void Main()
-        {
-            Console.WriteLine(Helper.Version("NetCollector"));
-            using (new SingleGlobalInstance(1000)) //1000ms timeout on global lock
-            {
-                
-                string missing;
-                MyApConfig appSettings = new MyApConfig();
-                if (appSettings.CheckParams(appSettings, out missing))
-                {
-                    Log.Error(missing);
-                    Environment.Exit(0);
-                }
-                CreateIfMissing(appSettings);
-
-                Log.InfoFormat("Running as {0}", WindowsIdentity.GetCurrent().Name);
-                Log.InfoFormat("Transfer method:  {0}", appSettings.TransferMethod);
-                CollectionMethod method;
-                if (Enum.TryParse(appSettings.TransferMethod, out method))
-                {
-                    switch (method)
-                    {
-                        case CollectionMethod.NetShare:
-                            if (appSettings.IntegratedSecurity) //if user which execute has integration security with remote server
-                            {
-                                if (NetShareTransfer(appSettings))
-                                {
-                                    BackupNewFiles(appSettings);
-                                    MoveToFinal(appSettings);
-                                }
-                            }
-                            else
-                            {
-                                using (UserImpersonation user = new UserImpersonation(appSettings.Login, appSettings.Domain, appSettings.Password))
-                                {
-                                    if (user.ImpersonateValidUser())
-                                    {
-                                        if (NetShareTransfer(appSettings))
-                                        {
-                                            BackupNewFiles(appSettings);
-                                            MoveToFinal(appSettings);
-                                        }
-                                    }
-                                    else
-                                    {
-                                        Log.Error("User is not connected check credential");
-                                    }
-                                }
-                            }
-                            break;
-                        case CollectionMethod.Ftp:
-                            if (FtpTransfer(appSettings))
-                            {
-                                BackupNewFiles(appSettings);
-                                MoveToFinal(appSettings);
-                            }
-                            break;
-                    }
-
-                }
-               
-            } //using singleinstance
-        }
+        
         /// <summary>
         /// NetShare transfer method
         /// </summary>
@@ -326,6 +264,69 @@ namespace NetCollector
                 Log.Warn("No files for finallly move  from: " + settingsConfig.WorkDir);
             }
         }
-     
+
+        static void Main()
+        {
+            Log.InfoFormat(Helper.Version("NetCollector"));
+            using (new SingleGlobalInstance(1000)) //1000ms timeout on global lock
+            {
+
+                string missing;
+                MyApConfig appSettings = new MyApConfig();
+                if (appSettings.CheckParams(appSettings, out missing))
+                {
+                    Log.Error(missing);
+                    Environment.Exit(0);
+                }
+                CreateIfMissing(appSettings);
+
+                Log.InfoFormat("Running as {0}", WindowsIdentity.GetCurrent().Name);
+                Log.InfoFormat("Transfer method:  {0}", appSettings.TransferMethod);
+                CollectionMethod method;
+                if (Enum.TryParse(appSettings.TransferMethod, out method))
+                {
+                    switch (method)
+                    {
+                        case CollectionMethod.NetShare:
+                            if (appSettings.IntegratedSecurity) //if user which execute has integration security with remote server
+                            {
+                                if (NetShareTransfer(appSettings))
+                                {
+                                    BackupNewFiles(appSettings);
+                                    MoveToFinal(appSettings);
+                                }
+                            }
+                            else
+                            {
+                                using (UserImpersonation user = new UserImpersonation(appSettings.Login, appSettings.Domain, appSettings.Password))
+                                {
+                                    if (user.ImpersonateValidUser())
+                                    {
+                                        if (NetShareTransfer(appSettings))
+                                        {
+                                            BackupNewFiles(appSettings);
+                                            MoveToFinal(appSettings);
+                                        }
+                                    }
+                                    else
+                                    {
+                                        Log.Error("User is not connected check credential");
+                                    }
+                                }
+                            }
+                            break;
+                        case CollectionMethod.Ftp:
+                            if (FtpTransfer(appSettings))
+                            {
+                                BackupNewFiles(appSettings);
+                                MoveToFinal(appSettings);
+                            }
+                            break;
+                    }
+
+                }
+
+            } //using singleinstance
+        }
     }
 }

@@ -2,6 +2,7 @@
 
 namespace WebPortal.Controllers
 {
+
     public class HomeController : Controller
     {
         public ActionResult Index()
@@ -14,14 +15,14 @@ namespace WebPortal.Controllers
 
             return View();
         }
-
+        [Authorize]
         public ActionResult About()
         {
             ViewBag.Message = "Your application description page.";
 
             return View();
         }
-
+        [AllowAnonymous]
         public ActionResult Contact()
         {
             ViewBag.Message = "Your contact page.";

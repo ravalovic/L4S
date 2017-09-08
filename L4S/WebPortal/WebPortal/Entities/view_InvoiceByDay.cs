@@ -14,7 +14,6 @@ namespace WebPortal
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int ID { get; set; }
 
-        [DataType(DataType.Date)]
         [Display(Name = "TabHead_DateOfRequest", ResourceType = typeof(Labels))]
         [DisplayFormat(DataFormatString = "{0:dd.MM.yyyy}", ApplyFormatInEditMode = true)]
         public DateTime DateOfRequest { get; set; }

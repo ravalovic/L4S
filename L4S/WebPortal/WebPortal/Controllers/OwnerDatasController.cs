@@ -8,6 +8,7 @@ using WebPortal.DataContexts;
 
 namespace WebPortal.Controllers
 {
+    [Authorize] //!!! important only Authorize users can call this controller
     public class OwnerDatasController : Controller
     {
         private L4SDb _db = new L4SDb();

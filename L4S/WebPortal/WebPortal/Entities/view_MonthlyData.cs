@@ -11,7 +11,6 @@ namespace WebPortal
     {
         [Key]
         [Column(Order = 0)]
-        [DataType(DataType.Date)]
         [Display(Name = "TabHead_DateOfRequest", ResourceType = typeof(Labels))]
         [DisplayFormat(DataFormatString = "{0:dd.MM.yyyy}", ApplyFormatInEditMode = true)]
         public DateTime? DateOfRequest { get; set; }
