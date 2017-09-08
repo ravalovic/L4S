@@ -583,6 +583,24 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Chcete uložiť nové údaje?.
+        /// </summary>
+        public static string Customer_UpdateDialogSure {
+            get {
+                return ResourceManager.GetString("Customer_UpdateDialogSure", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Uloženie údajov.
+        /// </summary>
+        public static string Customer_UpdateDialogTitle {
+            get {
+                return ResourceManager.GetString("Customer_UpdateDialogTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to IČ DPH.
         /// </summary>
         public static string Customer_VATID {

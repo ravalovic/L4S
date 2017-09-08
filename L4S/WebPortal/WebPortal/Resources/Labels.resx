@@ -801,4 +801,10 @@
   <data name="AccountController_Login_AuthentificationWrong" xml:space="preserve">
     <value>Neplatné prihlásenie. Nesprávne meno alebo heslo.</value>
   </data>
+  <data name="Customer_UpdateDialogSure" xml:space="preserve">
+    <value>Chcete uložiť nové údaje?</value>
+  </data>
+  <data name="Customer_UpdateDialogTitle" xml:space="preserve">
+    <value>Uloženie údajov</value>
+  </data>
 </root>
