@@ -7,7 +7,7 @@ DELETE FROM [CATServicePatterns]; --Foreign key
 DELETE FROM [CATServiceParameters];
 
 -- Insert service A 2.1.2
-INSERT INTO [dbo].[CATServiceParameters]([PKServiceID],[ServiceCode],[ServiceDescription],[ServiceBasicPrice]) VALUES(2,'2.1.2',N'A.2.1.2 - Poskytnutie priestorovej informácie zo súboru geodetických informácií z KN',0.001)
+INSERT INTO [dbo].[CATServiceParameters]([PKServiceID],[ServiceCode],[ServiceDescription],[ServiceBasicPrice]) VALUES(2,'2.1.2',N'A.2.1.2 - Poskytnutie priestorovej informácie zo súboru geodetických informácií z KN',0.1)
 -- Insert pattern
 INSERT INTO [dbo].[CATServicePatterns]([PatternLike],[PatternRegExp],[PatternDescription],[FKServiceID],[Entity],[Explanation],[DatSelectMethod]) VALUES('%/kn_wfs/MapServer/WFSServer%',null, '2.1.2', 2, 'MINV', N'Katastrálna mapa WFS', N'S-JTSK');
 INSERT INTO [dbo].[CATServicePatterns]([PatternLike],[PatternRegExp],[PatternDescription],[FKServiceID],[Entity],[Explanation],[DatSelectMethod]) VALUES('%/kn_wms_norm/MapServer/WMSServer%',null, '2.1.2', 2, null, N'Katastrálna mapa WMS' ,N'WebMercator + S-JTSK');
@@ -24,13 +24,13 @@ INSERT INTO [dbo].[CATServicePatterns]([PatternLike],[PatternRegExp],[PatternDes
 INSERT INTO [dbo].[CATServicePatterns]([PatternLike],[PatternRegExp],[PatternDescription],[FKServiceID],[Entity],[Explanation],[DatSelectMethod]) VALUES('%/uo_wmts_orto_sjtsk/MapServer/WMTS%',null, '2.1.2', 2, null, N'Mapa určeného operátu WMTS - inverzná' ,N'S-JTSK');
 INSERT INTO [dbo].[CATServicePatterns]([PatternLike],[PatternRegExp],[PatternDescription],[FKServiceID],[Entity],[Explanation],[DatSelectMethod]) VALUES('%/uo_wmts_orto_wm/MapServer/WMTS%',null, '2.1.2', 2, null, N'Mapa určeného operátu WMTS - inverzná' ,N'WebMercator');
 -- Insert service A 2.1.3
-INSERT INTO [dbo].[CATServiceParameters]([PKServiceID],[ServiceCode],[ServiceDescription],[ServiceBasicPrice]) VALUES(3,'2.1.3',N'A.2.1.3 - Poskytnutie informácie z KN o vlastníkoch a iných oprávnených osobách',0.001);
+INSERT INTO [dbo].[CATServiceParameters]([PKServiceID],[ServiceCode],[ServiceDescription],[ServiceBasicPrice]) VALUES(3,'2.1.3',N'A.2.1.3 - Poskytnutie informácie z KN o vlastníkoch a iných oprávnených osobách',0.1);
 -- Insert pattern
 INSERT INTO [dbo].[CATServicePatterns]([PatternLike],[PatternRegExp],[PatternDescription],[FKServiceID],[Entity],[Explanation],[DatSelectMethod]) VALUES('%/Subjects?$filter=IdNo%',null,'2.1.3',3,null,N'Fyzická / Právnická osoba (FOPO)',N'IČO právnickej osoby');
 INSERT INTO [dbo].[CATServicePatterns]([PatternLike],[PatternRegExp],[PatternDescription],[FKServiceID],[Entity],[Explanation],[DatSelectMethod]) VALUES('%/Subjects(%)%',null,'2.1.3',3,null,N'Fyzická / Právnická osoba (FOPO)',N'Interné ID FOPO');
 INSERT INTO [dbo].[CATServicePatterns]([PatternLike],[PatternRegExp],[PatternDescription],[FKServiceID],[Entity],[Explanation],[DatSelectMethod]) VALUES('%/Kn.Search%',null,'2.1.3',3,null,N'Fyzická / Právnická osoba (FOPO)',N'Meno + priezvisko + rodné číslo fyzickej osoby');
 -- Insert service A 2.1.4
-INSERT INTO [dbo].[CATServiceParameters]([PKServiceID],[ServiceCode],[ServiceDescription],[ServiceBasicPrice]) VALUES(4,'2.1.4',N'A.2.1.4 - Poskytnutie informácie z KN o nehnuteľnostiach',0.001);
+INSERT INTO [dbo].[CATServiceParameters]([PKServiceID],[ServiceCode],[ServiceDescription],[ServiceBasicPrice]) VALUES(4,'2.1.4',N'A.2.1.4 - Poskytnutie informácie z KN o nehnuteľnostiach',0.1);
 -- Insert pattern
 INSERT INTO [dbo].[CATServicePatterns]([PatternLike],[PatternRegExp],[PatternDescription],[FKServiceID],[Entity],[Explanation],[DatSelectMethod]) VALUES('%/Spaces(%)?$select=%',null,'2.1.4',4,null,N'Bytové a nebytové priestory',N'Interné ID priestoru');
 INSERT INTO [dbo].[CATServicePatterns]([PatternLike],[PatternRegExp],[PatternDescription],[FKServiceID],[Entity],[Explanation],[DatSelectMethod]) VALUES('%/Spaces/?&$filter=CadastralUnit/Code%Construction/Folio/No%',null,'2.1.4',4,null,N'Bytové a nebytové priestory',N'Kód k.ú. + číslo listu vlastníctva');
@@ -60,7 +60,7 @@ INSERT INTO [dbo].[CATServicePatterns]([PatternLike],[PatternRegExp],[PatternDes
 INSERT INTO [dbo].[CATServicePatterns]([PatternLike],[PatternRegExp],[PatternDescription],[FKServiceID],[Entity],[Explanation],[DatSelectMethod]) VALUES('%/Constructions/?&$filter=Municipality/Code/Code%HouseNo%',null,'2.1.4',4,null,N'Stavby',N'Kód obce + súpisné číslo');
 
 -- Insert service A 2.1.5
-INSERT INTO [dbo].[CATServiceParameters]([PKServiceID],[ServiceCode],[ServiceDescription],[ServiceBasicPrice]) VALUES(5,'2.1.5',N'A.2.1.5 - Poskytnutie informácie z KN o právach k nehnuteľnostiam',0.001);
+INSERT INTO [dbo].[CATServiceParameters]([PKServiceID],[ServiceCode],[ServiceDescription],[ServiceBasicPrice]) VALUES(5,'2.1.5',N'A.2.1.5 - Poskytnutie informácie z KN o právach k nehnuteľnostiam',0.1);
 -- Insert pattern
 INSERT INTO [dbo].[CATServicePatterns]([PatternLike],[PatternRegExp],[PatternDescription],[FKServiceID],[Entity],[Explanation],[DatSelectMethod]) VALUES('%/Participants(%)/?&$select=%',null,'2.1.14',5,null  ,N'Účastník právneho vzťahu (účastník)',N'Interné ID účastníka');
 INSERT INTO [dbo].[CATServicePatterns]([PatternLike],[PatternRegExp],[PatternDescription],[FKServiceID],[Entity],[Explanation],[DatSelectMethod]) VALUES('%/Folios(%)/ParcelsC%',null,'2.1.5',5,null  ,N'Účastník právneho vzťahu (účastník)',N'Interné ID účastníka');
@@ -78,7 +78,7 @@ INSERT INTO [dbo].[CATServicePatterns]([PatternLike],[PatternRegExp],[PatternDes
 INSERT INTO [dbo].[CATServicePatterns]([PatternLike],[PatternRegExp],[PatternDescription],[FKServiceID],[Entity],[Explanation],[DatSelectMethod]) VALUES('%/Folios(%)/?&$select=Id,ValidTo,No&$expand=CadastralUnit%',null,'2.1.5',5,null  ,N'Zoznam právnych vzťahov na LV nepriradených k účastníkovi',N'Interné ID listu vlastníctva');
 INSERT INTO [dbo].[CATServicePatterns]([PatternLike],[PatternRegExp],[PatternDescription],[FKServiceID],[Entity],[Explanation],[DatSelectMethod]) VALUES('%/OwnershipRecords(%)/LegalRightRecords%',null,'2.1.5',5,null  ,N'Zoznam právnych vzťahov na LV nepriradených k účastníkovi',N'Interné ID listu vlastníctva');
 -- Insert service A 2.1.6
-INSERT INTO [dbo].[CATServiceParameters]([PKServiceID],[ServiceCode],[ServiceDescription],[ServiceBasicPrice]) VALUES(6,'2.1.6',N'A.2.1.6 - Poskytnutie informácie z KN o registri územno technických jednotiek',0.001);
+INSERT INTO [dbo].[CATServiceParameters]([PKServiceID],[ServiceCode],[ServiceDescription],[ServiceBasicPrice]) VALUES(6,'2.1.6',N'A.2.1.6 - Poskytnutie informácie z KN o registri územno technických jednotiek',0.1);
 -- Insert pattern
 INSERT INTO [dbo].[CATServicePatterns]([PatternLike],[PatternRegExp],[PatternDescription],[FKServiceID],[Entity],[Explanation],[DatSelectMethod]) VALUES('%/CadastralUnits?$filter=Id eq%&$select%',null,'2.1.6',6,null  ,N'Register katastrálnych území',N'Interné ID k.ú.');
 INSERT INTO [dbo].[CATServicePatterns]([PatternLike],[PatternRegExp],[PatternDescription],[FKServiceID],[Entity],[Explanation],[DatSelectMethod]) VALUES('%/CadastralUnits?$filter=Code eq%&$select%',null,'2.1.6',6,null  ,N'Register katastrálnych území',N'Kód k.ú.');
@@ -104,7 +104,7 @@ INSERT INTO [dbo].[CATServicePatterns]([PatternLike],[PatternRegExp],[PatternDes
 INSERT INTO [dbo].[CATServicePatterns]([PatternLike],[PatternRegExp],[PatternDescription],[FKServiceID],[Entity],[Explanation],[DatSelectMethod]) VALUES('%/OriginalCadastralUnits?$filter=Id gt 0&$select%',null,'2.1.6',6,null  ,N'Register pôvodných katastrálnych území',N'Všetky pôvodné k.ú.');
 
 -- Insert service A 2.1.7
-INSERT INTO [dbo].[CATServiceParameters]([PKServiceID],[ServiceCode],[ServiceDescription],[ServiceBasicPrice]) VALUES(7,'2.1.7',N'A.2.1.7 - Poskytnutie informácie z KN o číselníkoch',0.001);
+INSERT INTO [dbo].[CATServiceParameters]([PKServiceID],[ServiceCode],[ServiceDescription],[ServiceBasicPrice]) VALUES(7,'2.1.7',N'A.2.1.7 - Poskytnutie informácie z KN o číselníkoch',0.1);
 -- Insert pattern
 INSERT INTO [dbo].[CATServicePatterns]([PatternLike],[PatternRegExp],[PatternDescription],[FKServiceID],[Entity],[Explanation],[DatSelectMethod]) VALUES('%/ProtectedProperties?$filter=Id gt 0&$select%',null,'2.1.7',7,null  ,N'Druh chránenej nehnuteľnosti',N'Všetky hodnoty');
 INSERT INTO [dbo].[CATServicePatterns]([PatternLike],[PatternRegExp],[PatternDescription],[FKServiceID],[Entity],[Explanation],[DatSelectMethod]) VALUES('%/NonresidentialSpaceTypes?$filter=Id gt 0&$select%',null,'2.1.7',7,null  ,N'Druh nebytového priestoru',N'Všetky hodnoty');
@@ -122,7 +122,7 @@ INSERT INTO [dbo].[CATServicePatterns]([PatternLike],[PatternRegExp],[PatternDes
 INSERT INTO [dbo].[CATServicePatterns]([PatternLike],[PatternRegExp],[PatternDescription],[FKServiceID],[Entity],[Explanation],[DatSelectMethod]) VALUES('%/ConstructionLocalizations?$filter=Id gt 0&$select%',null,'2.1.7',7,null  ,N'Umiestnenie stavby',N'Všetky hodnoty');
 
 -- Insert service A 2.1.9
-INSERT INTO [dbo].[CATServiceParameters]([PKServiceID],[ServiceCode],[ServiceDescription],[ServiceBasicPrice]) VALUES(9,'2.1.9',N'A.2.1.9 - Poskytnutie výpisu z listu vlastníctva z KN',0.001);
+INSERT INTO [dbo].[CATServiceParameters]([PKServiceID],[ServiceCode],[ServiceDescription],[ServiceBasicPrice]) VALUES(9,'2.1.9',N'A.2.1.9 - Poskytnutie výpisu z listu vlastníctva z KN',0.1);
 -- Insert pattern
 INSERT INTO [dbo].[CATServicePatterns]([PatternLike],[PatternRegExp],[PatternDescription],[FKServiceID],[Entity],[Explanation],[DatSelectMethod]) VALUES('%/Folios/?$filter=Id eq%&$select%',null,'2.1.9',9,null  ,N'Hlavička výpisu z listu vlastníctva',N'Interné ID listu vlastníctva');
 INSERT INTO [dbo].[CATServicePatterns]([PatternLike],[PatternRegExp],[PatternDescription],[FKServiceID],[Entity],[Explanation],[DatSelectMethod]) VALUES('%/Folios/?$filter=CadastralUnit/Code eq% and No eq%&$select%',null,'2.1.9',9,null  ,N'Hlavička výpisu z listu vlastníctva',N'Kód k.ú. + číslo listu vlastníctva');
@@ -142,7 +142,7 @@ INSERT INTO [dbo].[CATServicePatterns]([PatternLike],[PatternRegExp],[PatternDes
 INSERT INTO [dbo].[CATServicePatterns]([PatternLike],[PatternRegExp],[PatternDescription],[FKServiceID],[Entity],[Explanation],[DatSelectMethod]) VALUES('%/GenerateRegister?%',null,'2.1.9.1',9,null  ,N'Vizualizácia výpisu z listu vlastníctva',N'Export csv');
 
 -- Insert service A 2.1.13
-INSERT INTO [dbo].[CATServiceParameters]([PKServiceID],[ServiceCode],[ServiceDescription],[ServiceBasicPrice]) VALUES(13,'2.1.13',N'A.2.1.13 - Poskytnutie informácie z KN o súpise parciel z registra C a E',0.001);
+INSERT INTO [dbo].[CATServiceParameters]([PKServiceID],[ServiceCode],[ServiceDescription],[ServiceBasicPrice]) VALUES(13,'2.1.13',N'A.2.1.13 - Poskytnutie informácie z KN o súpise parciel z registra C a E',0.1);
 -- Insert pattern
 INSERT INTO [dbo].[CATServicePatterns]([PatternLike],[PatternRegExp],[PatternDescription],[FKServiceID],[Entity],[Explanation],[DatSelectMethod]) VALUES('%/ParcelsC/?&$filter=CadastralUnit/Code eq% and StatusId ne 3&$select%',null,'2.1.13',13,null  ,N'Súpis parciel registra C',N'Kód k.ú.');
 INSERT INTO [dbo].[CATServicePatterns]([PatternLike],[PatternRegExp],[PatternDescription],[FKServiceID],[Entity],[Explanation],[DatSelectMethod]) VALUES('%/ParcelsC/?&$filter=Municipality/Code eq% and StatusId ne 3&$select%',null,'2.1.13',13,null  ,N'Súpis parciel registra C',N'Kód obce');
@@ -155,7 +155,7 @@ INSERT INTO [dbo].[CATServicePatterns]([PatternLike],[PatternRegExp],[PatternDes
 INSERT INTO [dbo].[CATServicePatterns]([PatternLike],[PatternRegExp],[PatternDescription],[FKServiceID],[Entity],[Explanation],[DatSelectMethod]) VALUES('%/ParcelsE/?=&$filter=Municipality/Code eq% and StatusId ne 3&$select%',null,'2.1.13',13,null  ,N'Súpis parciel registra E',N'Kód obce');
 
 -- Insert service A 2.1.14
-INSERT INTO [dbo].[CATServiceParameters]([PKServiceID],[ServiceCode],[ServiceDescription],[ServiceBasicPrice]) VALUES(14,'2.1.14',N'A.2.1.14 - Poskytnutie informácie z KN o súpise stavieb',0.001);
+INSERT INTO [dbo].[CATServiceParameters]([PKServiceID],[ServiceCode],[ServiceDescription],[ServiceBasicPrice]) VALUES(14,'2.1.14',N'A.2.1.14 - Poskytnutie informácie z KN o súpise stavieb',0.1);
 -- Insert pattern
 INSERT INTO [dbo].[CATServicePatterns]([PatternLike],[PatternRegExp],[PatternDescription],[FKServiceID],[Entity],[Explanation],[DatSelectMethod]) VALUES('%/Spaces/?&$filter=CadastralUnit/Code%select=Id%',null,'2.1.14',14,null  ,N'Súpis bytov a nebytových priestorov',N'Kód k.ú.');
 INSERT INTO [dbo].[CATServicePatterns]([PatternLike],[PatternRegExp],[PatternDescription],[FKServiceID],[Entity],[Explanation],[DatSelectMethod]) VALUES('%/Spaces/?&$filter=Municipality/Code%select=Id%',null,'2.1.14',14,null, N'Súpis bytov a nebytových priestorov',N'Kód obce');    
@@ -167,7 +167,7 @@ INSERT INTO [dbo].[CATServicePatterns]([PatternLike],[PatternRegExp],[PatternDes
 INSERT INTO [dbo].[CATServicePatterns]([PatternLike],[PatternRegExp],[PatternDescription],[FKServiceID],[Entity],[Explanation],[DatSelectMethod]) VALUES('%/Constructions/?=&$filter=Municipality/Code%select=Id%',null,'2.1.14',14,null, N'Súpis stavieb', N'Kód obce');  
 
 -- Insert service A 2.1.15
-INSERT INTO [dbo].[CATServiceParameters]([PKServiceID],[ServiceCode],[ServiceDescription],[ServiceBasicPrice]) VALUES(15,'2.1.15',N'A.2.1.15 - Poskytnutie informácie z KN o súpise vlastníkov',0.001);
+INSERT INTO [dbo].[CATServiceParameters]([PKServiceID],[ServiceCode],[ServiceDescription],[ServiceBasicPrice]) VALUES(15,'2.1.15',N'A.2.1.15 - Poskytnutie informácie z KN o súpise vlastníkov',0.1);
 -- Insert pattern
 INSERT INTO [dbo].[CATServicePatterns]([PatternLike],[PatternRegExp],[PatternDescription],[FKServiceID],[Entity],[Explanation],[DatSelectMethod]) VALUES('%/Subjects?$filter=Participants/any(p: p/CadastralUnitId eq% and p/Type/Code eq 1)&$select%',null,'2.1.15',15,null  ,N'Súpis vlastníkov - FOPO',N'Interné ID k.ú.');
 INSERT INTO [dbo].[CATServicePatterns]([PatternLike],[PatternRegExp],[PatternDescription],[FKServiceID],[Entity],[Explanation],[DatSelectMethod]) VALUES('%/Subjects?$filter=Participants/any(p: p/CadastralUnit/Code eq% and p/Type/Code eq 1)&$select%',null,'2.1.15',15,null  ,N'Súpis vlastníkov - FOPO',N'Kód k.ú.');
@@ -179,7 +179,7 @@ INSERT INTO [dbo].[CATServicePatterns]([PatternLike],[PatternRegExp],[PatternDes
 INSERT INTO [dbo].[CATServicePatterns]([PatternLike],[PatternRegExp],[PatternDescription],[FKServiceID],[Entity],[Explanation],[DatSelectMethod]) VALUES('%/Participants?$filter=Type/Code eq 1 and Municipality/Code eq%&$select%',null,'2.1.15',15,null  ,N'Súpis vlastníkov - účastníci',N'Kód obce');
 
 -- Insert service A 2.1.16
-INSERT INTO [dbo].[CATServiceParameters]([PKServiceID],[ServiceCode],[ServiceDescription],[ServiceBasicPrice]) VALUES(16,'2.1.16',N'A.2.1.16 - Poskytnutie informácie z KN o súpise správcov',0.001);
+INSERT INTO [dbo].[CATServiceParameters]([PKServiceID],[ServiceCode],[ServiceDescription],[ServiceBasicPrice]) VALUES(16,'2.1.16',N'A.2.1.16 - Poskytnutie informácie z KN o súpise správcov',0.1);
 -- Insert pattern
 INSERT INTO [dbo].[CATServicePatterns]([PatternLike],[PatternRegExp],[PatternDescription],[FKServiceID],[Entity],[Explanation],[DatSelectMethod]) VALUES('%/Subjects?$filter=Participants/any(p: p/CadastralUnitId eq% and p/Type/Code eq 2)&$select%',null,'2.1.16',16,null  ,N'Súpis správcov - FOPO',N'Interné ID k.ú.');
 INSERT INTO [dbo].[CATServicePatterns]([PatternLike],[PatternRegExp],[PatternDescription],[FKServiceID],[Entity],[Explanation],[DatSelectMethod]) VALUES('%/Subjects?$filter=Participants/any(p: p/CadastralUnit/Code eq% and p/Type/Code eq 2)&$select%',null,'2.1.16',16,null  ,N'Súpis správcov - FOPO',N'Kód k.ú.');
@@ -191,7 +191,7 @@ INSERT INTO [dbo].[CATServicePatterns]([PatternLike],[PatternRegExp],[PatternDes
 INSERT INTO [dbo].[CATServicePatterns]([PatternLike],[PatternRegExp],[PatternDescription],[FKServiceID],[Entity],[Explanation],[DatSelectMethod]) VALUES('%/Participants?$filter=Type/Code eq 2 and Municipality/Code eq%&$select%',null,'2.1.16',16,null  ,N'Súpis správcov - účastníci',N'Kód obce');
 
 -- Insert service A 2.1.17
-INSERT INTO [dbo].[CATServiceParameters]([PKServiceID],[ServiceCode],[ServiceDescription],[ServiceBasicPrice]) VALUES(17,'2.1.17',N'A.2.1.17 - Poskytnutie informácie z KN o súpise nájomcov',0.001);
+INSERT INTO [dbo].[CATServiceParameters]([PKServiceID],[ServiceCode],[ServiceDescription],[ServiceBasicPrice]) VALUES(17,'2.1.17',N'A.2.1.17 - Poskytnutie informácie z KN o súpise nájomcov',0.1);
 -- Insert pattern
 INSERT INTO [dbo].[CATServicePatterns]([PatternLike],[PatternRegExp],[PatternDescription],[FKServiceID],[Entity],[Explanation],[DatSelectMethod]) VALUES('%/Subjects?$filter=Participants/any(p: p/CadastralUnitId eq% and p/Type/Code eq 3)&$select%',null,'2.1.17',17,null  ,N'Súpis nájomcov - FOPO',N'Interné ID k.ú.');
 INSERT INTO [dbo].[CATServicePatterns]([PatternLike],[PatternRegExp],[PatternDescription],[FKServiceID],[Entity],[Explanation],[DatSelectMethod]) VALUES('%/Subjects?$filter=Participants/any(p: p/CadastralUnit/Code eq% and p/Type/Code eq 3)&$select%',null,'2.1.17',17,null  ,N'Súpis nájomcov - FOPO',N'Kód k.ú.');
@@ -203,7 +203,7 @@ INSERT INTO [dbo].[CATServicePatterns]([PatternLike],[PatternRegExp],[PatternDes
 INSERT INTO [dbo].[CATServicePatterns]([PatternLike],[PatternRegExp],[PatternDescription],[FKServiceID],[Entity],[Explanation],[DatSelectMethod]) VALUES('%/Participants?$filter=Type/Code eq 3 and Municipality/Code eq%&$select%',null,'2.1.17',17,null  ,N'Súpis nájomcov - účastníci',N'Kód obce');
 
 -- Insert service A 2.1.18
-INSERT INTO [dbo].[CATServiceParameters]([PKServiceID],[ServiceCode],[ServiceDescription],[ServiceBasicPrice]) VALUES(18,'2.1.18',N'A.2.1.18 - Poskytnutie informácie z KN o súpise iných oprávnených osôb',0.001);
+INSERT INTO [dbo].[CATServiceParameters]([PKServiceID],[ServiceCode],[ServiceDescription],[ServiceBasicPrice]) VALUES(18,'2.1.18',N'A.2.1.18 - Poskytnutie informácie z KN o súpise iných oprávnených osôb',0.1);
 -- Insert pattern
 INSERT INTO [dbo].[CATServicePatterns]([PatternLike],[PatternRegExp],[PatternDescription],[FKServiceID],[Entity],[Explanation],[DatSelectMethod]) VALUES('%/Subjects?$filter=Participants/any(p: p/CadastralUnitId eq% and p/Type/Code eq 4)&$select%',null,'2.1.18',18,null  ,N'Súpis iných oprávnených osôb - FOPO',N'Interné ID k.ú.');
 INSERT INTO [dbo].[CATServicePatterns]([PatternLike],[PatternRegExp],[PatternDescription],[FKServiceID],[Entity],[Explanation],[DatSelectMethod]) VALUES('%/Subjects?$filter=Participants/any(p: p/CadastralUnit/Code eq% and p/Type/Code eq 4)&$select%',null,'2.1.18',18,null  ,N'Súpis iných oprávnených osôb - FOPO',N'Kód k.ú.');
@@ -215,14 +215,14 @@ INSERT INTO [dbo].[CATServicePatterns]([PatternLike],[PatternRegExp],[PatternDes
 INSERT INTO [dbo].[CATServicePatterns]([PatternLike],[PatternRegExp],[PatternDescription],[FKServiceID],[Entity],[Explanation],[DatSelectMethod]) VALUES('%/Participants?$filter=Type/Code eq 4 and Municipality/Code eq%&$select%',null,'2.1.18',18,null  ,N'Súpis iných oprávnených osôb - účastníci',N'Kód obce');
 
 -- Insert service A 2.1.20
-INSERT INTO [dbo].[CATServiceParameters]([PKServiceID],[ServiceCode],[ServiceDescription],[ServiceBasicPrice]) VALUES(20,'2.1.20',N'A.2.1.20 - Poskytnutie informácie z KN na vybrané geodetické činnosti v KN',0.001);
+INSERT INTO [dbo].[CATServiceParameters]([PKServiceID],[ServiceCode],[ServiceDescription],[ServiceBasicPrice]) VALUES(20,'2.1.20',N'A.2.1.20 - Poskytnutie informácie z KN na vybrané geodetické činnosti v KN',0.1);
 -- Insert pattern
 INSERT INTO [dbo].[CATServicePatterns]([PatternLike],[PatternRegExp],[PatternDescription],[FKServiceID],[Entity],[Explanation],[DatSelectMethod]) VALUES('%/sk/Vgi/Download/%',null,'2.1.20',20,null  ,N'Mapy',N'ID mapy');
 INSERT INTO [dbo].[CATServicePatterns]([PatternLike],[PatternRegExp],[PatternDescription],[FKServiceID],[Entity],[Explanation],[DatSelectMethod]) VALUES('%/ParcelMaps?$filter=CadastralUnit/Code eq%&$select%',null,'2.1.20',20,null  ,N'Zoznam máp vo formáte VGI',N'Kód k.ú.');
 
 
 -- Insert service IOM
-INSERT INTO [dbo].[CATServiceParameters]([PKServiceID],[ServiceCode],[ServiceDescription],[ServiceBasicPrice]) VALUES(30,'IOM',N'IOM DeliverRequest - Prijatie žiadosti Konzumenta o výpis LV z LEGACY systému KN Poskytovateľa',0.001);
+INSERT INTO [dbo].[CATServiceParameters]([PKServiceID],[ServiceCode],[ServiceDescription],[ServiceBasicPrice]) VALUES(30,'IOM',N'IOM DeliverRequest - Prijatie žiadosti Konzumenta o výpis LV z LEGACY systému KN Poskytovateľa',0.1);
 -- Insert pattern
 INSERT INTO [dbo].[CATServicePatterns]([PatternLike],[PatternRegExp],[PatternDescription],[FKServiceID],[Entity],[Explanation],[DatSelectMethod]) VALUES('%/soap%',null,'IOM',30,null  ,N'SOAP endpoint web service',N'soap');
 

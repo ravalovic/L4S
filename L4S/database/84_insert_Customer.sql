@@ -21,7 +21,8 @@ INSERT INTO [dbo].[CATCustomerData]
            ,[AddressCity]
            ,[AddressZipCode]
            ,[AddressCountry]
-           )
+		   ,[Customer_TAXID]
+		    )
      VALUES
            ('PO'
            ,'TestComp'
@@ -32,6 +33,7 @@ INSERT INTO [dbo].[CATCustomerData]
            ,'Vrbove' 
            ,'92203'
            ,'Slovensko'
+		   ,'1112223334'
         )
 GO
 
@@ -47,6 +49,8 @@ INSERT INTO [dbo].[CATCustomerData]
            ,[AddressZipCode]
            ,[AddressCountry]
            ,[ContactEmail]
+		   ,[Customer_TAXID]
+		   ,[Customer_VATID]
            )
      VALUES
            ('FO'
@@ -59,7 +63,9 @@ INSERT INTO [dbo].[CATCustomerData]
            ,'Piestany'
            ,'92101',
 		   'Slovensko',
-		   'beda@travnicek.com'
+		   'beda@travnicek.com',
+		   '1212121212',
+		   'CZ1212121212'
         )
 GO
 USE [log4service]
@@ -75,6 +81,8 @@ INSERT INTO [dbo].[CATCustomerData]
            ,[AddressCity]
            ,[AddressZipCode]
            ,[AddressCountry]
+		   ,[Customer_TAXID]
+		   ,[Customer_VATID]
            )
      VALUES
            ('PO'
@@ -85,7 +93,9 @@ INSERT INTO [dbo].[CATCustomerData]
            ,'145/15'
            ,'Vrbove' 
            ,'92203'
-           ,'Slovensko'
+           ,'Slovensko',
+		   '1313131313',
+		   'SK1313131313'
         )
 GO
 
@@ -101,6 +111,8 @@ INSERT INTO [dbo].[CATCustomerData]
            ,[AddressZipCode]
            ,[AddressCountry]
            ,[ContactEmail]
+		   ,[Customer_TAXID]
+		   
            )
      VALUES
            ('FO'
@@ -113,7 +125,8 @@ INSERT INTO [dbo].[CATCustomerData]
            ,'Piestany'
            ,'92101',
 		   'Slovensko',
-		   'lada@travnicek.com'
+		   'lada@travnicek.com',
+		   '1444444444'
         )
 GO
 

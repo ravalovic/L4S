@@ -207,13 +207,13 @@
   <data name="Customer_CompanyName" xml:space="preserve">
     <value>Názov</value>
   </data>
-  <data name="Customer_CompanyTAXID" xml:space="preserve">
+  <data name="Customer_TAXID" xml:space="preserve">
     <value>DIČ</value>
   </data>
   <data name="Customer_CompanyType" xml:space="preserve">
     <value>Typ</value>
   </data>
-  <data name="Customer_CompanyVATID" xml:space="preserve">
+  <data name="Customer_VATID" xml:space="preserve">
     <value>IČ DPH</value>
   </data>
   <data name="Customer_ContactEmail" xml:space="preserve">
@@ -255,14 +255,8 @@
   <data name="Customer_IndividualLastName" xml:space="preserve">
     <value>Priezvisko</value>
   </data>
-  <data name="Customer_IndividualTAXID" xml:space="preserve">
-    <value>DIČ</value>
-  </data>
   <data name="Customer_IndividualTitle" xml:space="preserve">
     <value>Titul</value>
-  </data>
-  <data name="Customer_IndividualVATID" xml:space="preserve">
-    <value>IČ DPH</value>
   </data>
   <data name="Email" xml:space="preserve">
     <value>Email</value>

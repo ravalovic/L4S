@@ -287,7 +287,7 @@ namespace WebPortal.Controllers
                 _db.CATCustomerData.Add(cAtCustomerData);
                 _db.SaveChanges();
             }
-
+            var errors = ModelState.Values.SelectMany(v => v.Errors);
             if (cAtCustomerData.CustomerType == "PO") return RedirectToAction("CompanyList");
             return RedirectToAction("IndividualList");
         }

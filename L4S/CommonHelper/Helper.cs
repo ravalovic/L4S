@@ -42,6 +42,7 @@ namespace CommonHelper
                 if (result) break;
             }
             return result;
+           
         }
 
         public enum Action

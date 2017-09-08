@@ -394,29 +394,11 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to DIČ.
-        /// </summary>
-        public static string Customer_CompanyTAXID {
-            get {
-                return ResourceManager.GetString("Customer_CompanyTAXID", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Typ.
         /// </summary>
         public static string Customer_CompanyType {
             get {
                 return ResourceManager.GetString("Customer_CompanyType", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to IČ DPH.
-        /// </summary>
-        public static string Customer_CompanyVATID {
-            get {
-                return ResourceManager.GetString("Customer_CompanyVATID", resourceCulture);
             }
         }
         
@@ -565,29 +547,11 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to DIČ.
-        /// </summary>
-        public static string Customer_IndividualTAXID {
-            get {
-                return ResourceManager.GetString("Customer_IndividualTAXID", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Titul.
         /// </summary>
         public static string Customer_IndividualTitle {
             get {
                 return ResourceManager.GetString("Customer_IndividualTitle", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to IČ DPH.
-        /// </summary>
-        public static string Customer_IndividualVATID {
-            get {
-                return ResourceManager.GetString("Customer_IndividualVATID", resourceCulture);
             }
         }
         
@@ -606,6 +570,24 @@ namespace Resources {
         public static string Customer_Service_Name {
             get {
                 return ResourceManager.GetString("Customer_Service_Name", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to DIČ.
+        /// </summary>
+        public static string Customer_TAXID {
+            get {
+                return ResourceManager.GetString("Customer_TAXID", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to IČ DPH.
+        /// </summary>
+        public static string Customer_VATID {
+            get {
+                return ResourceManager.GetString("Customer_VATID", resourceCulture);
             }
         }
         

@@ -30,27 +30,38 @@ namespace WebPortal
         public string CompanyName { get; set; }
 
         [StringLength(50)]
-        [Required(ErrorMessage = "Právna forma je povinná")]
+        //[Required(ErrorMessage = "Právna forma je povinná")]
+        [RegularExpression(@"^[^\s]+", ErrorMessage = "Právna forma je povinná")]
         [Display(Name = "Customer_CompanyType", ResourceType = typeof(Labels))]
         public string CompanyType { get; set; }
 
         [StringLength(20)]
-        [Required(ErrorMessage = "IČO je povinné")]
+        //[Required(ErrorMessage = "IČO je povinné")]
         [RegularExpression(@"^\d{6}(\d{2})?$", ErrorMessage = "Musí byť 6 alebo 8 číslic")]
         [Display(Name = "Customer_CompanyID", ResourceType = typeof(Labels))]
         public string CompanyID { get; set; }
 
+        //[StringLength(20)]
+        //[Required(ErrorMessage = "DIČ je povinné")]
+        //[RegularExpression(@"^\d{10}$", ErrorMessage = "Musí byť 10 číslic")]
+        //[Display(Name = "Customer_CompanyTAXID", ResourceType = typeof(Labels))]
+        //public string CompanyTAXID { get; set; }
+
         [StringLength(20)]
         [Required(ErrorMessage = "DIČ je povinné")]
         [RegularExpression(@"^\d{10}$", ErrorMessage = "Musí byť 10 číslic")]
-        [Display(Name = "Customer_CompanyTAXID", ResourceType = typeof(Labels))]
-        public string CompanyTAXID { get; set; }
+        [Display(Name = "Customer_TAXID", ResourceType = typeof(Labels))]
+        public string Customer_TAXID { get; set; }
+
+        //[StringLength(20)]
+        //[RegularExpression(@"^[A-Z][A-Z]\d{10}$", ErrorMessage = "Musí byť Kód krajiny a 10 číslic")]
+        //[Display(Name = "Customer_CompanyVATID", ResourceType = typeof(Labels))]
+        //public string CompanyVATID { get; set; }
 
         [StringLength(20)]
         [RegularExpression(@"^[A-Z][A-Z]\d{10}$", ErrorMessage = "Musí byť Kód krajiny a 10 číslic")]
-        [Display(Name = "Customer_CompanyVATID", ResourceType = typeof(Labels))]
-        public string CompanyVATID { get; set; }
-
+        [Display(Name = "Customer_VATID", ResourceType = typeof(Labels))]
+        public string Customer_VATID { get; set; }
 
         [StringLength(10)]
         [Display(Name = "Customer_IndividualTitle", ResourceType = typeof(Labels))]
@@ -68,16 +79,16 @@ namespace WebPortal
         [Display(Name = "Customer_IndividualID", ResourceType = typeof(Labels))]
         public string IndividualID { get; set; }
 
-        [StringLength(20)]
-        [Required(ErrorMessage = "DIČ je povinné")]
-        [RegularExpression(@"^\d{10}$", ErrorMessage = "Musí byť 10 číslic")]
-        [Display(Name = "Customer_IndividualTAXID", ResourceType = typeof(Labels))]
-        public string IndividualTAXID { get; set; }
+        //[StringLength(20)]
+        //[Required(ErrorMessage = "DIČ je povinné")]
+        //[RegularExpression(@"^\d{10}$", ErrorMessage = "Musí byť 10 číslic")]
+        //[Display(Name = "Customer_IndividualTAXID", ResourceType = typeof(Labels))]
+        //public string IndividualTAXID { get; set; }
 
-        [StringLength(20)]
-        [RegularExpression(@"^[A-Z][A-Z]\d{10}$", ErrorMessage = "Musí byť Kód krajiny a 10 číslic")]
-        [Display(Name = "Customer_IndividualVATID", ResourceType = typeof(Labels))]
-        public string IndividualVATID { get; set; }
+        //[StringLength(20)]
+        //[RegularExpression(@"^[A-Z][A-Z]\d{10}$", ErrorMessage = "Musí byť Kód krajiny a 10 číslic")]
+        //[Display(Name = "Customer_IndividualVATID", ResourceType = typeof(Labels))]
+        //public string IndividualVATID { get; set; }
 
         [StringLength(50)]
         [RegularExpression(@"^[A-Z][A-Z]\d{2}[ ]\d{4}[ ]\d{4}[ ]\d{4}[ ]\d{4}[ ]\d{4}|[A-Z][A-Z]\d{22}$", ErrorMessage = "IBAN v celku alebo s medzerami po 4 znakoch")]
