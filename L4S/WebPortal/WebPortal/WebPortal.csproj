@@ -378,6 +378,7 @@
     <Compile Include="Entities\ARCHProcessStatus.cs" />
     <Compile Include="Entities\ARCHInputFileDuplicity.cs" />
     <Compile Include="Entities\ARCHInputFileInfo.cs" />
+    <Compile Include="Entities\CATInvoiceByMonth.cs" />
     <Compile Include="Entities\view_CustomerMontlyTotalInvoice.cs" />
     <Compile Include="Entities\GAPAnalyze.cs" />
     <Compile Include="Entities\CATSummaryInvoice.cs" />
@@ -400,6 +401,7 @@
     <Compile Include="Entities\STInputFileInfo.cs" />
     <Compile Include="Entities\STLogImport.cs" />
     <Compile Include="Entities\view_DailyData.cs" />
+    <Compile Include="Entities\CATInvoiceByDay.cs" />
     <Compile Include="Entities\view_MonthlyData.cs" />
     <Compile Include="Entities\view_DetailFromMonthly.cs" />
     <Compile Include="Entities\view_InvoiceByDay.cs" />
@@ -494,6 +496,10 @@
     <Compile Include="Migrations\201709081516482_Version22.cs" />
     <Compile Include="Migrations\201709081516482_Version22.Designer.cs">
       <DependentUpon>201709081516482_Version22.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201709090002225_Version23.cs" />
+    <Compile Include="Migrations\201709090002225_Version23.Designer.cs">
+      <DependentUpon>201709090002225_Version23.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
@@ -967,6 +973,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201709081516482_Version22.resx">
       <DependentUpon>201709081516482_Version22.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201709090002225_Version23.resx">
+      <DependentUpon>201709090002225_Version23.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Resources\Labels.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>

@@ -8,7 +8,7 @@ update CATCustomerMonthlyData
 set TCActive = 0;
 
 update [CONFGeneralSettings]
-set ParamValue = null
+set ParamValue = ''
 where ParamName='LastInvoiceGenerate';
 
 update [CONFGeneralSettings]

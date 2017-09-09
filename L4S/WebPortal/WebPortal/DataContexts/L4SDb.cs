@@ -49,6 +49,8 @@ namespace WebPortal.DataContexts
         public DbSet<CATSummaryInvoice> CATSummaryInvoice { get; set; }
         public DbSet<CONFGeneralSettings> CONFGeneralSettings { get; set; }
         public DbSet<GAPAnalyze> GAPAnalyze { get; set; }
+        public DbSet<CATInvoiceByDay> CATInvoiceByDay { get; set; }
+        public DbSet<CATInvoiceByMonth> CATInvoiceByMonth { get; set; }
 
 
         //archive tables
