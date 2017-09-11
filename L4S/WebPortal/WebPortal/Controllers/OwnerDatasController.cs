@@ -3,11 +3,13 @@ using System.Data.Entity;
 using System.Linq;
 using System.Net;
 using System.Web.Mvc;
+using WebPortal.Common;
 using WebPortal.Models;
 using WebPortal.DataContexts;
 
 namespace WebPortal.Controllers
 {
+    [Helper.CheckSessionOutAttribute]
     [Authorize] //!!! important only Authorize users can call this controller
     public class OwnerDatasController : Controller
     {

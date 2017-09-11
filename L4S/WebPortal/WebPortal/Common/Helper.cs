@@ -1,11 +1,46 @@
 ﻿using Microsoft.Ajax.Utilities;
+using Microsoft.AspNet.Identity.Owin;
 using System;
 using System.Text.RegularExpressions;
+using System.Web;
+using System.Web.Mvc;
+using System.Web.Security;
+
 
 namespace WebPortal.Common
 {
     public class Helper
     {
+        [AttributeUsage(AttributeTargets.Class, Inherited = true, AllowMultiple = false)]
+        public class CheckSessionOutAttribute : ActionFilterAttribute
+        {
+            public override void OnActionExecuting(ActionExecutingContext filterContext)
+            {
+                System.Web.HttpContext context = HttpContext.Current;
+                if (context.Session != null)
+                {
+                    if (context.Session.IsNewSession)
+                    {
+                        string sessionCookie = context.Request.Headers["Cookie"];
+
+                        if ((sessionCookie != null) && (sessionCookie.IndexOf("ASP.NET_SessionId") >= 0))
+                        {
+                            FormsAuthentication.SignOut();
+                            string redirectTo;
+                            if (!string.IsNullOrEmpty(context.Request.RawUrl))
+                            {
+                                redirectTo = string.Format("~/Account/Login?ReturnUrl={0}", HttpUtility.UrlEncode(context.Request.RawUrl));
+                                filterContext.Result = new RedirectResult(redirectTo);
+                                return;
+                            }
+
+                        }
+                    }
+                }
+
+                base.OnActionExecuting(filterContext);
+            }
+        }
         public static void SetUpFilterValues(ref string search, ref string fDate, ref string tDate, string currFilter,
             string currFrom, string currTo, out int searchId, out DateTime fromDate, out DateTime toDate, int? pageNum)
         {

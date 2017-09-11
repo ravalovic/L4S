@@ -11,6 +11,7 @@ using PagedList;
 
 namespace WebPortal.Controllers
 {
+    [Helper.CheckSessionOutAttribute]
     [Authorize] //!!! important only Authorize users can call this controller
     public class LogsOfServicesController : Controller
     {

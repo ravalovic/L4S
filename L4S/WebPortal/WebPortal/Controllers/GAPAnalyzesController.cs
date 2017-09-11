@@ -1,9 +1,11 @@
 ﻿using System.Linq;
 using System.Web.Mvc;
+using WebPortal.Common;
 using WebPortal.DataContexts;
 
 namespace WebPortal.Controllers
 {
+    [Helper.CheckSessionOutAttribute]
     [Authorize] //!!! important only Authorize users can call this controller
     public class GAPAnalyzesController : Controller
     {

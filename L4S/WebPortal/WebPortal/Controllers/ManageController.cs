@@ -5,10 +5,12 @@ using System.Web.Mvc;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
+using WebPortal.Common;
 using WebPortal.Models;
 
 namespace WebPortal.Controllers
 {
+    [Helper.CheckSessionOutAttribute]
     [Authorize] //!!! important only Authorize users can call this controller
     public class ManageController : Controller
     {
