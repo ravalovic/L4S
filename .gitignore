@@ -211,3 +211,5 @@ GeneratedArtifacts/
 _Pvt_Extensions/
 ModelManifest.xml
 /L4S/server.users
+/L4S/WebPortal/WebPortal/Models/CompanyViewModel.cs
+/L4S/WebPortal/WebPortal/Models/IndividualViewModel.cs

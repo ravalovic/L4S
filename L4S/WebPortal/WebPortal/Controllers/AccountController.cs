@@ -12,6 +12,7 @@ using Microsoft.AspNet.Identity.EntityFramework;
 using System.Net;
 using System;
 using Resources;
+using System.Security.Claims;
 
 namespace WebPortal.Controllers
 {
@@ -26,6 +27,8 @@ namespace WebPortal.Controllers
         public AccountController()
         {
         }
+
+
         public AccountController(ApplicationUserManager userManager, ApplicationSignInManager signInManager)
         {
             UserManager = userManager;
@@ -271,6 +274,18 @@ namespace WebPortal.Controllers
                                 AddErrors(result);
                             }
                         }
+
+                        //refresh user roles,  update changes immediately
+                        //sign in the user again to rebuild the user cookie:
+                        if( User.Identity.GetUserId()==user.Id)
+                        {
+                            SignInManager.SignIn(user, false, false);
+                        }
+
+                        //update SecurityStamp not working
+                        //SignInManager.UserManager.UpdateSecurityStampAsync(user.Id);
+
+
                     }
                     else // update user error
                     {
@@ -280,10 +295,10 @@ namespace WebPortal.Controllers
             }
 
             if (ModelState.IsValid) { TempData["ModelStateOk"] = "Údaje boli zmenené."; } //return ok
-            
+
             TempData["ModelState"] = ModelState;
 
-            if (model.UserRoles==null) // return to Home/Index ...pravdepodobne volane z uvodnej stranky
+            if (model.UserRoles == null) // return to Home/Index ...pravdepodobne volane z uvodnej stranky
             {
                 return RedirectToAction("Index", "Home");
             }
@@ -291,7 +306,7 @@ namespace WebPortal.Controllers
         }
 
 
- 
+
         // POST: /Account/LogOff
         [HttpPost]
         [ValidateAntiForgeryToken]
