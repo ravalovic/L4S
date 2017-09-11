@@ -4,11 +4,13 @@ using System.Data.Entity;
 using System.Linq;
 using System.Net;
 using System.Web.Mvc;
+using WebPortal.Common;
 using WebPortal.DataContexts;
 using WebPortal.Models;
 
 namespace WebPortal.Controllers
 {
+    [Helper.CheckSessionOutAttribute]
     [Authorize] //!!! important only Authorize users can call this controller
     public class PatternsController : Controller
     {

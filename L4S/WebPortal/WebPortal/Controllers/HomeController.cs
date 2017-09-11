@@ -1,8 +1,8 @@
 ﻿using System.Web.Mvc;
+using WebPortal.Common;
 
 namespace WebPortal.Controllers
 {
-
     public class HomeController : Controller
     {
         public ActionResult Index()

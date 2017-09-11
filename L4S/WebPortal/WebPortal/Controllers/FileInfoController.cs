@@ -14,6 +14,7 @@ using DoddleReport.Writers;
 
 namespace WebPortal.Controllers
 {
+    [Helper.CheckSessionOutAttribute]
     [Authorize] //!!! important only Authorize users can call this controller
     public class FileInfoController : Controller
     {
@@ -22,6 +23,7 @@ namespace WebPortal.Controllers
         private List<STInputFileInfo> _model;
         private Pager _pager;
         // GET: FileInfo
+        
         public ActionResult Index(int? page, string insertDateFrom, string insertDateTo, string searchText, string currentFilter, string currentFrom, string currentTo)
         {
             int searchId;

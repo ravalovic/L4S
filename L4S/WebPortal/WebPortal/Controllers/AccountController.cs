@@ -12,10 +12,11 @@ using Microsoft.AspNet.Identity.EntityFramework;
 using System.Net;
 using System;
 using Resources;
+using WebPortal.Common;
 
 namespace WebPortal.Controllers
 {
-   
+    [Helper.CheckSessionOutAttribute]
     [Authorize] //!!! important only Authorize users can call this controller
     public class AccountController : Controller
     {
