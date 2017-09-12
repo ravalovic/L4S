@@ -54,14 +54,9 @@ namespace WebPortal.Controllers
                 return HttpNotFound();
             }
 
-            //if (model.CustomerType == "PO") ViewBag.CustomerType = 1;
-            //else ViewBag.CustomerType = 2;
-
             _pager = new Pager(1, page);
             var pageList = new StaticPagedList<CATCustomerData>(dataList, _pager.CurrentPage, _pager.PageSize, _pager.TotalItems);
-            return View("CompanyList", pageList);
-
-            //return View("Details", cATCustomerData);          
+            return View("CompanyList", pageList);      
         }
 
         // GET: Customer/Services/5
@@ -81,8 +76,6 @@ namespace WebPortal.Controllers
 
             //get list of all services checked, unchecked for customer
             CustomerViewModel model = new CustomerViewModel(customer); 
-            //if (customer.CustomerType == "PO") ViewBag.CustomerType = 1;
-            //else ViewBag.CustomerType = 2;
 
             return View("Details", model);
         }
@@ -103,9 +96,6 @@ namespace WebPortal.Controllers
             }
 
             CustomerViewModel model = new CustomerViewModel(cAtCustomerData);
-            //if (cAtCustomerData.CustomerType == "PO") ViewBag.CustomerType = 1;
-            //else ViewBag.CustomerType = 2;
-
             model.Services = null; //show only identifier
             return View("Details", model);
         }
@@ -346,17 +336,6 @@ namespace WebPortal.Controllers
             DeleteModel model = new DeleteModel(cAtCustomerData.PKCustomerDataID,
                 cAtCustomerData.IndividualFirstName + ' ' + cAtCustomerData.IndividualLastName);
             return PartialView("_deleteModal", model);
-
-            //if (id == null)
-            //{
-            //    return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            //}
-            //CATCustomerData cATCustomerData = db.CATCustomerData.Find(id);
-            //if (cATCustomerData == null)
-            //{
-            //    return HttpNotFound();
-            //}
-            //return PartialView("_Delete", cATCustomerData);
         }
 
         // POST: Customer/Delete/5
@@ -441,7 +420,7 @@ namespace WebPortal.Controllers
                 _db.SaveChanges();
             }
 
-            return RedirectToAction("Services", new { id = cAtCustomerIdent.FKCustomerID });
+            return RedirectToAction("Identifiers", new { id = cAtCustomerIdent.FKCustomerID });
         }
 
         // GET DELETE Identifier :  Customer/DeleteIdentifier/5

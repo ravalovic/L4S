@@ -200,9 +200,9 @@
             });
 
             // Attach listener to .modal-close-btn's so that when the button is pressed the modal dialog disappears
-            $('body').on('click', '.modal-close-btn', function () {
-                $('#modal-small').modal('hide');
-            });
+           // $('body').on('click', '.modal-close-btn', function () {
+            //    $('#modal-small').modal('hide');
+           // });
             //clear modal cache, so that new content can be loaded
             $('#modal-small').on('hidden.bs.modal', function () {
                 $(this).removeData('bs.modal');
@@ -222,9 +222,9 @@
             });
 
             // Attach listener to .modal-close-btn's so that when the button is pressed the modal dialog disappears
-            $('body').on('click', '.modal-close-btn', function () {
-                $('#modal-medium').modal('hide');
-            });
+           // $('body').on('click', '.modal-close-btn', function () {
+           //     $('#modal-medium').modal('hide');
+          //  });
             //clear modal cache, so that new content can be loaded
             $('#modal-medium').on('hidden.bs.modal', function () {
                 $(this).removeData('bs.modal');

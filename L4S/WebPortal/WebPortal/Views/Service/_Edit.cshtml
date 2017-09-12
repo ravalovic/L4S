@@ -10,7 +10,7 @@
 
 @using (Html.BeginForm())
 {
-    <div class="modal-body">
+    <div class="modal-body form1">
         <div class="row">
 
             @Html.AntiForgeryToken()
@@ -54,9 +54,30 @@
 
             <div class="modal-footer">
                 <button class="btn btn-danger" data-dismiss="modal" aria-hidden="true"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span>&nbsp;@Resources.Labels.Btn_Back</button>
-                <button type="submit" class="btn btn-primary" onclick="return confirm('@Resources.Labels.Message_ConfirmSave')"><span class="glyphicon glyphicon-floppy-disk" aria-hidden="true"></span>&nbsp;@Resources.Labels.Btn_Save</button>
-            </div>
-                   
+                @*<button type="submit" class="btn btn-primary" onclick="return confirm('@Resources.Labels.Message_ConfirmSave')"><span class="glyphicon glyphicon-floppy-disk" aria-hidden="true"></span>&nbsp;@Resources.Labels.Btn_Save</button>*@
+                <button class="btn btn-primary" type="button" id="button1" onclick="btnConfirmClick()"><span class="glyphicon glyphicon-floppy-disk" aria-hidden="true"></span>&nbsp;@Resources.Labels.Btn_Save</button>
+            </div>                   
         </div>
-        }
+
+        <div class="formConfirm" id="formConfirm" hidden="hidden">
+            <div class="modal-body">
+                <h4 class="text-center">@Resources.Labels.Message_ConfirmSave</h4>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-danger" type="button" id="btnCancel" onclick="btnCancelClick()"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span>&nbsp;@Resources.Labels.Btn_Back</button>
+                <button type="submit" class="btn btn-primary"><span class="glyphicon glyphicon-floppy-disk" aria-hidden="true"></span>&nbsp;@Resources.Labels.Btn_Save</button>
+            </div>
+        </div>
+}
        
+
+<script type="text/javascript">
+    function btnConfirmClick() {
+        $(".form1").hide();
+        $(".formConfirm").show();
+    }
+    function btnCancelClick() {
+        $(".form1").show();
+        $(".formConfirm").hide();
+    }
+</script>
