@@ -1,5 +1,4 @@
 ﻿using Microsoft.Ajax.Utilities;
-using Microsoft.AspNet.Identity.Owin;
 using System;
 using System.Text.RegularExpressions;
 using System.Web;
@@ -23,7 +22,7 @@ namespace WebPortal.Common
                     {
                         string sessionCookie = context.Request.Headers["Cookie"];
 
-                        if ((sessionCookie != null) && (sessionCookie.IndexOf("ASP.NET_SessionId") >= 0))
+                        if ((sessionCookie != null) && (sessionCookie.IndexOf("ASP.NET_SessionId", StringComparison.Ordinal) >= 0))
                         {
                             FormsAuthentication.SignOut();
                             string redirectTo;
