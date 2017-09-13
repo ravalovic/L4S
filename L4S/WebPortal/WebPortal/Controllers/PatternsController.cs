@@ -10,6 +10,7 @@ using WebPortal.Models;
 
 namespace WebPortal.Controllers
 {
+    [OutputCache(Duration = 0)]
     [Helper.CheckSessionOutAttribute]
     [Authorize] //!!! important only Authorize users can call this controller
     public class PatternsController : Controller
