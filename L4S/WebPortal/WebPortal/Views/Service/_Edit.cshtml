@@ -1,4 +1,5 @@
-﻿@model CATServiceParameters
+﻿@using WebPortal.Models
+@model CATServiceParameters
 
 <script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
 
@@ -26,15 +27,30 @@
                 <div class="form-group">
                     @Html.LabelFor(model => model.ServiceCode, htmlAttributes: new { @class = "control-label col-md-4" })
                     <div class="col-md-8">
-                        @Html.EditorFor(model => model.ServiceCode, new { htmlAttributes = new { @class = "form-control" } })
-                        @Html.ValidationMessageFor(model => model.ServiceCode, "", new { @class = "text-danger" })
+                    @if (HttpContext.Current.User.IsInRole(WebRoles.Admin))
+                    {
+                        @Html.EditorFor(model => model.ServiceCode, new {htmlAttributes = new {@class = "form-control"}})
+                    }
+                    else
+                    {
+                        @Html.EditorFor(model => model.ServiceCode, new {htmlAttributes = new {@class = "form-control", @readonly = "readonly" } })
+                    }
+                        @Html.ValidationMessageFor(model => model.ServiceCode, "", new {@class = "text-danger"})
                     </div>
                 </div>
 
                 <div class="form-group">
                     @Html.LabelFor(model => model.ServiceDescription, htmlAttributes: new { @class = "control-label col-md-4" })
                     <div class="col-md-8">
-                        @Html.EditorFor(model => model.ServiceDescription, new { htmlAttributes = new { @class = "form-control" } })
+                        @if (HttpContext.Current.User.IsInRole(WebRoles.Admin))
+                        {
+                            @Html.EditorFor(model => model.ServiceDescription, new {htmlAttributes = new {@class = "form-control"}})
+                        }
+                        else
+                        {
+                            @Html.EditorFor(model => model.ServiceDescription, new {htmlAttributes = new {@class = "form-control", @readonly = "readonly" } })
+                        }
+                        
                         @Html.ValidationMessageFor(model => model.ServiceDescription, "", new { @class = "text-danger" })
                     </div>
                 </div>

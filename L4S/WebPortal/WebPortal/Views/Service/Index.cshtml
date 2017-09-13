@@ -67,11 +67,14 @@
                             </td>
                             <td>
                                 <div class="group-btn text-center">
-                                    <a class="modal-link-medium btn btn-primary-spacing btn-success" href="~/Service/Edit/@item.PKServiceID"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span>&nbsp;@Resources.Labels.Btn_Edit</a>
-                                @if (HttpContext.Current.User.IsInRole(WebRoles.Manager))
-                                {
-                                    <a class="modal-link-small btn btn-primary-spacing btn-danger" href="~/Service/Delete/@item.PKServiceID"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span>&nbsp;@Resources.Labels.Btn_Delete</a>
-                                }
+                                    @if (HttpContext.Current.User.IsInRole(WebRoles.Ekonom))
+                                    {
+                                        <a class="modal-link-medium btn btn-primary-spacing btn-success" href="~/Service/Edit/@item.PKServiceID"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span>&nbsp;@Resources.Labels.Btn_Edit</a>
+                                    }
+                                    @if (HttpContext.Current.User.IsInRole(WebRoles.Admin))
+                                    {
+                                        <a class="modal-link-small btn btn-primary-spacing btn-danger" href="~/Service/Delete/@item.PKServiceID"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span>&nbsp;@Resources.Labels.Btn_Delete</a>
+                                    }
                                 </div>
                             </td>
                         </tr>
@@ -81,5 +84,3 @@
         </div>
     </div>
 </div>
-
-
