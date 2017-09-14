@@ -816,4 +816,7 @@
   <data name="Message_ConfirmSave" xml:space="preserve">
     <value>Naozaj chcete uložiť zmeny?</value>
   </data>
+  <data name="ErrorMessage_Number" xml:space="preserve">
+    <value>Nie je platné číslo</value>
+  </data>
 </root>

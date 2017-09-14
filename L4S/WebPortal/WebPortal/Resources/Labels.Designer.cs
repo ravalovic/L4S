@@ -772,6 +772,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Nie je platné číslo.
+        /// </summary>
+        public static string ErrorMessage_Number {
+            get {
+                return ResourceManager.GetString("ErrorMessage_Number", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Povinný údaj.
         /// </summary>
         public static string ErrorMessage_Required {

@@ -6,7 +6,6 @@
     <button type="button" class="close" data-dismiss="modal">×</button>
     <h4><b>@Resources.Labels.Customer_CompanyEditDialogTitle</b></h4>
 </div>
-@*@using (Html.BeginForm())*@
 
 @using (Html.BeginForm("Edit", "Customer"))
 {
@@ -174,8 +173,7 @@
 
         <div class="modal-footer">
             <button class="btn btn-danger" data-dismiss="modal" aria-hidden="true"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span>&nbsp;@Resources.Labels.Btn_Back</button>
-            @*<button type="submit" class="btn btn-primary" onclick="return confirm('@Resources.Labels.Message_ConfirmSave')"><span class="glyphicon glyphicon-floppy-disk" aria-hidden="true"></span>&nbsp;@Resources.Labels.Btn_Save</button>*@
-            <button class="btn btn-primary" type="button" id="button1" onclick="btnConfirmClick()"><span class="glyphicon glyphicon-floppy-disk" aria-hidden="true"></span>&nbsp;@Resources.Labels.Btn_Save</button>
+            <button class="btn btn-primary" type="button" id="buttonConfirm" onclick="btnConfirmClick()"><span class="glyphicon glyphicon-floppy-disk" aria-hidden="true"></span>&nbsp;@Resources.Labels.Btn_Save</button>
         </div>
     </div>
     
@@ -197,7 +195,10 @@
 }
 
 <script type="text/javascript">
-            function btnConfirmClick() {
+    function btnConfirmClick() {
+        var $form = $('#buttonConfirm').parents('form:first')
+        if (!$form.valid())
+            return;
                 $(".form1").hide();
                 $(".formConfirm").show();
             }

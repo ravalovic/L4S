@@ -30,6 +30,7 @@ namespace WebPortal
         [Display(Name = "Service_Description", ResourceType = typeof(Labels))]
         public string ServiceDescription { get; set; }
 
+        [RegularExpression(@"^\d+\,?\d*$", ErrorMessageResourceName = "ErrorMessage_Number", ErrorMessageResourceType = typeof(Labels))]
         [Display(Name = "Service_BasicPrice", ResourceType = typeof(Labels))]
         [DisplayFormat(DataFormatString = "{0:0.000}", ApplyFormatInEditMode = true)]
         public decimal ServiceBasicPrice { get; set; }

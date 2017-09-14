@@ -89,6 +89,7 @@ namespace WebPortal.Models
         [Display(Name = "Customer_Service_Code", ResourceType = typeof(Labels))]
         public string ServiceCode { get; set; }
 
+        [RegularExpression(@"^\d+\,?\d*$", ErrorMessageResourceName = "ErrorMessage_Number", ErrorMessageResourceType = typeof(Labels))]
         [Display(Name = "Service_Discount", ResourceType = typeof(Labels))]
         public decimal ServicePriceDiscount { get; set; }
 
