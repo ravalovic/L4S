@@ -12,6 +12,7 @@ using WebPortal.Common;
 
 namespace WebPortal.Controllers
 {
+    [OutputCache(Duration = 0)]
     [Helper.CheckSessionOutAttribute]
     [Authorize] //!!! important only Authorize users can call this controller
     public class CustomerController : Controller
@@ -290,13 +291,15 @@ namespace WebPortal.Controllers
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
+            }           
+
             CATCustomerData cAtCustomerData = _db.CATCustomerData.Find(id);
             if (cAtCustomerData == null)
             {
                 return HttpNotFound();
             }
             if (cAtCustomerData.CustomerType == "PO") return PartialView("_CompanyEdit", cAtCustomerData);
+            
             return PartialView("_IndividualEdit", cAtCustomerData);
         }
 

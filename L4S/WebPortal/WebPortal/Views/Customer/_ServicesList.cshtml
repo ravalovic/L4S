@@ -104,7 +104,7 @@
                         @*<div class="col-md-offset-10 col-md-1">*@
                            
                             <div class="form-group text-right">
-                                <button type="submit" class="btn btn-primary btn-submit" onclick="return confirm('@Resources.Labels.Message_ConfirmSave')">
+                                <button type="button" class="btn btn-primary btn-submit modal-link-confirm">
                                     <span class="glyphicon glyphicon-floppy-disk"></span>
                                     <span class="submit-text"> @Resources.Labels.Btn_Save&nbsp;</span>
                                 </button>
@@ -115,10 +115,43 @@
             </div>
         </div>
     </div>
+
+    <div class="modal fade" id="modal-confirm" data-backdrop="static" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-md">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">×</button>
+                    <h4><b>@Resources.Labels.Btn_Save</b></h4>
+                    @*<h4>@Resources.Labels.Service_PageTitle</h4>*@
+                </div>
+
+                <div class="modal-body">
+                    <h4 class="text-center">@Resources.Labels.Message_ConfirmSave</h4>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-danger" data-dismiss="modal" aria-hidden="true"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span>&nbsp;@Resources.Labels.Btn_Back</button>
+                    <button type="submit" class="btn btn-primary"><span class="glyphicon glyphicon-floppy-disk" aria-hidden="true"></span>&nbsp;@Resources.Labels.Btn_Save</button>
+                </div>
+            </div>
+        </div>
+    </div>
 }
 
 
-<script>
+<script type="text/javascript">
+
+//modal confirm window functions
+    $(function () {
+        $('body').on('click', '.modal-link-confirm', function (e) {
+            e.preventDefault();
+            $(this).attr('data-target', '#modal-confirm');
+            $(this).attr('data-toggle', 'modal');
+        });
+        $('#CancelModal').on('click', function () {
+            return false;
+        });
+    });
+
     $(document).ready(function () {
         $("#mytable #checkall").click(function () {
             //if ($("#mytable #checkall").is(':checked')) {
