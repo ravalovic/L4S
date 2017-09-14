@@ -40,12 +40,21 @@ namespace WebPortal.Common
                 base.OnActionExecuting(filterContext);
             }
         }
+
         public static void SetUpFilterValues(ref string search, ref string fDate, ref string tDate, string currFilter,
             string currFrom, string currTo, out int searchId, out DateTime fromDate, out DateTime toDate, int? pageNum)
         {
             search = search?.Trim();
             fDate = fDate?.Trim();
             tDate = tDate?.Trim();
+            DateTime.TryParse(fDate, out fromDate);
+            DateTime.TryParse(tDate, out toDate);
+            if (fromDate > toDate)
+            {
+                fDate = String.Empty;
+                tDate = String.Empty;
+            }
+
             if (pageNum != null)
             {
                 if (search.IsNullOrWhiteSpace())
@@ -61,7 +70,7 @@ namespace WebPortal.Common
                     tDate = currTo?.Trim();
                 }
             }
-            
+
             if (fDate != null && Regex.Match(fDate, @"\d{2}\.\d{4}").Success)
             {
                 DateTime.TryParse(fDate, out fromDate);
