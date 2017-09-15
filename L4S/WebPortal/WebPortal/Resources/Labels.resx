@@ -819,4 +819,19 @@
   <data name="ErrorMessage_Number" xml:space="preserve">
     <value>Nie je platné číslo</value>
   </data>
+  <data name="Statistics_CustomerCount" xml:space="preserve">
+    <value>Počet zákazníkov</value>
+  </data>
+  <data name="Statistics_ReceivedBytes" xml:space="preserve">
+    <value>Prenesené dáta</value>
+  </data>
+  <data name="Statistics_RequestCount" xml:space="preserve">
+    <value>Počet dotazov</value>
+  </data>
+  <data name="Statistics_ServiceCount" xml:space="preserve">
+    <value>Počet služieb</value>
+  </data>
+  <data name="Statistics_SessionDuration" xml:space="preserve">
+    <value>Trvanie</value>
+  </data>
 </root>

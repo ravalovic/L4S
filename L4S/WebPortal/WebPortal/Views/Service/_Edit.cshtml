@@ -27,15 +27,15 @@
                 <div class="form-group">
                     @Html.LabelFor(model => model.ServiceCode, htmlAttributes: new { @class = "control-label col-md-4" })
                     <div class="col-md-8">
-                    @if (HttpContext.Current.User.IsInRole(WebRoles.Admin))
-                    {
-                        @Html.EditorFor(model => model.ServiceCode, new {htmlAttributes = new {@class = "form-control"}})
-                    }
-                    else
-                    {
-                        @Html.EditorFor(model => model.ServiceCode, new {htmlAttributes = new {@class = "form-control", @readonly = "readonly" } })
-                    }
-                        @Html.ValidationMessageFor(model => model.ServiceCode, "", new {@class = "text-danger"})
+                        @if (HttpContext.Current.User.IsInRole(WebRoles.Admin))
+                        {
+                            @Html.EditorFor(model => model.ServiceCode, new { htmlAttributes = new { @class = "form-control" } })
+                        }
+                        else
+                        {
+                            @Html.EditorFor(model => model.ServiceCode, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                        }
+                        @Html.ValidationMessageFor(model => model.ServiceCode, "", new { @class = "text-danger" })
                     </div>
                 </div>
 
@@ -44,13 +44,13 @@
                     <div class="col-md-8">
                         @if (HttpContext.Current.User.IsInRole(WebRoles.Admin))
                         {
-                            @Html.EditorFor(model => model.ServiceDescription, new {htmlAttributes = new {@class = "form-control"}})
+                            @Html.EditorFor(model => model.ServiceDescription, new { htmlAttributes = new { @class = "form-control" } })
                         }
                         else
                         {
-                            @Html.EditorFor(model => model.ServiceDescription, new {htmlAttributes = new {@class = "form-control", @readonly = "readonly" } })
+                            @Html.EditorFor(model => model.ServiceDescription, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
                         }
-                        
+
                         @Html.ValidationMessageFor(model => model.ServiceDescription, "", new { @class = "text-danger" })
                     </div>
                 </div>
@@ -63,16 +63,16 @@
                     </div>
                 </div>
 
-            
+
             </div>
         </div>
 
 
-            <div class="modal-footer">
-                <button class="btn btn-danger" data-dismiss="modal" aria-hidden="true"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span>&nbsp;@Resources.Labels.Btn_Back</button>
-                <button class="btn btn-primary" type="button" id="buttonConfirm" onclick="btnConfirmClick()"><span class="glyphicon glyphicon-floppy-disk" aria-hidden="true"></span>&nbsp;@Resources.Labels.Btn_Save</button>
-            </div>                   
+        <div class="modal-footer">
+            <button class="btn btn-danger" data-dismiss="modal" aria-hidden="true"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span>&nbsp;@Resources.Labels.Btn_Back</button>
+            <button class="btn btn-primary" type="button" id="buttonConfirm" onclick="btnConfirmClick()"><span class="glyphicon glyphicon-floppy-disk" aria-hidden="true"></span>&nbsp;@Resources.Labels.Btn_Save</button>
         </div>
+    </div>
 
         <div class="formConfirm" id="formConfirm" hidden="hidden">
             <div class="modal-body">
@@ -84,7 +84,7 @@
             </div>
         </div>
 }
-       
+
 
 <script type="text/javascript">
     function btnConfirmClick() {

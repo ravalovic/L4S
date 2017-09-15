@@ -1,5 +1,6 @@
 ﻿using Microsoft.Ajax.Utilities;
 using System;
+using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using System.Web;
 using System.Web.Mvc;
@@ -39,6 +40,16 @@ namespace WebPortal.Common
 
                 base.OnActionExecuting(filterContext);
             }
+        }
+
+        public class Statistics
+        {
+            public int CustomerCount { get; set; }
+            public int ServiceCount { get; set; }
+            public long RequestCount { get; set; }
+            public long ReceivedBytes { get; set; }
+            public decimal SessionDuration {get;set;}
+            
         }
 
         public static void SetUpFilterValues(ref string search, ref string fDate, ref string tDate, string currFilter,
