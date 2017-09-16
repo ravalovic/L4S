@@ -30,8 +30,21 @@ namespace WebPortal.Controllers
             int searchId;
             DateTime fromDate;
             DateTime toDate;
+            DateTime firstDayOfMonth = DateTime.Today;
             bool datCondition = false;
             bool textCondition = false;
+            var dbAccess = _db.view_DailyData;
+            if (dbAccess.Any())
+            {
+                var lastPeriod = dbAccess.Max(p => p.DateOfRequest.Value);
+                firstDayOfMonth = new DateTime(lastPeriod.Year, lastPeriod.Month, 1);
+            }
+            if (searchText.IsNullOrWhiteSpace() && insertDateFrom.IsNullOrWhiteSpace() &&
+                insertDateTo.IsNullOrWhiteSpace() && currentFilter.IsNullOrWhiteSpace() &&
+                currentFrom.IsNullOrWhiteSpace() && currentTo.IsNullOrWhiteSpace())
+            {
+                insertDateFrom = firstDayOfMonth.ToString("dd.MM.yyyy");
+            }
             Helper.SetUpFilterValues(ref searchText, ref insertDateFrom, ref insertDateTo, currentFilter, currentFrom, currentTo, out searchId, out fromDate, out toDate, page);
             if (!insertDateFrom.IsNullOrWhiteSpace() || !insertDateTo.IsNullOrWhiteSpace()) datCondition = true;
             if (!searchText.IsNullOrWhiteSpace()) textCondition = true;
@@ -53,7 +66,9 @@ namespace WebPortal.Controllers
             ViewBag.ServiceCount = statistics.ServiceCount;
             ViewBag.RequestCount = statistics.RequestCount;
             ViewBag.ReceivedBytes = statistics.ReceivedBytes;
+            ViewBag.ReceivedBytesInMeasureUnit = statistics.ReceivedBytesInMeasureUnit;
             ViewBag.SessionDuration = statistics.SessionDuration;
+            ViewBag.MetricUnit = statistics.MetricUnit;
 
             _pager = new Pager(_model.Count(), page);
             _dataList = _model.Skip(_pager.ToSkip).Take(_pager.ToTake).ToList();
@@ -171,7 +186,7 @@ Report vytvorený: {0}  Počet záznamov: {1} (c) copyright VUGK", DateTime.Now,
 
             if (datCon && !txtCon)
             {
-                model = dbAccess.Where(p => p.DateOfRequest.Value >= fromDate && p.DateOfRequest.Value <= toDate).OrderByDescending(d => d.DateOfRequest).ToList();
+                model = dbAccess.Where(p => p.DateOfRequest.Value >= fromDate && p.DateOfRequest.Value <= toDate).OrderBy(d => d.DateOfRequest).ToList();
 
             }
             if (txtCon && !datCon)
@@ -205,13 +220,32 @@ Report vytvorený: {0}  Počet záznamov: {1} (c) copyright VUGK", DateTime.Now,
                 model = dbAccess.OrderByDescending(d => d.DateOfRequest).ToList();
                 filter = false;
             }
-            stats = new Helper.Statistics
+            int measureUnit = 1;
+            string metricUnit = "[byte]";
+            var confGeneralSettings = _db.CONFGeneralSettings.FirstOrDefault(p => p.ParamName.Equals("MetricUnit"));
+            if (confGeneralSettings != null)
+            {
+                if (confGeneralSettings.ParamValue.ToUpper().Equals("MBYTE"))
+                {
+                    measureUnit = 1024 * 1024;
+                    metricUnit = "[MB]";
+                }
+                if (confGeneralSettings.ParamValue.ToUpper().Equals("GBYTE"))
+                {
+                    measureUnit = 1024 * 1024 * 1024;
+                    metricUnit = "[GB]";
+                }
+            }
+
+            stats = new Statistics
             {
                 ReceivedBytes = model.Sum(p => p.ReceivedBytes),
+                ReceivedBytesInMeasureUnit = model.Sum(p => p.ReceivedBytes) / measureUnit,
                 CustomerCount = model.Select(p => p.CustomerID).Distinct().Count(),
                 RequestCount = model.Sum(p => p.NumberOfRequest),
                 ServiceCount = model.Select(p => p.ServiceID).Distinct().Count(),
-                SessionDuration = model.Sum(p => p.RequestedTime)
+                SessionDuration = model.Sum(p => p.RequestedTime),
+                MetricUnit = metricUnit
             };
             return model;
         }

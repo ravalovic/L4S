@@ -88,7 +88,7 @@
 
                     @foreach (var item in Model)
                     {
-                        <tr onclick="location.href = '@(Url.Action("Index", "CustomerDailyDatas", new { searchText = item.CustomerIdentification, insertDateFrom = item.DateOfRequest.Value.ToString("dd.MM.yyyy"), insertDateTo = item.DateOfRequest.Value.AddMonths(1).AddTicks(-1).ToString("dd.MM.yyyy") } )))'">
+                        <tr onclick="location.href = '@(Url.Action("Index", "CustomerDailyDatas", new { searchText = item.CustomerIdentification, insertDateFrom = item.DateOfRequest.Value.ToString("dd.MM.yyyy"), insertDateTo = item.DateOfRequest.Value.AddMonths(1).AddTicks(-1).ToString("dd.MM.yyyy") } ))'">
                             <td>
                                 @Html.DisplayFor(modelItem => item.DateOfRequest)
                             </td>
@@ -126,11 +126,36 @@
     <div class="panel panel-primary">
         <div class="panel-heading clearfix">
             <div class="form-inline">
-                <b>@Resources.Labels.Statistics_CustomerCount&nbsp;&nbsp;<input class="form-control" type="text" value="@ViewBag.CustomerCount" readonly /></b>
-                <b>&nbsp;@Resources.Labels.Statistics_ServiceCount &nbsp;&nbsp;<input class="form-control" type="text" value="@ViewBag.ServiceCount" readonly /></b>
-                <b>&nbsp;@Resources.Labels.Statistics_RequestCount &nbsp;&nbsp;<input class="form-control" type="text" value="@ViewBag.RequestCount" readonly /></b>
-                <b>&nbsp;@Resources.Labels.Statistics_ReceivedBytes &nbsp;&nbsp;<input class="form-control" type="text" value="@ViewBag.ReceivedBytes" readonly /></b>
-                <b>&nbsp;@Resources.Labels.Statistics_SessionDuration &nbsp;&nbsp;<input class="form-control" type="text" value="@ViewBag.SessionDuration" readonly /></b>
+                <div class="row text-center">
+                    <h4>Štatistika</h4>
+                </div>
+            </div>
+            <div class="form-inline">
+                <div class="row">
+                    <div class="col-md-2 col-md-offset-1"><b>@Resources.Labels.Statistics_CustomerCount</b>
+                    </div>
+                    <div class="col-md-2"><b>@Resources.Labels.Statistics_ServiceCount</b>
+                    </div>
+                    <div class="col-md-2"><b>@Resources.Labels.Statistics_RequestCount</b>
+                    </div>
+                    <div class="col-md-2"><b>@Resources.Labels.Statistics_ReceivedBytes</b>
+                    </div>
+                    <div class="col-md-2"><b>@Resources.Labels.Statistics_SessionDuration</b>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-2 col-md-offset-1"><b><input class="form-control" type="text" value="@ViewBag.CustomerCount" readonly/></b>
+                    </div>
+                    <div class="col-md-2"><b><input class="form-control" type="text" value="@ViewBag.ServiceCount" readonly/></b>
+                    </div>
+                    <div class="col-md-2"><b><input class="form-control" type="text" value="@ViewBag.RequestCount" readonly/></b>
+                    </div>
+                    <div class="col-md-2">
+                        <b><input class="form-control" type="text" value="@ViewBag.ReceivedBytes" readonly onfocus="this.value = '@ViewBag.ReceivedBytesInMeasureUnit @ViewBag.MetricUnit'" onblur="this.value = '@ViewBag.ReceivedBytes'" /></b>
+                    </div>
+                    <div class="col-md-2"><b><input class="form-control" type="text" value="@ViewBag.SessionDuration" readonly/></b>
+                    </div>
+                </div>
             </div>
         </div>
     </div>

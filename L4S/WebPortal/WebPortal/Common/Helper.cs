@@ -47,8 +47,10 @@ namespace WebPortal.Common
             public int CustomerCount { get; set; }
             public int ServiceCount { get; set; }
             public long RequestCount { get; set; }
-            public long ReceivedBytes { get; set; }
+            public decimal ReceivedBytes { get; set; }
+            public decimal ReceivedBytesInMeasureUnit { get; set; }
             public decimal SessionDuration {get;set;}
+            public string MetricUnit { get; set; }
             
         }
 
@@ -60,7 +62,7 @@ namespace WebPortal.Common
             tDate = tDate?.Trim();
             DateTime.TryParse(fDate, out fromDate);
             DateTime.TryParse(tDate, out toDate);
-            if (fromDate > toDate)
+            if ((fromDate > toDate) && !fDate.IsNullOrWhiteSpace() && !tDate.IsNullOrWhiteSpace())
             {
                 fDate = String.Empty;
                 tDate = String.Empty;
@@ -91,7 +93,9 @@ namespace WebPortal.Common
                 }
                 else
                 {
+                    if (fromDate > toDate) { 
                     toDate = toDate.AddMonths(1).AddTicks(-1);
+                    }
                 }
             }
             else
@@ -103,7 +107,10 @@ namespace WebPortal.Common
                 }
                 else
                 {
-                    toDate = toDate.AddDays(1).AddTicks(-1);
+                    if (fromDate > toDate)
+                    {
+                        toDate = toDate.AddDays(1).AddTicks(-1);
+                    }
                 }
             }
             int.TryParse(search, out searchId);
