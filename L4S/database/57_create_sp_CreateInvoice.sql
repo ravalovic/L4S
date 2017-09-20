@@ -30,7 +30,7 @@ DECLARE
 BEGIN
 	select  @DayOfInvoiceCreate = CONVERT(int, ParamValue) from [CONFGeneralSettings] where Paramname='InvoiceCreationDay';
 	select  @LastInvoiceGenerate = ParamValue from [CONFGeneralSettings] where Paramname='LastInvoiceGenerate';
-	IF ( (DAY(getdate()) = @DayOfInvoiceCreate) and (@LastInvoiceGenerate <> CAST(FORMAT(YEAR(GETDATE()),'0000')AS VARCHAR) + CAST(FORMAT(MONTH(GETDATE()),'00') AS VARCHAR)))
+	IF ( (DAY(getdate()) = @DayOfInvoiceCreate) and (@LastInvoiceGenerate <> CAST(right(YEAR(GETDATE())+10000,4)AS VARCHAR) + CAST(right(MONTH(GETDATE())+100,2) AS VARCHAR)))
 	BEGIN
 	    
 		-- Update TCActive = 1 for all invoice with 0 If TCActive = 0 mean actual billing period
@@ -101,7 +101,7 @@ BEGIN
            ,[TotalPriceWithVAT]
            )
 		SELECT 
-		        SUBSTRING(CAST(YEAR(v.DateOfRequest) AS VARCHAR),3,2) + CAST(FORMAT(MONTH(v.DateOfRequest),'00') AS VARCHAR) + FORMAT(v.CustomerID,'000000')
+		         SUBSTRING(CAST(YEAR(v.DateOfRequest) AS VARCHAR),3,2) + CAST(right(MONTH(v.DateOfRequest)+1000,2) AS VARCHAR) + right(v.CustomerID + 1000000,6)
 			   , v.DateOfRequest
 		       , DATEADD(SECOND, -1, DATEADD(DAY, 1, DATEDIFF(DAY, 0,  DATEADD(MONTH, DATEDIFF(MONTH, -1, v.DateOfRequest), -1))))
 			   , cast(DATEADD(MONTH, DATEDIFF(MONTH, -1, v.DateOfRequest), -1) as date)
@@ -149,7 +149,7 @@ BEGIN
 
 		-- Update Generation date
 		update [dbo].CONFGeneralSettings
-		 SET ParamValue = CAST(FORMAT(YEAR(GETDATE()),'0000')AS VARCHAR) + CAST(FORMAT(MONTH(GETDATE()),'00') AS VARCHAR)
+		 SET ParamValue = CAST(right(YEAR(GETDATE())+10000,4)AS VARCHAR) + CAST(right(MONTH(GETDATE())+100,2) AS VARCHAR)
         where ParamName = 'LastInvoiceGenerate';
 		-- create summaryInvoice realized by view
 	END

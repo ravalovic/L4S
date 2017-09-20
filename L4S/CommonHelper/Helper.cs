@@ -50,12 +50,13 @@ namespace CommonHelper
             Copy,
             Move,
             Delete,
-            Zip
+            Zip, 
+            Unzip
         };
 
         public static string Version(string appName)
         {
-            return appName+": "+@"Verzia 1.3.1 zo dňa 08.09.2017";
+            return appName+": "+@"Verzia 1.4.0 zo dňa 20.09.2017";
         }
         public enum ParameterFromName
         {
@@ -74,6 +75,7 @@ namespace CommonHelper
         public static void ManageFile(Action action, string myFile, string myDestDir = "", string myDestExt = "")
         {
             string dateMask = DateTime.Now.ToString("ddMMyyyyHHmmss");
+            
             // if destination exist no action performed
             if ((File.Exists(myFile) && !File.Exists(myDestDir + Path.GetFileName(myFile) + myDestExt)) || action == Action.Delete)
             {
@@ -89,13 +91,26 @@ namespace CommonHelper
                         File.Delete(myFile);
                         break;
                     case Action.Zip:
-                        var zipName = myDestDir + Path.GetFileName(myFile) + "_" + dateMask + ".zip";
+                         var zipName = myDestDir + Path.GetFileName(myFile) + "_" + dateMask + ".zip";
                         using (ZipArchive arch = ZipFile.Open(zipName, ZipArchiveMode.Create))
                         {
                             arch.CreateEntryFromFile(myFile, Path.GetFileName(myFile), CompressionLevel.Optimal);
                             arch.Dispose();
                         }
 
+                        break;
+                    case Action.Unzip:
+                        try
+                        {
+                            ZipFile.ExtractToDirectory(myFile, myDestDir);
+                            File.Delete(myFile);
+                        }
+                        catch (Exception e)
+                        {
+                            //destination file exist then delete archive
+                            File.Delete(myFile);
+                        }
+                        
                         break;
                 }
             }
@@ -143,5 +158,6 @@ namespace CommonHelper
             }
             return string.Empty;
         }
+
     }
 }

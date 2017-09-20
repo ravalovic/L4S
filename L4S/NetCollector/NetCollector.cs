@@ -34,6 +34,7 @@ namespace NetCollector
         public string BackupDir { get; set; }
         public string DateMask { get; set; }
         public bool SingleFileMode { get; set; }
+        public bool UnzipInputFile { get; set; }
 
         public MyApConfig()
         {
@@ -65,6 +66,9 @@ namespace NetCollector
             bool oneFile;
             bool.TryParse(configManager.ReadSetting("singleFileMode"), out oneFile);
             SingleFileMode = oneFile;
+            bool unzip;
+            bool.TryParse(configManager.ReadSetting("unzipInputFile"), out unzip);
+            UnzipInputFile = unzip;
 
             // set up datetime mask
             int whichDay;
@@ -229,10 +233,9 @@ namespace NetCollector
                 
                 foreach (var file in iFiles)
                 {
-                    //Backup file from workDir to backup directory
+                   //Backup file from workDir to backup directory
                     Helper.ManageFile(Helper.Action.Zip, file, settingsConfig.BackupDir);
                     Log.Info(String.Format("Backup file {0}", file));
-                   
                 }
             }
             else
@@ -240,6 +243,7 @@ namespace NetCollector
                 Log.Warn("No files for backup from: " + settingsConfig.BackupDir);
             }
         }
+
         /// <summary>
         /// Moving transferred file from work to final directory
         /// </summary>
@@ -253,11 +257,21 @@ namespace NetCollector
                
                 foreach (var file in iFiles)
                 {
-                    //Backup file from workDir to backup directory
-                    Helper.ManageFile(Helper.Action.Move, file, settingsConfig.OutputDir);
-                    Log.Info(String.Format("Move file {0} to {1}", file, settingsConfig.OutputDir));
+                    var extension = Path.GetExtension(file);
+                    if (extension.Contains("zip"))
+                    {
+                        Helper.ManageFile(Helper.Action.Unzip, file, settingsConfig.OutputDir);
+                        Log.Info(String.Format("Unzip file {0} to {1}", file, settingsConfig.OutputDir));
+                    }
+                    else
+                    {
+                        Helper.ManageFile(Helper.Action.Move, file, settingsConfig.OutputDir);
+                        Log.Info(String.Format("Move file {0} to {1}", file, settingsConfig.OutputDir));
+                    }
+                    
                     
                 }
+
             }
             else
             {

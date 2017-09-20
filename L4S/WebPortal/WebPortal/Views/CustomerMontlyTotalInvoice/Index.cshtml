@@ -47,7 +47,7 @@
 
                         <div class="form-group">
                             <div class=" group-btn  text-right">
-                                <a class="btn btn-primary-spacing btn-success" aria-hidden="true" onclick="location.href = '@Url.Action("Index", "CustomerMontlyTotalInvoice")?insertDateFrom=' + document.getElementById('date1').value+'&'+'insertDateTo=' + document.getElementById('date2').value+'&'+'searchText=' + document.getElementById('searchText').value +'&'+'currentFilter='+ '@ViewBag.CurrentFilter' +'&'+'currentFrom='+ '@ViewBag.CurrentFrom'+'&'+'currentTo='+ '@ViewBag.CurrentTo'"><span class="glyphicon glyphicon-search" aria-hidden="true"></span>&nbsp;@Resources.Labels.Btn_Search</a> 
+                                <a class="btn btn-primary-spacing btn-success" aria-hidden="true" onclick="location.href = '@Url.Action("Index", "CustomerMontlyTotalInvoice")?insertDateFrom=' + document.getElementById('date1').value+'&'+'insertDateTo=' + document.getElementById('date2').value+'&'+'searchText=' + document.getElementById('searchText').value +'&'+'currentFilter='+ '@ViewBag.CurrentFilter' +'&'+'currentFrom='+ '@ViewBag.CurrentFrom'+'&'+'currentTo='+ '@ViewBag.CurrentTo'"><span class="glyphicon glyphicon-search" aria-hidden="true"></span>&nbsp;@Resources.Labels.Btn_Search</a>
                                 <a class="btn btn-primary-spacing btn-danger" aria-hidden="true" onclick="location.href = '@Url.Action("Index", "CustomerMontlyTotalInvoice")'"><span class="glyphicon glyphicon-search" aria-hidden="true"></span>&nbsp;@Resources.Labels.Btn_Reset</a>
                             </div>
                         </div>
@@ -104,7 +104,7 @@
 
                     @foreach (var item in Model)
                     {
-                        <tr onclick="location.href = '@Url.Action("Index", "InvoiceByMonth", new { searchText = item.CustomerIdentification, insertDateFrom = item.StartBillingPeriod.ToString("MM.yyyy"), insertDateTo = item.StartBillingPeriod.AddMonths(1).AddTicks(-1).ToString("MM.yyyy") })'">
+                        <tr ondblclick="location.href = '@Url.Action("Index", "InvoiceByMonth", new { searchText = item.CustomerIdentification, insertDateFrom = item.StartBillingPeriod.ToString("MM.yyyy"), insertDateTo = item.StartBillingPeriod.AddMonths(1).AddTicks(-1).ToString("MM.yyyy") })'">
                             <td>
                                 @Html.DisplayFor(modelItem => item.InvoiceNumber)
                             </td>
@@ -156,17 +156,20 @@
             </div>
         </div>
     </div>
-        <br />
-    <div>
-        <a class="btn btn-info" href="~/CustomerMontlyTotalInvoice/Report/?extension=csv&page=@Model.PageNumber&insertDateFrom=@ViewBag.CurrentFrom&insertDateTo=@ViewBag.CurrentTo&searchText=@ViewBag.CurrentFilter"><span class="glyphicon glyphicon-save" aria-hidden="true"></span>&nbsp;@Resources.Labels.Btn_CSV </a>
-        <a class="btn btn-info" href="~/CustomerMontlyTotalInvoice/Report/?extension=pdf&page=@Model.PageNumber&insertDateFrom=@ViewBag.CurrentFrom&insertDateTo=@ViewBag.CurrentTo&searchText=@ViewBag.CurrentFilter"><span class="glyphicon glyphicon-save" aria-hidden="true"></span>&nbsp;@Resources.Labels.Btn_PDF </a>
-        <a class="btn btn-info" href="~/CustomerMontlyTotalInvoice/Report/?extension=xlsx&page=@Model.PageNumber&insertDateFrom=@ViewBag.CurrentFrom&insertDateTo=@ViewBag.CurrentTo&searchText=@ViewBag.CurrentFilter"><span class="glyphicon glyphicon-save" aria-hidden="true"></span>&nbsp;@Resources.Labels.Btn_XLSX </a>
-        <a class="btn btn-info" href="~/CustomerMontlyTotalInvoice/Report/?extension=html&amp;page=@Model.PageNumber&amp;insertDateFrom=@ViewBag.CurrentFrom&amp;insertDateTo=@ViewBag.CurrentTo&amp;searchText=@ViewBag.CurrentFilter"><span class="glyphicon glyphicon-save" aria-hidden="true"></span>&nbsp;@Resources.Labels.Btn_HTML </a>
-    </div>
-        <br />
-        Strana @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) z @Model.PageCount Počet záznamov @Model.TotalItemCount
-        @*@Html.PagedListPager(Model, page => Url.Action("Index", new { page, currentFilter = ViewBag.CurrentFilter, currentFrom = ViewBag.CurrentFrom, currentTo = ViewBag.CurrentTo }))*@
-        @Html.PagedListPager(Model, page => Url.Action("Index", new { page, currentFilter = ViewBag.CurrentFilter, currentFrom = ViewBag.CurrentFrom, currentTo = ViewBag.CurrentTo, currentCustId = ViewBag.CurrentCustId, currentServId = ViewBag.CurrentServId, currentDate = ViewBag.CurrentReqDate }))
+    <br />
+    @if (Model.Count > 0)
+    {
+        <div>
+            <a class="btn btn-info" href="~/CustomerMontlyTotalInvoice/Report/?extension=csv&page=@Model.PageNumber&insertDateFrom=@ViewBag.CurrentFrom&insertDateTo=@ViewBag.CurrentTo&searchText=@ViewBag.CurrentFilter"><span class="glyphicon glyphicon-save" aria-hidden="true"></span>&nbsp;@Resources.Labels.Btn_CSV </a>
+            <a class="btn btn-info" href="~/CustomerMontlyTotalInvoice/Report/?extension=pdf&page=@Model.PageNumber&insertDateFrom=@ViewBag.CurrentFrom&insertDateTo=@ViewBag.CurrentTo&searchText=@ViewBag.CurrentFilter"><span class="glyphicon glyphicon-save" aria-hidden="true"></span>&nbsp;@Resources.Labels.Btn_PDF </a>
+            <a class="btn btn-info" href="~/CustomerMontlyTotalInvoice/Report/?extension=xlsx&page=@Model.PageNumber&insertDateFrom=@ViewBag.CurrentFrom&insertDateTo=@ViewBag.CurrentTo&searchText=@ViewBag.CurrentFilter"><span class="glyphicon glyphicon-save" aria-hidden="true"></span>&nbsp;@Resources.Labels.Btn_XLSX </a>
+            <a class="btn btn-info" href="~/CustomerMontlyTotalInvoice/Report/?extension=html&amp;page=@Model.PageNumber&amp;insertDateFrom=@ViewBag.CurrentFrom&amp;insertDateTo=@ViewBag.CurrentTo&amp;searchText=@ViewBag.CurrentFilter"><span class="glyphicon glyphicon-save" aria-hidden="true"></span>&nbsp;@Resources.Labels.Btn_HTML </a>
+        </div>
+        <br/>
+    }
+    Strana @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) z @Model.PageCount Počet záznamov @Model.TotalItemCount
+    @*@Html.PagedListPager(Model, page => Url.Action("Index", new { page, currentFilter = ViewBag.CurrentFilter, currentFrom = ViewBag.CurrentFrom, currentTo = ViewBag.CurrentTo }))*@
+    @Html.PagedListPager(Model, page => Url.Action("Index", new { page, currentFilter = ViewBag.CurrentFilter, currentFrom = ViewBag.CurrentFrom, currentTo = ViewBag.CurrentTo, currentCustId = ViewBag.CurrentCustId, currentServId = ViewBag.CurrentServId, currentDate = ViewBag.CurrentReqDate }))
 </div>
 
 @section Scripts {
@@ -184,8 +187,8 @@
                 format: 'MM.YYYY'
             });
         });
-        //$(document).ready(function () {            
-        //    $('.datefield').datepicker({ 
+        //$(document).ready(function () {
+        //    $('.datefield').datepicker({
         //        //language: 'sk',
         //        changeMonth: true,
         //        changeYear: true,

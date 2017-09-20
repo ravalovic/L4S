@@ -93,7 +93,7 @@
                     @foreach (var item in Model)
                     {
 
-                        <tr onclick="location.href = '@(Url.Action("Index", "UnknownServices", new { searchText = item.CustomerID, insertDateFrom = item.DateOfRequest.Value.ToString("MM.yyyy"), insertDateTo = string.Empty }))'">
+                        <tr ondblclick="location.href = '@(Url.Action("Index", "UnknownServices", new { searchText = item.CustomerID, insertDateFrom = item.DateOfRequest.Value.ToString("MM.yyyy"), insertDateTo = string.Empty }))'">
 
                             <td>
                                 @Html.DisplayFor(modelItem => item.BatchID)
