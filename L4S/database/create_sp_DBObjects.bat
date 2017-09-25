@@ -12,5 +12,5 @@ for %%A in (.\??_insert*.sql) do (%SQLRUN% -S "(localdb)\LocalDBL4s" -i %%A -f 6
 
 for %%A in (.\??_grant*.sql) do (%SQLRUN% -S "(localdb)\LocalDBL4s" -i %%A)
 
-
+for %%A in (.\??_create_index*.sql) do (%SQLRUN% -S "(localdb)\LocalDBL4s" -i %%A)
 pause

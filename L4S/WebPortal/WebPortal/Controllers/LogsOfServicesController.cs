@@ -152,6 +152,8 @@ namespace WebPortal.Controllers
 
             if (!datCon && !txtCon)
             {
+                toDate = toDate.AddDays(1).AddTicks(-1);
+
                 model = dbAccess.Where(p => (p.DateOfRequest >= fromDate && p.DateOfRequest <= toDate) &&
                                               (p.CustomerID == custId &&
                                                p.ServiceID == servId

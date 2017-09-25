@@ -8,6 +8,7 @@ for %%A in (.\??_create_sp*.sql) do (%SQLRUN% -S "winbz.bluez.biz" -U l4sowner -
 for %%A in (.\??_create_Trigger*.sql) do (%SQLRUN% -S "winbz.bluez.biz" -U l4sowner -P "0wNer,123" -i %%A)
 for %%A in (.\??_insert*.sql) do (%SQLRUN% -S "winbz.bluez.biz" -U l4sowner -P "0wNer,123" -i %%A -f 65001)
 for %%A in (.\??_grant*.sql) do (%SQLRUN% -S "winbz.bluez.biz" -U l4sowner -P "0wNer,123" -i %%A)
+for %%A in (.\??_create_index*.sql) do (%SQLRUN% -S "winbz.bluez.biz" -U l4sowner -P "0wNer,123" -i %%A)
 
 pause
 
