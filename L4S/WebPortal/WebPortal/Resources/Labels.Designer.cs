@@ -1762,6 +1762,51 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Počet zákazníkov.
+        /// </summary>
+        public static string Statistics_CustomerCount {
+            get {
+                return ResourceManager.GetString("Statistics_CustomerCount", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Prenesené dáta.
+        /// </summary>
+        public static string Statistics_ReceivedBytes {
+            get {
+                return ResourceManager.GetString("Statistics_ReceivedBytes", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Počet dotazov.
+        /// </summary>
+        public static string Statistics_RequestCount {
+            get {
+                return ResourceManager.GetString("Statistics_RequestCount", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Počet služieb.
+        /// </summary>
+        public static string Statistics_ServiceCount {
+            get {
+                return ResourceManager.GetString("Statistics_ServiceCount", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Trvanie.
+        /// </summary>
+        public static string Statistics_SessionDuration {
+            get {
+                return ResourceManager.GetString("Statistics_SessionDuration", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Fakturačné údaje.
         /// </summary>
         public static string SubMenu_Fakturacie {

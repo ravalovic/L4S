@@ -32,16 +32,16 @@ BEGIN
 -- Insert new 
 		SET @myQuery = 'INSERT INTO [dbo].[CATCustomerDailyData]
 		(DateOfRequest, [CustomerID], [ServiceID], [NumberOfRequest], [ReceivedBytes], [RequestedTime])   
-			select i.DateOfRequest, i.CustomerID, i.ServiceID, i.NumberOfRequest, i.ReceivedBytes, i.RequestedTime from view_InsertToDaily i
-				where  not exists (select e.DateOfRequest, e.CustomerID, e.ServiceID from CATCustomerDailyData e
-								 where e.CustomerID = i.CustomerID
-								 and e.ServiceID = i.ServiceID	
-								 and year(e.DateOfRequest)=year(i.DateOfRequest)
-								 and month(e.DateOfRequest)=month(i.DateOfRequest)
-								 and day(e.DateOfRequest)=day(i.DateOfRequest)
-						 )
-				and i.TCActive = 0
-				and i.CustomerID is not NULL';
+		select dateadd(second, 0, dateadd(day, datediff(day, 0, i.DateOfRequest), 0)), i.CustomerID, i.ServiceID, 
+		       count(*), sum(convert(bigint,i.BytesSent)), sum(convert(decimal(18,5),i.RequestTime))  from CATLogsOfService i
+		where  not exists (select e.CustomerID from CATCustomerDailyData e
+		                 where e.CustomerID = i.CustomerID
+						 and e.ServiceID = i.ServiceID
+						 and dateadd(second, 0, dateadd(day, datediff(day, 0, e.DateOfRequest), 0)) = dateadd(second, 0, dateadd(day, datediff(day, 0, i.DateOfRequest), 0)))
+		and i.BatchID IN'+@myBatchList+'
+		and i.CustomerID is not null
+		and i.TCActive = 0
+		group by dateadd(second, 0, dateadd(day, datediff(day, 0, i.DateOfRequest), 0)), i.CustomerID, i.ServiceID';
 		EXEC(@myQuery);
 		SELECT @rowCount =  @@ROWCOUNT;
 		if (@mydebug = 1 ) print 'Insert Daily table record: '+cast(@rowCount as varchar);
@@ -54,14 +54,12 @@ BEGIN
 		BEGIN
 			SET @myQuery = 'UPDATE [dbo].[CATLogsOfService] 
 								SET TCActive = 1
-							WHERE  EXISTS (select e.DateOfRequest, e.CustomerID, e.ServiceID FROM CATCustomerDailyData e
-											 WHERE e.CustomerID = [CATLogsOfService].CustomerID
-												and e.ServiceID = [CATLogsOfService].ServiceID
-												and year(e.DateOfRequest)=year([CATLogsOfService].DateOfRequest)
-												and month(e.DateOfRequest)=month([CATLogsOfService].DateOfRequest)
-												and day(e.DateOfRequest)=day([CATLogsOfService].DateOfRequest)) 
-							AND CustomerID is not null 
-							AND TCActive = 0'
+							WHERE  EXISTS (select e.CustomerID FROM CATCustomerDailyData e
+								   WHERE e.CustomerID = [CATLogsOfService].CustomerID
+									AND e.ServiceID = [CATLogsOfService].ServiceID
+									AND e.DateOfRequest = dateadd(second, 0, dateadd(day, datediff(day, 0, [CATLogsOfService].DateOfRequest), 0))) 
+							AND	BatchID IN'+@myBatchList+'
+							AND CustomerID is not null AND TCActive = 0'
 			EXEC(@myQuery);
 			SELECT @rowCount =  @@ROWCOUNT;
 		    if (@mydebug = 1 ) print 'After Insert SET TCActive = 1 in CATLogsOfService .Number of  record: '+cast(@rowCount as varchar);
@@ -75,16 +73,16 @@ SET @myQuery = 'UPDATE  [dbo].[CATCustomerDailyData]
 						    ,[ReceivedBytes] = CATCustomerDailyData.ReceivedBytes + u.[ReceivedBytes]
 						    ,[RequestedTime] = CATCustomerDailyData.RequestedTime + u.[RequestedTime]
 							,TCLastUpdate = getdate()
-						FROM (select i.DateOfRequest, i.CustomerID, i.ServiceID, i.NumberOfRequest, i.ReceivedBytes, i.RequestedTime from view_InsertToDaily i
-								where  exists (select e.DateOfRequest, e.CustomerID, e.ServiceID from CATCustomerDailyData e
-								 where e.CustomerID = i.CustomerID
-								 and e.ServiceID = i.ServiceID	
-								 and year(e.DateOfRequest)=year(i.DateOfRequest)
-								 and month(e.DateOfRequest)=month(i.DateOfRequest)
-								 and day(e.DateOfRequest)=day(i.DateOfRequest))
-						and i.TCActive = 0
-						and i.CustomerID is not NULL
-						 ) u 
+						FROM (select dateadd(second, 0, dateadd(day, datediff(day, 0, i.DateOfRequest), 0)) DateOfRequest, i.CustomerID, i.ServiceID, 
+							 count(*) [NumberOfRequest] , sum(convert(bigint,i.BytesSent)) [ReceivedBytes], sum(convert(decimal(18,5),i.RequestTime)) [RequestedTime]  from CATLogsOfService i
+							 where   exists (select e.CustomerID from CATCustomerDailyData e
+							 where e.CustomerID = i.CustomerID
+							 and e.ServiceID = i.ServiceID
+							 and e.DateOfRequest = dateadd(second, 0, dateadd(day, datediff(day, 0, i.DateOfRequest), 0)))
+							 and i.BatchID  IN'+@myBatchList+'
+							 and i.CustomerID is not null
+							 and i.TCActive = 0
+							 group by dateadd(second, 0, dateadd(day, datediff(day, 0, i.DateOfRequest), 0)), i.CustomerID, i.ServiceID) u 
 						WHERE 
 						     u.DateOfRequest = CATCustomerDailyData.DateOfRequest
 						 and u.[CustomerID]  = CATCustomerDailyData.CustomerID
@@ -101,14 +99,12 @@ SET @myQuery = 'UPDATE  [dbo].[CATCustomerDailyData]
 						BEGIN
 							SET @myQuery = 'UPDATE [dbo].[CATLogsOfService] 
 												SET TCActive = 1
-											WHERE  EXISTS (select e.DateOfRequest, e.CustomerID, e.ServiceID FROM CATCustomerDailyData e
+											WHERE  EXISTS (select e.CustomerID FROM CATCustomerDailyData e
 															 WHERE e.CustomerID = [CATLogsOfService].CustomerID
-															 and e.ServiceID = [CATLogsOfService].ServiceID
-															 and year(e.DateOfRequest)=year([CATLogsOfService].DateOfRequest)
-															 and month(e.DateOfRequest)=month([CATLogsOfService].DateOfRequest)
-															 and day(e.DateOfRequest)=day([CATLogsOfService].DateOfRequest)) 
-											AND CustomerID is not null 
-											AND TCActive = 0'
+																AND e.ServiceID = [CATLogsOfService].ServiceID
+																AND e.DateOfRequest = dateadd(second, 0, dateadd(day, datediff(day, 0, [CATLogsOfService].DateOfRequest), 0))) 
+											AND	BatchID IN'+@myBatchList+'
+											AND CustomerID is not null AND TCActive = 0'
 							EXEC(@myQuery);
 							SELECT @rowCount =  @@ROWCOUNT;
 							if (@mydebug = 1 ) print 'After Update SET TCActive = 1 in CATLogsOfService. Number of  record: '+cast(@rowCount as varchar);

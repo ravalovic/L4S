@@ -51,5 +51,9 @@ BEGIN
 		    END   
 		    CLOSE myCursor   
 		    DEALLOCATE myCursor
-			SET @myBatchList =@myBatchList + ' )';
+			IF (LEN(@myBatchList)=1) -- if not new batch set default  
+			BEGIN
+			 SET @myBatchList = @myBatchList + '0';
+			END
+			SET @myBatchList = @myBatchList + ' )';
 END

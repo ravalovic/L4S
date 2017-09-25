@@ -78,7 +78,7 @@ if (@ArchiveCumulativeDataMonth = -1) OR (@ArchiveCumulativeDataMonth is null)
 		  values ('Delete CATProcessStatus ',  @rowCount);
 	END
 
-IF ( (DAY(getdate()) = @ArchivingDay) and (@LastArchiveRUN <> (CAST(FORMAT(YEAR(GETDATE()),'0000')AS VARCHAR) + CAST(FORMAT(MONTH(GETDATE()),'00') AS VARCHAR))))
+IF ( (DAY(getdate()) = @ArchivingDay) and (@LastArchiveRUN <> (CAST(right(YEAR(GETDATE())+10000,4)AS VARCHAR) + CAST(right(MONTH(GETDATE())+100,2) AS VARCHAR))))
 	BEGIN
 	    IF (@DeleteDaily = 0) 
 		BEGIN 
@@ -163,7 +163,13 @@ IF ( (DAY(getdate()) = @ArchivingDay) and (@LastArchiveRUN <> (CAST(FORMAT(YEAR(
 		DELETE FROM [dbo].[STInputFileDuplicity] WHERE DATEDIFF( MONTH, [InsertDateTime], getdate()) > @ArchiveCumulativeDataMonth and TCActive = 1
 		SET @rowCount = @@ROWCOUNT;
 		insert into [dbo].CATProcessStatus ([StepName], [BatchRecordNum])
-		values ('Delete from STInputFileInfo',  @rowCount);    
+		values ('Delete from STInputFileInfo',  @rowCount);  
+		
+		-- Update Generation date
+		update [dbo].CONFGeneralSettings
+		 SET ParamValue = CAST(right(YEAR(GETDATE())+10000,4)AS VARCHAR) + CAST(right(MONTH(GETDATE())+100,2) AS VARCHAR)
+        where ParamName = 'LastArchiveRUN';
+		  
 	END
 	ELSE
 	BEGIN

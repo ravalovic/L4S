@@ -88,7 +88,7 @@
 
                     @foreach (var item in Model)
                     {
-                        <tr onclick="location.href = '@(Url.Action("Index", "CustomerDailyDatas", new { searchText = item.CustomerIdentification, insertDateFrom = item.DateOfRequest.Value.ToString("dd.MM.yyyy"), insertDateTo = item.DateOfRequest.Value.AddMonths(1).AddTicks(-1).ToString("dd.MM.yyyy") } )))'">
+                        <tr ondblclick="location.href = '@(Url.Action("Index", "CustomerDailyDatas", new { searchText = item.CustomerIdentification, insertDateFrom = item.DateOfRequest.Value.ToString("dd.MM.yyyy"), insertDateTo = item.DateOfRequest.Value.AddMonths(1).AddTicks(-1).ToString("dd.MM.yyyy") } ))'">
                             <td>
                                 @Html.DisplayFor(modelItem => item.DateOfRequest)
                             </td>
@@ -123,10 +123,56 @@
             </div>
         </div>
     </div>
-        <br />
-        Strana @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) z @Model.PageCount Počet záznamov @Model.TotalItemCount
-        @*@Html.PagedListPager(Model, page => Url.Action("Index", new { page, currentFilter = ViewBag.CurrentFilter, currentFrom = ViewBag.CurrentFrom, currentTo = ViewBag.CurrentTo }))*@
-        @Html.PagedListPager(Model, page => Url.Action("Index", new { page, currentFilter = ViewBag.CurrentFilter, currentFrom = ViewBag.CurrentFrom, currentTo = ViewBag.CurrentTo, currentCustId = ViewBag.CurrentCustId, currentServId = ViewBag.CurrentServId, currentDate = ViewBag.CurrentReqDate }))
+    <div class="panel panel-primary">
+        <div class="panel-heading clearfix">
+            <div class="form-inline">
+                <div class="row text-center">
+                    <h4>Štatistika</h4>
+                </div>
+            </div>
+            <div class="form-inline">
+                <div class="row">
+                    <div class="col-md-2 col-md-offset-1"><b>@Resources.Labels.Statistics_CustomerCount</b>
+                    </div>
+                    <div class="col-md-2"><b>@Resources.Labels.Statistics_ServiceCount</b>
+                    </div>
+                    <div class="col-md-2"><b>@Resources.Labels.Statistics_RequestCount</b>
+                    </div>
+                    <div class="col-md-2"><b>@Resources.Labels.Statistics_ReceivedBytes</b>
+                    </div>
+                    <div class="col-md-2"><b>@Resources.Labels.Statistics_SessionDuration</b>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-2 col-md-offset-1"><b><input class="form-control" type="text" value="@ViewBag.CustomerCount" readonly/></b>
+                    </div>
+                    <div class="col-md-2"><b><input class="form-control" type="text" value="@ViewBag.ServiceCount" readonly/></b>
+                    </div>
+                    <div class="col-md-2"><b><input class="form-control" type="text" value="@ViewBag.RequestCount" readonly/></b>
+                    </div>
+                    <div class="col-md-2">
+                        <b><input class="form-control" type="text" value="@ViewBag.ReceivedBytes" readonly onfocus="this.value = '@ViewBag.ReceivedBytesInMeasureUnit @ViewBag.MetricUnit'" onblur="this.value = '@ViewBag.ReceivedBytes'" /></b>
+                    </div>
+                    <div class="col-md-2"><b><input class="form-control" type="text" value="@ViewBag.SessionDuration" readonly/></b>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <br />
+    @if (Model.Count > 0)
+    {
+        <div>
+            <a class="btn btn-info" href="~/CustomerMonthlyDatas/Report/?extension=csv&page=@Model.PageNumber&insertDateFrom=@ViewBag.CurrentFrom&insertDateTo=@ViewBag.CurrentTo&searchText=@ViewBag.CurrentFilter"><span class="glyphicon glyphicon-save" aria-hidden="true"></span>&nbsp;@Resources.Labels.Btn_CSV </a>
+            <a class="btn btn-info" href="~/CustomerMonthlyDatas/Report/?extension=pdf&page=@Model.PageNumber&insertDateFrom=@ViewBag.CurrentFrom&insertDateTo=@ViewBag.CurrentTo&searchText=@ViewBag.CurrentFilter"><span class="glyphicon glyphicon-save" aria-hidden="true"></span>&nbsp;@Resources.Labels.Btn_PDF </a>
+            <a class="btn btn-info" href="~/CustomerMonthlyDatas/Report/?extension=xlsx&page=@Model.PageNumber&insertDateFrom=@ViewBag.CurrentFrom&insertDateTo=@ViewBag.CurrentTo&searchText=@ViewBag.CurrentFilter"><span class="glyphicon glyphicon-save" aria-hidden="true"></span>&nbsp;@Resources.Labels.Btn_XLSX </a>
+            <a class="btn btn-info" href="~/CustomerMonthlyDatas/Report/?extension=html&amp;page=@Model.PageNumber&amp;insertDateFrom=@ViewBag.CurrentFrom&amp;insertDateTo=@ViewBag.CurrentTo&amp;searchText=@ViewBag.CurrentFilter"><span class="glyphicon glyphicon-save" aria-hidden="true"></span>&nbsp;@Resources.Labels.Btn_HTML </a>
+        </div>
+        <br/>
+    }
+    Strana @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) z @Model.PageCount Počet záznamov @Model.TotalItemCount
+    @*@Html.PagedListPager(Model, page => Url.Action("Index", new { page, currentFilter = ViewBag.CurrentFilter, currentFrom = ViewBag.CurrentFrom, currentTo = ViewBag.CurrentTo }))*@
+    @Html.PagedListPager(Model, page => Url.Action("Index", new { page, currentFilter = ViewBag.CurrentFilter, currentFrom = ViewBag.CurrentFrom, currentTo = ViewBag.CurrentTo, currentCustId = ViewBag.CurrentCustId, currentServId = ViewBag.CurrentServId, currentDate = ViewBag.CurrentReqDate }))
 </div>
 
 @section Scripts {
