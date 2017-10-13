@@ -36,7 +36,8 @@ BEGIN
 	        SET @myBatchList ='( ';
 	        --list of batch from STLogImport
 		    IF (@myInput = 0) DECLARE myCursor CURSOR FOR SELECT DISTINCT BatchID FROM [dbo].[STLogImport];
-			IF (@myInput = 1) DECLARE myCursor CURSOR FOR SELECT DISTINCT BatchID FROM [dbo].[CATUnknownService];
+			IF (@myInput = 1) DECLARE myCursor CURSOR FOR SELECT DISTINCT BatchID FROM [dbo].[CATUnknownService] WHERE CustomerID is null;
+			IF (@myInput = 2) DECLARE myCursor CURSOR FOR SELECT DISTINCT BatchID FROM [dbo].[CATLogsOfService] WHERE CustomerID is null;
 		    OPEN myCursor
 		    FETCH NEXT FROM myCursor INTO @myBatch
 		    WHILE @@FETCH_STATUS = 0   
