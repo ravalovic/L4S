@@ -38,6 +38,7 @@ DECLARE
 BEGIN
      IF (@myInput = 0) SET @myTable = '[dbo].[STLogImport]';
 	 IF (@myInput = 1) SET @myTable = '[dbo].[CATUnknownService]';
+	 IF (@myInput = 2) SET @myTable = '[dbo].[CATLogsOfService]';
      SET NOCOUNT ON;
 	--Get service parameters
 		  SET @myCustomerQuery = 'UPDATE '+@myTable+' 

@@ -113,7 +113,9 @@ namespace WebPortal.Common
                     }
                 }
             }
-            int.TryParse(search, out searchId);
+            if (!int.TryParse(search, out searchId))
+            {
+                searchId = -99;};
         }
 
     }

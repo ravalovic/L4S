@@ -38,12 +38,13 @@ namespace WebPortal.Controllers
             Helper.SetUpFilterValues(ref searchText, ref insertDateFrom, ref insertDateTo, currentFilter, currentFrom, currentTo, out searchId, out fromDate, out toDate, page);
             if (!insertDateFrom.IsNullOrWhiteSpace() || !insertDateTo.IsNullOrWhiteSpace()) datCondition = true;
             if (!searchText.IsNullOrWhiteSpace()) textCondition = true;
-            if (!searchText.IsNullOrWhiteSpace())
+            //if (( Regex.IsMatch(searchText, pattern1) || Regex.IsMatch(searchText, pattern2) ) && searchId == -99)
+            if (!searchText.IsNullOrWhiteSpace() && searchId == -99)
             {
-                cid = Int32.Parse(Regex.Match(Regex.Match(searchText, pattern1).Value, @"\d+").Value);
-                sid = Int32.Parse(Regex.Match(Regex.Match(searchText, pattern2).Value, @"\d+").Value);
+                Int32.TryParse(Regex.Match(Regex.Match(searchText, pattern1).Value, @"\d+").Value, out cid);
+                Int32.TryParse(Regex.Match(Regex.Match(searchText, pattern2).Value, @"\d+").Value, out sid);
             }
-            if (cid !=0 && sid != 0) { datCondition = false;
+            if (cid !=0 || sid != 0) { datCondition = false;
                 textCondition = false; 
             }
 
@@ -90,8 +91,17 @@ namespace WebPortal.Controllers
 
             if (txtCon && !datCon)
             {
+                if (search.Contains("null"))
+                {
+                    takeLimit = 100000;
+                    model = dbAccess.Where(p => (p.DateOfRequest >= fromDate && p.DateOfRequest <= toDate) &&
+                                                !p.CustomerID.HasValue
+                        )
+                        .OrderByDescending(d => d.DateOfRequest).Take(takeLimit)
+                        .ToList();
+                }
+                else { 
                 if (dbAccess.Count(p => p.BatchID == searchId ||
-                                        p.CustomerID == searchId ||
                                         p.RequestedURL.Contains(search) ||
                                         p.UserAgent.Contains(search) ||
                                         p.UserIPAddress.Contains(search))
@@ -99,7 +109,6 @@ namespace WebPortal.Controllers
                 {
                     model = dbAccess
                         .Where(p => p.BatchID == searchId ||
-                                    p.CustomerID == searchId ||
                                     p.RequestedURL.Contains(search) ||
                                     p.UserAgent.Contains(search) ||
                                     p.UserIPAddress.Contains(search))
@@ -109,61 +118,102 @@ namespace WebPortal.Controllers
                 {
                     model = dbAccess
                         .Where(p => p.BatchID == searchId ||
-                                    p.CustomerID == searchId ||
                                     p.RequestedURL.Contains(search) ||
                                     p.UserAgent.Contains(search) ||
                                     p.UserIPAddress.Contains(search))
                         .OrderByDescending(d => d.DateOfRequest).ToList();
                 }
+                }
             }
 
             if (txtCon && datCon)
             {
-                if (dbAccess.Count(p => (p.DateOfRequest >= fromDate && p.DateOfRequest <= toDate) &&
-                                                               (p.BatchID == searchId ||
-                                                               p.CustomerID == searchId ||
-                                                               p.RequestedURL.Contains(search) ||
-                                                               p.UserAgent.Contains(search) ||
-                                                               p.UserIPAddress.Contains(search))) > takeLimit)
+                if (search.Contains("null"))
                 {
-                    model = dbAccess
-                        .Where(p => (p.DateOfRequest >= fromDate && p.DateOfRequest <= toDate) &&
-                                    (p.BatchID == searchId ||
-                                     p.CustomerID == searchId ||
-                                     p.RequestedURL.Contains(search) ||
-                                     p.UserAgent.Contains(search) ||
-                                     p.UserIPAddress.Contains(search)))
+                    takeLimit = 100000;
+                    model = dbAccess.Where(p => (p.DateOfRequest >= fromDate && p.DateOfRequest <= toDate) &&
+                                                !p.CustomerID.HasValue
+                        )
                         .OrderByDescending(d => d.DateOfRequest).Take(takeLimit)
                         .ToList();
                 }
                 else
                 {
-                    model = dbAccess
-                        .Where(p => (p.DateOfRequest >= fromDate && p.DateOfRequest <= toDate) &&
-                                    (p.BatchID == searchId ||
-                                     p.CustomerID == searchId ||
-                                     p.RequestedURL.Contains(search) ||
-                                     p.UserAgent.Contains(search) ||
-                                     p.UserIPAddress.Contains(search)))
-                        .OrderByDescending(d => d.DateOfRequest)
-                        .ToList();
+                    if (dbAccess.Count(p => (p.DateOfRequest >= fromDate && p.DateOfRequest <= toDate) &&
+                                            (p.BatchID == searchId ||
+                                             p.CustomerID == searchId ||
+                                             p.RequestedURL.Contains(search) ||
+                                             p.UserAgent.Contains(search) ||
+                                             p.UserIPAddress.Contains(search))) > takeLimit)
+                    {
+                        model = dbAccess
+                            .Where(p => (p.DateOfRequest >= fromDate && p.DateOfRequest <= toDate) &&
+                                        (p.BatchID == searchId ||
+                                         p.CustomerID == searchId ||
+                                         p.RequestedURL.Contains(search) ||
+                                         p.UserAgent.Contains(search) ||
+                                         p.UserIPAddress.Contains(search)))
+                            .OrderByDescending(d => d.DateOfRequest).Take(takeLimit)
+                            .ToList();
+                    }
+                    else
+                    {
+                        model = dbAccess
+                            .Where(p => (p.DateOfRequest >= fromDate && p.DateOfRequest <= toDate) &&
+                                        (p.BatchID == searchId ||
+                                         p.CustomerID == searchId ||
+                                         p.RequestedURL.Contains(search) ||
+                                         p.UserAgent.Contains(search) ||
+                                         p.UserIPAddress.Contains(search)))
+                            .OrderByDescending(d => d.DateOfRequest)
+                            .ToList();
+                    }
                 }
             }
 
             if (!datCon && !txtCon)
             {
                 toDate = toDate.AddDays(1).AddTicks(-1);
-
+                takeLimit = 100000;
+                if ((custId != 0) && servId == 0) { 
                 model = dbAccess.Where(p => (p.DateOfRequest >= fromDate && p.DateOfRequest <= toDate) &&
-                                              (p.CustomerID == custId &&
-                                               p.ServiceID == servId
-                                               ))
-                    .OrderByDescending(d => d.DateOfRequest)
+                                              p.CustomerID == custId 
+                                               )
+                    .OrderByDescending(d => d.DateOfRequest).Take(takeLimit)
                     .ToList();
+            }
+                if ((custId == 0) && servId != 0 && !search.Contains("null"))
+                {
+                    model = dbAccess.Where(p => (p.DateOfRequest >= fromDate && p.DateOfRequest <= toDate) &&
+                                                p.ServiceID == servId
+                        )
+                        .OrderByDescending(d => d.DateOfRequest).Take(takeLimit)
+                        .ToList();
+                }
+                if ( servId != 0 && search.Contains("null"))
+                {
+                    takeLimit = 100000;
+                    model = dbAccess.Where(p => (p.DateOfRequest >= fromDate && p.DateOfRequest <= toDate) &&
+                                                (!p.CustomerID.HasValue && p.ServiceID==servId)
+                        )
+                        .OrderByDescending(d => d.DateOfRequest).Take(takeLimit)
+                        .ToList();
+                }
+                if ((custId != 0) && servId != 0)
+                {
+                    model = dbAccess.Where(p => (p.DateOfRequest >= fromDate && p.DateOfRequest <= toDate) &&
+                                                (p.CustomerID == custId && p.ServiceID == servId)
+                        )
+                        .OrderByDescending(d => d.DateOfRequest).Take(takeLimit)
+                        .ToList();
+                }
+                
+               
             }
 
             if (model.Count == 0)
             {
+                takeLimit = 9999;
                 if (dbAccess.Count() > takeLimit)
                 {
                     model = dbAccess.OrderByDescending(d => d.DateOfRequest).Take(takeLimit).ToList();
