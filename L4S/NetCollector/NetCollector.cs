@@ -5,6 +5,8 @@ using System.Linq;
 using System.Security.Principal;
 using CommonHelper;
 using Limilabs.FTP.Client;
+using System.Configuration;
+using System.Collections.Generic;
 // ReSharper disable LocalVariableHidesMember
 
 
@@ -17,7 +19,6 @@ namespace NetCollector
     //Public class for read parameters from .config file
     public class MyApConfig
     {
-       
         public string TransferMethod { get; set; }
         public string RemoteServer { get; set; }
         public string ShareName { get; set; }
@@ -38,6 +39,23 @@ namespace NetCollector
 
         public MyApConfig()
         {
+            var connStrings = ConfigurationManager.ConnectionStrings;
+            if (connStrings != null)
+            {
+                foreach (ConnectionStringSettings cs in connStrings)
+                {
+                    Console.WriteLine(cs.Name);
+                    Console.WriteLine(cs.ProviderName);
+                    Console.WriteLine(cs.ConnectionString);
+                    Dictionary<string, string> connStringParts = cs.ConnectionString.Split(';')
+                        .Select(t => t.Split(new char[] { '=' }, 2))
+                        .ToDictionary(t => t[0].Trim(), t => t[1].Trim(), StringComparer.InvariantCultureIgnoreCase);
+                    foreach (var dict in connStringParts)
+                    {
+                        Console.WriteLine("Key {0}: Value:{1}", dict.Key, connStringParts.Values);
+                    }
+                }
+            }
             var configManager = new AppConfigManager();
             //remote params
             TransferMethod = configManager.ReadSetting("transferMethod");
