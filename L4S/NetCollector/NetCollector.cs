@@ -19,6 +19,7 @@ namespace NetCollector
     //Public class for read parameters from .config file
     public class MyApConfig
     {
+        string _node;
         public string TransferMethod { get; set; }
         public string RemoteServer { get; set; }
         public string ShareName { get; set; }
@@ -37,43 +38,48 @@ namespace NetCollector
         public bool SingleFileMode { get; set; }
         public bool UnzipInputFile { get; set; }
 
-        public MyApConfig()
+        public MyApConfig(string node)
         {
-            var connStrings = ConfigurationManager.ConnectionStrings;
-            if (connStrings != null)
-            {
-                foreach (ConnectionStringSettings cs in connStrings)
-                {
-                    Console.WriteLine(cs.Name);
-                    Console.WriteLine(cs.ProviderName);
-                    Console.WriteLine(cs.ConnectionString);
-                    Dictionary<string, string> connStringParts = cs.ConnectionString.Split(';')
+            this._node = node;
+            string cs = ConfigurationManager.ConnectionStrings[node].ConnectionString;
+            Dictionary<string, string> connStringParts = cs.Split(';')
                         .Select(t => t.Split(new char[] { '=' }, 2))
-                        .ToDictionary(t => t[0].Trim(), t => t[1].Trim(), StringComparer.InvariantCultureIgnoreCase);
-                    foreach (var dict in connStringParts)
-                    {
-                        Console.WriteLine("Key {0}: Value:{1}", dict.Key, connStringParts.Values);
-                    }
-                }
-            }
+                        .ToDictionary(t => t[0].Trim().ToUpper(), t => t[1].Trim(), StringComparer.InvariantCultureIgnoreCase);
             var configManager = new AppConfigManager();
             //remote params
-            TransferMethod = configManager.ReadSetting("transferMethod");
-            RemoteServer = configManager.ReadSetting("remoteServer");
-            ShareName = configManager.ReadSetting("shareName");
-            RemoteDir = configManager.ReadSetting("remoteDir");
-            RemoteFileName = configManager.ReadSetting("remoteFileName");
+            TransferMethod = ConfigurationManager.ConnectionStrings[node].ProviderName;
+            RemoteServer = connStringParts["remoteServer".ToUpper()];
+            ShareName = connStringParts["shareName".ToUpper()];
+            RemoteDir = connStringParts["remoteDir".ToUpper()];
+            RemoteFileName = connStringParts["remoteFileName".ToUpper()];
             bool allowRenameRemote;
-            bool.TryParse(configManager.ReadSetting("allowRenameRemote"), out allowRenameRemote);
+            bool.TryParse(connStringParts["allowRenameRemote".ToUpper()], out allowRenameRemote);
             AllowRenameRemote = allowRenameRemote;
-            RenameRemoteExtension = configManager.ReadSetting("renameRemoteExtension");
+            RenameRemoteExtension = connStringParts["renameRemoteExtension".ToUpper()];
             // local autorization params
             bool integratedSecurity;
-            bool.TryParse(configManager.ReadSetting("integratedSecurity"), out integratedSecurity);
+            bool.TryParse(connStringParts["integratedSecurity".ToUpper()], out integratedSecurity);
             IntegratedSecurity = integratedSecurity;
-            Login = configManager.ReadSetting("login");
-            Password = configManager.ReadSetting("password");
-            Domain = configManager.ReadSetting("domain");
+            Login = connStringParts["login".ToUpper()];
+            Password = connStringParts["password".ToUpper()];
+            Domain = connStringParts["domain".ToUpper()];
+
+            //TransferMethod = configManager.ReadSetting("transferMethod");
+            //RemoteServer = configManager.ReadSetting("remoteServer");
+            //ShareName = configManager.ReadSetting("shareName");
+            //RemoteDir = configManager.ReadSetting("remoteDir");
+            //RemoteFileName = configManager.ReadSetting("remoteFileName");
+            //bool allowRenameRemote;
+            //bool.TryParse(configManager.ReadSetting("allowRenameRemote"), out allowRenameRemote);
+            //AllowRenameRemote = allowRenameRemote;
+            //RenameRemoteExtension = configManager.ReadSetting("renameRemoteExtension");
+            //// local autorization params
+            //bool integratedSecurity;
+            //bool.TryParse(configManager.ReadSetting("integratedSecurity"), out integratedSecurity);
+            //IntegratedSecurity = integratedSecurity;
+            //Login = configManager.ReadSetting("login");
+            //Password = configManager.ReadSetting("password");
+            //Domain = configManager.ReadSetting("domain");
 
             // local file system params
             OutputDir = configManager.ReadSetting("outputDir");
@@ -302,10 +308,24 @@ namespace NetCollector
             Log.InfoFormat(Helper.Version("NetCollector"));
             using (new SingleGlobalInstance(1000)) //1000ms timeout on global lock
             {
+                
+                List<MyApConfig> appSettingsList = new List<MyApConfig>();
 
-                string missing;
-                MyApConfig appSettings = new MyApConfig();
-                if (appSettings.CheckParams(appSettings, out missing))
+                var connStrings = ConfigurationManager.ConnectionStrings;
+                if (connStrings != null)
+                {
+                    foreach (ConnectionStringSettings cs in connStrings)
+                    {
+                        MyApConfig fillApConfig = new MyApConfig(cs.Name);
+                        appSettingsList.Add(fillApConfig);
+                    }
+                }
+               
+                
+                foreach (var appSettings in appSettingsList)
+                {
+                    string missing;
+                    if (appSettings.CheckParams(appSettings, out missing))
                 {
                     Log.Error(missing);
                     Environment.Exit(0);
@@ -358,6 +378,7 @@ namespace NetCollector
 
                 }
 
+                } 
             } //using singleinstance
         }
     }
