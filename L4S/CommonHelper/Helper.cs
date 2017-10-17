@@ -51,12 +51,13 @@ namespace CommonHelper
             Move,
             Delete,
             Zip, 
-            Unzip
+            Unzip,
+            Rename
         };
 
         public static string Version(string appName)
         {
-            return appName+": "+@"Verzia 1.4.0 zo dňa 20.09.2017";
+            return appName+": "+@"Verzia 1.5.0 zo dňa 16.10.2017";
         }
         public enum ParameterFromName
         {
@@ -111,6 +112,9 @@ namespace CommonHelper
                             File.Delete(myFile);
                         }
                         
+                        break;
+                    case Action.Rename:
+                        File.Move(myFile, myDestDir + myDestExt+ "_" + Path.GetFileName(myFile) );
                         break;
                 }
             }

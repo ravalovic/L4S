@@ -20,6 +20,7 @@ namespace NetCollector
     public class MyApConfig
     {
         string _node;
+        public string RemoteNode { get; set; }
         public string TransferMethod { get; set; }
         public string RemoteServer { get; set; }
         public string ShareName { get; set; }
@@ -40,7 +41,8 @@ namespace NetCollector
 
         public MyApConfig(string node)
         {
-            this._node = node;
+            _node = node;
+            RemoteNode = _node;
             string cs = ConfigurationManager.ConnectionStrings[node].ConnectionString;
             Dictionary<string, string> connStringParts = cs.Split(';')
                         .Select(t => t.Split(new char[] { '=' }, 2))
@@ -48,57 +50,38 @@ namespace NetCollector
             var configManager = new AppConfigManager();
             //remote params
             TransferMethod = ConfigurationManager.ConnectionStrings[node].ProviderName;
-            RemoteServer = connStringParts["remoteServer".ToUpper()];
-            ShareName = connStringParts["shareName".ToUpper()];
-            RemoteDir = connStringParts["remoteDir".ToUpper()];
-            RemoteFileName = connStringParts["remoteFileName".ToUpper()];
-            bool allowRenameRemote;
-            bool.TryParse(connStringParts["allowRenameRemote".ToUpper()], out allowRenameRemote);
-            AllowRenameRemote = allowRenameRemote;
-            RenameRemoteExtension = connStringParts["renameRemoteExtension".ToUpper()];
+            if (connStringParts.ContainsKey("remoteServer".ToUpper())){ RemoteServer = connStringParts["remoteServer".ToUpper()]; }
+            if (connStringParts.ContainsKey("shareName".ToUpper())){ ShareName = connStringParts["shareName".ToUpper()];}
+            if (connStringParts.ContainsKey("remoteServer".ToUpper())){ RemoteDir = connStringParts["remoteDir".ToUpper()];}
+            if (connStringParts.ContainsKey("remoteDir".ToUpper())){ RemoteFileName = connStringParts["remoteFileName".ToUpper()];}
+            if (connStringParts.ContainsKey("allowRenameRemote".ToUpper())) {bool.TryParse(connStringParts["allowRenameRemote".ToUpper()], out var allowRenameRemote);
+                                                                                AllowRenameRemote = allowRenameRemote;}
+            if (connStringParts.ContainsKey("renameRemoteExtension".ToUpper())) {RenameRemoteExtension = connStringParts["renameRemoteExtension".ToUpper()];}
             // local autorization params
-            bool integratedSecurity;
-            bool.TryParse(connStringParts["integratedSecurity".ToUpper()], out integratedSecurity);
-            IntegratedSecurity = integratedSecurity;
-            Login = connStringParts["login".ToUpper()];
-            Password = connStringParts["password".ToUpper()];
-            Domain = connStringParts["domain".ToUpper()];
-
-            //TransferMethod = configManager.ReadSetting("transferMethod");
-            //RemoteServer = configManager.ReadSetting("remoteServer");
-            //ShareName = configManager.ReadSetting("shareName");
-            //RemoteDir = configManager.ReadSetting("remoteDir");
-            //RemoteFileName = configManager.ReadSetting("remoteFileName");
-            //bool allowRenameRemote;
-            //bool.TryParse(configManager.ReadSetting("allowRenameRemote"), out allowRenameRemote);
-            //AllowRenameRemote = allowRenameRemote;
-            //RenameRemoteExtension = configManager.ReadSetting("renameRemoteExtension");
-            //// local autorization params
-            //bool integratedSecurity;
-            //bool.TryParse(configManager.ReadSetting("integratedSecurity"), out integratedSecurity);
-            //IntegratedSecurity = integratedSecurity;
-            //Login = configManager.ReadSetting("login");
-            //Password = configManager.ReadSetting("password");
-            //Domain = configManager.ReadSetting("domain");
-
+            if (connStringParts.ContainsKey("integratedSecurity".ToUpper())){ bool.TryParse(connStringParts["integratedSecurity".ToUpper()], out var integratedSecurity);
+                                                                                IntegratedSecurity = integratedSecurity;}
+            if (connStringParts.ContainsKey("login".ToUpper())){ Login = connStringParts["login".ToUpper()];}
+            if (connStringParts.ContainsKey("password".ToUpper())){ Password = connStringParts["password".ToUpper()];}
+            if (connStringParts.ContainsKey("domain".ToUpper())){ Domain = connStringParts["domain".ToUpper()];}
+            // set up datetime mask
+            int whichDay = 0;
+            if (connStringParts.ContainsKey("whichDay".ToUpper())){ int.TryParse(connStringParts["whichDay".ToUpper()], out whichDay);}
+            if (connStringParts.ContainsKey("dateMask".ToUpper()))
+            {
+                DateMask = DateTime.Now.AddDays(whichDay).ToString(connStringParts["dateMask".ToUpper()]);
+            }
+            else
+            {
+                DateMask = DateTime.Now.ToString("yyyyMMdd");
+            }
             // local file system params
             OutputDir = configManager.ReadSetting("outputDir");
             WorkDir = configManager.ReadSetting("workDir");
             BackupDir = configManager.ReadSetting("backupDir");
-
-
-            bool oneFile;
-            bool.TryParse(configManager.ReadSetting("singleFileMode"), out oneFile);
+            bool.TryParse(configManager.ReadSetting("singleFileMode"), out var oneFile);
             SingleFileMode = oneFile;
-            bool unzip;
-            bool.TryParse(configManager.ReadSetting("unzipInputFile"), out unzip);
-            UnzipInputFile = unzip;
-
-            // set up datetime mask
-            int whichDay;
-            int.TryParse(configManager.ReadSetting("whichDay"), out whichDay);
-            DateMask= DateTime.Now.AddDays(whichDay).ToString(configManager.ReadSetting("dateMask"));
-         }
+            
+        }
         public bool CheckParams(object myConfig, out string missingParams)
         {
             bool isInComplete = false;
@@ -144,7 +127,7 @@ namespace NetCollector
             Http,
             Ssh
         }
-       
+
         // Create a logger for use in this class
         private static readonly log4net.ILog Log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
@@ -153,11 +136,11 @@ namespace NetCollector
         /// </summary>
         private static void CreateIfMissing(MyApConfig appApConfig)
         {
-           Directory.CreateDirectory(appApConfig.BackupDir);
-           Directory.CreateDirectory(appApConfig.WorkDir);
-           Directory.CreateDirectory(appApConfig.OutputDir);
+            Directory.CreateDirectory(appApConfig.BackupDir);
+            Directory.CreateDirectory(appApConfig.WorkDir);
+            Directory.CreateDirectory(appApConfig.OutputDir);
         }
-        
+
         /// <summary>
         /// NetShare transfer method
         /// </summary>
@@ -177,7 +160,7 @@ namespace NetCollector
             {
                 Log.Info(@"Get new files from: " + sourceDir);
                 //Copy file from remote server to NetCollector Work directory
-               
+                
                 foreach (var file in iFiles.Take(toTake))
                 {
                     myStopWatch.Restart();
@@ -209,7 +192,7 @@ namespace NetCollector
         {
             bool result = false;
             string dateMask = DateTime.Now.ToString("ddMMyyyyHHmmss");
-           
+
             using (Ftp ftp = new Ftp())
             {
                 var myStopWatch = Stopwatch.StartNew();
@@ -238,9 +221,9 @@ namespace NetCollector
                 {
                     Log.Warn("No files for collection from source: " + settingsConfig.RemoteServer + settingsConfig.RemoteDir + settingsConfig.RemoteFileName);
                 }
-               ftp.Close(); 
+                ftp.Close();
             }
-            
+
             return result;
 
         }
@@ -254,10 +237,10 @@ namespace NetCollector
             var iFiles = Directory.GetFiles(settingsConfig.WorkDir, settingsConfig.RemoteFileName);
             if (iFiles.Any())
             {
-                
+
                 foreach (var file in iFiles)
                 {
-                   //Backup file from workDir to backup directory
+                    //Backup file from workDir to backup directory
                     Helper.ManageFile(Helper.Action.Zip, file, settingsConfig.BackupDir);
                     Log.Info(String.Format("Backup file {0}", file));
                 }
@@ -274,11 +257,11 @@ namespace NetCollector
         /// <param name="settingsConfig"></param>
         protected static void MoveToFinal(MyApConfig settingsConfig)
         {
-            
+
             var iFiles = Directory.GetFiles(settingsConfig.WorkDir, settingsConfig.RemoteFileName);
             if (iFiles.Any())
             {
-               
+
                 foreach (var file in iFiles)
                 {
                     var extension = Path.GetExtension(file);
@@ -292,8 +275,6 @@ namespace NetCollector
                         Helper.ManageFile(Helper.Action.Move, file, settingsConfig.OutputDir);
                         Log.Info(String.Format("Move file {0} to {1}", file, settingsConfig.OutputDir));
                     }
-                    
-                    
                 }
 
             }
@@ -308,7 +289,7 @@ namespace NetCollector
             Log.InfoFormat(Helper.Version("NetCollector"));
             using (new SingleGlobalInstance(1000)) //1000ms timeout on global lock
             {
-                
+
                 List<MyApConfig> appSettingsList = new List<MyApConfig>();
 
                 var connStrings = ConfigurationManager.ConnectionStrings;
@@ -320,65 +301,65 @@ namespace NetCollector
                         appSettingsList.Add(fillApConfig);
                     }
                 }
-               
-                
+
+
                 foreach (var appSettings in appSettingsList)
                 {
                     string missing;
                     if (appSettings.CheckParams(appSettings, out missing))
-                {
-                    Log.Error(missing);
-                    Environment.Exit(0);
-                }
-                CreateIfMissing(appSettings);
-
-                Log.InfoFormat("Running as {0}", WindowsIdentity.GetCurrent().Name);
-                Log.InfoFormat("Transfer method:  {0}", appSettings.TransferMethod);
-                CollectionMethod method;
-                if (Enum.TryParse(appSettings.TransferMethod, out method))
-                {
-                    switch (method)
                     {
-                        case CollectionMethod.NetShare:
-                            if (appSettings.IntegratedSecurity) //if user which execute has integration security with remote server
-                            {
-                                if (NetShareTransfer(appSettings))
+                        Log.Error(missing);
+                        Environment.Exit(0);
+                    }
+                    CreateIfMissing(appSettings);
+
+                    Log.InfoFormat("Running as {0}", WindowsIdentity.GetCurrent().Name);
+                    Log.InfoFormat("Transfer method:  {0}", appSettings.TransferMethod);
+                    CollectionMethod method;
+                    if (Enum.TryParse(appSettings.TransferMethod, out method))
+                    {
+                        switch (method)
+                        {
+                            case CollectionMethod.NetShare:
+                                if (appSettings.IntegratedSecurity) //if user which execute has integration security with remote server
+                                {
+                                    if (NetShareTransfer(appSettings))
+                                    {
+                                        BackupNewFiles(appSettings);
+                                        MoveToFinal(appSettings);
+                                    }
+                                }
+                                else
+                                {
+                                    using (UserImpersonation user = new UserImpersonation(appSettings.Login, appSettings.Domain, appSettings.Password))
+                                    {
+                                        if (user.ImpersonateValidUser())
+                                        {
+                                            if (NetShareTransfer(appSettings))
+                                            {
+                                                BackupNewFiles(appSettings);
+                                                MoveToFinal(appSettings);
+                                            }
+                                        }
+                                        else
+                                        {
+                                            Log.Error("User is not connected check credential");
+                                        }
+                                    }
+                                }
+                                break;
+                            case CollectionMethod.Ftp:
+                                if (FtpTransfer(appSettings))
                                 {
                                     BackupNewFiles(appSettings);
                                     MoveToFinal(appSettings);
                                 }
-                            }
-                            else
-                            {
-                                using (UserImpersonation user = new UserImpersonation(appSettings.Login, appSettings.Domain, appSettings.Password))
-                                {
-                                    if (user.ImpersonateValidUser())
-                                    {
-                                        if (NetShareTransfer(appSettings))
-                                        {
-                                            BackupNewFiles(appSettings);
-                                            MoveToFinal(appSettings);
-                                        }
-                                    }
-                                    else
-                                    {
-                                        Log.Error("User is not connected check credential");
-                                    }
-                                }
-                            }
-                            break;
-                        case CollectionMethod.Ftp:
-                            if (FtpTransfer(appSettings))
-                            {
-                                BackupNewFiles(appSettings);
-                                MoveToFinal(appSettings);
-                            }
-                            break;
+                                break;
+                        }
+
                     }
 
                 }
-
-                } 
             } //using singleinstance
         }
     }
