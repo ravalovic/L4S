@@ -1,19 +1,22 @@
 rem ******* L4S starting script (c) 2017 BlueZ, s.r.o *******
-set  SQLRUN="c:\Program Files\Microsoft SQL Server\100\Tools\Binn\SQLCMD.EXE"
+set  SQLRUN="c:\Program Files\Microsoft SQL Server\Client SDK\ODBC\110\Tools\Binn\SQLCMD.EXE"
+rem set  SQLRUN="c:\Program Files\Microsoft SQL Server\100\Tools\Binn\SQLCMD.EXE"
 cd c:\L4S\bin\
 .\NetCollector\NetCollector.exe
 .\PreProcessor\PreProcessor.exe
 .\SQLBulkCopy\SQLBulkCopy.exe
-rem *** Timestamp for log file ***
+rem %SQLRUN% -S "(localdb)\LocalDBL4s" -Q [log4service].[dbo].[sp_RUN]
 for /f "tokens=2-8 delims=.:/ " %%a in ("%date% %time: =0%") do set DateStamp=%%c-%%b-%%a
 
 for /f "tokens=2-8 delims=.:/ " %%a in ("%date% %time: =0%") do set DateNtime=%%c-%%a-%%b %%d:%%e:%%f.%%g
-@echo %DateNtime% ************* DB Processing Start ************* >> ..\logs\sp_run_%DateStamp%.log
+@echo %DateNtime% ************* Process Start ************* >> ..\logs\sp_run_%DateStamp%.log
 
-%SQLRUN% -S "vugkvosk" -Q "EXEC [log4service].[dbo].[sp_RUN] $(mydebug)" -v mydebug = 1 >> ..\logs\sp_run_%DateStamp%.log
+rem %SQLRUN% -S "vugkvosk" -Q "EXEC [log4service].[dbo].[sp_RUN] $(mydebug)" -v mydebug = 1 >> ..\logs\sp_run_%DateStamp%.log
+%SQLRUN% -S "winbz" -U l4sowner -P "0wNer,123" -Q "EXEC [log4service].[dbo].[sp_RUN] $(mydebug)" -v mydebug = 1 >> ..\logs\sp_run_%DateStamp%.log
+rem %SQLRUN% -S "winbz" -U l4sowner -P "0wNer,123" -Q "EXEC [log4service].[dbo].[sp_RUN] " >> ..\logs\sp_run_%DateStamp%.log
 
 for /f "tokens=2-8 delims=.:/ " %%a in ("%date% %time: =0%") do set DateNtime=%%c-%%a-%%b %%d:%%e:%%f.%%g
-@echo %DateNtime% ************* DB Processing Stop ************* >> ..\logs\sp_run_%DateStamp%.log
+@echo %DateNtime% ************* Process Stop ************* >> ..\logs\sp_run_%DateStamp%.log
 
 rem *************   DELETE FILE OLDER THAN minage in days *********************
 if not exist "c:\L4S\fordelete\" mkdir c:\L4S\fordelete\
