@@ -24,6 +24,7 @@ GO
 CREATE PROCEDURE [dbo].[sp_DataProcessing] 
 @mydebug int = 0,
 @tableInput int = 0,
+@batchLimit int = 4,
 @batchList varchar(max) OUTPUT
 AS
 
@@ -51,6 +52,7 @@ BEGIN
 	BEGIN
 	    EXEC	@return_value = [dbo].[sp_GetBatchList]
 		        @myInput = @tableInput,
+				@batchLimit = @batchLimit,
 			    @myBatchList = @batchList OUTPUT;
 		if (@return_value = 0) 
 		BEGIN
