@@ -97,8 +97,19 @@ BEGIN
 			 CLOSE runCursor   
 			 DEALLOCATE runCursor
 		END
-		
-
+		IF (@tableInput = 1)
+		BEGIN
+		    SET @myDelete = 'DELETE FROM [dbo].[CATUnknownService] WHERE BatchID IN' + @batchList;
+			if (@mydebug = 1 ) print @myDelete;
+			EXEC(@myDelete);
+			SELECT @rowcountAll = @@ROWCOUNT;
+			if (@mydebug = 1 ) print 'Deleted rows from CATUnknownService '+ cast(@rowcountAll as varchar) +' lines';
+			IF (  @rowcountAll >0 or @rowcountService >0 )
+			BEGIN
+				insert into [dbo].CATProcessStatus ([StepName], [BatchID], [BatchRecordNum], [NumberOfService] ,[NumberOfCustomer],[NumberOfUnknownService], [NumberOfPreprocessDelete])
+				values ('DataProcessing', @batchList, @rowcountAll,  @rowcountService, 0,0,0);
+			END
+		END
 		--Unknown services services
 	   IF (@tableInput = 0)
 		BEGIN
