@@ -87,9 +87,10 @@ namespace WebPortal.Common
             if (fDate != null && Regex.Match(fDate, @"\d{2}\.\d{4}").Success)
             {
                 DateTime.TryParse(fDate, out fromDate);
-                if (!DateTime.TryParse(tDate, out toDate))
+                if (tDate == null)
                 {
-                    toDate = DateTime.Now;
+                    DateTime.TryParse(fDate, out toDate);
+                    toDate = toDate.AddMonths(1).AddTicks(-1);
                 }
                 else
                 {

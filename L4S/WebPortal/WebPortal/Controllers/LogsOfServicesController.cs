@@ -173,7 +173,7 @@ namespace WebPortal.Controllers
 
             if (!datCon && !txtCon)
             {
-                toDate = toDate.AddDays(1).AddTicks(-1);
+                toDate = fromDate.AddDays(1).AddTicks(-1);
                 takeLimit = 100000;
                 if ((custId != 0) && servId == 0) { 
                 model = dbAccess.Where(p => (p.DateOfRequest >= fromDate && p.DateOfRequest <= toDate) &&

@@ -24,6 +24,7 @@ namespace WebPortal.Controllers
         // GET: InvoiceByMonth
         public ActionResult Index(int? page, string insertDateFrom, string insertDateTo, string searchText, string currentFilter, string currentFrom, string currentTo)
         {
+            //return new HttpStatusCodeResult(404);
             int searchId;
             DateTime fromDate;
             DateTime toDate;

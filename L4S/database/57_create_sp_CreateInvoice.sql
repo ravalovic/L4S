@@ -41,6 +41,7 @@ BEGIN
 
 			--select DATEADD(MONTH, DATEDIFF(MONTH, 0, GETDATE())-1, 0) --First day of previous month
 			--select DATEADD(MONTH, DATEDIFF(MONTH, -1, GETDATE())-1, -1) --Last Day of previous month
+			-- SELECT DATEADD(s,-1,DATEADD(mm, DATEDIFF(m,0,GETDATE()),0)) --Last Day of previous month with time 23:59:59 
 
 		--Insert new InvoiceData 
 
@@ -58,7 +59,7 @@ BEGIN
            ,[CustomerServiceCode],[CustomerServicename]
            ,[UnitPrice],[MeasureofUnits]
            ,[BasicPriceWithoutVAT],[VAT],[BasicPriceWithVAT]
-		FROM [dbo].[view_CATInvoiceByDay] WHERE TCActive = 0;
+		FROM [dbo].[view_CATInvoiceByDay] WHERE TCActive = 0 and [DateOfRequest] <= (SELECT DATEADD(s,-1,DATEADD(mm, DATEDIFF(m,0,GETDATE()),0))) ;
 
 
 		INSERT INTO [dbo].[CATInvoiceByMonth]
@@ -75,7 +76,7 @@ BEGIN
            ,[CustomerServiceCode],[CustomerServicename]
            ,[UnitPrice],[MeasureofUnits]
            ,[BasicPriceWithoutVAT],[VAT],[BasicPriceWithVAT]
-		FROM [dbo].[view_CATInvoiceByMonth] WHERE TCActive = 0;
+		FROM [dbo].[view_CATInvoiceByMonth] WHERE TCActive = 0 and [DateOfRequest] <= (SELECT DATEADD(s,-1,DATEADD(mm, DATEDIFF(m,0,GETDATE()),0))) ;
 
 		INSERT INTO [dbo].[CATCustomerServiceDetailInvoice]
            ([InvoiceNumber]
@@ -111,7 +112,10 @@ BEGIN
 		       , v.NumberOfRequest,  v.ReceivedBytes, v.RequestedTime, v.MeasureOfUnits
 			   , v.CustomerServiceCode, v.CustomerServiceName
 			   , v.UnitPrice, v.BasicPriceWithoutVAT, v.VAT, v.BasicPriceWithVAT
-		FROM view_InvoiceByMonth v, CONFGeneralSettings p where v.TCActive = 0 and p.ParamName='DueDateDays' order by DateOfRequest, CustomerID, ServiceID 
+		FROM view_InvoiceByMonth v, CONFGeneralSettings p where v.TCActive = 0 
+														and v.DateOfRequest <= (SELECT DATEADD(s,-1,DATEADD(mm, DATEDIFF(m,0,GETDATE()),0))) 
+														and p.ParamName='DueDateDays' order by DateOfRequest, CustomerID, ServiceID ;
+		
 		SELECT @rowcount = @@ROWCOUNT;
 		if (@mydebug = 1 ) print 'Create ' + cast(@rowcount as varchar) +' invoices ';
 
@@ -127,11 +131,14 @@ BEGIN
 										AND e.ServiceID = [CATCustomerDailyData].ServiceID
 										AND e.StartBillingPeriod = DATEADD(MONTH, DATEDIFF(MONTH, 0, CONVERT(date, [CATCustomerDailyData].DateOfRequest)), 0)
 										) 
-		AND	TCActive = 0;
+		AND	TCActive = 0
+		and [DateOfRequest] <= (SELECT DATEADD(s,-1,DATEADD(mm, DATEDIFF(m,0,GETDATE()),0))) ;
+
 		SELECT @rowcount = @@ROWCOUNT;
 		if (@mydebug = 1 ) print 'Mark ' + cast(@rowcount as varchar) +'lines from [CATCustomerDailyData] as processed for Invoice ';
 		insert into [dbo].CATProcessStatus ([StepName], [BatchRecordNum])
 		values ('Create Invoices: MarkDailyRecods as processed',  @rowCount);
+		
 		UPDATE [dbo].[CATCustomerMonthlyData]
 		SET TCActive = 1
 			 ,TCLastUpdate = GETDATE()
@@ -141,7 +148,9 @@ BEGIN
 										AND e.ServiceID = [CATCustomerMonthlyData].ServiceID
 										AND e.StartBillingPeriod = [CATCustomerMonthlyData].DateOfRequest
 										) 
-		AND	TCActive = 0;
+		AND	TCActive = 0
+		and [DateOfRequest] <= (SELECT DATEADD(s,-1,DATEADD(mm, DATEDIFF(m,0,GETDATE()),0))) ;
+
 		SELECT @rowcount = @@ROWCOUNT;
 		if (@mydebug = 1 ) print 'Mark ' + cast(@rowcount as varchar) +'lines from [CATCustomerMonthlyData] as processed for Invoice ';
 		insert into [dbo].CATProcessStatus ([StepName], [BatchRecordNum])

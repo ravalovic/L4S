@@ -68,6 +68,9 @@
                             @Html.DisplayNameFor(model => model.FirstOrDefault().BatchID)
                         </th>
                         <th>
+                            @Html.DisplayNameFor(model => model.FirstOrDefault().RecordID)
+                        </th>
+                        <th>
                             @Html.DisplayNameFor(model => model.FirstOrDefault().CustomerID)
                         </th>
                         <th>
@@ -97,6 +100,9 @@
 
                             <td>
                                 @Html.DisplayFor(modelItem => item.BatchID)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.RecordID)
                             </td>
                             <td>
                                 @Html.DisplayFor(modelItem => item.CustomerID)
