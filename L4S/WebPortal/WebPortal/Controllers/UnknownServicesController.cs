@@ -7,6 +7,7 @@ using WebPortal.DataContexts;
 using PagedList;
 using WebPortal.Common;
 using Microsoft.Ajax.Utilities;
+using WebPortal.Models;
 
 namespace WebPortal.Controllers
 {
@@ -16,13 +17,14 @@ namespace WebPortal.Controllers
     public class UnknownServicesController : Controller
     {
         private readonly L4SDb _db = new L4SDb();
-        private List<CATUnknownService> _dataList;
+        private List<UnknownServicesViewModel> _dataList;
         private List<CATUnknownService> _model;
         private Pager _pager;
         // GET: UnknownServices
         public ActionResult Index(int? page, string insertDateFrom, string insertDateTo, string searchText, string currentFilter, string currentFrom, string currentTo)
         {
             var dbAccess = _db.CATUnknownService;
+            var modelViews = new List<UnknownServicesViewModel>();
             int searchId;
             DateTime fromDate;
             DateTime toDate;
@@ -70,9 +72,32 @@ namespace WebPortal.Controllers
             {
                 _model = dbAccess.OrderByDescending(d => d.TCInsertTime).ToList();
             }
-            _pager = new Pager(_model.Count(), page);
-            _dataList = _model.Skip(_pager.ToSkip).Take(_pager.ToTake).ToList();
-            var pageList = new StaticPagedList<CATUnknownService>(_dataList, _pager.CurrentPage, _pager.PageSize, _pager.TotalItems);
+
+            foreach (var service in _model)
+            {
+                modelViews.Add(new UnknownServicesViewModel
+                {
+
+                    ID = service.ID,
+                    BatchID = service.BatchID,
+                    RecordID = service.RecordID,
+                    CustomerID = service.CustomerID,
+                    //CustomerName = _db.CATCustomerData.Where(a => a.PKCustomerDataID == service.CustomerID && a.CompanyName != null).Select(a => a.CompanyName) != null ? _db.CATCustomerData.Where(c => (c.PKCustomerDataID == service.CustomerID && c.CompanyName != null)).Select(c => c.CompanyName).ToString() : _db.CATCustomerData.Where(c => (c.PKCustomerDataID == service.CustomerID && c.CompanyName == null)).Select(c => c.IndividualFirstName + " " + c.IndividualLastName).ToString(),
+                    CustomerName = _db.CATCustomerData.FirstOrDefault(a => a.PKCustomerDataID == service.CustomerID && a.CompanyName != null)?.CompanyName ?? 
+                    _db.CATCustomerData.FirstOrDefault(a => a.PKCustomerDataID == service.CustomerID && a.CompanyName == null)?.IndividualFirstName + " " +
+                    _db.CATCustomerData.FirstOrDefault(a => a.PKCustomerDataID == service.CustomerID && a.CompanyName == null)?.IndividualLastName,
+                    ServiceID = service.ServiceID,
+                    DateOfRequest = service.DateOfRequest,
+                    RequestedURL = service.RequestedURL,
+                    RequestStatus = service.RequestStatus,
+                    BytesSent = service.BytesSent,
+                    UserIPAddress = service.UserIPAddress
+                });
+            }
+            
+            _pager = new Pager(modelViews.Count(), page);
+            _dataList = modelViews.Skip(_pager.ToSkip).Take(_pager.ToTake).ToList();
+            var pageList = new StaticPagedList<UnknownServicesViewModel>(_dataList, _pager.CurrentPage, _pager.PageSize, _pager.TotalItems);
             return View("Index", pageList);
         }
 

@@ -504,6 +504,7 @@
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Controllers\CustomerMonthlyDatasController.cs" />
+    <Compile Include="Models\UnknownServicesViewModel.cs" />
     <Compile Include="Models\CustomerViewModel.cs" />
     <Compile Include="Models\DeleteModel.cs" />
     <Compile Include="Models\ErrorModel.cs" />

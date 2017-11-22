@@ -60,9 +60,10 @@ namespace WebPortal.Common
             search = search?.Trim();
             fDate = fDate?.Trim();
             tDate = tDate?.Trim();
-            DateTime.TryParse(fDate, out fromDate);
-            DateTime.TryParse(tDate, out toDate);
-            if ((fromDate > toDate) && !fDate.IsNullOrWhiteSpace() && !tDate.IsNullOrWhiteSpace())
+            if (fDate != null) DateTime.TryParse(fDate, out fromDate); else fromDate = DateTime.MinValue;
+            if (tDate != null) DateTime.TryParse(tDate, out toDate); else toDate = DateTime.Today;
+
+            if ((fromDate > toDate))
             {
                 fDate = String.Empty;
                 tDate = String.Empty;
@@ -86,33 +87,20 @@ namespace WebPortal.Common
 
             if (fDate != null && Regex.Match(fDate, @"\d{2}\.\d{4}").Success)
             {
-                DateTime.TryParse(fDate, out fromDate);
-                if (tDate == null)
+               if (tDate == null || fromDate > toDate)
                 {
                     DateTime.TryParse(fDate, out toDate);
-                    toDate = toDate.AddMonths(1).AddTicks(-1);
+                    toDate = fromDate.AddMonths(1).AddTicks(-1);
                 }
-                else
-                {
-                    if (fromDate > toDate) { 
-                    toDate = toDate.AddMonths(1).AddTicks(-1);
-                    }
-                }
+                
             }
             else
             {
-                DateTime.TryParse(fDate, out fromDate);
-                if (!DateTime.TryParse(tDate, out toDate))
-                {
-                    toDate = DateTime.Now;
-                }
-                else
-                {
-                    if (fromDate > toDate)
+               if (fromDate > toDate)
                     {
-                        toDate = toDate.AddDays(1).AddTicks(-1);
+                        toDate = fromDate.AddDays(1).AddTicks(-1);
                     }
-                }
+               
             }
             if (!int.TryParse(search, out searchId))
             {

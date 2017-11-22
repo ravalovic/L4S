@@ -619,6 +619,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to CID.
+        /// </summary>
+        public static string CustomerID {
+            get {
+                return ResourceManager.GetString("CustomerID", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Identifikátory.
         /// </summary>
         public static string CustomerIdentificators_Title {

@@ -18,6 +18,7 @@ namespace WebPortal
         //    CATCustomerIdentifiers = new HashSet<CATCustomerIdentifiers>();
         //}
         [Key]
+        [Display(Name = "CustomerID", ResourceType = typeof(Labels))]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int PKCustomerDataID { get; set; }
 

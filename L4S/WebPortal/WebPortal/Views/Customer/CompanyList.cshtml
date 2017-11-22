@@ -41,37 +41,40 @@
                 <table class="table table-striped table-bordered table-hover table-condensed ">
 
                     <thead>
-                        <tr>
-                            <th>
-                                @Html.DisplayNameFor(model => model.FirstOrDefault().CompanyName)
-                            </th>
-                            <th>
-                                @Html.DisplayNameFor(model => model.FirstOrDefault().CompanyType)
-                            </th>
-                            <th>
-                                @Html.DisplayNameFor(model => model.FirstOrDefault().CompanyID)
-                            </th>
-                            <th>
-                                @Html.DisplayNameFor(model => model.FirstOrDefault().Customer_TAXID)
-                            </th>
-                            <th>
-                                @Html.DisplayNameFor(model => model.FirstOrDefault().Customer_VATID)
-                            </th>
+                    <tr>
+                        <th>
+                            @Html.DisplayNameFor(model => model.FirstOrDefault().PKCustomerDataID)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.FirstOrDefault().CompanyName)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.FirstOrDefault().CompanyType)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.FirstOrDefault().CompanyID)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.FirstOrDefault().Customer_TAXID)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.FirstOrDefault().Customer_VATID)
+                        </th>
 
-                            <th>
-                                @Html.DisplayNameFor(model => model.FirstOrDefault().Address)
-                            </th>
-                            <th>
-                                @Html.DisplayNameFor(model => model.FirstOrDefault().ContactEmail)
-                            </th>
-                            <th>
-                                @Html.DisplayNameFor(model => model.FirstOrDefault().ContactMobile)
-                            </th>
-                            <th>
-                                @Html.DisplayNameFor(model => model.FirstOrDefault().ContactPhone)
-                            </th>
-                            <th></th>
-                        </tr>
+                        <th>
+                            @Html.DisplayNameFor(model => model.FirstOrDefault().Address)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.FirstOrDefault().ContactEmail)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.FirstOrDefault().ContactMobile)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.FirstOrDefault().ContactPhone)
+                        </th>
+                        <th></th>
+                    </tr>
                     </thead>
 
                     <tbody>
@@ -82,6 +85,9 @@
                             rowNumber++;
                             string odkaz = "rowNumber" + rowNumber;
                             <tr data-toggle="collapse" data-target="#@odkaz" class="info accordion-toggle">
+                                <td>
+                                    <b>@Html.DisplayFor(modelItem => item.PKCustomerDataID)</b>
+                                </td>
                                 <td>
                                     <b>@Html.DisplayFor(modelItem => item.CompanyName)</b>
                                 </td>
