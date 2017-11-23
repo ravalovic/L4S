@@ -13,10 +13,10 @@
 @{  var context = new L4SDb();
     string connectionString = context.Database.Connection.ConnectionString;
     Regex r = new Regex(@"Password=[^;]*");
-    String newString = r.Replace(connectionString, "Password=XXXXXX");
+    string newString = r.Replace(connectionString, "Password=XXXXXX");
     ViewBag.DBname = newString;}
 <h4>Databáza: @ViewBag.DBName</h4>
 <h4>Databáza verzia: 28 </h4>
-<h4>Aplikácia verzia: 1.6.5 </h4>
+<h4>Aplikácia verzia: 1.7.0 </h4>
 <h4>Utilities verzia: 1.5.0 </h4>
-<h4>Zo dňa: 15.11.2017</h4>
+<h4>Zo dňa: 23.11.2017</h4>

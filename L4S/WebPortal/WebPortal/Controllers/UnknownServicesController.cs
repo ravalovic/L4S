@@ -38,40 +38,15 @@ namespace WebPortal.Controllers
             ViewBag.CurrentFilter = searchText;
             ViewBag.CurrentFrom = insertDateFrom;
             ViewBag.CurrentTo = insertDateTo;
-
-           
-            if (datCondition && !textCondition)
+            _model = ApplyFilter(searchText, searchId, fromDate, toDate, textCondition, datCondition, out bool aFilter);
+            if (!aFilter)
             {
-                _model = dbAccess.Where(p => p.DateOfRequest.Value >= fromDate && p.DateOfRequest.Value <= toDate)
-                    .OrderBy(d => d.TCInsertTime).ToList();
-
-            }
-            if (textCondition && !datCondition)
-            {
-                _model = dbAccess
-                    .Where(p => p.BatchID == searchId||
-                                p.RequestedURL.ToUpper().Contains(searchText.ToUpper()) ||
-                                p.UserIPAddress.ToUpper().Contains(searchText.ToUpper()) ||
-                                p.UserAgent.ToUpper().Contains(searchText.ToUpper()))
-                    .OrderByDescending(d => d.DateOfRequest).ToList();
-
-            }
-            if (textCondition && datCondition)
-            {
-                _model = dbAccess
-                    .Where(p => (p.DateOfRequest.Value >= fromDate && p.DateOfRequest.Value <= toDate)&&
-                                (p.BatchID == searchId ||
-                                p.RequestedURL.ToUpper().Contains(searchText.ToUpper()) ||
-                                p.UserIPAddress.ToUpper().Contains(searchText.ToUpper()) ||
-                                p.UserAgent.ToUpper().Contains(searchText.ToUpper())))
-                                 .OrderByDescending(d => d.DateOfRequest).ToList();
-
+                ViewBag.CurrentFilter = string.Empty;
+                ViewBag.CurrentFrom = string.Empty;
+                ViewBag.CurrentTo = string.Empty;
             }
 
-            if (_model == null || _model.Count == 0)
-            {
-                _model = dbAccess.OrderByDescending(d => d.TCInsertTime).ToList();
-            }
+
 
             foreach (var service in _model)
             {
@@ -125,6 +100,47 @@ namespace WebPortal.Controllers
                 _db.Dispose();
             }
             base.Dispose(disposing);
+        }
+        private List<CATUnknownService> ApplyFilter(string search, int searchId, DateTime fromDate, DateTime toDate, bool txtCon, bool datCon, out bool filter)
+        {
+            filter = true;
+            var dbAccess = _db.CATUnknownService;
+            List<CATUnknownService> model = new List<CATUnknownService>();
+
+            if (datCon && !txtCon)
+            {
+                model = dbAccess.Where(p => p.DateOfRequest.Value >= fromDate && p.DateOfRequest.Value <= toDate)
+                    .OrderBy(d => d.TCInsertTime).ToList();
+
+            }
+            if (txtCon && !datCon)
+            {
+                model = dbAccess
+                    .Where(p => p.BatchID == searchId ||
+                                p.RequestedURL.ToUpper().Contains(search.ToUpper()) ||
+                                p.UserIPAddress.ToUpper().Contains(search.ToUpper()) ||
+                                p.UserAgent.ToUpper().Contains(search.ToUpper()))
+                    .OrderByDescending(d => d.DateOfRequest).ToList();
+
+            }
+            if (datCon && txtCon)
+            {
+                model = dbAccess
+                    .Where(p => (p.DateOfRequest.Value >= fromDate && p.DateOfRequest.Value <= toDate) &&
+                                (p.BatchID == searchId ||
+                                 p.RequestedURL.ToUpper().Contains(search.ToUpper()) ||
+                                 p.UserIPAddress.ToUpper().Contains(search.ToUpper()) ||
+                                 p.UserAgent.ToUpper().Contains(search.ToUpper())))
+                    .OrderByDescending(d => d.DateOfRequest).ToList();
+
+            }
+
+            if (model.Count == 0)
+            {
+                model = dbAccess.OrderByDescending(d => d.TCInsertTime).ToList();
+                filter = false;
+            }
+            return model;
         }
     }
 }

@@ -60,13 +60,14 @@ namespace WebPortal.Common
             search = search?.Trim();
             fDate = fDate?.Trim();
             tDate = tDate?.Trim();
-            if (fDate != null) DateTime.TryParse(fDate, out fromDate); else fromDate = DateTime.MinValue;
-            if (tDate != null) DateTime.TryParse(tDate, out toDate); else toDate = DateTime.Today;
+            if (!fDate.IsNullOrWhiteSpace()) DateTime.TryParse(fDate, out fromDate); else fromDate = DateTime.MinValue;
+            if (!tDate.IsNullOrWhiteSpace()) DateTime.TryParse(tDate, out toDate); else toDate = DateTime.Today;
 
             if ((fromDate > toDate))
             {
-                fDate = String.Empty;
-                tDate = String.Empty;
+                fDate = string.Empty;
+                tDate = string.Empty;
+                toDate = fromDate.AddDays(1);
             }
 
             if (pageNum != null)
@@ -85,23 +86,6 @@ namespace WebPortal.Common
                 }
             }
 
-            if (fDate != null && Regex.Match(fDate, @"\d{2}\.\d{4}").Success)
-            {
-               if (tDate == null || fromDate > toDate)
-                {
-                    DateTime.TryParse(fDate, out toDate);
-                    toDate = fromDate.AddMonths(1).AddTicks(-1);
-                }
-                
-            }
-            else
-            {
-               if (fromDate > toDate)
-                    {
-                        toDate = fromDate.AddDays(1).AddTicks(-1);
-                    }
-               
-            }
             if (!int.TryParse(search, out searchId))
             {
                 searchId = -99;};
