@@ -49,9 +49,26 @@ namespace WebPortal.Common
             public long RequestCount { get; set; }
             public decimal ReceivedBytes { get; set; }
             public decimal ReceivedBytesInMeasureUnit { get; set; }
-            public decimal SessionDuration {get;set;}
+            public decimal SessionDuration { get; set; }
             public string MetricUnit { get; set; }
+
+        }
+
+        public class Version
+        {
+            public Version()
+            {
+                DBVersion = @"Verzia databázy: 28";
+                L4SUtils = @"Verzia L4S: 1.5.0";
+                WebApp = @"Verzia VOSK: 1.7.0";
+                InstallDate = @"Vytvorené dňa: 23.11.2017";
+            }
+            public string DBVersion { get; private set; }
+            public string L4SUtils { get; private set; }
+            public string WebApp { get; private set; }
+            public string InstallDate { get; private set; }
             
+  
         }
 
         public static void SetUpFilterValues(ref string search, ref string fDate, ref string tDate, string currFilter,
@@ -88,7 +105,8 @@ namespace WebPortal.Common
 
             if (!int.TryParse(search, out searchId))
             {
-                searchId = -99;};
+                searchId = -99;
+            };
         }
 
     }
