@@ -50,7 +50,7 @@ select m.ID, m.DateOfRequest, m.CustomerID
 	 when g.ParamValue = UPPER('MBYTE')  then convert(decimal(18,5),(p.ServiceBasicPrice * m.ReceivedBytes/(1024.0*1024.0) * (1 + convert(decimal(18,5), d.ParamValue))))
 	 when g.ParamValue = UPPER('GBYTE')  then convert(decimal(18,5),(p.ServiceBasicPrice * m.ReceivedBytes/(1024.0*1024.0*1024.0) * (1 + convert(decimal(18,5), d.ParamValue)))) 
  end as BasicPriceWithVAT
- ,m.TCActive
+ ,m.TCActive, n.TCActive as CustomerActive
  from CATCustomerMonthlyData m, CATCustomerServices c, CATServiceParameters p , CONFGeneralSettings g, CONFGeneralSettings d, CATCustomerData n
 where n.CompanyID is not null
 and m.CustomerID = c.FKCustomerDataID 
@@ -94,7 +94,7 @@ select m.ID, m.DateOfRequest, m.CustomerID
 	 when g.ParamValue = UPPER('MBYTE')  then convert(decimal(18,5),(p.ServiceBasicPrice * m.ReceivedBytes/(1024.0*1024.0) * (1 + convert(decimal(18,5), d.ParamValue))))
 	 when g.ParamValue = UPPER('GBYTE')  then convert(decimal(18,5),(p.ServiceBasicPrice * m.ReceivedBytes/(1024.0*1024.0*1024.0) * (1 + convert(decimal(18,5), d.ParamValue)))) 
  end as BasicPriceWithVAT
- ,m.TCActive
+ ,m.TCActive, n.TCActive as CustomerActive
  from CATCustomerMonthlyData m, CATCustomerServices c, CATServiceParameters p , CONFGeneralSettings g, CONFGeneralSettings d, CATCustomerData n
 where n.IndividualID is not null
 and m.CustomerID = c.FKCustomerDataID 

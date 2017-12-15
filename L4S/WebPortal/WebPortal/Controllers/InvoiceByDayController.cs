@@ -29,11 +29,11 @@ namespace WebPortal.Controllers
             DateTime toDate;
             bool datCondition = false;
             bool textCondition = false;
-            var dbAccess = _db.view_CustomerMontlyTotalInvoice;
+            var dbAccess = _db.view_InvoiceByDay;
             var lastPeriod = DateTime.Today;
             if (dbAccess.Any())
             {
-                lastPeriod = dbAccess.Max(p => p.StartBillingPeriod);
+                lastPeriod = dbAccess.Max(p => p.DateOfRequest);
             }
             if (searchText.IsNullOrWhiteSpace() && insertDateFrom.IsNullOrWhiteSpace() &&
                 insertDateTo.IsNullOrWhiteSpace() && currentFilter.IsNullOrWhiteSpace() &&
@@ -78,8 +78,8 @@ namespace WebPortal.Controllers
             DateTime toDate;
             bool datCondition = false;
             bool textCondition = false;
-            var dbAccess = _db.view_CustomerMontlyTotalInvoice;
-            var lastPeriod = dbAccess.Max(p => p.StartBillingPeriod);
+            var dbAccess = _db.view_InvoiceByDay;
+            var lastPeriod = dbAccess.Max(p => p.DateOfRequest);
             if (searchText.IsNullOrWhiteSpace() && insertDateFrom.IsNullOrWhiteSpace() &&
                 insertDateTo.IsNullOrWhiteSpace() && currentFilter.IsNullOrWhiteSpace() &&
                 currentFrom.IsNullOrWhiteSpace() && currentTo.IsNullOrWhiteSpace())

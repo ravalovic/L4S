@@ -116,40 +116,54 @@ namespace WebPortal.Controllers
                     {
                         if (item.Checked && item.TCActive == 1) //edit customer already assigned service
                         {
-                            CATCustomerServices service = customer.CATCustomerServices.Where(p => p.PKServiceCustomerIdentifiersID == item.PKServiceCustomerIdentifiersID).FirstOrDefault();
-                            service.ServiceCode = item.ServiceCode;
-                            service.ServiceName = item.ServiceName;
-                            service.ServiceNote = item.ServiceNote;
-                            service.ServicePriceDiscount = item.ServicePriceDiscount;
-                            service.TCLastUpdate = DateTime.Now;
+                            if (customer != null)
+                            {
+                                CATCustomerServices service = customer.CATCustomerServices.FirstOrDefault(p => p.PKServiceCustomerIdentifiersID == item.PKServiceCustomerIdentifiersID);
+                                if (service != null)
+                                {
+                                    service.ServiceCode = item.ServiceCode;
+                                    service.ServiceName = item.ServiceName;
+                                    service.ServiceNote = item.ServiceNote;
+                                    service.ServicePriceDiscount = item.ServicePriceDiscount;
+                                    service.TCLastUpdate = DateTime.Now;
+                                }
+                            }
                         }
                         else if (!item.Checked && item.TCActive == 1) //remove customer already assigned service
                         {
-                            CATCustomerServices service = customer.CATCustomerServices.Where(p => p.PKServiceCustomerIdentifiersID == item.PKServiceCustomerIdentifiersID).FirstOrDefault();
-                            service.TCLastUpdate = DateTime.Now;
-                            service.TCActive = 99;
+                            if (customer != null)
+                            {
+                                CATCustomerServices service = customer.CATCustomerServices.FirstOrDefault(p => p.PKServiceCustomerIdentifiersID == item.PKServiceCustomerIdentifiersID);
+                                if (service != null)
+                                {
+                                    service.TCLastUpdate = DateTime.Now;
+                                    service.TCActive = 99;
+                                }
+                            }
                         }
                         else if (item.Checked && item.TCActive == 0) //add new service to customer
                         {
-                            CATCustomerServices service = new CATCustomerServices();
-                            service.ServiceCode = item.ServiceCode;
-                            service.ServiceName = item.ServiceName;
-                            service.ServiceNote = item.ServiceNote;
-                            service.ServicePriceDiscount = item.ServicePriceDiscount;
-                            service.FKCustomerDataID = item.FKCustomerDataID;
-                            service.FKServiceID = item.FKServiceID;
-                            service.TCActive = 1;
-                            service.TCInsertTime = DateTime.Now;
-                            service.TCLastUpdate = DateTime.Now;
+                            CATCustomerServices service = new CATCustomerServices
+                            {
+                                ServiceCode = item.ServiceCode,
+                                ServiceName = item.ServiceName,
+                                ServiceNote = item.ServiceNote,
+                                ServicePriceDiscount = item.ServicePriceDiscount,
+                                FKCustomerDataID = item.FKCustomerDataID,
+                                FKServiceID = item.FKServiceID,
+                                TCActive = 1,
+                                TCInsertTime = DateTime.Now,
+                                TCLastUpdate = DateTime.Now
+                            };
 
-                            customer.CATCustomerServices.Add(service); //add to customer new service
+                            customer?.CATCustomerServices.Add(service); //add to customer new service
                         }
                     }
 
                     _db.SaveChanges();
 
 
-                    if (customer.CustomerType == "PO") return RedirectToAction("CompanyList");
+                    if (customer != null && customer.CustomerType == "PO") return RedirectToAction("CompanyList");
                     return RedirectToAction("IndividualList");
                 }
                 else
@@ -159,13 +173,13 @@ namespace WebPortal.Controllers
                                             .Select(e => e.ErrorMessage));
 
                     //Log This exception to ELMAH:
-                    Exception exception = new Exception(message.ToString());
+                    Exception exception = new Exception(message);
 
                     //Return Status Code:
                     return new HttpStatusCodeResult(HttpStatusCode.BadRequest, message);
                 }
             }
-            if (customer.CustomerType == "PO") return RedirectToAction("CompanyList");
+            if (customer != null && customer.CustomerType == "PO") return RedirectToAction("CompanyList");
             return RedirectToAction("IndividualList");
         }
         
@@ -280,7 +294,6 @@ namespace WebPortal.Controllers
                 _db.CATCustomerData.Add(cAtCustomerData);
                 _db.SaveChanges();
             }
-            var errors = ModelState.Values.SelectMany(v => v.Errors);
             if (cAtCustomerData.CustomerType == "PO") return RedirectToAction("CompanyList");
             return RedirectToAction("IndividualList");
         }
@@ -350,6 +363,7 @@ namespace WebPortal.Controllers
             if (cAtCustomerData != null)
             {
                 cAtCustomerData.TCActive = 99;
+                cAtCustomerData.TCLastUpdate = DateTime.Now;
                 _db.SaveChanges();
 
                 if (cAtCustomerData.CustomerType == "PO") return RedirectToAction("CompanyList");
