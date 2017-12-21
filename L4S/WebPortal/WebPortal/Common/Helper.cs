@@ -1,6 +1,5 @@
 ﻿using Microsoft.Ajax.Utilities;
 using System;
-using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using System.Web;
 using System.Web.Mvc;
@@ -16,7 +15,7 @@ namespace WebPortal.Common
         {
             public override void OnActionExecuting(ActionExecutingContext filterContext)
             {
-                System.Web.HttpContext context = HttpContext.Current;
+                var context = HttpContext.Current;
                 if (context.Session != null)
                 {
                     if (context.Session.IsNewSession)
@@ -58,10 +57,10 @@ namespace WebPortal.Common
         {
             public Version()
             {
-                DBVersion = @"Verzia databázy: 28";
+                DBVersion = @"Verzia databázy: 29";
                 L4SUtils = @"Verzia L4S: 1.5.0";
-                WebApp = @"Verzia VOSK: 1.7.0";
-                InstallDate = @"Vytvorené dňa: 23.11.2017";
+                WebApp = @"Verzia VOSK: 1.7.2";
+                InstallDate = @"Vytvorené dňa: 21.12.2017";
             }
             public string DBVersion { get; private set; }
             public string L4SUtils { get; private set; }
@@ -77,8 +76,13 @@ namespace WebPortal.Common
             search = search?.Trim();
             fDate = fDate?.Trim();
             tDate = tDate?.Trim();
+            
             if (!fDate.IsNullOrWhiteSpace()) DateTime.TryParse(fDate, out fromDate); else fromDate = DateTime.MinValue;
             if (!tDate.IsNullOrWhiteSpace()) DateTime.TryParse(tDate, out toDate); else toDate = DateTime.Today;
+            if (fDate != null && Regex.Match(fDate, @"\d{2}\.\d{4}").Success)
+            {
+                toDate = toDate.AddMonths(1).AddTicks(-1);
+            }
 
             if ((fromDate > toDate))
             {
@@ -106,7 +110,7 @@ namespace WebPortal.Common
             if (!int.TryParse(search, out searchId))
             {
                 searchId = -99;
-            };
+            }
         }
 
     }
