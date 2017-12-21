@@ -1,5 +1,3 @@
-USE [log4service]
-GO
 
 /****** Object:  View [dbo].[view_CATInvoiceByDay]    Script Date: 3. 7. 2017 16:05:46 ******/
 DROP VIEW [dbo].view_CATInvoiceByDay
@@ -49,7 +47,7 @@ select m.ID, m.DateOfRequest, m.CustomerID
 	 when g.ParamValue = UPPER('MBYTE')  then convert(decimal(18,5),(p.ServiceBasicPrice * m.ReceivedBytes/(1024.0*1024.0) * (1 + convert(decimal(18,5), d.ParamValue))))
 	 when g.ParamValue = UPPER('GBYTE')  then convert(decimal(18,5),(p.ServiceBasicPrice * m.ReceivedBytes/(1024.0*1024.0*1024.0) * (1 + convert(decimal(18,5), d.ParamValue)))) 
  end as BasicPriceWithVAT
- ,m.TCActive
+ ,m.TCActive, n.TCActive as CustomerActive
  from CATCustomerDailyData m, CATCustomerServices c, CATServiceParameters p , CONFGeneralSettings g, CONFGeneralSettings d, CATCustomerData n
 where n.CompanyID is not null
 and m.CustomerID = c.FKCustomerDataID 
@@ -57,6 +55,10 @@ and m.ServiceID = c.FKServiceID
 and c.FKServiceID = p.PKServiceID 
 and n.PKCustomerDataID = m.CustomerID
 and g.ParamName = UPPER('METRICUNIT') and d.ParamName = UPPER('DPH')
+and m.TCActive <> 99
+and c.TCActive <> 99
+and p.TCActive <> 99
+and n.TCActive <> 99
 UNION ALL
 select m.ID, m.DateOfRequest, m.CustomerID
      , n.IndividualID as CustomerIdentification, n.IndividualFirstName+' '+n.IndividualLastName as CustomerName
@@ -93,7 +95,7 @@ select m.ID, m.DateOfRequest, m.CustomerID
 	 when g.ParamValue = UPPER('MBYTE')  then convert(decimal(18,5),(p.ServiceBasicPrice * m.ReceivedBytes/(1024.0*1024.0) * (1 + convert(decimal(18,5), d.ParamValue))))
 	 when g.ParamValue = UPPER('GBYTE')  then convert(decimal(18,5),(p.ServiceBasicPrice * m.ReceivedBytes/(1024.0*1024.0*1024.0) * (1 + convert(decimal(18,5), d.ParamValue)))) 
  end as BasicPriceWithVAT
- ,m.TCActive
+ ,m.TCActive, n.TCActive as CustomerActive
  from CATCustomerDailyData m, CATCustomerServices c, CATServiceParameters p , CONFGeneralSettings g, CONFGeneralSettings d, CATCustomerData n
 where n.IndividualID is not null
 and m.CustomerID = c.FKCustomerDataID 
@@ -101,6 +103,10 @@ and m.ServiceID = c.FKServiceID
 and c.FKServiceID = p.PKServiceID 
 and n.PKCustomerDataID = m.CustomerID
 and g.ParamName = UPPER('METRICUNIT') and d.ParamName = UPPER('DPH')
+and m.TCActive <> 99
+and c.TCActive <> 99
+and p.TCActive <> 99
+and n.TCActive <> 99
 GO
 
 
