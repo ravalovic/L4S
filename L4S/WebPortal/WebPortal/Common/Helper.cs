@@ -58,10 +58,10 @@ namespace WebPortal.Common
         {
             public Version()
             {
-                DBVersion = @"Verzia databázy: 28";
+                DBVersion = @"Verzia databázy: 29";
                 L4SUtils = @"Verzia L4S: 1.5.0";
-                WebApp = @"Verzia VOSK: 1.7.0";
-                InstallDate = @"Vytvorené dňa: 23.11.2017";
+                WebApp = @"Verzia VOSK: 1.7.1";
+                InstallDate = @"Vytvorené dňa: 15.12.2017";
             }
             public string DBVersion { get; private set; }
             public string L4SUtils { get; private set; }
