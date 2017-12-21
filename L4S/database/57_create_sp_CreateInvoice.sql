@@ -53,13 +53,14 @@ BEGIN
            ,[UnitPrice],[MeasureofUnits]
            ,[BasicPriceWithoutVAT],[VAT],[BasicPriceWithVAT]
            )
-		SELECT      [ID], [DateOfRequest],[CustomerID] ,[CustomerIdentification],[CustomerName]
+		SELECT  DISTINCT [ID], [DateOfRequest],[CustomerID] ,[CustomerIdentification],[CustomerName]
 		   ,[ServiceID],[ServiceCode],[ServiceDescription]
            ,[NumberOfRequest],[ReceivedBytes],[RequestedTime]
            ,[CustomerServiceCode],[CustomerServicename]
            ,[UnitPrice],[MeasureofUnits]
            ,[BasicPriceWithoutVAT],[VAT],[BasicPriceWithVAT]
-		FROM [dbo].[view_CATInvoiceByDay] WHERE TCActive = 0 and [DateOfRequest] <= (SELECT DATEADD(s,-1,DATEADD(mm, DATEDIFF(m,0,GETDATE()),0))) ;
+		FROM [dbo].[view_CATInvoiceByDay] WHERE TCActive = 0 and [DateOfRequest] <= (SELECT DATEADD(s,-1,DATEADD(mm, DATEDIFF(m,0,GETDATE()),0)))
+		     and [CustomerActive] !=99  ;
 
 
 		INSERT INTO [dbo].[CATInvoiceByMonth]
@@ -70,13 +71,14 @@ BEGIN
            ,[UnitPrice],[MeasureofUnits]
            ,[BasicPriceWithoutVAT],[VAT],[BasicPriceWithVAT]
            )
-		SELECT      [ID], [DateOfRequest],[CustomerID] ,[CustomerIdentification],[CustomerName]
+		SELECT  DISTINCT  [ID], [DateOfRequest],[CustomerID] ,[CustomerIdentification],[CustomerName]
 		   ,[ServiceID],[ServiceCode],[ServiceDescription]
            ,[NumberOfRequest],[ReceivedBytes],[RequestedTime]
            ,[CustomerServiceCode],[CustomerServicename]
            ,[UnitPrice],[MeasureofUnits]
            ,[BasicPriceWithoutVAT],[VAT],[BasicPriceWithVAT]
-		FROM [dbo].[view_CATInvoiceByMonth] WHERE TCActive = 0 and [DateOfRequest] <= (SELECT DATEADD(s,-1,DATEADD(mm, DATEDIFF(m,0,GETDATE()),0))) ;
+		FROM [dbo].[view_CATInvoiceByMonth] WHERE TCActive = 0 and [DateOfRequest] <= (SELECT DATEADD(s,-1,DATEADD(mm, DATEDIFF(m,0,GETDATE()),0)))
+		     and [CustomerActive] !=99  ;
 
 		INSERT INTO [dbo].[CATCustomerServiceDetailInvoice]
            ([InvoiceNumber]
