@@ -1,5 +1,3 @@
-USE [log4service]
-GO
 
 /****** Object:  View [dbo].[view_CATInvoiceByDay]    Script Date: 3. 7. 2017 16:05:46 ******/
 DROP VIEW [dbo].view_CATInvoiceByDay
@@ -57,6 +55,10 @@ and m.ServiceID = c.FKServiceID
 and c.FKServiceID = p.PKServiceID 
 and n.PKCustomerDataID = m.CustomerID
 and g.ParamName = UPPER('METRICUNIT') and d.ParamName = UPPER('DPH')
+and m.TCActive <> 99
+and c.TCActive <> 99
+and p.TCActive <> 99
+and n.TCActive <> 99
 UNION ALL
 select m.ID, m.DateOfRequest, m.CustomerID
      , n.IndividualID as CustomerIdentification, n.IndividualFirstName+' '+n.IndividualLastName as CustomerName
@@ -101,6 +103,10 @@ and m.ServiceID = c.FKServiceID
 and c.FKServiceID = p.PKServiceID 
 and n.PKCustomerDataID = m.CustomerID
 and g.ParamName = UPPER('METRICUNIT') and d.ParamName = UPPER('DPH')
+and m.TCActive <> 99
+and c.TCActive <> 99
+and p.TCActive <> 99
+and n.TCActive <> 99
 GO
 
 
