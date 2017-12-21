@@ -12,7 +12,6 @@ using Microsoft.AspNet.Identity.EntityFramework;
 using System.Net;
 using System;
 using Resources;
-using System.Security.Claims;
 using WebPortal.Common;
 
 namespace WebPortal.Controllers

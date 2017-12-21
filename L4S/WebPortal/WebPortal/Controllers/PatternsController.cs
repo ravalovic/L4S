@@ -24,13 +24,9 @@ namespace WebPortal.Controllers
             {
                 return View(db.CATServicePatterns.ToList());
             }
-            List<CATServicePatterns> cATServicePatterns = db.CATServicePatterns.Where(p=>p.FKServiceID==id && p.TCActive!=99).ToList() ;
-            if (cATServicePatterns == null)
-            {
-                return HttpNotFound();
-            }
+            List<CATServicePatterns> cAtServicePatterns = db.CATServicePatterns.Where(p=>p.FKServiceID==id && p.TCActive!=99).ToList() ;
             ViewBag.FKServiceID = id.Value; //inportat Id for map FK to new if create 
-            return View(cATServicePatterns);
+            return View(cAtServicePatterns);
         }
 
         // GET: Patterns/Details/5
@@ -40,12 +36,12 @@ namespace WebPortal.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            CATServicePatterns cATServicePatterns = db.CATServicePatterns.Find(id);
-            if (cATServicePatterns == null)
+            CATServicePatterns cAtServicePatterns = db.CATServicePatterns.Find(id);
+            if (cAtServicePatterns == null)
             {
                 return HttpNotFound();
             }
-            return View(cATServicePatterns);
+            return View(cAtServicePatterns);
         }
 
         // GET: Patterns/Create
@@ -64,20 +60,20 @@ namespace WebPortal.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(CATServicePatterns cATServicePatterns)
+        public ActionResult Create(CATServicePatterns cAtServicePatterns)
         {
             if (ModelState.IsValid)
             {
-                cATServicePatterns.TCActive = 0;
-                cATServicePatterns.TCInsertTime = DateTime.Now;
-                cATServicePatterns.TCLastUpdate = DateTime.Now;
+                cAtServicePatterns.TCActive = 0;
+                cAtServicePatterns.TCInsertTime = DateTime.Now;
+                cAtServicePatterns.TCLastUpdate = DateTime.Now;
                
-                db.CATServicePatterns.Add(cATServicePatterns);
+                db.CATServicePatterns.Add(cAtServicePatterns);
                 db.SaveChanges();
-                return RedirectToAction("Index", new { id = cATServicePatterns.FKServiceID });
+                return RedirectToAction("Index", new { id = cAtServicePatterns.FKServiceID });
             }
 
-            return View(cATServicePatterns);
+            return View(cAtServicePatterns);
         }
 
         // GET: Patterns/Edit/5
@@ -87,12 +83,12 @@ namespace WebPortal.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            CATServicePatterns cATServicePatterns = db.CATServicePatterns.Find(id);
-            if (cATServicePatterns == null)
+            CATServicePatterns cAtServicePatterns = db.CATServicePatterns.Find(id);
+            if (cAtServicePatterns == null)
             {
                 return HttpNotFound();
             }
-            return PartialView("_Edit",cATServicePatterns);
+            return PartialView("_Edit",cAtServicePatterns);
         }
 
         // POST: Patterns/Edit/5
@@ -100,15 +96,15 @@ namespace WebPortal.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "PKServicePatternID,PatternLike,PatternRegExp,PatternDescription,FKServiceID,Entity,Explanation,DatSelectMethod,TCInsertTime,TCLastUpdate,TCActive")] CATServicePatterns cATServicePatterns)
+        public ActionResult Edit([Bind(Include = "PKServicePatternID,PatternLike,PatternRegExp,PatternDescription,FKServiceID,Entity,Explanation,DatSelectMethod,TCInsertTime,TCLastUpdate,TCActive")] CATServicePatterns cAtServicePatterns)
         {
             if (ModelState.IsValid)
             {
-                db.Entry(cATServicePatterns).State = EntityState.Modified;
+                db.Entry(cAtServicePatterns).State = EntityState.Modified;
                 db.SaveChanges();
-                return RedirectToAction("Index", new { id = cATServicePatterns.FKServiceID });
+                return RedirectToAction("Index", new { id = cAtServicePatterns.FKServiceID });
             }
-            return View(cATServicePatterns);
+            return View(cAtServicePatterns);
         }
 
         // GET: Patterns/Delete/5
@@ -120,13 +116,13 @@ namespace WebPortal.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
 
-            CATServicePatterns cATServicePatterns = db.CATServicePatterns.Find(id);
-            if (cATServicePatterns == null)
+            CATServicePatterns cAtServicePatterns = db.CATServicePatterns.Find(id);
+            if (cAtServicePatterns == null)
             {
                 return HttpNotFound();
             }
 
-            DeleteModel model = new DeleteModel(cATServicePatterns.PKServicePatternID, cATServicePatterns.PatternDescription);
+            DeleteModel model = new DeleteModel(cAtServicePatterns.PKServicePatternID, cAtServicePatterns.PatternDescription);
             return PartialView("_deleteModal", model);
             //if (id == null)
             //{
@@ -145,10 +141,10 @@ namespace WebPortal.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            CATServicePatterns cATServicePatterns = db.CATServicePatterns.Find(id);
-            cATServicePatterns.TCActive = 99;
+            CATServicePatterns cAtServicePatterns = db.CATServicePatterns.Find(id);
+            cAtServicePatterns.TCActive = 99;
             db.SaveChanges();
-            return RedirectToAction("Index", new { id = cATServicePatterns.FKServiceID });
+            return RedirectToAction("Index", new { id = cAtServicePatterns.FKServiceID });
         }
 
         protected override void Dispose(bool disposing)

@@ -33,19 +33,19 @@ namespace WebPortal.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "ID,ParamName,ParamValue,Note,TCInsertTime,TCLastUpdate,TCActive")] CONFGeneralSettings cONFGeneralSettings)
+        public ActionResult Create([Bind(Include = "ID,ParamName,ParamValue,Note,TCInsertTime,TCLastUpdate,TCActive")] CONFGeneralSettings cOnfGeneralSettings)
         {
             if (ModelState.IsValid)
             {
-                cONFGeneralSettings.TCActive = 0;
-                cONFGeneralSettings.TCInsertTime = DateTime.Now;
-                cONFGeneralSettings.TCLastUpdate = DateTime.Now;
-                db.CONFGeneralSettings.Add(cONFGeneralSettings);
+                cOnfGeneralSettings.TCActive = 0;
+                cOnfGeneralSettings.TCInsertTime = DateTime.Now;
+                cOnfGeneralSettings.TCLastUpdate = DateTime.Now;
+                db.CONFGeneralSettings.Add(cOnfGeneralSettings);
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
 
-            return View(cONFGeneralSettings);
+            return View(cOnfGeneralSettings);
         }
 
         // GET: CONFGeneralSettings/Edit/5
@@ -55,12 +55,12 @@ namespace WebPortal.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            CONFGeneralSettings cONFGeneralSettings = db.CONFGeneralSettings.Find(id);
-            if (cONFGeneralSettings == null)
+            CONFGeneralSettings cOnfGeneralSettings = db.CONFGeneralSettings.Find(id);
+            if (cOnfGeneralSettings == null)
             {
                 return HttpNotFound();
             }
-            return View(cONFGeneralSettings);
+            return View(cOnfGeneralSettings);
         }
 
         // POST: CONFGeneralSettings/Edit/5
@@ -68,17 +68,17 @@ namespace WebPortal.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "ID,ParamName,ParamValue,Note,TCInsertTime,TCLastUpdate,TCActive")] CONFGeneralSettings cONFGeneralSettings)
+        public ActionResult Edit([Bind(Include = "ID,ParamName,ParamValue,Note,TCInsertTime,TCLastUpdate,TCActive")] CONFGeneralSettings cOnfGeneralSettings)
         {
             if (ModelState.IsValid)
             {
-                cONFGeneralSettings.TCActive = 0;
-                cONFGeneralSettings.TCLastUpdate = DateTime.Now;
-                db.Entry(cONFGeneralSettings).State = EntityState.Modified;
+                cOnfGeneralSettings.TCActive = 0;
+                cOnfGeneralSettings.TCLastUpdate = DateTime.Now;
+                db.Entry(cOnfGeneralSettings).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            return View(cONFGeneralSettings);
+            return View(cOnfGeneralSettings);
         }
 
         // GET: CONFGeneralSettings/Delete/5
@@ -89,13 +89,13 @@ namespace WebPortal.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
 
-            CONFGeneralSettings cONFGeneralSettings = db.CONFGeneralSettings.Find(id);
-            if (cONFGeneralSettings == null)
+            CONFGeneralSettings cOnfGeneralSettings = db.CONFGeneralSettings.Find(id);
+            if (cOnfGeneralSettings == null)
             {
                 return HttpNotFound();
             }
 
-            DeleteModel model = new DeleteModel(cONFGeneralSettings.ID, cONFGeneralSettings.ParamName);  
+            DeleteModel model = new DeleteModel(cOnfGeneralSettings.ID, cOnfGeneralSettings.ParamName);  
             return PartialView("_deleteModal", model);
 
             //if (id == null)
@@ -115,11 +115,11 @@ namespace WebPortal.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            CONFGeneralSettings cONFGeneralSettings = db.CONFGeneralSettings.Find(id);            
-            if (cONFGeneralSettings != null)
+            CONFGeneralSettings cOnfGeneralSettings = db.CONFGeneralSettings.Find(id);            
+            if (cOnfGeneralSettings != null)
             {
-                cONFGeneralSettings.TCActive = 99;
-                cONFGeneralSettings.TCLastUpdate = DateTime.Now;
+                cOnfGeneralSettings.TCActive = 99;
+                cOnfGeneralSettings.TCLastUpdate = DateTime.Now;
             }
             db.SaveChanges();
             return RedirectToAction("Index");

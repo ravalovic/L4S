@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
-using DocumentFormat.OpenXml.Wordprocessing;
 using DoddleReport;
 using DoddleReport.Writers;
 using Microsoft.Ajax.Utilities;
@@ -14,7 +13,7 @@ using static WebPortal.Common.Helper;
 namespace WebPortal.Controllers
 {
     [OutputCache(Duration = 0)]
-    [Helper.CheckSessionOutAttribute]
+    [CheckSessionOutAttribute]
     [Authorize] //!!! important only Authorize users can call this controller
     public class CustomerMonthlyDatasController : Controller
     {
@@ -43,7 +42,7 @@ namespace WebPortal.Controllers
             {
                 insertDateFrom = lastPeriod.ToString("MM.yyyy");
             }
-            Helper.SetUpFilterValues(ref searchText, ref insertDateFrom, ref insertDateTo, currentFilter, currentFrom, currentTo, out searchId, out fromDate, out toDate, page);
+            SetUpFilterValues(ref searchText, ref insertDateFrom, ref insertDateTo, currentFilter, currentFrom, currentTo, out searchId, out fromDate, out toDate, page);
             if (!insertDateFrom.IsNullOrWhiteSpace() || !insertDateTo.IsNullOrWhiteSpace()) datCondition = true;
             if (!searchText.IsNullOrWhiteSpace()) textCondition = true;
 
@@ -83,7 +82,7 @@ namespace WebPortal.Controllers
             DateTime toDate;
             bool datCondition = false;
             bool textCondition = false;
-            Helper.SetUpFilterValues(ref searchText, ref insertDateFrom, ref insertDateTo, currentFilter, currentFrom, currentTo, out searchId, out fromDate, out toDate, page);
+            SetUpFilterValues(ref searchText, ref insertDateFrom, ref insertDateTo, currentFilter, currentFrom, currentTo, out searchId, out fromDate, out toDate, page);
             if (!insertDateFrom.IsNullOrWhiteSpace() || !insertDateTo.IsNullOrWhiteSpace()) datCondition = true;
             if (!searchText.IsNullOrWhiteSpace()) textCondition = true;
 
@@ -120,8 +119,8 @@ namespace WebPortal.Controllers
             #region ********************* Report  *******************************
             var reportName = "MesacnySumar_" + DateTime.Now.ToString("MMyyyy");
 
-            var reportFromDate = _model.Min(p => p.DateOfRequest).Value.ToString("dd.MM.yyyy");
-            var reportToDate = _model.Max(p => p.DateOfRequest).Value.ToString("dd.MM.yyyy");
+            var reportFromDate = _model.Min(p => p.DateOfRequest)?.ToString("dd.MM.yyyy");
+            var reportToDate = _model.Max(p => p.DateOfRequest)?.ToString("dd.MM.yyyy");
             // Create the report and turn our query into a ReportSource
             var report = new Report(_model.ToReportSource());
             if (extension.Equals("csv"))

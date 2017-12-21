@@ -49,19 +49,19 @@ namespace WebPortal.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create(
             //[Bind(Include = "ID,OwnerCompanyName,OwnwerCompanyType,OwnerCompanyType,OwnerCompanyID,OwnerCompanyTAXID,OwnerCompanyVATID,OwnerBankAccountIban,OwnerAddressStreet,OwnerAddressBuildingNumber,OwnerAddressCity,OwnerAddressZipCode,OwnerAddressCountry,OwnerResponsibleFirstName,OwnerResponsiblelastName,OwnerContactEmail,OwnerContactMobile,OwnerContactPhone,OwnerContactWeb,TCInsertTime,TCLastUpdate,TCActive")]
-        CATOwnerData cATOwnerData)
+        CATOwnerData cAtOwnerData)
         {
             if (ModelState.IsValid)
             {
-                cATOwnerData.TCLastUpdate = DateTime.Now;
-                cATOwnerData.TCActive = 0;
-                cATOwnerData.TCInsertTime = DateTime.Now;
-                _db.CATOwnerData.Add(cATOwnerData);
+                cAtOwnerData.TCLastUpdate = DateTime.Now;
+                cAtOwnerData.TCActive = 0;
+                cAtOwnerData.TCInsertTime = DateTime.Now;
+                _db.CATOwnerData.Add(cAtOwnerData);
                 _db.SaveChanges();
-                return RedirectToAction("SetActive", new{cATOwnerData.ID});
+                return RedirectToAction("SetActive", new{cAtOwnerData.ID});
             }
 
-            return View(cATOwnerData);
+            return View(cAtOwnerData);
         }
 
         // GET: CATOwnerDatas/Edit/5
@@ -71,12 +71,12 @@ namespace WebPortal.Controllers
             //{
             //    return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             //}
-            CATOwnerData cATOwnerData = _db.CATOwnerData.FirstOrDefault();
-            if (cATOwnerData == null)
+            CATOwnerData cAtOwnerData = _db.CATOwnerData.FirstOrDefault();
+            if (cAtOwnerData == null)
             {
                 return RedirectToAction("Create");
             }
-            return View(cATOwnerData);
+            return View(cAtOwnerData);
         }
 
         // POST: CATOwnerDatas/Edit/5
@@ -84,16 +84,16 @@ namespace WebPortal.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "ID,OwnerCompanyName,OwnwerCompanyType,OwnerCompanyType,OwnerCompanyID,OwnerCompanyTAXID,OwnerCompanyVATID,OwnerBankAccountIban,OwnerAddressStreet,OwnerAddressBuildingNumber,OwnerAddressCity,OwnerAddressZipCode,OwnerAddressCountry,OwnerResponsibleFirstName,OwnerResponsiblelastName,OwnerContactEmail,OwnerContactMobile,OwnerContactPhone,OwnerContactWeb,TCInsertTime,TCLastUpdate,TCActive")] CATOwnerData cATOwnerData)
+        public ActionResult Edit([Bind(Include = "ID,OwnerCompanyName,OwnwerCompanyType,OwnerCompanyType,OwnerCompanyID,OwnerCompanyTAXID,OwnerCompanyVATID,OwnerBankAccountIban,OwnerAddressStreet,OwnerAddressBuildingNumber,OwnerAddressCity,OwnerAddressZipCode,OwnerAddressCountry,OwnerResponsibleFirstName,OwnerResponsiblelastName,OwnerContactEmail,OwnerContactMobile,OwnerContactPhone,OwnerContactWeb,TCInsertTime,TCLastUpdate,TCActive")] CATOwnerData cAtOwnerData)
         {
             if (ModelState.IsValid)
             {
-                cATOwnerData.TCLastUpdate = DateTime.Now;
-                cATOwnerData.TCActive = 0;
-                cATOwnerData.TCInsertTime = DateTime.Now;
-                _db.Entry(cATOwnerData).State = EntityState.Modified;
+                cAtOwnerData.TCLastUpdate = DateTime.Now;
+                cAtOwnerData.TCActive = 0;
+                cAtOwnerData.TCInsertTime = DateTime.Now;
+                _db.Entry(cAtOwnerData).State = EntityState.Modified;
                 _db.SaveChanges();
-                return RedirectToAction("SetActive", new { cATOwnerData.ID });
+                return RedirectToAction("SetActive", new { cAtOwnerData.ID });
             }
             return RedirectToAction("Index"); 
         }

@@ -28,12 +28,12 @@ namespace WebPortal.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            CATServiceParameters cATServiceParameters = db.CATServiceParameters.Find(id);
-            if (cATServiceParameters == null)
+            CATServiceParameters cAtServiceParameters = db.CATServiceParameters.Find(id);
+            if (cAtServiceParameters == null)
             {
                 return HttpNotFound();
             }
-            return View(cATServiceParameters);
+            return View(cAtServiceParameters);
         }
 
         // GET: CATServiceParameters/Create
@@ -48,16 +48,16 @@ namespace WebPortal.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "PKServiceID,ServiceCode,ServiceDescription,ServiceBasicPrice,TCInsertTime,TCLastUpdate,TCActive")] CATServiceParameters cATServiceParameters)
+        public ActionResult Create([Bind(Include = "PKServiceID,ServiceCode,ServiceDescription,ServiceBasicPrice,TCInsertTime,TCLastUpdate,TCActive")] CATServiceParameters cAtServiceParameters)
         {
             if (ModelState.IsValid)
             {
-                db.CATServiceParameters.Add(cATServiceParameters);
+                db.CATServiceParameters.Add(cAtServiceParameters);
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
 
-            return View(cATServiceParameters);
+            return View(cAtServiceParameters);
         }
 
         // GET: CATServiceParameters/Edit/5
@@ -67,13 +67,13 @@ namespace WebPortal.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            CATServiceParameters cATServiceParameters = db.CATServiceParameters.Find(id);
-            if (cATServiceParameters == null)
+            CATServiceParameters cAtServiceParameters = db.CATServiceParameters.Find(id);
+            if (cAtServiceParameters == null)
             {
                 return HttpNotFound();
             }
             //return View(cATServiceParameters);
-            return PartialView("_Edit", cATServiceParameters);
+            return PartialView("_Edit", cAtServiceParameters);
         }
 
         // POST: CATServiceParameters/Edit/5
@@ -81,15 +81,15 @@ namespace WebPortal.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "PKServiceID,ServiceCode,ServiceDescription,ServiceBasicPrice,TCInsertTime,TCLastUpdate,TCActive")] CATServiceParameters cATServiceParameters)
+        public ActionResult Edit([Bind(Include = "PKServiceID,ServiceCode,ServiceDescription,ServiceBasicPrice,TCInsertTime,TCLastUpdate,TCActive")] CATServiceParameters cAtServiceParameters)
         {
             if (ModelState.IsValid)
             {
-                db.Entry(cATServiceParameters).State = EntityState.Modified;
+                db.Entry(cAtServiceParameters).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            return View(cATServiceParameters);
+            return View(cAtServiceParameters);
         }
 
         // GET: CATServiceParameters/Delete/5
@@ -100,13 +100,13 @@ namespace WebPortal.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
 
-            CATServiceParameters cATServiceParameters = db.CATServiceParameters.Find(id);
-            if (cATServiceParameters == null)
+            CATServiceParameters cAtServiceParameters = db.CATServiceParameters.Find(id);
+            if (cAtServiceParameters == null)
             {
                 return HttpNotFound();
             }
 
-            DeleteModel model = new DeleteModel(cATServiceParameters.PKServiceID, cATServiceParameters.ServiceDescription);
+            DeleteModel model = new DeleteModel(cAtServiceParameters.PKServiceID, cAtServiceParameters.ServiceDescription);
             return PartialView("_deleteModal", model);
 
             //if (id == null)
@@ -127,8 +127,8 @@ namespace WebPortal.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            CATServiceParameters cATServiceParameters = db.CATServiceParameters.Find(id);         
-            cATServiceParameters.TCActive = 99;
+            CATServiceParameters cAtServiceParameters = db.CATServiceParameters.Find(id);         
+            cAtServiceParameters.TCActive = 99;
             db.SaveChanges();
             return RedirectToAction("Index");
         }

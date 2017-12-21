@@ -173,10 +173,10 @@ namespace WebPortal.Controllers
                                             .Select(e => e.ErrorMessage));
 
                     //Log This exception to ELMAH:
-                    Exception exception = new Exception(message);
+                    var exception = new Exception(message);
 
                     //Return Status Code:
-                    return new HttpStatusCodeResult(HttpStatusCode.BadRequest, message);
+                    return new HttpStatusCodeResult(HttpStatusCode.BadRequest, message+" "+exception.Message);
                 }
             }
             if (customer != null && customer.CustomerType == "PO") return RedirectToAction("CompanyList");

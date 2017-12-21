@@ -17,7 +17,7 @@
     string newString = r.Replace(connectionString, "Password=XXXXXX");
     ViewBag.DBname = newString;}
 <h4>Databáza: @ViewBag.DBName</h4>
-<h4>@(new Helper.Version().DBVersion) </h4>
+<h4>@(new Helper.Version().DbVersion) </h4>
 <h4>@(new Helper.Version().WebApp)</h4>
 <h4>@(new Helper.Version().L4SUtils)</h4>
 <h4>@(new Helper.Version().InstallDate)</h4>

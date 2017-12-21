@@ -357,7 +357,7 @@
     <Compile Include="Common\ReportResult.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\CustomerMontlyTotalInvoiceController.cs" />
-    <Compile Include="Controllers\GAPAnalyzesController.cs" />
+    <Compile Include="Controllers\GapAnalyzesController.cs" />
     <Compile Include="Controllers\InvoiceByDayController.cs" />
     <Compile Include="Controllers\InvoiceByMonthController.cs" />
     <Compile Include="Controllers\LogsOfServicesController.cs" />

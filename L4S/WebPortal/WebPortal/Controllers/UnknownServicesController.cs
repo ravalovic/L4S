@@ -23,7 +23,6 @@ namespace WebPortal.Controllers
         // GET: UnknownServices
         public ActionResult Index(int? page, string insertDateFrom, string insertDateTo, string searchText, string currentFilter, string currentFrom, string currentTo)
         {
-            var dbAccess = _db.CATUnknownService;
             var modelViews = new List<UnknownServicesViewModel>();
             int searchId;
             DateTime fromDate;
