@@ -1,19 +1,21 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <configuration>
   <commonSettings>
-    <backupDirectory>c:\backup</backupDirectory>
-    <dayOfRun>6</dayOfRun>
-    <delOlderAs>1</delOlderAs>
+    <backupDirectory>c:\backup</backupDirectory> <!-- adresar kde budu ukladane zalohy-->
+    <dayOfRun>6</dayOfRun> <!-- Den pre zalohavanie aplikacii a full backup 0-nedela ... 6 - Sobota-->
+    <delOlderAs>1</delOlderAs> <!-- V pripade full backupu sa zmazu vsetky zalohy starsie ako 1 den t.j zostane iba aktualna zvyzsenim na 7 zostanu 2 tyzdnove zalohy-->
   </commonSettings>
   <appSettings>
+    <!-- cesty k aplikaciam-->
     <PROD_L4SPath>c:\L4S\bin\</PROD_L4SPath>
     <TEST_L4SPath>c:\L4Stest\bin</TEST_L4SPath>
     <PROD_WebApp>c:\inetpub\wwwroot\vosk</PROD_WebApp>
     <TEST_WebApp>c:\inetpub\wwwroot\vosk_test</TEST_WebApp>
   </appSettings>
   <dbSettings>
+    <!-- nastavenie databazovych zaloh-->
     <databaseServer>vugkvosk</databaseServer>
-    <compressDBbackup>yes</compressDBbackup>
+    <compressDBbackup>yes</compressDBbackup> <!-- Yes - zalohy databaz budu komprimovane do zip inak zostanu v povodnom formate-->
     <databases>
 	<!-- Systemove databazy sa zalohuju tyzdenne -->
         <database>master</database>
